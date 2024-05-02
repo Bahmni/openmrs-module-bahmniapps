@@ -7,13 +7,24 @@ import {
   subLabels,
   isAbnormal,
   getValue,
+  isValidFileFormat,
 } from "../../utils/FormDisplayControl/FormView";
 
 import "./viewObservationForm.scss";
+import { FileViewer } from "./FileViewer/FileViewer";
 
 export const ViewObservationForm = (props) => {
-  const { formName, closeViewObservationForm, formData, isViewFormLoading, showPrintOption, printForm } =
-    props;
+  const {
+    formName,
+    formNameTranslations,
+    closeViewObservationForm,
+    formData,
+    isViewFormLoading,
+    showPrintOption,
+    printForm,
+  } = props;
+
+  const imageItems = formData?.filter((member) => isValidFileFormat(member));
 
   return (
     <div>
@@ -23,66 +34,75 @@ export const ViewObservationForm = (props) => {
         className="view-observation-form-modal"
         onRequestClose={closeViewObservationForm}
       >
-        {showPrintOption && <button className="confirm print-button" onClick={printForm}>Print</button> }
+        {showPrintOption && (
+          <button className="confirm print-button" onClick={printForm}>
+            Print
+          </button>
+        )}
         <section className="content-body">
-          <h2 className="section-title">{formName}</h2>
+          <h2 className="section-title">{formNameTranslations}</h2>
           {isViewFormLoading ? (
             <div>
               <Loading />
             </div>
           ) : (
             <section className="section-body">
+              {imageItems?.length > 0 && (
+                <FileViewer members={imageItems} isHeader={true} />
+              )}
               {formData.map((section, index) => {
-                return (
-                  <Tile key={index}>
-                    <div
-                      style={{
-                        display: section?.groupMembers?.length
-                          ? "block"
-                          : "flex",
-                      }}
-                    >
-                      <span
-                        className={`section-header ${
-                          section?.groupMembers?.length ? "" : "row-label"
-                        } ${
-                          isAbnormal(section.interpretation)
-                            ? "is-abnormal"
-                            : ""
-                        }`}
-                        data-testid={`section-label-${index}`}
+                if (!isValidFileFormat(section)) {
+                  return (
+                    <Tile key={index}>
+                      <div
+                        style={{
+                          display: section?.groupMembers?.length
+                            ? "block"
+                            : "flex",
+                        }}
                       >
-                        {section.concept.shortName}&nbsp;
-                        <span className="sub-label">
-                          {subLabels(section.concept)}
-                        </span>
-                      </span>
-                      {section?.groupMembers?.length ? (
-                        <TileItem items={section.groupMembers} />
-                      ) : (
-                        <div
-                          className={`row-value ${
+                        <span
+                          className={`section-header ${
+                            section?.groupMembers?.length ? "" : "row-label"
+                          } ${
                             isAbnormal(section.interpretation)
                               ? "is-abnormal"
                               : ""
                           }`}
+                          data-testid={`section-label-${index}`}
                         >
-                          {getValue(section)}
-                          &nbsp;{section.concept.units || ""}
-                        </div>
+                          {section.concept.shortName}&nbsp;
+                          <span className="sub-label">
+                            {subLabels(section.concept)}
+                          </span>
+                        </span>
+                        {section?.groupMembers?.length ? (
+                          <TileItem items={section.groupMembers} />
+                        ) : (
+                          <div
+                            className={`row-value ${
+                              isAbnormal(section.interpretation)
+                                ? "is-abnormal"
+                                : ""
+                            }`}
+                          >
+                            {getValue(section)}
+                            &nbsp;{section.concept.units || ""}
+                          </div>
+                        )}
+                      </div>
+                      {section.comment && (
+                        <span className="notes-section">
+                          <Document className="document-icon" />
+                          {`${section.comment} - by ${
+                            (section.providers && section.providers[0]?.name) ||
+                            ""
+                          }`}
+                        </span>
                       )}
-                    </div>
-                    {section.comment && (
-                      <span className="notes-section">
-                        <Document className="document-icon" />
-                        {`${section.comment} - by ${
-                          (section.providers && section.providers[0]?.name) ||
-                          ""
-                        }`}
-                      </span>
-                    )}
-                  </Tile>
-                );
+                    </Tile>
+                  );
+                }
               })}
             </section>
           )}
@@ -94,10 +114,11 @@ export const ViewObservationForm = (props) => {
 
 ViewObservationForm.propTypes = {
   formName: propTypes.string,
+  formNameTranslations: propTypes.string,
   closeViewObservationForm: propTypes.func,
   formData: propTypes.array,
   isViewFormLoading: propTypes.bool,
   showPrintOption: propTypes.bool,
-  printForm: propTypes.func
+  printForm: propTypes.func,
 };
 export default ViewObservationForm;

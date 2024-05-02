@@ -45,7 +45,8 @@ describe('PatientRelationshipController', function () {
                 {aIsToB: "Sibling", bIsToA: "Sibling", searchType: "patient", uuid: "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
                 {aIsToB: "Parent", bIsToA: "Child", searchType: "patient", uuid: "8d91a210-c2cc-11de-8d13-0010c6dffd0f"},
                 {aIsToB: "Aunt/Uncle",bIsToA: "Niece/nephew", searchType: "patient", uuid: "8d91a3dc-c2cc-11de-8d13-0010c6dffd0f"},
-                {aIsToB: "Doctor", bIsToA: "Patient",searchType: "patient", uuid: "2a5f4ff4-a179-4b8a-aa4c-40f71956ebbc"}
+                {aIsToB: "Doctor", bIsToA: "Patient",searchType: "patient", uuid: "2a5f4ff4-a179-4b8a-aa4c-40f71956ebbc"},
+                {aIsToB: "Father", bIsToA: "Patient", searchType: "person", uuid: "393293b6-4d30-4c7b-a658-b4944f71f3ab"},
             ];
             $controller('PatientRelationshipController', {
                 $scope: scope,
@@ -440,6 +441,14 @@ describe('PatientRelationshipController', function () {
 
            expect(scope.getChosenRelationshipType(relationship)).toBeUndefined();
        })
+       it("should return person when person relationship is chosen", function () {
+           var relationship = {
+               patientIdentifier: "GAN200016",
+               relationshipType: {"uuid": "393293b6-4d30-4c7b-a658-b4944f71f3ab"},
+               personB: {"uuid": "uuid"}
+           };
+           expect(scope.getChosenRelationshipType(relationship)).toBe("person");
+       });
     });
     describe("clearRelationshipRow", function(){
         it("should clear the relationship data", function () {

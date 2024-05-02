@@ -28,11 +28,13 @@ export function AddAllergy(props) {
   );
   const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
   const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
+  const [error, setError] = React.useState(null);
   const clearForm = () => {
     setAllergen({});
     setReactions([]);
     setNotes("");
     setSeverity("");
+    setError(null);
   };
   const saveAllergies = async (allergen, reactions, severity, notes) => {
     const allergyReactions = reactions.map((reaction) => {
@@ -53,12 +55,13 @@ export function AddAllergy(props) {
     console.log("response", response)
     if (response.status === 201) {
       setIsSaveSuccess(true);
-    } else {
+    }else{
+      setError(response.response.data.error.message)
       setIsSaveSuccess(false);
     }
   };
   useEffect(() => {
-    onSave(isSaveSuccess);
+    onSave(isSaveSuccess, error);
   }, [isSaveSuccess]);
   return (
     <div className={"next-ui"}>

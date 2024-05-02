@@ -34,5 +34,6 @@
     "CLINICAL_DAYS_TRANSLATION_KEY": "days",
     "GENDER_KEY": "Gender:",
     "AGE_KEY": "Age:",
-    "DATE_OF_BIRTH_LABEL": "Date of Birth:"
+    "DATE_OF_BIRTH_LABEL": "Date of Birth:",
+    "LOGOUT_TRANSLATION_KEY": "Logout"
 }

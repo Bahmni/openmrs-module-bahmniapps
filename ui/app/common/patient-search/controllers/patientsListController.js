@@ -12,6 +12,8 @@ angular.module('bahmni.common.patientSearch')
         var patientListSpinner;
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
+            $scope.ignoredTabularViewHeadingsConfig = appService.getAppDescriptor().getConfigValue("ignoredTabularViewHeadings") || [];
+            $scope.identifierHeadingsConfig = appService.getAppDescriptor().getConfigValue("identifierHeadings") || [];
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', function (currentSearchType) {
@@ -88,14 +90,14 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.getHeadings = function () {
             if ($scope.search.activePatients && $scope.search.activePatients.length > 0) {
-                var ingoreHeadingList = Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList;
+                var ingoreHeadingList = $scope.ignoredTabularViewHeadingsConfig;
                 if ($scope.search.searchType) {
-                    ingoreHeadingList = ingoreHeadingList.concat($scope.search.searchType.tabularViewIgnoreHeadingsList);
+                    ingoreHeadingList = ingoreHeadingList.concat($scope.search.searchType.ignoredTabularViewHeadings);
                 }
                 var headings = _.chain($scope.search.activePatients[0])
                     .keys()
                     .filter(function (heading) {
-                        return _.indexOf(ingoreHeadingList, heading) === -1;
+                        return _.indexOf($scope.ignoredTabularViewHeadingsConfig, heading) === -1;
                     })
                     .value();
                 if ($scope.search.searchType && $scope.search.searchType.tabularViewHeadingOrder) {
@@ -154,9 +156,9 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.isHeadingOfLinkColumn = function (heading) {
-            var identifierHeading = _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
-            if (identifierHeading) {
-                return identifierHeading;
+            var identifierHeadings = _.includes($scope.identifierHeadingsConfig, heading);
+            if (identifierHeadings) {
+                return identifierHeadings;
             } else if ($scope.search.searchType && $scope.search.searchType.links) {
                 return _.find($scope.search.searchType.links, {linkColumn: heading});
             } else if ($scope.search.searchType && $scope.search.searchType.linkColumn) {
@@ -192,7 +194,7 @@ angular.module('bahmni.common.patientSearch')
                 view: appExtn.extensionParams.view || Bahmni.Common.PatientSearch.Constants.searchExtensionTileViewType,
                 tabularViewHeadingOrder: appExtn.extensionParams.tabularViewHeadingOrder || [],
                 dateColumns: appExtn.extensionParams.dateColumns || [],
-                tabularViewIgnoreHeadingsList: appExtn.extensionParams.tabularViewIgnoreHeadingsList || [],
+                ignoredTabularViewHeadings: appExtn.extensionParams.ignoredTabularViewHeadings || [],
                 showPrint: appExtn.extensionParams.showPrint || false,
                 printHtmlLocation: appExtn.extensionParams.printHtmlLocation || null,
                 additionalParams: appExtn.extensionParams.additionalParams,

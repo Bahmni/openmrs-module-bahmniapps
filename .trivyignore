@@ -65,3 +65,5 @@ CVE-2023-45133
 CVE-2022-37602
 CVE-2023-42282 #Installed version 2.0.0 https://avd.aquasec.com/nvd/cve-2023-42282
 CVE-2024-21490 #angular: Inefficient Regular Expression Complexity https://avd.aquasec.com/nvd/cve-2024-21490
+CVE-2024-29180 #webpack-dev-middleware https://avd.aquasec.com/nvd/cve-2024-29180
+CVE-2022-37620 #html-minifier latest version 4.0.0 does not have a fix for the vulnerability kangax html-minifier REDoS vulnerability https://avd.aquasec.com/nvd/cve-2022-37620

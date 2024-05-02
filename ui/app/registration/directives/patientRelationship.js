@@ -28,7 +28,12 @@ angular.module('bahmni.registration')
 
             $scope.isPatientRelationship = function (relationship) {
                 var relationshipType = getRelationshipType(relationship);
-                return relationshipType && (_.isUndefined(relationshipType.searchType) || relationshipType.searchType === "patient");
+                return relationshipType && relationshipType.searchType === "patient";
+            };
+
+            $scope.isPersonRelationship = function (relationship) {
+                var relationshipType = getRelationshipType(relationship);
+                return relationshipType && relationshipType.searchType === "person";
             };
 
             var getRelationshipType = function (relationship) {
@@ -43,6 +48,8 @@ angular.module('bahmni.registration')
                     return "patient";
                 } else if ($scope.isProviderRelationship(relation)) {
                     return "provider";
+                } else if ($scope.isPersonRelationship(relation)) {
+                    return "person";
                 }
             };
 
@@ -153,7 +160,7 @@ angular.module('bahmni.registration')
                 return relationship.personA && relationship.personA.uuid === $scope.patient.uuid ? relationship.personB : relationship.personA;
             };
 
-            $scope.openPatientDashboardInNewTab = function (relationship) {
+            $scope.openPersonDashboardInNewTab = function (relationship) {
                 var iframe = $document[0].getElementById("relationship-extension-popup");
                 iframe.src = Bahmni.Registration.Constants.personManagementEditPersonURL + "/" + relationship.personB.uuid;
                 $scope.showPopupWindow = true;
@@ -161,6 +168,15 @@ angular.module('bahmni.registration')
                     $scope.showPopupWindow = false;
                     $scope.$apply();
                 }, false);
+            };
+
+            $scope.openPatientDashboardInNewTab = function (relationship) {
+                var personRelatedTo = getPersonRelatedTo(relationship);
+                $window.open(getPatientRegistrationUrl(personRelatedTo.uuid), '_blank');
+            };
+
+            var getPatientRegistrationUrl = function (patientUuid) {
+                return '#/patient/' + patientUuid;
             };
 
             $scope.getProviderList = function () {

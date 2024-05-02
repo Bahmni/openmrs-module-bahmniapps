@@ -4,7 +4,7 @@ angular.module('bahmni.registration').factory('initialization',
     ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'preferences', 'locationService', 'mergeService', '$translate',
         function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, mergeService, $translate) {
             var getConfigs = function () {
-                var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping', 'registrationSMSToggle', 'helpDeskNumber'];
+                var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping', 'registrationSMSToggle', 'helpDeskNumber', 'quickLogoutComboKey'];
                 return configurations.load(configNames)
                     .then(loadPatientAttributeTypes)
                     .then(function (patientAttributeTypes) {
@@ -24,6 +24,7 @@ angular.module('bahmni.registration').factory('initialization',
                         Bahmni.Common.Util.GenderUtil.translateGender($rootScope.genderMap, $translate);
                         $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                         $rootScope.relationshipTypes = configurations.relationshipTypes();
+                        $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
                     });
             };
 
@@ -67,10 +68,13 @@ angular.module('bahmni.registration').factory('initialization',
             var mapRelationsTypeWithSearch = function () {
                 var relationshipTypeMap = $rootScope.relationshipTypeMap || {};
                 if (!relationshipTypeMap.provider) {
-                    return "patient";
+                    if (!relationshipTypeMap.patient) {
+                        return "person";
+                    }
                 }
                 $rootScope.relationshipTypes.forEach(function (relationshipType) {
-                    relationshipType.searchType = (relationshipTypeMap.provider.indexOf(relationshipType.aIsToB) > -1) ? "provider" : "patient";
+                    relationshipType.searchType = (relationshipTypeMap.provider.indexOf(relationshipType.aIsToB) > -1) ? "provider" :
+                        (relationshipTypeMap.person.indexOf(relationshipType.aIsToB) > -1) ? "person" : "patient";
                 });
             };
 

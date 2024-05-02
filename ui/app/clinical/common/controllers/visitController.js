@@ -1,8 +1,18 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', '$window', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService',
-        function ($scope, $state, $rootScope, $q, encounterService, $window, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService) {
+    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', '$window', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService', 'auditLogService', 'sessionService', '$location',
+        function ($scope, $state, $rootScope, $q, encounterService, $window, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService, auditLogService, sessionService, $location) {
+            function handleLogoutShortcut (event) {
+                if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+                    $scope.ipdDashboard.hostApi.onLogOut();
+                }
+            }
+            function cleanup () {
+                $window.removeEventListener('keydown', handleLogoutShortcut);
+            }
+            $window.addEventListener('keydown', handleLogoutShortcut);
+            $scope.$on('$destroy', cleanup);
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -33,7 +43,8 @@ angular.module('bahmni.clinical')
                     provider: $rootScope.currentProvider,
                     visitSummary: $scope.visitSummary,
                     visitUuid: $scope.visitUuid,
-                    isReadMode: $scope.isIpdReadMode
+                    isReadMode: $scope.isIpdReadMode,
+                    source: $location.search().source
                 },
                 hostApi: {
                     navigation: {
@@ -41,6 +52,14 @@ angular.module('bahmni.clinical')
                             const visitSummaryUrl = $state.href('patient.dashboard.visit', {visitUuid: $scope.visitUuid});
                             $window.open(visitSummaryUrl, '_blank');
                         }
+                    },
+                    onLogOut: function () {
+                        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
+                            sessionService.destroy().then(
+                                function () {
+                                    $window.location = "../home/index.html#/login";
+                                });
+                        });
                     }
                 }
             };
@@ -109,12 +128,19 @@ angular.module('bahmni.clinical')
                             $scope.observationsEntries = response[1].data;
                             angular.forEach(diagnoses, function (diagnosis) {
                                 if (diagnosis.order === printConfig.printDiagnosis.order &&
-                                    diagnosis.certainty === printConfig.printDiagnosis.certainity &&
-                                    diagnosis.codedAnswer !== null) {
+                                    diagnosis.certainty === printConfig.printDiagnosis.certainity) {
                                     if ($scope.diagnosesCodes.length > 0) {
                                         $scope.diagnosesCodes += ", ";
                                     }
-                                    $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                    if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer == null && diagnosis.freeTextAnswer !== null) {
+                                        $scope.diagnosesCodes += diagnosis.freeTextAnswer;
+                                    }
                                 }
                             });
                         });

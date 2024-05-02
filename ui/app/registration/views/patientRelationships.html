@@ -16,9 +16,12 @@
                     <span>{{getRelationshipTypeForDisplay(relationship)}}</span>
                 </div>
                 <div class="col col2">
-                    <span><a ng-click="openPatientDashboardInNewTab(relationship)">{{getRelatedToPersonForDisplay(relationship)}}</a></span>
+                    <span ng-if="!isPersonRelationship(relationship)">{{getRelatedToPersonForDisplay(relationship)}}</span>
+                    <span ng-if="isPatientRelationship(relationship)"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
+                    <span ng-if="isPersonRelationship(relationship)"><a ng-click="openPersonDashboardInNewTab(relationship)">{{getRelatedToPersonForDisplay(relationship)}}</a></span>
                 </div>
                 <div class="col col3">
+                    <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
                     <span>{{relationship.endDate | bahmniDate}}</span>
                 </div>
                 <div class="col col4">
@@ -44,16 +47,46 @@
                         </select>
                     </div>
                     <span class="asterick showOn-desktop">*</span>
-                    <div class="relationship-extension-btn">
-                        <button class="add-person-btn" type="button" ng-disabled="!newRelationship.relationshipType.uuid"
-                            ng-click="openPopupWindow(newRelationship)">{{ ::'REGISTRATION_LABEL_SELECT_PERSON' | translate }}
-                        </button>
-                    </div>
                 </div>
                 <div class="col col2 form-field">
-                    <div class="field-value" ng-show="newRelationship.personB.display">
+                    <div class="field-attribute showOn-small-screen">
+                        <label>{{ 'REGISTRATION_ENTER_NAME_ID_LABEL'|translate }}
+                            <span class="asterick">*</span>
+                        </label>
+                    </div>
+                    <div class="field-value" ng-switch="getChosenRelationshipType(newRelationship)">
+
+                        <input type="text" ng-switch-when="patient" bahmni-autocomplete
+                               validation-message="{{ ::'REGISTRATION_LABEL_PATIENT_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEdit(newRelationship)"
+                               ng-model="newRelationship.patientIdentifier" response-map="getPatientList" source="searchByPatientIdentifierOrName"
+                               ng-change="clearPatient(newRelationship)" on-select="patientSelected(newRelationship)"
+                               placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME_ID' | translate}}"
+                               ng-class="{'illegalValue': !newRelationship.personB.uuid||duplicateRelationship(newRelationship)}" is-invalid="isInvalidRelation(newRelationship)"/>
+
+                        <input type="text" ng-switch-when="provider" bahmni-autocomplete is-invalid="isInvalidRelation(newRelationship)"
+                               ng-class="{'illegalValue': !newRelationship.personB.uuid || duplicateRelationship(newRelationship)}"
+                               validation-message="{{ ::'REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEdit(newRelationship)"
+                               ng-model="newRelationship.providerName" response-map="getProviderDataResults" source="getProviderList(relationship)"
+                               ng-change="clearProvider(newRelationship)" on-select="providerSelected(newRelationship)" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}" />
+
+                        <div class="relationship-extension-btn">
+                            <button class="add-person-btn" type="button" ng-switch-when="person" ng-disabled="!newRelationship.relationshipType.uuid"
+                                    ng-click="openPopupWindow(newRelationship)" ng-hide="newRelationship.personB.display">{{ ::'REGISTRATION_LABEL_SELECT_PERSON' | translate }}
+                            </button>
+                        </div>
+                        <input type="text" ng-switch-default ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier"
+                               ng-change="searchByPatientIdentifier(newRelationship)" ng-disabled="!newRelationship.relationshipType.uuid"
+                               placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME_ID' | translate}}"/>
+
+                        <input type="hidden" ng-model="newRelationship.personB"/>
+                    </div>
+                    <span class="asterick showOn-desktop" ng-hide="newRelationship.personB.display">*</span>
+                    <span class="no-person" ng-show="showPersonNotFound(newRelationship)">{{ ::'REGISTRATION_LABEL_PERSON_NOT_FOUND' | translate}}</span>
+                    <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
+                    <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
+                    <div class="field-value-patient" ng-show="getChosenRelationshipType(newRelationship) === 'person' && newRelationship.personB.display">
                         <span>
-                            <a ng-click="openPatientDashboardInNewTab(newRelationship)">{{newRelationship.personB.display}}</a>
+                            <a ng-click="openPersonDashboardInNewTab(newRelationship)">{{newRelationship.personB.display}}</a>
                         </span>
                     </div>
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>

@@ -3,7 +3,7 @@ import { EMERGENCY_MEDICATIONS_BASE_URL, GET_DRUG_ACKNOWLEDGEMENT_URL, GET_PROVI
 import { parseDateArray } from "../utils";
 
 export const getPatientIPDDashboardUrl = (patientUuid, visitUuid) =>
-    `/bahmni/clinical/index.html#/default/patient/${patientUuid}/dashboard/visit/ipd/${visitUuid}/`;
+    `/bahmni/clinical/index.html#/default/patient/${patientUuid}/dashboard/visit/ipd/${visitUuid}`;
 
 export const getEmergencyDrugAcknowledgements = async (locationUuid, property, providerUuid) => {
     const apiURL = GET_DRUG_ACKNOWLEDGEMENT_URL.replace("{location_uuid}", locationUuid).replace("{property}", property).replace("{provider_uuid}",providerUuid);

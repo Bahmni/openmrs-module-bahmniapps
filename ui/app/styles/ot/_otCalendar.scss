@@ -27,7 +27,8 @@
       float: left;
       padding: 12px 0;
       border-bottom: 1px solid #ddd;
-      font-family: OpenSansSemiBold;
+      border-top: 1px solid #ddd;
+      font-family: OpenSansSemiBold, serif;
     }
     hr{
       margin-bottom: 0;
@@ -64,6 +65,8 @@
   .provider-location-name{
     display: grid;
     grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    margin-top: 15px;
     overflow-x: scroll;
   }
   .notes-text{

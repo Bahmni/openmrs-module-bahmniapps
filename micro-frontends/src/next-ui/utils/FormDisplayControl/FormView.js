@@ -83,3 +83,25 @@ export const getValue = (member) => {
   }
   return finalValue;
 };
+
+export const isValidFileFormat = (item) => {
+  const fileFormats = [
+    "video/mp4",
+    "image/png",
+    "image/jpeg",
+    "application/pdf",
+  ];
+  const mimeType = item?.complexData?.mimeType;
+  if(fileFormats.includes(mimeType))
+    return true;
+  return false;
+};
+
+export const getThumbnail = (src, extension = undefined) => {
+  if (extension) {
+    return (
+      (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail." + extension)) || null
+    );
+  }
+  return (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail.$2")) || null;
+};

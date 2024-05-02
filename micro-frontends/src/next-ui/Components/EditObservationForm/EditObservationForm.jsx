@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import { getLocale } from "../i18n/utils";
-import { getLatestPublishedForms, getFormByFormName ,getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
+import { getFormByFormName ,getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
+import { getLatestPublishedForms } from '../../utils/FormDisplayControl/FormUtils';
 import { Modal, Loading } from 'carbon-components-react';
 import { FormattedMessage } from "react-intl";
 import { I18nProvider } from '../i18n/I18nProvider';
@@ -20,6 +21,7 @@ const EditObservationForm = (props) => {
 
     const { 
         formName, 
+        formNameTranslations,
         closeEditObservationForm, 
         isEditFormLoading,
         setEditFormLoading, 
@@ -45,6 +47,7 @@ const EditObservationForm = (props) => {
             return;
         }
         encounter.observations = editedObservations.observations;
+        encounter.orders = [];
         handleEditSave(encounter);
     };
 
@@ -105,7 +108,7 @@ const EditObservationForm = (props) => {
                         isEditFormLoading ? (<Loading />) :
                         <div>
                             <div className='section-title-wrapper'>
-                                <h2 className="section-title">{formName}</h2>
+                                <h2 className="section-title">{formNameTranslations}</h2>
                                 <button className='confirm' onClick={handleSave}>{saveButtonText}</button>
                             </div>
                         <section className="content-body">
@@ -124,6 +127,7 @@ const EditObservationForm = (props) => {
 
 EditObservationForm.propTypes = {
     formName: PropTypes.string.isRequired,
+    formNameTranslations: PropTypes.string.isRequired,
     closeEditObservationForm: PropTypes.func.isRequired,
     isEditFormLoading: PropTypes.bool.isRequired,
     patient: PropTypes.object.isRequired,

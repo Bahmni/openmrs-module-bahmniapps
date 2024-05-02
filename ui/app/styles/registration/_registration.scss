@@ -33,7 +33,7 @@ body {
                 }
 
                 &.obs-section {
-                    width: 30% !important;
+                    width: 50% !important;
                     margin-left: 3%;
                     float: right;
 
@@ -109,7 +109,6 @@ body {
                 }
 
                 article {
-                    width: 60%;
 
                     @media (max-width : 1024px) {
                         width: 63%;

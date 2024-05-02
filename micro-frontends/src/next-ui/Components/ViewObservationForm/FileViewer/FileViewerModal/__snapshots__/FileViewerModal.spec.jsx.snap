@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileViewerModal should render FileViewerModal 1`] = `
+<div>
+  <div
+    class="bx--modal is-visible file-viewer-modal"
+    role="presentation"
+  >
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+    <div
+      aria-label=""
+      aria-modal="true"
+      class="bx--modal-container"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div
+        class="bx--modal-header"
+      >
+        <button
+          aria-label="close"
+          class="bx--modal-close"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="bx--modal-close__icon"
+            fill="currentColor"
+            focusable="false"
+            height="20"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 32 32"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"
+            />
+          </svg>
+        </button>
+        
+        <h3
+          class="bx--modal-header__heading"
+          id="bx--modal-header__heading--modal-1"
+        />
+      </div>
+      <div
+        aria-labelledby="bx--modal-header__heading--modal-1"
+        class="bx--modal-content"
+        id="bx--modal-body--modal-1"
+      >
+        <img
+          alt="image"
+          class="file-modal"
+          src="fileSource"
+        />
+        <div
+          class="modal-footer"
+        >
+          <div
+            class="modal-comment"
+          >
+            comment
+          </div>
+          <span>
+            test provider
+          </span>
+           
+          <span>
+            encounterDateTime
+          </span>
+        </div>
+      </div>
+    </div>
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+  </div>
+</div>
+`;

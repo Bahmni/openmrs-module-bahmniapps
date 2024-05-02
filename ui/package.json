@@ -59,7 +59,7 @@
     "@bower_components/jasmine": "pivotal/jasmine#>=2",
     "@bower_components/jasmine-jquery": "velesin/jasmine-jquery#2.1.0",
     "@bower_components/q": "kriskowal/q#1.0.1",
-    "bahmni-form-controls": "^0.93.13",
+    "bahmni-form-controls": "^0.93.19",
     "eslint-config-angular": "^0.5.0",
     "eslint-config-semistandard": "^7.0.0",
     "eslint-config-standard": "^6.2.1",
@@ -99,7 +99,7 @@
     "react": "16.14.0",
     "react-dom": "16.14.0"
   },
-  "resolutions": { 
+  "resolutions": {
     "**/**/xmlhttprequest-ssl": "^1.6.1",
     "**/**/handlebars": "^4.7.7",
     "**/**/uglify-js": "^2.4.24",

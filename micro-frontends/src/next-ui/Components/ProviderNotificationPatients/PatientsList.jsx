@@ -15,7 +15,6 @@ const PatientsList = () => {
   const [PatientListWithMedications, setPatientListWithMedications] = useState(
     []
   );
-  const [openedWindow, setOpenedWindow] = useState(null);
   const [providerUuid, setProviderUuid] = useState()
   const cookies = getCookies();
   const { uuid: locationUuid } = JSON.parse(cookies["bahmni.user.location"]);
@@ -65,8 +64,6 @@ const PatientsList = () => {
                   identifier={item[0].identifier}
                   patientUuid={item[0].patient_uuid}
                   visitUuid={item[0].visit_uuid}
-                  openedWindow={openedWindow}
-                  setOpenedWindow={setOpenedWindow}
                 />
               }
             >

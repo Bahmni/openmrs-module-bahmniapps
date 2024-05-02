@@ -8,19 +8,7 @@ import PropTypes from "prop-types";
 
 const PatientListTitle = (props) => {
 
-  const { noOfDrugs, identifier, name, age, gender, patientUuid, visitUuid, openedWindow, setOpenedWindow } = props;
-  const handleOpenWindow = () => {
-    const url = getPatientIPDDashboardUrl(patientUuid, visitUuid);
-    if (openedWindow && !openedWindow.closed) {
-      openedWindow.location.href = url;
-      if (openedWindow.focus) {
-        openedWindow.focus();
-      }
-    } else {
-      setOpenedWindow(window.open(url, '_blank'));
-    }
-  }
-
+  const { noOfDrugs, identifier, name, age, gender, patientUuid, visitUuid } = props;
   return (
     <div className="patient-list-tile-content">
       <div className="warning">
@@ -28,10 +16,11 @@ const PatientListTitle = (props) => {
         <span style={{ paddingLeft: 5 }}>{noOfDrugs}</span>
       </div>
       <div className="patient-info">
-        <Link href="#" className="patient-id" onClick={(e) => {
-            e.stopPropagation();
-            handleOpenWindow();
-        }}>
+        <Link href={getPatientIPDDashboardUrl(patientUuid, visitUuid)}
+              className="patient-id"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}>
             {`(${identifier})`}
         </Link>
         <span>{`${name} - ${formatGender(gender)}, ${age}`}</span>
@@ -49,8 +38,6 @@ PatientListTitle.propTypes = {
   gender: PropTypes.string.isRequired,
   patientUuid: PropTypes.string.isRequired,
   visitUuid: PropTypes.string.isRequired,
-  openedWindow: PropTypes.bool.isRequired,
-  setOpenedWindow: PropTypes.func.isRequired
 };
 
 export default PatientListTitle;

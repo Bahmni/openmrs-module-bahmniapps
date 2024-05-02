@@ -128,5 +128,6 @@
     "YES_KEY": "Yes",
     "NO_KEY": "No",
     "DELETE_NOTE_MESSAGE": "Are you sure you want to delete this note?",
-    "NOTES_PLACEHOLDER": "Enter a maximum of 150 characters"
+    "NOTES_PLACEHOLDER": "Enter a maximum of 150 characters",
+    "LOGOUT_TRANSLATION_KEY": "Logout"
 }
