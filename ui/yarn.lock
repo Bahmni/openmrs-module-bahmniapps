@@ -213,10 +213,6 @@
   version "1.0.1"
   resolved "https://codeload.github.com/kriskowal/q/tar.gz/3f62d467cb55efe4e0f53fa880239ab5057990e8"
 
-"@bower_components/react@facebook/react-bower#^15.3.2":
-  version "0.0.0"
-  resolved "https://codeload.github.com/facebook/react-bower/tar.gz/8ebee1339ca1fc65ce30ed4e34bfb1a8c9f0204e"
-
 "@bower_components/select2@ivaynberg/select2#~3.4":
   version "3.4.8"
   resolved "https://codeload.github.com/ivaynberg/select2/tar.gz/b5f3b2839c48c53f9641d6bb1bccafc5260c7620"
@@ -5329,7 +5325,7 @@ raw-body@~1.1.0:
     bytes "1"
     string_decoder "0.10"
 
-react-dom@^16.12.0:
+react-dom@16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -5395,7 +5391,7 @@ react-textarea-autosize@^4.0.5:
   dependencies:
     prop-types "^15.5.8"
 
-react@^16.12.0:
+react@16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
