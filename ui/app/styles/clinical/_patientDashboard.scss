@@ -1423,7 +1423,7 @@ table.treatments-details-table {
                         padding-left: 10px;
                     }
 
-                    .kid-icon {
+                    .custom-attr-icon {
                         display: table-cell;
                         vertical-align: middle;
                         padding-left: 10px;
@@ -1434,6 +1434,10 @@ table.treatments-details-table {
                         color: white;
                         padding: 2px 8px;
                         font-size: 18px;
+                    }
+                    i.context-icon-style {
+                        padding: 3.6px;
+                        border-radius: 4px
                     }
                 }
             }

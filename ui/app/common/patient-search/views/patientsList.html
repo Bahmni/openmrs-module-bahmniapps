@@ -73,7 +73,7 @@
                                 </div>
                                 <span class="icons-container">
                                     <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
-                                    <i class="ipd-indication fa fa-solid fa-child" style="background-color: #F58C35; padding: 2px 12.289px;" ng-if="::row.kid === 'true'"></i>
+                                    <i ng-if="::iconAttributeConfig.attrName && (row[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue || (row.customAttribute ? row.customAttribute[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue : false))" class="ipd-indication list-icon-style" ng-class="iconAttributeConfig.icon" ng-style="{{iconAttributeConfig.iconStyle}}"></i>
                                 </span>
                             </div>
                             <span ng-if="::(!isHeadingOfLinkColumn(heading.name) && !isHeadingOfName(heading.name))">
@@ -95,7 +95,7 @@
                     <div ng-if="preferExtraIdInSearchResults" class="patient-id">{{::patient.extraIdentifier}}</div>
                     <span class="icons-container">
                         <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')"></i>
-                        <i class="ipd-indication fa fa-solid fa-child" style="background-color: #F58C35;" ng-if="::((patient.kid === 'true') || (patient.customAttribute ? patient.customAttribute.kid === 'true' : false)) "></i>
+                        <i ng-if="::iconAttributeConfig.attrName && patient[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue || (patient.customAttribute ? patient.customAttribute[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue : false)" class="ipd-indication" ng-class="iconAttributeConfig.icon" ng-style="{{iconAttributeConfig.iconStyle}}"></i>
                     </span>
                 </li>
             </ul>

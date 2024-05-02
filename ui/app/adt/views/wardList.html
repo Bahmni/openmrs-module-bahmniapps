@@ -15,8 +15,8 @@
                 <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
                     <div ng-if="heading != 'Diagnosis' && heading != 'Id'">
                         {{row[heading]}}
-                        <span ng-if="::(row.kid === 'true' && heading === 'Name')" class="icons-container">
-                            <i class="ipd-indication fa fa-solid fa-child" style="background-color: #F58C35;"></i>
+                        <span ng-if="::(row[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue && heading === 'Name')" class="icons-container">
+                            <i class="ipd-indication" ng-class="iconAttributeConfig.icon" ng-style="{{iconAttributeConfig.iconStyle}}"></i>
                         </span>
                     </div>
                     <a ng-if="heading =='Id'" ng-click="gotoPatientDashboard(row['hiddenAttributes'].patientUuid, row['hiddenAttributes'].visitUuid)">
