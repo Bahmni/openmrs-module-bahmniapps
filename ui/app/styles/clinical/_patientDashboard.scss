@@ -1416,6 +1416,23 @@ table.treatments-details-table {
                         vertical-align: middle;
                         padding-left: 10px;
                     }
+
+                    .custom-attr-icon {
+                        display: table-cell;
+                        vertical-align: middle;
+                        padding-left: 10px;
+                    }
+
+                    i.ipd-indication {
+                        background: $bahmniPrimaryBtnColorHover;
+                        color: white;
+                        padding: 2px 8px;
+                        font-size: 18px;
+                    }
+                    i.context-icon-style {
+                        padding: 3.6px;
+                        border-radius: 4px
+                    }
                 }
             }
         }
