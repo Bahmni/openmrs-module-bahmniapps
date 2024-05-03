@@ -377,18 +377,18 @@ angular.module('bahmni.clinical')
 
             $scope.$watch('calculateDose', $scope.treatment, true);
 
-            $scope.getFinalDosingUnits = function(treatment) {
+            $scope.getFinalDosingUnits = function (treatment) {
                 const ruleUnitList = $scope.ruleUnitsMap && $scope.ruleUnitsMap[treatment.dosingRule];
-                if($scope.isRuleMode(treatment) && ruleUnitList?.length > 0){
+                if ($scope.isRuleMode(treatment) && ruleUnitList.length > 0) {
                     return treatmentConfig.getDoseUnits().filter(function (unitMap) {
-                        if(ruleUnitList.includes(unitMap.name)){
+                        if (ruleUnitList.includes(unitMap.name)) {
                             return unitMap;
                         }
                     });
-                }else{
+                } else {
                     return treatmentConfig.getDoseUnits();
                 }
-            }
+            };
 
             $scope.add = function () {
                 var treatments = $scope.treatments;
