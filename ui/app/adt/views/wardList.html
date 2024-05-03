@@ -1,15 +1,16 @@
 <div class="ward-details-container">
+    <input type="text" ng-model="searchText" placeholder="{{'IPD_WARD_LIST_SEARCH_KEY'| translate }}"/>
     <span ng-if="tableDetails.length == 0" class="no-data-info">
         {{ 'EMPTY_WARD_MESSAGE'|translate }}
     </span>
     <table class="table ward-details-content" ng-if="tableDetails.length > 0">
         <thead>
             <tr>
-                <th ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'" ng-class="{'bed-detail-column' : $index == 0}">{{heading}}</th>
+                <th ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'" ng-class="{'bed-detail-column' : $index == 0}">{{heading | titleTranslate}}</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in tableDetails">
+        <tr ng-repeat="row in tableDetails | filter:searchTextFilter">
                 <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
                     <span ng-if="heading != 'Diagnosis' && heading != 'Id'">{{row[heading]}}</span>
                     <a ng-if="heading =='Id'" ng-click="gotoPatientDashboard(row['hiddenAttributes'].patientUuid, row['hiddenAttributes'].visitUuid)">

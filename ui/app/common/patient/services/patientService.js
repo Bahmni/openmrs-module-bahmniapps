@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .service('patientService', ['$http', 'sessionService', function ($http, sessionService) {
+    .service('patientService', ['$http', 'sessionService', 'appService', function ($http, sessionService, appService) {
         this.getPatient = function (uuid, rep) {
             if (!rep) {
                 rep = "full";
@@ -33,15 +33,21 @@ angular.module('bahmni.common.patient')
         this.search = function (query, offset, identifier) {
             offset = offset || 0;
             identifier = identifier || query;
+            var searchParams = {
+                filterOnAllIdentifiers: true,
+                q: query,
+                startIndex: offset,
+                identifier: identifier,
+                loginLocationUuid: sessionService.getLoginLocationUuid()
+            };
+            var filterOutAttributeForAllSearch = appService.getAppDescriptor().getConfigValue("filterOutAttributeForAllSearch") || [];
+            if (filterOutAttributeForAllSearch && filterOutAttributeForAllSearch.length > 0) {
+                searchParams.attributeToFilterOut = filterOutAttributeForAllSearch[0].attrName;
+                searchParams.attributeValueToFilterOut = filterOutAttributeForAllSearch[0].attrValue;
+            }
             return $http.get(Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene", {
                 method: "GET",
-                params: {
-                    filterOnAllIdentifiers: true,
-                    q: query,
-                    startIndex: offset,
-                    identifier: identifier,
-                    loginLocationUuid: sessionService.getLoginLocationUuid()
-                },
+                params: searchParams,
                 withCredentials: true
             });
         };

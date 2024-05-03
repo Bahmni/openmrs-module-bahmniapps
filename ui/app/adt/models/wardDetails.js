@@ -4,7 +4,7 @@ Bahmni.ADT.WardDetails = {};
 
 Bahmni.ADT.WardDetails.create = function (details, diagnosisStatus) {
     var detailsMap = {};
-    var attributesToCopy = ["Bed", "Name", "Id", "Name", "Age", "District", "Village", "Admission By", "Admission Time", "Disposition By", "Disposition Time", "ADT Notes"];
+    var attributesToCopy = ["Bed", "Ward", "Id", "Name", "Age", "Gender", "District", "Village", "Admission By", "Admission Time", "Disposition By", "Disposition Time", "ADT Notes"];
     var diagnosisProperties = ["Diagnosis", "Diagnosis Certainty", "Diagnosis Order", "Diagnosis Status", "Diagnosis Provider", "Diagnosis Datetime"];
     var hiddenAttributesToCopy = ["Patient Uuid", "Visit Uuid"];
 
@@ -13,6 +13,14 @@ Bahmni.ADT.WardDetails.create = function (details, diagnosisStatus) {
             newObject[property] = oldObject[property];
         });
         return newObject;
+    };
+
+    var filterHeadingsFromResponse = function (newObject, oldObject, properties) {
+        var keys = Object.keys(oldObject);
+        var identicalItems = properties.filter(function (item) {
+            return keys.includes(item);
+        });
+        return copyProperties({}, oldObject, identicalItems);
     };
 
     var removeDuplicateRuledOutDiagnosis = function (rows) {
@@ -26,7 +34,7 @@ Bahmni.ADT.WardDetails.create = function (details, diagnosisStatus) {
     };
 
     details.forEach(function (detail) {
-        detailsMap[detail.Id] = detailsMap[detail.Id] || copyProperties({}, detail, attributesToCopy);
+        detailsMap[detail.Id] = detailsMap[detail.Id] || filterHeadingsFromResponse({}, detail, attributesToCopy);
         detailsMap[detail.Id].Diagnosis = detailsMap[detail.Id].Diagnosis || [];
         if (detail.Diagnosis !== undefined) {
             var diagnosis = copyProperties({}, detail, diagnosisProperties);

@@ -42,6 +42,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div ng-show="::relatedIdentifierAttribute.name" class="field-value field-value-has-identifier">
+                            <div class="fl"> 
+                                <div class="field-attribute hasOldIdentifier-field-attribute">
+                                    <label for="related-identifier-attribute" class="control-label">{{::'RELATED_PATIENT_IDENTIFIER_LABEL' | translate}}</label>
+                                </div>
+                                <div class="field-value">
+                                    <input type="checkbox" class="input-label-inline" id="related-identifier-attribute" ng-model="patient[relatedIdentifierAttribute.name]"
+                                            ng-change="patient[relatedIdentifierAttribute.name].handleUpdate()">
+                                </div>
+                            </div>
+                        </div>
                     </article>
                 </section>
             </div>

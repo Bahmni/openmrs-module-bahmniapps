@@ -13,13 +13,23 @@
                  </div>
             </div>
             <article class="form-field">
-                    <div class="field-attribute">
-                    <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
-                    </div>
+                <div class="field-attribute">
+                <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
+                </div>
 
-                    <div class="field-value">
-                        <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
-                   </div>
+                <div class="field-value">
+                    <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
+                </div>
+                <div ng-if="showRelatedIdentifierOption" class="field-value field-value-has-identifier">
+                    <div class="fl">
+                        <div class="field-attribute hasOldIdentifier-field-attribute">
+                            <label for="related-identifier-attribute" class="control-label related-identifier-label">{{::'RELATED_PATIENT_IDENTIFIER_LABEL' | translate}}</label>
+                        </div>
+                        <div class="field-value">
+                            <input class="input-label-inline" type="checkbox" id="related-identifier-attribute" ng-model="patient[relatedIdentifierAttribute.name]"
+                                ng-change="patient[relatedIdentifierAttribute.name].handleUpdate()" ng-disabled="showDisabledAttrOption" ng-style="{'opacity' : showDisabledAttrOption ? '0.4':'unset'}">
+                        </div>
+                    </div>
             </article>
         </div>
         <ng-include src="'views/patientcommon.html'"></ng-include>
