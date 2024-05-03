@@ -1,4 +1,4 @@
-<div on-Scroll class="calendar">
+<div on-Scroll class="calendar" ng-switch="providerToggle">
     <!-- Please dont remove or alter the below class name -->
     <div class="calendar-location"><div class="heading-ot-block">
         <p class="heading-ot">{{viewDate | bahmniDateTimeWithFormat: 'ddd'}}</p>
@@ -31,7 +31,7 @@
         </div>
         <div class="ot-block-container">
             <div class="ot-block-wrapper">
-            <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByLocation">
+            <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocks">
                 <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>
                 <div ng-repeat="block in blocks | surgicalBlock:filterParams">

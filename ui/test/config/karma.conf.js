@@ -11,6 +11,8 @@ module.exports = function (config) {
             {pattern: 'app/images/*', included: false, served: true},
             'app/components/q/q.js',
             'app/components/angular/angular.js',
+            // mock out all the micro-frontends
+            'test/__mocks__/micro-frontends.js',
             'app/components/ngDialog/js/ngDialog.js',
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
@@ -77,8 +79,7 @@ module.exports = function (config) {
             'app/components/moment/src/**/*.js',
             'app/components/moment/meteor/**/*.js',
             'app/components/jquery/src/**/*.js',
-            'app/components/**/test/**/*.js',
-
+            'app/components/**/test/**/*.js'
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
         preprocessors: {

@@ -267,15 +267,26 @@ describe("PatientsListController", function () {
             });
 
             it('should print headings which are filtered from ignore headings list', function(){
-                var patients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl',programUuid: 'programUuid',enrollment: 'enrollmentUuid', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                var headings = scope.getHeadings(patients);
-                expect(headings).toEqual(['emr_id', 'treatment', 'DQ_COLUMN_TITLE_ACTION']);
+                scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl',programUuid: 'programUuid',enrollment: 'enrollmentUuid', DQ_COLUMN_TITLE_ACTION: 'action url'}];
+                scope.ignoredTabularViewHeadingsConfig = ["display", "uuid", "image", "activeVisitUuid", "forwardUrl", "hasBeenAdmitted", "programUuid", "enrollment"];
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+                scope.getHeadings();
+                expect(scope.activeHeaders).toEqual([ 
+                    { name : 'emr_id', sortInfo : 'emr_id' }, 
+                    { name : 'treatment', sortInfo : 'treatment' }, 
+                    { name : 'DQ_COLUMN_TITLE_ACTION', sortInfo : 'DQ_COLUMN_TITLE_ACTION' } 
+                ]);
             });
 
             it('should print headings which are filtered from ignore headings list and print headings list', function(){
-                var patients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                var headings = scope.getPrintableHeadings(patients);
-                expect(headings).toEqual(['emr_id', 'treatment']);
+                scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl', DQ_COLUMN_TITLE_ACTION: 'action url'}];
+                scope.ignoredTabularViewHeadingsConfig = ["display", "uuid", "image", "activeVisitUuid", "forwardUrl", "hasBeenAdmitted", "programUuid", "enrollment"];
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+                var headings = scope.getPrintableHeadings();
+                expect(headings).toEqual([ 
+                    { name : 'emr_id', sortInfo : 'emr_id' }, 
+                    { name : 'treatment', sortInfo : 'treatment' }
+                ]);
             });
 
          it('should print page from the config', function(){
@@ -294,6 +305,7 @@ describe("PatientsListController", function () {
             it("should accept the link column from the config, when respective config present", function () {
                 // var search = {searchType: {linkColumn: "Status"}};
                 scope.search = {searchType: {linkColumn: "Status"}};
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 var heading = "Status";
                 var headingOfLinkColumn = scope.isHeadingOfLinkColumn(heading);
                 expect(headingOfLinkColumn).toBeTruthy()
@@ -301,6 +313,7 @@ describe("PatientsListController", function () {
 
             it("should accept the default link column, when nothing specified in the config", function () {
                 scope.search = {searchType: {}};
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 // scope.$apply(setUp);
                 var heading = "identifier";
                 var headingOfLinkColumn = scope.isHeadingOfLinkColumn(heading);
@@ -309,14 +322,16 @@ describe("PatientsListController", function () {
 
             it("should not have a link on the column, when no match for heading found in config and default column list", function () {
                 scope.search = {searchType: {}};
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 // scope.$apply(setUp);
                 var heading = "RandomColumn";
                 var headingOfLinkColumn = scope.isHeadingOfLinkColumn(heading);
-                expect(headingOfLinkColumn).toBeFalsy()
+                expect(headingOfLinkColumn).toBeFalsy();
             });
         });
 
         it("should indicate if specified column in a link", function () {
+            scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
             scope.search.searchType = {
                 "id": "bahmni.clinical.patients.all",
                 "extensionPointId": "org.bahmni.patient.search",
@@ -482,4 +497,113 @@ describe("PatientsListController", function () {
             expect(_window.open).toHaveBeenCalledWith("formattedUrl", "_blank");
         });
     });
+
+    describe("sortVisiblePatientsBy", function () {
+        beforeEach(function () {
+            scope.$apply(setUp);
+        });
+
+        it('should sort visible patients by string property in ascending order', function () {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('name');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' }
+            ]);
+        });
+
+        it("should sort visible patients by number property in ascending order", function() {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('id');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+        });
+    
+        it("should sort visible patients by date property in ascending order", function() {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('dob');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' }
+            ]);
+        });
+    
+        it('should handle reverse sort', function () {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('name'); 
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' }
+            ]);
+            scope.sortVisiblePatientsBy('name');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+        });
+
+        it("should not visible patients if sortColumn is null or undefined", function() {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy(null);
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+            scope.sortVisiblePatientsBy(undefined);
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+        });
+    });  
+    
 });

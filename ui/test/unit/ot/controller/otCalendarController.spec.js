@@ -11,6 +11,8 @@ describe("otCalendarController", function () {
     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
     appDescriptor.getConfigValue.and.returnValue({primarySurgeonsForOT: ["Doctor Strange", "Doctor Malhotra"]});
     appService.getAppDescriptor.and.returnValue(appDescriptor);
+    var surgicalAppointmentHelper = jasmine.createSpyObj('surgicalAppointmentHelper', ['filterProvidersByName']);
+    surgicalAppointmentHelper.filterProvidersByName.and.returnValue([{uuid: "providerUuid1", display: "Doctor Strange"},{uuid: "providerUuid2", display: "Doctor Malhotra"}]);
 
     var surgicalBlocks = [
         {
@@ -108,7 +110,9 @@ describe("otCalendarController", function () {
             $q: q,
             spinner: spinner,
             surgicalAppointmentService: surgicalAppointmentService,
-            appService: appService
+            appService: appService,
+            surgicalAppointmentHelper: surgicalAppointmentHelper
+
         });
         scope.$apply();
     };
@@ -182,6 +186,24 @@ describe("otCalendarController", function () {
             scope.weekOrDay = 'day';
             createController();
             expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'), false, true);
+            expect(scope.surgicalBlocks.length).toEqual(2);
+            expect(scope.surgicalBlocks[0][0]).toEqual(surgicalBlocks[0]);
+            expect(scope.surgicalBlocks[1][0]).toEqual(surgicalBlocks[1]);
+        });
+
+        it('should group the surgical blocks by the provider', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: surgicalBlocks}};
+            });
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            scope.weekOrDay = 'day';
+            createController();
+            scope.$broadcast("event:providerView", true);
+            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'), false, true);
+            expect(surgicalAppointmentService.getSurgeons).toHaveBeenCalled();
+            expect(surgicalAppointmentHelper.filterProvidersByName).toHaveBeenCalled();
             expect(scope.surgicalBlocks.length).toEqual(2);
             expect(scope.surgicalBlocks[0][0]).toEqual(surgicalBlocks[0]);
             expect(scope.surgicalBlocks[1][0]).toEqual(surgicalBlocks[1]);

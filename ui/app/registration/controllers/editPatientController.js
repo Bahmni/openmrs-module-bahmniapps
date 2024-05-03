@@ -30,6 +30,14 @@ angular.module('bahmni.registration')
                 expandDataFilledSections();
                 $scope.patientLoaded = true;
                 $scope.enableWhatsAppButton = (appService.getAppDescriptor().getConfigValue("enableWhatsAppButton") || Bahmni.Registration.Constants.enableWhatsAppButton) && ($scope.patient.phoneNumber != undefined);
+                $scope.relatedIdentifierAttribute = appService.getAppDescriptor().getConfigValue('relatedIdentifierAttribute');
+                if ($scope.relatedIdentifierAttribute && $scope.relatedIdentifierAttribute.name) {
+                    const hideOrDisableAttr = $scope.relatedIdentifierAttribute.hideOrDisable;
+                    const hideAttrOnValue = $scope.relatedIdentifierAttribute.hideOnValue;
+                    $scope.showRelatedIdentifierOption = !(hideOrDisableAttr === "hide" && $scope.patient[$scope.relatedIdentifierAttribute.name] &&
+                                            $scope.patient[$scope.relatedIdentifierAttribute.name].toString() === hideAttrOnValue);
+                    $scope.showDisabledAttrOption = hideOrDisableAttr === "disable" ? true : false;
+                }
             };
 
             var expandDataFilledSections = function () {

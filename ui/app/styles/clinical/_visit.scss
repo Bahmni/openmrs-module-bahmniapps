@@ -769,13 +769,9 @@ a.visit:before {
                 position: relative;
 
                 .ipd-indication {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
                     background: $bahmniPrimaryBtnColorHover;
                     color: white;
                     padding: 4px 11px;
-                    border-radius: 0 2px 0 0;
                     font-size: 20px;
 
                     @media screen and (max-width: 1024px) {
@@ -783,6 +779,19 @@ a.visit:before {
                         border-radius: 0;
                         top: auto;
                     }
+                }
+                .ipd-indication:first-child{
+                    border-radius: 0 4px 0 0;
+                    margin-bottom: 2px;
+                }
+                .icons-container{
+                    display: inline-grid;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+                .custom-icon-style {
+                    padding: 4px 15.289px;
                 }
             }
 
@@ -803,7 +812,7 @@ a.visit:before {
 
             .patient-value {
                 display: inline-block;
-                width: 86%;
+                width: 82%;
 
                 span {
                     font-size: 12px;

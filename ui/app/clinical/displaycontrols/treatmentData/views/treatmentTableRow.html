@@ -14,7 +14,6 @@
     <td class="days" ng-if="::(!params.hideVisitDate)">
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
-
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">
         <button class="toggle fr">
             <i class="fa fa-angle-down"></i>
@@ -23,7 +22,7 @@
     </td>
 </tr>
 <tr ng-if="::drugOrder.additionalInstructions" ng-class="::{'has-test-notes': drugOrder.additionalInstructions}">
-    <td colspan="4" class="notes test-notes">
+    <td colspan="5" class="notes test-notes">
         <i class="fa fa-comments left"></i>
         <pre class="left">{{::drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
@@ -34,7 +33,7 @@
     </td>
 </tr>
 <tr bm-show="drugOrder.showDetails" ng-if="::(!drugOrder.additionalInstructions && !params.hideVisitDate)">
-    <td colspan="4" class="notes inline-notes">
+    <td colspan="5" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider" ng-if="::params.showProvider">
                 <provider-directive creator-name="{{::drugOrder.creatorName}}" provider-name="{{::drugOrder.provider.name}}" provider-date="::drugOrder.effectiveStartDate"></provider-directive>

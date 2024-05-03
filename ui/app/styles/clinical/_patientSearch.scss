@@ -70,18 +70,29 @@
 }
 
 .patient-search-wrapper {
-    i.ipd-indication {
+    .icons-container{
+        display: inline-grid;
         position: absolute;
-        right: 0;
         top: 0;
+        right: 0;
+    }
+    i.ipd-indication {
         background: $bahmniPrimaryBtnColorHover;
         color: white;
         padding: 2px 8px;
-        border-radius: 0 5px 0 0;
+        &:first-child{
+            border-radius: 0 5px 0 0;
+            margin-bottom: 2px;
+        }
         font-size: 18px;
+    }
+    i.list-icon-style {
+        padding: 2px 12.289px;
     }
 
     .ward-details-container {
+        display: flex;
+        flex-direction: column;
         table {
             &.patient-list-table {
                 th {
@@ -95,10 +106,20 @@
                 i.ipd-indication {
                     border-radius: 0;
                 }
+                .icons-container{
+                    display: inline-grid;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
 
                 @media screen and (max-width: 1024px) {
                     padding: 10px;
                 }
+            }
+
+            .sortIcons {
+                float: right;
             }
         }
     }

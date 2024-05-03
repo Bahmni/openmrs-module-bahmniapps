@@ -4,7 +4,7 @@
             <table class="patient dashboard-table">
                 <tbody>
                 <tr class="patient-info">
-                    <td colspan="2">
+                    <td colspan="2" style="height: 50px;">
                         <span class="patient-img">
                             <img  class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
                         </span>
@@ -20,8 +20,11 @@
                              <span class="patient-address">
                                  {{::addressLine}}
                              </span>
-                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
-                         </div>
+                        </div>
+                        <div class="icons-container">
+                            <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
+                            <i ng-if="::patient[iconAttributeConfig.attrName] && patient[iconAttributeConfig.attrName].value.toString() === iconAttributeConfig.attrValue" class="ipd-indication custom-icon-style" ng-class="iconAttributeConfig.icon" ng-style="{{iconAttributeConfig.iconStyle}}"></i>
+                        </div>
                      </td>
                 </tr>
                 <tr ng-if="::showBirthDate" >

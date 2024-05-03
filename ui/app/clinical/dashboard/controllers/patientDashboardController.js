@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
+            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -13,8 +13,35 @@ angular.module('bahmni.clinical')
             $scope.visitSummary = visitSummary;
             $scope.enrollment = $stateParams.enrollment;
             $scope.isDashboardPrinting = false;
+            $scope.loadIPD = false;
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
             $state.discardChanges = false;
+
+            $scope.alergyData = {
+                name: 'Customised for me!!!'
+            };
+
+            $scope.alergyApi = {
+                callback: function () {
+                    alert("We have a full fledged problem");
+                }
+            };
+            $scope.ipdDashboard = {
+                hostData: {
+                    patientId: $stateParams.patientUuid,
+                    forDate: new Date().toUTCString()
+                }
+            };
+
+            $scope.alergyData = {
+                name: 'Customised for me!!!'
+            };
+
+            $scope.alergyApi = {
+                callback: function () {
+                    alert("We have a full fledged problem");
+                }
+            };
 
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
@@ -79,6 +106,8 @@ angular.module('bahmni.clinical')
                     });
                 $scope.currentDashboardTemplateUrl = $state.current.views['dashboard-content'] ?
                     $state.current.views['dashboard-content'].templateUrl : $state.current.views['dashboard-content'];
+
+                $scope.loadIPD = dashboard.translationKey === "DASHBOARD_IPD_DRUG_CHART_TAB_KEY";
             };
 
             $scope.init(getCurrentTab());
