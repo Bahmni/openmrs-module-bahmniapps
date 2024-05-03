@@ -647,7 +647,7 @@ describe('listViewController', function () {
         expect(isCancelled).toBeFalsy();
     });
 
-    it("should have bed location, bed id and primary diagnoses in table info", function () {
+    it("should have bed location and bed id in table info", function () {
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -659,13 +659,11 @@ describe('listViewController', function () {
         };
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
-        expect(scope.tableInfo.length).toBe(22);
+        expect(scope.tableInfo.length).toBe(21);
         expect(scope.tableInfo[19].heading).toBe("Bed Location");
         expect(scope.tableInfo[19].sortInfo).toBe("bedLocation");
         expect(scope.tableInfo[20].heading).toBe("Bed ID");
         expect(scope.tableInfo[20].sortInfo).toBe("bedNumber");
-        expect(scope.tableInfo[21].heading).toBe("Primary Diagnoses");
-        expect(scope.tableInfo[21].sortInfo).toBe("patientObservations");
     });
 
     it('should have all the surgical attributes in table info', function () {
@@ -676,7 +674,7 @@ describe('listViewController', function () {
         };
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
-        expect(scope.tableInfo.length).toBe(22);
+        expect(scope.tableInfo.length).toBe(21);
         expect(scope.tableInfo[11].heading).toBe('procedure');
         expect(scope.tableInfo[11].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
         expect(scope.tableInfo[12].heading).toBe('otherSurgeon');

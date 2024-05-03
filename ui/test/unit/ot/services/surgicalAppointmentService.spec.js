@@ -131,4 +131,22 @@ describe('surgicalAppointmentService', function () {
         expect(mockHttp.post.calls.mostRecent().args[2].headers).toEqual(headers);
     });
 
+    it('should get global property config for showing primary diagnosis in list view', function (done) {
+        var data = "org.openmrs.module.emrapi:Coded Diagnosis"
+        var headers = {"Accept": "text/plain"};
+        var params = {property: 'obs.conceptMappingsForOT'};
+        mockHttp.get.and.returnValue(specUtil.respondWith(data));
+
+        surgicalAppointmentService.getPrimaryDiagnosisConfigForOT().then(function (response) {
+            expect(response).toEqual(data);
+            done();
+        });
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty");
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
+        expect(mockHttp.get.calls.mostRecent().args[1].method).toEqual("GET");
+        expect(mockHttp.get.calls.mostRecent().args[1].withCredentials).toBeTruthy();
+        expect(mockHttp.get.calls.mostRecent().args[1].headers).toEqual(headers);
+    });
+
 });

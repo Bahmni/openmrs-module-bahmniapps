@@ -68,4 +68,17 @@ angular.module('bahmni.ot')
                 withCredentials: true
             });
         };
+
+        this.getPrimaryDiagnosisConfigForOT = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'obs.conceptMappingsForOT'
+                },
+                withCredentials: true,
+                headers: {
+                    Accept: 'text/plain'
+                }
+            });
+        };
     }]);

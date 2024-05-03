@@ -67,7 +67,7 @@
             <td>
                 {{appointment.bedNumber}}
             </td>
-            <td class="list-view-primary-diagnosis">
+            <td class="list-view-primary-diagnosis" ng-if="appointment.primaryDiagnosis">
                 {{appointment.primaryDiagnosis}}
             </td>
         </tr>
