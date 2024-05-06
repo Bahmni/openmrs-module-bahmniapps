@@ -13,6 +13,7 @@ angular.module('bahmni.clinical')
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+            $scope.autoSelectNotAllowed = appService.getAppDescriptor().getConfigValue("autoSelectNotAllowed");
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
 
@@ -95,6 +96,14 @@ angular.module('bahmni.clinical')
                 return Object.values($scope.selectedDrugs).some(function (selected) {
                     return selected === true;
                 });
+            };
+
+            $scope.selectAllDrugs = function (drugOrderGroup, index) {
+                if (!$scope.autoSelectNotAllowed) {
+                    angular.forEach(drugOrderGroup.drugOrders, function (drugOrder) {
+                        $scope.selectedDrugs[index + "/" + drugOrder.uuid] = true;
+                    });
+                }
             };
 
             $scope.printSelectedDrugs = function () {
