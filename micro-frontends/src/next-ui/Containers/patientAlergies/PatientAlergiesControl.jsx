@@ -61,9 +61,8 @@ export function PatientAlergiesControl(props) {
   const TransformSeverityData = (severityData) => {
     const {setMembers, answers} = severityData;
     const severities = setMembers.length > 0 ? setMembers: answers;
-    const extractedSeverity = severities.map((severity) =>
-        ({ name: severity.display, uuid: severity.uuid }));
-    return extractedSeverity.sort((a, b) => b.uuid - a.uuid);
+    return severities.map((severity) =>
+        ({name: severity.display, uuid: severity.uuid}));
   }
 
   const TransformAllergenData = (
@@ -106,8 +105,8 @@ export function PatientAlergiesControl(props) {
       });
       return {allergen, severity, reactions, note, provider, date};
     });
-    allergiesData.sort((a, b) => b.date - a.date);
-    setAllergiesAndReactions(allergiesData);
+    allergiesData && allergiesData.sort((a, b) => b?.date - a?.date);
+    allergiesData ? setAllergiesAndReactions(allergiesData) : setAllergiesAndReactions([]);
   }
 
   const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
