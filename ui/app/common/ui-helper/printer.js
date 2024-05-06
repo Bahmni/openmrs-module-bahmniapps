@@ -62,6 +62,8 @@ angular.module('bahmni.common.uiHelper')
                     var printScope = scope;
                     var element = $compile($('<div>' + template + '</div>'))(printScope);
                     var renderAndPrintPromise = $q.defer();
+                    var originalTitle = angular.element(document).prop('title');
+                    printScope.pageTitle ? angular.element(document).prop('title', printScope.pageTitle) : angular.element(document).prop('title', originalTitle);
                     var waitForRenderAndPrint = function () {
                         if (printScope.$$phase || $http.pendingRequests.length) {
                             $timeout(waitForRenderAndPrint);
@@ -72,6 +74,7 @@ angular.module('bahmni.common.uiHelper')
                                     afterPrint();
                                 }
                                 renderAndPrintPromise.resolve();
+                                angular.element(document).prop('title', originalTitle);
                             });
                         }
                         return renderAndPrintPromise.promise;
