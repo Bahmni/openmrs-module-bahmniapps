@@ -1,4 +1,4 @@
-import { fetchAllergensOrReactions } from "./AllergyControlUtils";
+import { fetchAllergensOrReactions, getEncounterType, fetchAllergiesAndReactionsForPatient, bahmniEncounter } from "./AllergyControlUtils";
 import axios from "axios";
 
 jest.mock("axios");
@@ -18,6 +18,71 @@ const mockResponse = {
     },
   ],
 };
+
+const mockEncounterType = {
+  data: {
+    uuid: "81852aee-3f10-11e4-adec-0800271c1b75",
+    display: "Consultation",
+    name: "Consultation",
+    description: "Consultation encounter",
+    retired: false,
+  }
+}
+
+const mockBahmniEncounterResponse = {
+  data: {
+    locationUuid: "location#1",
+    patientUuid: "patient#1",
+    encounterUuid: null,
+    visitUuid: null,
+    providers: [
+      {
+        uuid: "provider#1"
+      }
+    ],
+    encounterDateTime: null,
+    context: {},
+    bahmniDiagnoses: [],
+    orders: [],
+    drugOrders: [],
+    disposition: null,
+    observations: [],
+    encounterTypeUuid: "consultationEncounterUuid",
+    allergy:{
+      allergen:{
+        allergenKind: "FOOD",
+        codedAllergen: "allergen_uuid"
+      },
+      reactions:[
+        {
+          reaction: "reaction_uuid"
+        }
+      ],
+      severity: "severity_uuid",
+      comment: "Comment new"
+    }
+  }
+}
+
+const mockBahmniEncounterPayload = {
+  locationUuid: "location#1",
+  patientUuid: "patient#1",
+  providerUuid: "provider#1",
+  encounterTypeUuid: "consultationEncounterUuid",
+  allergy:{
+    allergen:{
+      allergenKind: "FOOD",
+      codedAllergen: "allergen_uuid"
+    },
+    reactions:[
+      {
+        reaction: "reaction_uuid"
+      }
+    ],
+    severity: "severity_uuid",
+    comment: "Comment new"
+  }
+}
 
 describe("AllergyControlUtils", () => {
   it("should make axios call with the correct url", () => {
@@ -49,4 +114,36 @@ describe("AllergyControlUtils", () => {
       expect(e).toEqual(error);
     }
   });
+});
+
+describe('getEncounterType', () => {
+  it('should make axios call with the correct url', () => {
+    axios.get.mockImplementation(() => Promise.resolve(mockEncounterType));
+
+    getEncounterType("Consultation");
+    expect(axios.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/encountertype/Consultation');
+  });
+  it("should return the correct data", async () => {
+    axios.get.mockImplementation(() => Promise.resolve(mockEncounterType));
+
+    const response = await getEncounterType("Consultation");
+    expect(response).toEqual(mockEncounterType.data);
+  });
+});
+
+describe('bahmniEncounter', function () {
+    it('should make axios call with the correct url', () => {
+        axios.post.mockImplementation(() => Promise.resolve(mockBahmniEncounterResponse));
+
+        bahmniEncounter(mockBahmniEncounterPayload);
+        expect(axios.post).toHaveBeenCalledWith('/openmrs/ws/rest/v1/bahmnicore/bahmniencounter', mockBahmniEncounterPayload, {
+        withCredentials: true,
+        headers: {"Accept": "application/json", "Content-Type": "application/json"}
+        });
+    });
+    it("should return the correct data", async () => {
+      axios.post.mockImplementation(() => Promise.resolve(mockBahmniEncounterResponse));
+      const response = await bahmniEncounter(mockBahmniEncounterPayload);
+      expect(response).toEqual(mockBahmniEncounterResponse);
+    });
 });

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import propTypes from "prop-types";
 import "../../../styles/common.scss";
 import { Checkbox, Search, Tag } from "carbon-components-react";
+import { FormattedMessage } from "react-intl";
+import { cloneDeep } from "lodash";
 
 const getReactionIds = (reactions) => {
   return Object.keys(reactions);
@@ -13,8 +15,7 @@ export const SelectReactions = (props) => {
   const [searchResults, setSearchResults] = useState(initialReactionIds);
   const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(true);
   const [selectedReactions, setSelectedReactions] = useState([]);
-
-  const [allReactions] = useState(reactions);
+  const [allReactions] = useState(cloneDeep(reactions));
 
   const search = (key) => {
     if (!key) {
@@ -51,12 +52,10 @@ export const SelectReactions = (props) => {
   }, [selectedReactions]);
 
   return (
-    <div className={"section"}>
-      <div className={"font-large"}
-            style={{ marginBottom: "8px", marginTop: "10px" }}
-          >Selected Allergen: {selectedAllergen.name}</div>
-      <div className={"font-large bold"}>Search Reaction </div>
-      
+    <div className={"section-next-ui"}>
+      <div className={"font-large selected-allergen"}>
+        <FormattedMessage id={"SELECTED_ALLERGEN"} defaultMessage={"Selected Allergen:"}/> {selectedAllergen.name}</div>
+      <div className={"font-large bold"}><FormattedMessage id={"SEARCH_REACTION"} defaultMessage={"Search Reaction"}/><span className={"red-text"}>&nbsp;*</span></div>
       <div>
         <Search
           id={"reaction-search"}
@@ -91,11 +90,8 @@ export const SelectReactions = (props) => {
       )}
       <div>
         {isSearchResultEmpty && (
-          <div
-            className={"font-small"}
-            style={{ marginBottom: "8px", marginTop: "10px" }}
-          >
-            Common Reactions
+          <div className={"font-small selected-allergen"}>
+            <FormattedMessage id={"COMMON_REACTIONS"} defaultMessage={"Common Reactions"}/>
           </div>
         )}
         {searchResults.map((reactionId) => {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', '$filter', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService, $filter) {
+    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', '$filter', 'printer', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService, $filter, printer) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -33,6 +33,16 @@ angular.module('bahmni.clinical')
                 for (var key in response) {
                     response[key] = response[key].map(createDrugOrder);
                 }
+            });
+        };
+
+        var getMedicationSchedulesForOrders = function (patientUuid, orderUuids) {
+            return $http.get(Bahmni.Common.Constants.medicationSchedulesForOrders, {
+                params: {
+                    patientUuid: patientUuid,
+                    orderUuids: orderUuids
+                },
+                withCredentials: true
             });
         };
 
@@ -155,7 +165,7 @@ angular.module('bahmni.clinical')
                             }];
                             var subject = "Prescription for consultation at " + $rootScope.facilityLocation.name + " on " + $filter("bahmniDate")(prescriptionDetails.visitDate);
                             var body = transmissionService.getSharePrescriptionMailContent(prescriptionDetails);
-                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, {'patientUuid': prescriptionDetails.patient.uuid});
+                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, { 'patientUuid': prescriptionDetails.patient.uuid });
                             transmissionService.sendEmail(attachments, subject, body, emailUrl, [], []);
                         });
                         renderAndSendPromise.resolve();
@@ -167,14 +177,63 @@ angular.module('bahmni.clinical')
             });
         };
 
+        var getOrderedProviderAttributesForPrint = function (attributeData, attributeTypesToFilter) {
+            if (!attributeTypesToFilter) return;
+            var filteredAttributes = attributeData.filter(function (attribute) {
+                return attributeTypesToFilter.includes(attribute.attributeType.display);
+            });
+            filteredAttributes.sort(function (a, b) {
+                return attributeTypesToFilter.indexOf(a.attributeType.display) - attributeTypesToFilter.indexOf(b.attributeType.display);
+            });
+            return filteredAttributes;
+        };
+
+        var printSelectedPrescriptions = function (printPrescriptionFeatureConfig, drugOrdersForPrint, patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, allergiesData) {
+            if (drugOrdersForPrint.length > 0) {
+                var encounterDrugOrderMap = Object.values(drugOrdersForPrint.reduce(function (orderMap, item) {
+                    const providerUuid = item.provider.uuid;
+                    if (!orderMap[providerUuid]) {
+                        orderMap[providerUuid] = {
+                            providerUuid: providerUuid,
+                            drugOrders: []
+                        };
+                    }
+                    orderMap[providerUuid].drugOrders.push(item);
+                    return orderMap;
+                }, {}));
+
+                var printParams = {
+                    title: printPrescriptionFeatureConfig.title || "",
+                    header: printPrescriptionFeatureConfig.header || "",
+                    logo: printPrescriptionFeatureConfig.logo || ""
+                };
+                var templateUrl = printPrescriptionFeatureConfig.templateUrl || '../common/displaycontrols/prescription/views/prescription.html';
+                var fileName = patient.givenName + patient.familyName + "_" + patient.identifier + "_Prescription";
+                const printData = {
+                    patient: patient,
+                    encounterDrugOrderMap: encounterDrugOrderMap,
+                    printParams: printParams,
+                    additionalInfo: additionalInfo,
+                    diagnosesCodes: diagnosesCodes,
+                    dispenserInfo: dispenserInfo,
+                    observationsEntries: observationsEntries,
+                    allergies: allergiesData
+                };
+                printer.print(templateUrl, printData, fileName);
+            }
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
             getPrescribedDrugOrders: getPrescribedDrugOrders,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
+            getMedicationSchedulesForOrders: getMedicationSchedulesForOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
             voidDrugOrder: voidDrugOrder,
-            sharePrescriptions: sharePrescriptions
+            sharePrescriptions: sharePrescriptions,
+            printSelectedPrescriptions: printSelectedPrescriptions,
+            getOrderedProviderAttributesForPrint: getOrderedProviderAttributesForPrint
         };
     }]);

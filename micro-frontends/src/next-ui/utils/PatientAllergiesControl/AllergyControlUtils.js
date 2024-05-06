@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_CONCEPT_URL } from "../../constants";
+import { BAHMNI_ENCOUNTER_URL, ENCOUNTER_TYPE_URL, FETCH_CONCEPT_URL, GET_ALLERGIES_URL } from "../../constants";
 import { getLocale } from "../../Components/i18n/utils";
 
 export const fetchAllergensOrReactions = async (conceptId) => {
@@ -19,3 +19,36 @@ export const fetchAllergensOrReactions = async (conceptId) => {
     console.error(error);
   }
 };
+
+export const fetchAllergiesAndReactionsForPatient = async (patientId) => {
+  try {
+    const response = await axios.get(GET_ALLERGIES_URL.replace("{patientId}", patientId));
+    return response.data;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export const bahmniEncounter = async (payload) => {
+  try{
+    return await axios.post(BAHMNI_ENCOUNTER_URL, payload, {
+      withCredentials: true,
+      headers: {"Accept": "application/json", "Content-Type": "application/json"}
+    });
+  }
+  catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export const getEncounterType = async (encounterType) => {
+    try {
+        const response = await axios.get(ENCOUNTER_TYPE_URL.replace("{encounterType}", encounterType));
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}

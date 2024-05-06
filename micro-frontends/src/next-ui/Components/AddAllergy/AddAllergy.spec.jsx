@@ -20,8 +20,23 @@ const mockReactionsData = {
   "105AA": { name: "Cough" },
 };
 
+const mockSeverityData = [
+    { name: "Mild", uuid: "162301AAAAAA" },
+    { name: "Moderate", uuid: "162302AAAAAA" },
+    { name: "Severe", uuid: "162303AAAAAA" },
+]
+const patient = {
+    uuid: "patient#1",
+    name: "demo"
+}
+const provider = {
+    uuid: "provider#1",
+    name: "demo provider"
+}
+
 describe("AddAllergy", () => {
   const onClose = jest.fn();
+  const onSave = jest.fn();
   const searchAllergen = () => {
     const searchInput = screen.getByRole("searchbox");
     fireEvent.change(searchInput, { target: { value: "pea" } });
@@ -45,6 +60,10 @@ describe("AddAllergy", () => {
     const { container } = render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -56,6 +75,10 @@ describe("AddAllergy", () => {
     const { container } = render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -68,6 +91,10 @@ describe("AddAllergy", () => {
     const { getByTestId } = render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -79,6 +106,10 @@ describe("AddAllergy", () => {
     render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -92,6 +123,10 @@ describe("AddAllergy", () => {
     render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -111,6 +146,10 @@ describe("AddAllergy", () => {
     render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -128,6 +167,10 @@ describe("AddAllergy", () => {
     render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -140,10 +183,14 @@ describe("AddAllergy", () => {
     expect(screen.getByText("Severity")).not.toBeNull();
   });
 
-  it("should enable save button when reactions are selected", () => {
+  it("should enable save button when reactions and severity are selected", () => {
     const { container } = render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -153,6 +200,7 @@ describe("AddAllergy", () => {
     //select reaction
     expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
     selectReaction(container);
+    selectSeverity(container);
     expect(screen.getByText("Save").getAttribute("disabled")).toBeNull();
   });
 
@@ -160,6 +208,10 @@ describe("AddAllergy", () => {
     const { container } = render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
@@ -173,6 +225,10 @@ describe("AddAllergy", () => {
     const { container } = render(
       <AddAllergy
         onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />

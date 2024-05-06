@@ -52,7 +52,6 @@ describe('FormDisplayControl Component', () => {
 
 });
 
-;
 describe('FormDisplayControl Component with Accordion and Non-Accordion', () => {
 
   beforeEach(() => {
