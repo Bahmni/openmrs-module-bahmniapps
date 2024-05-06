@@ -51,6 +51,12 @@ angular.module('bahmni.common.obs')
                 displayNameType: "=?"
             },
             controller: controller,
-            template: '<ng-include src="\'../common/obs/views/showObservation.html\'" />'
+            template: function (element, attrs) {
+                if (attrs.templateURL) {
+                    return '<ng-include src="' + attrs.templateURL + '" />';
+                } else {
+                    return '<ng-include src="\'../common/obs/views/showObservation.html\'" />';
+                }
+            }
         };
     }]);
