@@ -8,9 +8,10 @@ import "./formDisplayControl.scss";
 import { FormattedMessage } from "react-intl";
 import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
 import { buildFormMap } from "../../utils/FormDisplayControl/FormView";
-import moment from "moment";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import ViewObservationForm from "../../Components/ViewObservationForm/ViewObservationForm";
+import { formatDate } from "../../utils/utils";
+import EditObservationForm from "../../Components/EditObservationForm/EditObservationForm";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -40,9 +41,12 @@ export function FormDisplayControl(props) {
   const [formList, setFormList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [showViewObservationForm, setViewObservationForm] = useState(false);
+  const [showEditObservationForm, setEditObservationForm] = useState(false);
   const [formName, setFormName] = useState("");
   const [formData, setFormData] = useState([]);
   const [isViewFormLoading, setViewFormLoading] = useState(false);
+  const [isEditFormLoading, setEditFormLoading] = useState(false);
+  const [encounterUuid, setEncounterUuid] = useState("");
 
   const buildResponseData = async () => {
     try {
@@ -61,6 +65,7 @@ export function FormDisplayControl(props) {
             visitDate: formEntry.visitStartDateTime,
             providerName: formEntry.providers[0].providerName,
             providerUuid: formEntry.providers[0].uuid,
+            formVersion: formEntry.formVersion,
           });
         });
       }
@@ -77,10 +82,14 @@ export function FormDisplayControl(props) {
     }
   };
 
-  const showEdit = function (currentEncounterUUid) {
+  const showEdit = function (currentEncounterUuid) {
     return props?.hostData?.showEditForActiveEncounter
-      ? props?.hostData?.encounterUuid === currentEncounterUUid
+      ? props?.hostData?.encounterUuid === currentEncounterUuid
       : true;
+  };
+
+  const handleEditSave = (encounter) => {
+    props?.hostApi?.handleEditSave(encounter);
   };
 
   const openViewObservationForm = async (formName, encounterUuid) => {
@@ -97,7 +106,26 @@ export function FormDisplayControl(props) {
     setFormData(data[0].value[0].groupMembers);
   };
 
+  const openEditObservationForm = async (formName, encounterUuid) => {
+    var formMap = {
+      formName: formName,
+      encounterUuid: encounterUuid,
+      hasNoHierarchy: props?.hostData?.hasNoHierarchy,
+    };
+    setEditFormLoading(true);
+    setEditObservationForm(true);
+    const data = await buildFormMap(formMap);
+    setFormName(formName);
+    setEncounterUuid(encounterUuid);
+    setFormData(data[0].value[0].groupMembers);
+  };
+
   const closeViewObservationForm = () => setViewObservationForm(false);
+  const closeEditObservationForm = () => {
+    setFormData([]);
+    setFormName("");
+    setEditObservationForm(false);
+  }
 
   useEffect(() => {
     buildResponseData();
@@ -137,12 +165,12 @@ export function FormDisplayControl(props) {
                                     }
                                     className="form-link"
                                   >
-                                    {moment(entry.encounterDate).format(
-                                      "DD MMM YY hh:mm a"
-                                    )}
+                                    {formatDate(entry.encounterDate)}
                                   </a>
                                   {showEdit(entry.encounterUuid) && (
-                                    <i className="fa fa-pencil"></i>
+                                    <i className="fa fa-pencil" onClick={()=> {
+                                      openEditObservationForm(key, entry.encounterUuid)
+                                    }}></i>
                                   )}
                                 </span>
                                 <span className={"form-provider-text"}>
@@ -176,12 +204,12 @@ export function FormDisplayControl(props) {
                               )
                             }
                           >
-                            {moment(value[0].encounterDate).format(
-                              "DD MMM YY hh:mm a"
-                            )}
+                            {formatDate(value[0].encounterDate)}
                           </a>
                           {showEdit(value[0].encounterUuid) && (
-                            <i className="fa fa-pencil"></i>
+                            <i className="fa fa-pencil" onClick={() => {
+                              openEditObservationForm(key, value[0].encounterUuid);
+                            }}></i>
                           )}
                         </span>
                         <span
@@ -201,6 +229,20 @@ export function FormDisplayControl(props) {
                   formData={formData}
                 />
               ) : null}
+              {showEditObservationForm ? (
+                <EditObservationForm
+                  isEditFormLoading={isEditFormLoading}
+                  formName={formName}
+                  closeEditObservationForm={closeEditObservationForm}
+                  patient={props?.hostData?.patient}
+                  formData={formData != [] && formData}
+                  encounterUuid={encounterUuid}
+                  consultationMapper = {props?.hostData?.consultationMapper}
+                  handleEditSave={handleEditSave}
+                  setEditFormLoading={setEditFormLoading}
+                  editErrorMessage={props?.hostData?.editErrorMessage}
+                />
+              ) : null}
             </div>
           )}
         </div>
@@ -211,4 +253,5 @@ export function FormDisplayControl(props) {
 
 FormDisplayControl.propTypes = {
   hostData: PropTypes.object.isRequired,
+  hostApi: PropTypes.object.isRequired
 };

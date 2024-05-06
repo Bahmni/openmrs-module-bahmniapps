@@ -19,3 +19,5 @@ export const FETCH_CONCEPT_URL = RESTWS_V1 + "/concept/{conceptUuid}?v=full&loca
 export const BAHMNI_ENCOUNTER_URL = RESTWS_V1 + "/bahmnicore/bahmniencounter";
 export const ENCOUNTER_TYPE_URL = RESTWS_V1 + "/encountertype/{encounterType}";
 export const GET_ALLERGIES_URL = "/openmrs/ws/fhir2/R4/AllergyIntolerance?patient={patientId}&_summary=data"
+export const FORM_TRANSLATIONS_URL =  RESTWS_V1 + "/bahmniie/form/translations";
+export const OBSERVATIONS_URL = RESTWS_V1 + "bahmnicore/observations";
