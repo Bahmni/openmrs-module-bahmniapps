@@ -63,11 +63,11 @@ export function FormDisplayControl(props) {
         <>
         <I18nProvider>
             <div>
-                <h2 className={"section-title"}>
+                <h2 className={"forms-display-control-section-title"}>
                     {formsHeading}
                 </h2>
                 {isLoading ? <div className="loading-message">{loadingMessage}</div> : (
-                    <div className={"placeholder-text"}>{Object.entries(formList).length > 0 ? (
+                    <div className={"placeholder-text-forms-control"}>{Object.entries(formList).length > 0 ? (
                         Object.entries(formList).map(([key, value]) => {
                             const moreThanOneEntry = value.length > 1;
                             return (
@@ -77,7 +77,7 @@ export function FormDisplayControl(props) {
                                             value.map((entry) => {
                                                 return (
                                                     <div className={"row-accordion"}>
-                                                        <span className={"form-name-text"}><a className="form-link">{moment(entry.encounterDate).format("DD/MM/YYYY HH:MM")}</a>{showEdit(entry.encounterUuid) && <i className="fa fa-pencil"></i>}</span>
+                                                        <span className={"form-name-text"}><a className="form-link">{moment(entry.encounterDate).format("DD/MM/YYYY HH:mm")}</a>{showEdit(entry.encounterUuid) && <i className="fa fa-pencil"></i>}</span>
                                                         <span className={"form-provider-text"}>{entry.providerName}</span>
                                                     </div>
                                                 );
@@ -85,9 +85,9 @@ export function FormDisplayControl(props) {
                                         }
                                     </AccordionItem>
                                 </Accordion>) :
-                                    <div className={"row"}>
+                                    <div className={"form-display-control-row"}>
                                         <span className={"form-non-accordion-text form-heading"}>{key}</span>
-                                        <span className={"form-non-accordion-text  form-date-align"}><a className="form-link">{moment(value[0].encounterDate).format("DD/MM/YYYY HH:MM")}</a>{showEdit(value[0].encounterUuid) && <i className="fa fa-pencil"></i>}</span>
+                                        <span className={"form-non-accordion-text  form-date-align"}><a className="form-link">{moment(value[0].encounterDate).format("DD/MM/YYYY HH:mm")}</a>{showEdit(value[0].encounterUuid) && <i className="fa fa-pencil"></i>}</span>
                                         <span className={"form-non-accordion-text"}>{value[0].providerName}</span>
                                     </div>
                             );
