@@ -1,7 +1,7 @@
 const path = require("path");
 const cssExtract = require("mini-css-extract-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const packageJson = require("./package.json");
 const dependencies = packageJson.dependencies;
 
@@ -26,6 +26,9 @@ module.exports = {
   plugins: [
     new cssExtract({
       filename: "[name].min.css",
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: "public" }],
     }),
     new ModuleFederationPlugin({
       name: "bahmni_mfe_host",

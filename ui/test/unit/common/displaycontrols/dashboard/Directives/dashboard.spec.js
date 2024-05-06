@@ -9,6 +9,14 @@ describe('Dashboard', function () {
 
     beforeEach(module('bahmni.common.displaycontrol.dashboard'));
 
+    beforeEach(module(function ($provide) {
+        var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appDescriptor.getConfigValue.and.returnValue({showDetailsWithinDateRange: false});
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        $provide.value('appService',appService);
+    }));
+
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
         compile = $compile;
         mockBackend = $httpBackend;
