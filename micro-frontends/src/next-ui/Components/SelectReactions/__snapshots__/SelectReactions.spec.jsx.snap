@@ -3,7 +3,7 @@
 exports[`Select reactions should render SelectReactions 1`] = `
 <div>
   <div
-    class="section"
+    class="section-next-ui"
   >
     <div
       class="font-large selected-allergen"
