@@ -38,7 +38,8 @@ angular.module('bahmni.common.patient')
                 q: query,
                 startIndex: offset,
                 identifier: identifier,
-                loginLocationUuid: sessionService.getLoginLocationUuid()
+                loginLocationUuid: sessionService.getLoginLocationUuid(),
+                patientSearchResultsConfig: customAttribute
             };
             var filterOutAttributeForAllSearch = appService.getAppDescriptor().getConfigValue("filterOutAttributeForAllSearch") || [];
             if (filterOutAttributeForAllSearch && filterOutAttributeForAllSearch.length > 0) {
