@@ -226,15 +226,14 @@ angular.module('bahmni.adt')
             $scope.admit = function () {
                 if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
                     if ($scope.enableAutoConvertToIPDVisit) {
-                        messagingService.showMessage("info",$translate.instant("MESSAGE_AUTO_CONVERT_TO_IPD_VISIT", {visitType: $scope.defaultVisitTypeName}));
+                        messagingService.showMessage("info", $translate.instant("MESSAGE_AUTO_CONVERT_TO_IPD_VISIT", {visitType: $scope.defaultVisitTypeName}));
                         $scope.closeCurrentVisitAndStartNewVisit();
-                    }
-                    else{
+                    } else {
                         ngDialog.openConfirm({
-                        template: 'views/visitChangeConfirmation.html',
-                        scope: $scope,
-                        closeByEscape: true
-                    });
+                            template: 'views/visitChangeConfirmation.html',
+                            scope: $scope,
+                            closeByEscape: true
+                        });
                     }
                 } else {
                     return createEncounterAndContinue();
