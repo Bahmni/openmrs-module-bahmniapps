@@ -21,6 +21,7 @@ angular.module('bahmni.ipd')
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             $scope.editMode = false;
             $scope.buttonClicked = false;
+            $scope.enableAutoConvertToIPDVisit = appService.getAppDescriptor().getConfigValue('enableAutoConvertToIPDVisit') || false;
 
             var getVisitTypeUuid = function (visitTypeName) {
                 var visitType = _.find(visitTypes, {name: visitTypeName});
@@ -92,7 +93,11 @@ angular.module('bahmni.ipd')
                     return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
                 };
                 if ($scope.patient) {
-                    return visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitsResponse) {
+                    return visitService.search({
+                        patient: $scope.patient.uuid,
+                        v: customVisitParams,
+                        includeInactive: false
+                    }).then(function (visitsResponse) {
                         var visitUuid = getPatientSpecificActiveVisits(visitsResponse);
                         if (visitUuid) {
                             return visitService.getVisitSummary(visitUuid).then(function (response) {
@@ -205,12 +210,17 @@ angular.module('bahmni.ipd')
                     messagingService.showMessage("error", "SELECT_BED_TO_ADMIT_PATIENT_DEFAULT_MESSAGE");
                     unsetButtonClicked();
                 } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName && !hideStartNewVisitPopUp) {
-                    ngDialog.openConfirm({
-                        template: 'views/visitChangeConfirmation.html',
-                        scope: $scope,
-                        closeByEscape: true,
-                        preCloseCallback: unsetButtonClicked
-                    });
+                    if ($scope.enableAutoConvertToIPDVisit) {
+                        messagingService.showMessage("info", $translate.instant("MESSAGE_AUTO_CONVERT_TO_IPD_VISIT", {visitType: $scope.defaultVisitTypeName}));
+                        $scope.closeCurrentVisitAndStartNewVisit();
+                    } else {
+                        ngDialog.openConfirm({
+                            template: 'views/visitChangeConfirmation.html',
+                            scope: $scope,
+                            closeByEscape: true,
+                            preCloseCallback: unsetButtonClicked
+                        });
+                    }
                 } else {
                     ngDialog.openConfirm({
                         template: 'views/admitConfirmation.html',
@@ -331,7 +341,11 @@ angular.module('bahmni.ipd')
                 if (!$rootScope.bedDetails.bedNumber) {
                     messagingService.showMessage("error", "SELECT_BED_TO_DISCHARGE_MESSAGE");
                 } else {
-                    visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitResponse) {
+                    visitService.search({
+                        patient: $scope.patient.uuid,
+                        v: customVisitParams,
+                        includeInactive: false
+                    }).then(function (visitResponse) {
                         var visitUuid = getPatientSpecificActiveVisits(visitResponse);
                         if (!visitUuid) {
                             messagingService.showMessage("error", "NO_ACTIVE_VISIT_MESSAGE");

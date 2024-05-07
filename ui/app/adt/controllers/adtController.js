@@ -15,6 +15,7 @@ angular.module('bahmni.adt')
             $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
+            $scope.enableAutoConvertToIPDVisit = appService.getAppDescriptor().getConfigValue('enableAutoConvertToIPDVisit') || false;
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             $scope.hostData = {
                 patient: $scope.patient,
@@ -224,11 +225,16 @@ angular.module('bahmni.adt')
 
             $scope.admit = function () {
                 if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
-                    ngDialog.openConfirm({
-                        template: 'views/visitChangeConfirmation.html',
-                        scope: $scope,
-                        closeByEscape: true
-                    });
+                    if ($scope.enableAutoConvertToIPDVisit) {
+                        messagingService.showMessage("info", $translate.instant("MESSAGE_AUTO_CONVERT_TO_IPD_VISIT", {visitType: $scope.defaultVisitTypeName}));
+                        $scope.closeCurrentVisitAndStartNewVisit();
+                    } else {
+                        ngDialog.openConfirm({
+                            template: 'views/visitChangeConfirmation.html',
+                            scope: $scope,
+                            closeByEscape: true
+                        });
+                    }
                 } else {
                     return createEncounterAndContinue();
                 }
