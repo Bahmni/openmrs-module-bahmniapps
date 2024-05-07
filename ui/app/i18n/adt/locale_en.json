@@ -71,5 +71,6 @@
     "Id": "Identifier",
     "IPD_WARD_LIST_SEARCH_KEY": "Search...",
     "CARE_VIEW_LABEL": "Change to Care View",
-    "LOGOUT_TRANSLATION_KEY": "Logout"
+    "LOGOUT_TRANSLATION_KEY": "Logout",
+    "MESSAGE_AUTO_CONVERT_TO_IPD_VISIT": "{{visitType}} Visit Started Successfully"
 }
