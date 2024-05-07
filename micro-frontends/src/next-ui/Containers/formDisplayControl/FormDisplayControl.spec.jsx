@@ -3,6 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { FormDisplayControl } from "./FormDisplayControl";
 import { mockFormResponseData } from "./FormDisplayControlMockData";
 import moment from "moment";
+import {defaultDateTimeFormat} from "../../constants";
 
 const mockFetchFormData = jest.fn();
 
@@ -72,7 +73,7 @@ describe('FormDisplayControl Component with Accordion and Non-Accordion', () => 
     await waitFor(() => {
       expect(container.querySelectorAll(".bx--accordion__title")).toHaveLength(1);
       expect(container.querySelector(".bx--accordion__title").innerHTML).toEqual('Pre Anaesthesia Assessment');
-      expect(container.querySelector(".row-accordion > .form-name-text > .form-link").innerHTML).toEqual(moment(1693217959000).format("DD MMM YY hh:mm a"));
+      expect(container.querySelector(".row-accordion > .form-name-text > .form-link").innerHTML).toEqual(moment(1693217959000).format(defaultDateTimeFormat));
       expect(container.querySelector(".row-accordion > .form-provider-text").innerHTML).toEqual('Doctor One');
 
     });
@@ -84,10 +85,10 @@ describe('FormDisplayControl Component with Accordion and Non-Accordion', () => 
     await waitFor(() => {
       expect(container.querySelectorAll(".form-non-accordion-text")).toHaveLength(6);
       expect(container.querySelectorAll(".form-non-accordion-text.form-heading")[0].innerHTML).toEqual('Orthopaedic Triage');
-      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[0].innerHTML).toEqual(moment(1693277657000).format("DD MMM YY hh:mm a"));
+      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[0].innerHTML).toEqual(moment(1693277657000).format(defaultDateTimeFormat));
       expect(container.querySelectorAll(".form-non-accordion-text")[2].innerHTML).toEqual('Doctor Two');
       expect(container.querySelectorAll(".form-non-accordion-text.form-heading")[1].innerHTML).toEqual('Patient Progress Notes and Orders');
-      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[1].innerHTML).toEqual(moment(1693277657000).format("DD MMM YY hh:mm a"));
+      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[1].innerHTML).toEqual(moment(1693277657000).format(defaultDateTimeFormat));
       expect(container.querySelectorAll(".form-non-accordion-text")[5].innerHTML).toEqual('Doctor One');
     });
 
