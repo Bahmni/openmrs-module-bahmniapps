@@ -1,0 +1,45 @@
+<div class="identifier-ui" ng-if="isModalVisible">
+    <div class="identifier-iframe">
+        <a class="close" style="padding-right: 20px" ng-click="closeNotes()">&times;</a>
+        <div style="padding: 20px">
+            <h6>{{'NOTE_TITLE' | translate}}</h6>
+            <textarea rows="5" id="notesID" class="notes-text-area" ng-model="otNotesField" ng-blur="setNotes(otNotesField)" placeholder="{{'NOTES_PLACEHOLDER' | translate }}" maxlength="150"></textarea>
+            <div class="error">
+                <div ng-if="emptyNoteError">{{'EMPTY_NOTES_ERROR' | translate }}</div>
+            </div>
+            <div style="display: inline-block; margin-right: 20px">
+                <h6 style="color: black">{{'FROM' | translate}}</h6>
+                <input class="calendar-day-input ng-pristine ng-untouched ng-valid ng-valid-required" id="notesStartDate" type="date"
+                       min="{{validStartDate | date:'yyyy-MM-dd'}}" max="{{validEndDate | date:'yyyy-MM-dd'}}"
+                       ng-model="notesStartDate" required="" ng-change="setNotesStartDate(notesStartDate)"  ng-disabled="isEdit || isDayView">
+            </div>
+            <div style="display: inline-block">
+                <h6 style="color: black">{{'TO' | translate}}</h6>
+                <input class="calendar-day-input ng-pristine ng-untouched ng-valid ng-valid-required" id="notesEndDate" type="date"
+                       min="{{validStartDate | date:'yyyy-MM-dd'}}" max="{{validEndDate | date:'yyyy-MM-dd'}}"
+                       ng-model="notesEndDate" required="true" ng-change="setNotesEndDate(notesEndDate)" ng-disabled="isEdit || isDayView">
+            </div>
+            <div ng-if="startDateBeforeEndDateError" class="error">
+                {{'FROM_DATE_BEFORE_TO_DATE_ERROR' | translate}}
+            </div>
+            <div ng-if="dateOutOfRangeError && !isEdit" class="error">
+                {{'DATE_OUT_OF_RANGE_ERROR' | translate}}
+            </div>
+        </div>
+        <button class="cancel-button" ng-click="closeNotes()">{{'OT_CANCEL_KEY' | translate}}</button>
+        <button ng-if="!isEdit" class="save-button" ng-click="saveNotes()">{{'SAVE' | translate}}</button>
+        <button ng-if="isEdit" class="save-button"  ng-click="updateNotes()">{{'UPDATE' | translate}}</button>
+    </div>
+</div>
+
+<div class="identifier-ui" ng-if="showDeletePopUp">
+    <div class="identifier-iframe" style="height: 150px">
+        <a class="close" style="padding-right: 20px" ng-click="closeDeletePopup()">&times;</a>
+        <div style="padding: 0 20px; display: flex; flex-direction: column;">
+            <h6>{{'DELETE_NOTE_TITLE' | translate}}</h6>
+            <p style="color: #161616">{{'DELETE_NOTE_MESSAGE' | translate}}</p>
+        </div>
+        <button class="cancel-button" ng-click="closeDeletePopup()">{{'NO_KEY' | translate}}</button>
+        <button class="delete-button" ng-click="deleteNotes()">{{'YES_KEY' | translate}}</button>
+    </div>
+</div>
