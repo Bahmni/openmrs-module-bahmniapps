@@ -39,13 +39,7 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
         return {
             restrict: 'E',
             controller: controller,
-            templateUrl: function (element, attrs) {
-                if (attrs.templateUrl) {
-                    return attrs.templateUrl;
-                } else {
-                    return "../common/displaycontrols/admissiondetails/views/admissionDetails.html";
-                }
-            },
+            templateUrl: "../common/displaycontrols/admissiondetails/views/admissionDetails.html",
             scope: {
                 params: "=",
                 patientUuid: "=",

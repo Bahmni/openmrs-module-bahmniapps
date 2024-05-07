@@ -40,13 +40,7 @@ angular.module('bahmni.common.displaycontrol.prescription')
             return {
                 restrict: 'EA',
                 controller: controller,
-                templateUrl: function (element, attrs) {
-                    if (attrs.templateUrl) {
-                        return attrs.templateUrl;
-                    } else {
-                        return "../common/displaycontrols/prescription/views/prescription.html";
-                    }
-                },
+                templateUrl: "../common/displaycontrols/prescription/views/prescription.html",
                 scope: {
                     patient: "=",
                     visitDate: "=",

@@ -67,49 +67,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("event:printVisitTab", function () {
-                var printConfig = $scope.visitTabConfig.currentTab.printing;
-                var templateUrl = printConfig.templateUrl;
-                if (templateUrl) {
-                    var promises = [];
-                    $scope.diagnosesCodes = "";
-                    $scope.observationsEntries = [];
-
-                    if (printConfig.observationsConcepts !== undefined) {
-                        var promise = $q.all([diagnosisService.getPatientDiagnosis($stateParams.patientUuid), observationsService.fetch($stateParams.patientUuid, printConfig.observationsConcepts, "latest", null, null, null, null, null)]).then(function (response) {
-                            const diagnoses = response[0].data;
-                            $scope.observationsEntries = response[1].data;
-                            angular.forEach(diagnoses, function (diagnosis) {
-                                if (diagnosis.order === printConfig.printDiagnosis.order &&
-                                    diagnosis.certainty === printConfig.printDiagnosis.certainity &&
-                                    diagnosis.codedAnswer !== null) {
-                                    if ($scope.diagnosesCodes.length > 0) {
-                                        $scope.diagnosesCodes += ", ";
-                                    }
-                                    $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
-                                }
-                            });
-                        });
-                        promises.push(promise);
-                    }
-
-                    Promise.all(promises).then(function () {
-                        $scope.additionalInfo = {};
-                        $scope.additionalInfo.visitSummary = $scope.visitSummary;
-                        $scope.additionalInfo.currentDate = new Date();
-                        $scope.additionalInfo.facilityLocation = $rootScope.facilityLocation;
-                        var tabName = printConfig.header.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function (match, chr) {
-                            return chr.toUpperCase();
-                        }).replace(/^[a-z]/, function (match) {
-                            return match.toUpperCase();
-                        });
-                        $scope.pageTitle = $scope.patient.givenName + $scope.patient.familyName + "_" + $scope.patient.identifier + "_" + tabName;
-                        printer.printFromScope(templateUrl, $scope);
-                    }).catch(function (error) {
-                        console.error("Error fetching details for print: ", error);
-                    });
-                } else {
-                    printer.printFromScope("common/views/visitTabPrint.html", $scope);
-                }
+                printer.printFromScope("common/views/visitTabPrint.html", $scope);
             });
 
             $scope.$on("event:clearVisitBoard", function () {
