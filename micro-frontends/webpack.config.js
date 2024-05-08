@@ -28,7 +28,7 @@ module.exports = {
       filename: "[name].min.css",
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: "public" }],
+      patterns: [{ from: "public", to: "../micro-frontends-dist/" }],
     }),
     new ModuleFederationPlugin({
       name: "bahmni_mfe_host",
