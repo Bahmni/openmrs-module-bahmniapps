@@ -94,7 +94,7 @@ export function AddAllergy(props) {
                 />
               </div>
 
-              <div className={"section"}>
+              <div className={"section-next-ui"}>
                 <div className={"font-large bold"}>
                   <FormattedMessage id={"SEVERITY"} defaultMessage={"Severity"} />
                   <span className={"red-text"}>&nbsp;*</span>
@@ -106,6 +106,7 @@ export function AddAllergy(props) {
                     setSeverity(e);
                     setIsSaveEnabled(reactions && reactions.length > 0 && e);
                   }}
+                  className={"severity-options-group"}
                 >
                   {severityOptions.map((option) => {
                     return <RadioButton labelText={option.name} value={option.uuid}></RadioButton>;

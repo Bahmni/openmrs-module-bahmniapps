@@ -1,4 +1,4 @@
-.section-title {
+.section-title-next-ui {
   font-family: OpenSans, Arial, sans-serif;
   padding: 10px;
   margin-top: 0;
@@ -22,4 +22,9 @@
   right: 10px;
   top: 10px;
   cursor: pointer;
+}
+
+.severity-options-group{
+  flex-wrap: wrap;
+  gap: 10px;
 }
