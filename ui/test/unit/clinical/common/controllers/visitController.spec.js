@@ -172,6 +172,11 @@ describe('VisitController', function () {
             expect(sessionService.destroy).toHaveBeenCalled();
         });
 
+        it('should call auditLogService.log while handleAuditEvent is triggered', function (){
+            scope.ipdDashboard.hostApi.handleAuditEvent('test_patient_id','CREATE_SCHEDULED_MEDICATION_TASK','test_message_params','MODULE_LABEL_CLINICAL_KEY');
+            expect(auditLogService.log).toHaveBeenCalledWith('test_patient_id','CREATE_SCHEDULED_MEDICATION_TASK','test_message_params','MODULE_LABEL_CLINICAL_KEY');
+        });
+
         it('should call handleLogoutShortcut on keydown event', function (){
             spyOn(scope.ipdDashboard.hostApi, 'onLogOut');
             window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': true, 'ctrlKey': false}));
