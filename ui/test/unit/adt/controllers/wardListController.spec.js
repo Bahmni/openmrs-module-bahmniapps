@@ -11,15 +11,15 @@ describe('WardListController', function () {
         module('bahmni.adt');
 
         module(function ($provide) {
-            var realAppDescriptor = new Bahmni.Common.AppFramework.AppDescriptor();
-            realAppDescriptor.getConfigValue = function (config) {
-                if (config === 'enableIPDFeature') {
-                    return false;
-                }
-            };
+          var realAppDescriptor = new Bahmni.Common.AppFramework.AppDescriptor();
+          realAppDescriptor.getConfigValue = function (config) {
+              if (config === 'enableIPDFeature') {
+                  return false;
+              }
+          };
 
-            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            appService.getAppDescriptor.and.returnValue(realAppDescriptor);
+          appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+          appService.getAppDescriptor.and.returnValue(realAppDescriptor);
             $provide.value('appService', {});
             queryService = jasmine.createSpyObj('queryService', ['getResponseFromQuery']);
             queryService.getResponseFromQuery.and.returnValue(specUtil.createServicePromise('queryService'));

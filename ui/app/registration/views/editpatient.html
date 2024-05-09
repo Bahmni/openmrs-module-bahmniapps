@@ -20,17 +20,16 @@
                 <div class="field-value">
                     <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
                 </div>
-                <div ng-if="showPreRegistrationOption" class="field-value field-value-has-identifier">
+                <div ng-if="showRelatedIdentifierOption" class="field-value field-value-has-identifier">
                     <div class="fl">
                         <div class="field-attribute hasOldIdentifier-field-attribute">
-                            <label for="pre-registration-attribute" class="control-label">{{::'PRE_REGISTRATION_LABEL' | translate}}</label>
+                            <label for="related-identifier-attribute" class="control-label related-identifier-label">{{::'RELATED_PATIENT_IDENTIFIER_LABEL' | translate}}</label>
                         </div>
                         <div class="field-value">
-                            <input class="input-label-inline" type="checkbox" id="pre-registration-attribute" ng-model="patient[preRegistrationAttribute]"
-                                    ng-change="patient[preRegistrationAttribute].handleUpdate()">
+                            <input class="input-label-inline" type="checkbox" id="related-identifier-attribute" ng-model="patient[relatedIdentifierAttribute.name]"
+                                ng-change="patient[relatedIdentifierAttribute.name].handleUpdate()" ng-disabled="showDisabledAttrOption" ng-style="{'opacity' : showDisabledAttrOption ? '0.4':'unset'}">
                         </div>
                     </div>
-                </div>
             </article>
         </div>
         <ng-include src="'views/patientcommon.html'"></ng-include>

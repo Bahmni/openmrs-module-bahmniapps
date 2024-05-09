@@ -9,8 +9,8 @@
                 <span class="patient-name">
                     ({{patientContext.identifier}})
                 </span>
-                <span class="kid-icon" ng-if="::(patientContext.kid && patientContext.kid.value === 'Yes')">
-                    <i class="ipd-indication fa fa-solid fa-child" style="background-color: #F58C35; padding: 3.6px; border-radius: 4px"></i>
+                <span class="custom-attr-icon" ng-if="showIcon">
+                    <i class="ipd-indication context-icon-style" ng-class="iconAttributeConfig.icon" ng-style="{{iconAttributeConfig.iconStyle}}"></i>
                 </span>
             </li>
             <li>{{'GENDER_KEY' | translate}} {{patientContext.gender}}</li>

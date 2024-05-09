@@ -15,7 +15,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.searchText = '';
-
+            $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
             $scope.searchTextFilter = function (row) {
                 var searchText = $scope.searchText;
                 if (!searchText) {
@@ -39,12 +39,9 @@ angular.module('bahmni.adt')
                     v: "full",
                     location_name: $scope.ward.ward.name
                 };
-
                 return queryService.getResponseFromQuery(params).then(function (response) {
-                    $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus);
-                    $scope.tableHeadings = $scope.tableDetails.length > 0 ?
-                        Object.keys($scope.tableDetails[0]).filter(function (name) { return name !== 'kid'; })
-                        : [];
+                    $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus, $scope.iconAttributeConfig.attrName);
+                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]).filter(function (name) { return name !== $scope.iconAttributeConfig.attrName; }) : [];
                 });
             };
             spinner.forPromise(getTableDetails());

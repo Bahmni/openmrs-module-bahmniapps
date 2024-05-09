@@ -181,6 +181,8 @@ angular.module('bahmni.common.patientSearch')
             }
         };
 
+        $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
+
         var mapExtensionToSearchType = function (appExtn) {
             return {
                 name: appExtn.label,
