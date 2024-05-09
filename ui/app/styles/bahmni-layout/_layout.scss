@@ -31,7 +31,10 @@
             padding: 0 10px;
         }
     }
-
+    .additional-header {
+        display: inline-block;
+        width: calc(100% - 135px);
+    }
     header {
         position: relative;
         color: $lightGray;

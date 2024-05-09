@@ -11,6 +11,7 @@ angular.module('bahmni.clinical')
                 $scope.showDetails = !$scope.showDetails;
             };
         };
+
         return {
             restrict: 'A',
             controller: controller,

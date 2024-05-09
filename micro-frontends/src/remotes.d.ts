@@ -1,0 +1,1 @@
+declare module '@openmrs-mf/ipd/Dashboard';
