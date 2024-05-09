@@ -26,6 +26,9 @@ angular.module('bahmni.adt')
                         $window.location = "../home/index.html#/login";
                     });
             });
+        },
+        handleAuditEvent: function (patientUuid, eventType, messageParams, module) {
+            return auditLogService.log(patientUuid, eventType, messageParams, module);
         }
     };
 }]);

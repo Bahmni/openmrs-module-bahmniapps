@@ -45,6 +45,11 @@ describe("CareViewController", function () {
         expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
         expect(sessionService.destroy).toHaveBeenCalled();
     });
+    it('should call auditLogService.log while handleAuditEvent is triggered', function (){
+        createController();
+        scope.hostApi.handleAuditEvent(undefined, 'VIEWED_WARD_LEVEL_DASHBOARD', undefined, 'MODULE_LABEL_INPATIENT_KEY');
+        expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'VIEWED_WARD_LEVEL_DASHBOARD', undefined, 'MODULE_LABEL_INPATIENT_KEY');
+    });
     it('should call handleLogoutShortcut on keydown event', function (){
         createController();
         spyOn(scope.hostApi, 'onLogOut');
