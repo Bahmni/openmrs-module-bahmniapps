@@ -1,5 +1,6 @@
-import { fetchAllergensOrReactions, getEncounterType, fetchAllergiesAndReactionsForPatient, bahmniEncounter } from "./AllergyControlUtils";
+import { fetchAllergensOrReactions, getEncounterType, fetchAllergiesAndReactionsForPatient, bahmniEncounter, saveAllergiesAPICall } from "./AllergyControlUtils";
 import axios from "axios";
+import { BAHMNI_ENCOUNTER_URL, SAVE_ALLERGIES_URL, ENCOUNTER_TYPE_URL, GET_ALLERGIES_URL } from "../../constants";
 
 jest.mock("axios");
 const mockResponse = {
@@ -129,21 +130,151 @@ describe('getEncounterType', () => {
     const response = await getEncounterType("Consultation");
     expect(response).toEqual(mockEncounterType.data);
   });
+
+  it('should handle errors and log them', async () => {
+    const mockError = new Error('API error');
+    axios.get.mockRejectedValueOnce(mockError);
+
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    const result = await getEncounterType(mockEncounterType);
+    const expectedUrl = ENCOUNTER_TYPE_URL.replace("{encounterType}", mockEncounterType);
+
+    expect(axios.get).toHaveBeenCalledWith(expectedUrl);
+    expect(consoleLogSpy).toHaveBeenCalledWith(mockError);
+    expect(result).toBeUndefined();
+    consoleLogSpy.mockRestore();
+  });
 });
 
-describe('bahmniEncounter', function () {
-    it('should make axios call with the correct url', () => {
-        axios.post.mockImplementation(() => Promise.resolve(mockBahmniEncounterResponse));
+describe('bahmniEncounter', function() {
+  it('should make axios call with the correct url', () => {
+    axios.post.mockImplementation(() => Promise.resolve(mockBahmniEncounterResponse));
 
-        bahmniEncounter(mockBahmniEncounterPayload);
-        expect(axios.post).toHaveBeenCalledWith('/openmrs/ws/rest/v1/bahmnicore/bahmniencounter', mockBahmniEncounterPayload, {
-        withCredentials: true,
-        headers: {"Accept": "application/json", "Content-Type": "application/json"}
-        });
+    bahmniEncounter(mockBahmniEncounterPayload);
+    expect(axios.post).toHaveBeenCalledWith('/openmrs/ws/rest/v1/bahmnicore/bahmniencounter', mockBahmniEncounterPayload, {
+      withCredentials: true,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      }
     });
-    it("should return the correct data", async () => {
-      axios.post.mockImplementation(() => Promise.resolve(mockBahmniEncounterResponse));
-      const response = await bahmniEncounter(mockBahmniEncounterPayload);
-      expect(response).toEqual(mockBahmniEncounterResponse);
+  });
+  it("should return the correct data", async () => {
+    axios.post.mockImplementation(() => Promise.resolve(mockBahmniEncounterResponse));
+    const response = await bahmniEncounter(mockBahmniEncounterPayload);
+    expect(response).toEqual(mockBahmniEncounterResponse);
+  });
+
+  it('should handle errors and log them', async () => {
+    const mockError = new Error('Network error');
+    axios.post.mockRejectedValueOnce(mockError);
+
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    await bahmniEncounter(mockBahmniEncounterPayload);
+
+    expect(axios.post).toHaveBeenCalledWith(BAHMNI_ENCOUNTER_URL, mockBahmniEncounterPayload, {
+      withCredentials: true,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     });
+    expect(consoleLogSpy).toHaveBeenCalledWith(mockError);
+    consoleLogSpy.mockRestore();
+  });
+});
+
+describe('fetchAllergiesAndReactionsForPatient', () => {
+  it('should fetch allergies and reactions for a patient and return data', async () => {
+    const patientId = '12345';
+    const mockData = {
+      allergies: ['Peanuts', 'Dust'],
+      reactions: ['Skin Rash', 'Itchy Eyes'],
+    };
+    axios.get.mockResolvedValueOnce({
+      data: mockData,
+    });
+
+    const result = await fetchAllergiesAndReactionsForPatient(patientId);
+    const expectedUrl = GET_ALLERGIES_URL.replace('{patientId}', patientId);
+
+    expect(axios.get).toHaveBeenCalledWith(expectedUrl);
+    expect(result).toEqual(mockData);
+  });
+
+  it('should handle errors and log them', async () => {
+    const patientId = '12345';
+    const mockError = new Error('Network error');
+    axios.get.mockRejectedValueOnce(mockError);
+
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    await fetchAllergiesAndReactionsForPatient(patientId);
+    const expectedUrl = GET_ALLERGIES_URL.replace('{patientId}', patientId);
+
+    expect(axios.get).toHaveBeenCalledWith(expectedUrl);
+    expect(consoleLogSpy).toHaveBeenCalledWith(mockError);
+    consoleLogSpy.mockRestore();
+  });
+});
+
+describe('saveAllergiesAPICall', () => {
+  it('should send the correct payload and patient ID to the API and return the response', async () => {
+    const payload = {
+      allergenType: 'Food',
+      codedAllergen: {
+        uuid: 'allergen-uuid',
+      },
+      reactions: [{ reaction: { uuid: 'reaction-uuid' } }],
+      severity: { uuid: 'severity-uuid' },
+      comment: 'Some notes',
+    };
+    const patientId = 'patient-uuid';
+    const saveAllergiesUrl = SAVE_ALLERGIES_URL.replace('{patientId}', patientId);
+
+    const mockResponse = {
+      data: { success: true },
+      status: 201,
+    };
+    axios.post.mockResolvedValueOnce(mockResponse);
+
+    const result = await saveAllergiesAPICall(payload, patientId);
+
+    expect(axios.post).toHaveBeenCalledWith(saveAllergiesUrl, payload, {
+      withCredentials: true,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should handle errors and return the error', async () => {
+    const payload = {
+      allergenType: 'Food',
+      reactions: [{ reaction: { uuid: 'reaction-uuid' } }],
+      severity: { uuid: 'severity-uuid' },
+      comment: 'Some notes',
+    };
+    const patientId = 'patient-uuid';
+    const saveAllergiesUrl = SAVE_ALLERGIES_URL.replace('{patientId}', patientId);
+
+    const mockError = new Error('Network error');
+    axios.post.mockRejectedValueOnce(mockError);
+
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    const result = await saveAllergiesAPICall(payload, patientId);
+
+    expect(axios.post).toHaveBeenCalledWith(saveAllergiesUrl, payload, {
+      withCredentials: true,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    expect(result).toEqual(mockError);
+    consoleLogSpy.mockRestore();
+  });
 });

@@ -109,6 +109,10 @@ const testHostData = {
     uuid: "___patient_uuid__",
     givenName: "___patient_given_name__",
   },
+  provider: {
+    uuid: "provider#1",
+    name: "demo provider"
+  },
   activeVisit: {
     uuid: "___visit_uuid__",
     visitType: {

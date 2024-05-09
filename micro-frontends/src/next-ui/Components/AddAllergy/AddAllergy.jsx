@@ -50,7 +50,6 @@ export function AddAllergy(props) {
       comment: notes,
     };
     const response = await saveAllergiesAPICall(payload, patient.uuid);
-    console.log("response", response)
     if (response.status === 201) {
       setIsSaveSuccess(true);
     } else {
@@ -101,7 +100,6 @@ export function AddAllergy(props) {
                 </div>
                 <RadioButtonGroup
                   name={"severity"}
-                  key={"Severity"}
                   onChange={(e) => {
                     setSeverity(e);
                     setIsSaveEnabled(reactions && reactions.length > 0 && e);
@@ -109,7 +107,7 @@ export function AddAllergy(props) {
                   className={"severity-options-group"}
                 >
                   {severityOptions.map((option) => {
-                    return <RadioButton labelText={option.name} value={option.uuid}></RadioButton>;
+                    return <RadioButton key={option.uuid} labelText={option.name} value={option.uuid}></RadioButton>;
                   })}
                 </RadioButtonGroup>
                 <TextArea
