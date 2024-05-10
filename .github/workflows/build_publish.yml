@@ -6,7 +6,12 @@ on:
       - 'release-*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
-
+  workflow_run:
+    workflows: [Pull Translations from Transifex]
+    types: [completed]
+    branches:
+      - master
+      - 'release-*'
   workflow_dispatch:
 
 jobs:
@@ -22,10 +27,10 @@ jobs:
           wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
           ./setArtifactVersion.sh
           rm setArtifactVersion.sh
-      - name: Use Node.js 10.16.3
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: 10.16.3
+          node-version: 14.x
       - name: Use Ruby 2.5
         uses: ruby/setup-ruby@v1
         with:
@@ -34,13 +39,25 @@ jobs:
       - run: npm install -g grunt-cli
       - run: gem install compass
       - run: npm install --global yarn
+      - name: micro-frontends | install dependencies
+        working-directory: micro-frontends
+        run: yarn install --frozen-lock-file
+      - name: micro-frontends | test
+        working-directory: micro-frontends
+        run: yarn test:ci
+      - name: micro-frontends | build
+        working-directory: micro-frontends
+        run: yarn build
       - name: Package
         run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Push Translations to Transifex
         run: |
-          bash .github/scripts/transifex.sh push
+          curl -o transifex.sh https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/transifex.sh
+          chmod +x transifex.sh
+          ./transifex.sh push
+          rm transifex.sh
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
       - name: Set up Docker Buildx

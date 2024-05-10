@@ -15,6 +15,13 @@ angular.module('bahmni.clinical')
             $scope.autoSelectNotAllowed = appService.getAppDescriptor().getConfigValue("autoSelectNotAllowed");
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+
+            if ($scope.enableIPDFeature) {
+                $scope.toggleCareSetting = function (drugOrder) {
+                    drugOrder.careSetting = drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                };
+            }
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
@@ -43,7 +50,6 @@ angular.module('bahmni.clinical')
                 var refillableDrugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(orderSetOrdersAndDrugOrders.drugOrders, getPreviousVisitDrugOrders(), showOnlyActive);
                 return _(orderSetOrdersAndDrugOrders.orderSetOrders)
                     .concat(refillableDrugOrders)
-                    .filter(_.identity)
                     .uniqBy('uuid')
                     .value();
             };

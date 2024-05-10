@@ -13,7 +13,8 @@
                         <!--<span class="order-created-date">{{order.orderDate | bahmniDateTime}}</span>-->
                         <!--</span>-->
 
-                        <span ng-if="!order.hasObservations" class="new-order-highlight">New</span>
+                        <span ng-if="!order.hasObservations" class="order-label">{{ 'NEW_ORDER_LABEL'|translate }}</span>
+                        <span ng-if="selectedOrderLabel[order.orderUuid]" class="order-label">{{selectedOrderLabel[order.orderUuid]}} </span>
                     </h2>
                 </div>
                 <div ng-if="order.showForm">

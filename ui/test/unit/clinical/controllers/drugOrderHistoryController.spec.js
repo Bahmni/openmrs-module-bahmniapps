@@ -27,6 +27,12 @@ describe("DrugOrderHistoryController", function () {
         _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
             return specUtil.respondWithPromise($q, prescribedDrugOrders);
         });
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (config) {
+                return false;
+            }
+        });
 
         rootScope = $rootScope;
         spyOn($rootScope, '$broadcast');
