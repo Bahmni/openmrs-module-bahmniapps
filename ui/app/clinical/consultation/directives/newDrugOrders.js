@@ -2,9 +2,25 @@
 
 angular.module('bahmni.clinical')
     .directive('newDrugOrders', ['messagingService', function (messagingService) {
-        var controller = function ($scope, $rootScope, appService) {
-            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
-            if ($scope.enableIPDFeature) {
+        var controller = function ($scope, $rootScope, $stateParams, appService, visitService) {
+            $scope.allMedicinesInPrescriptionAvailableForIPD = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD");
+            let currentVisitType;
+            if ($scope.allMedicinesInPrescriptionAvailableForIPD) {
+                visitService.search(
+                    {patient: $stateParams.patientUuid, includeInactive: false, v: "custom:(uuid,visitType,startDatetime,stopDatetime,location,encounters:(uuid))"}
+                ).then(function (response) {
+                    currentVisitType = response.data.results[0].visitType.display;
+                });
+                $scope.$watch('treatments', function (oldValue, newValue) {
+                    if (oldValue !== newValue) {
+                        $scope.treatments.forEach(function (treatment) {
+                            treatment.careSetting = currentVisitType === "IPD" ? Bahmni.Clinical.Constants.careSetting.inPatient : treatment.careSetting;
+                        });
+                    }
+                });
+            }
+            $scope.allMedicinesInPrescriptionAvailableForIPD = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD");
+            if (!$scope.allMedicinesInPrescriptionAvailableForIPD) {
                 $rootScope.$on("event:setEncounterId", function (event, encounterId) {
                     $scope.encounterId = encounterId;
                 });

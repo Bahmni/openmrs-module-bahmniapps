@@ -407,7 +407,7 @@ describe("DrugOrderHistoryControllerIPD", function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (config) {
-                return true;
+                return false;
             }
         });
         allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
