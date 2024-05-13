@@ -64,6 +64,7 @@ export const memberTypes = {
   DATE: "Date",
   DATETIME: "Datetime",
   COMPLEX: "Complex",
+  BOOLEAN: "Boolean",
 };
 
 export const formatDate = (value, format = "DD-MMM-YYYY") => {
@@ -71,7 +72,7 @@ export const formatDate = (value, format = "DD-MMM-YYYY") => {
 };
 
 export const getValue = (member) => {
-  const { value = "", type, complexData = {} } = member;
+  const { value = "", type, complexData = {}, valueAsString } = member;
   let finalValue = value?.shortName || value;
   switch (type) {
     case memberTypes.DATE:
@@ -82,6 +83,9 @@ export const getValue = (member) => {
       break;
     case memberTypes.COMPLEX:
       finalValue = complexData?.display || finalValue;
+      break;
+    case memberTypes.BOOLEAN:
+      finalValue = valueAsString;
       break;
   }
   return finalValue;
