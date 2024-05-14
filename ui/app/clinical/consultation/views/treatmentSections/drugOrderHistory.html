@@ -76,6 +76,10 @@
                                     </div>
                                     <div ng-if="drugOrder.additionalInstructions"> | {{drugOrder.additionalInstructions}}</div>
                                     <div ng-if="drugOrder.getQuantityWithUnit()"> | {{drugOrder.getQuantityWithUnit()}}</div>
+                                    <div>
+                                        <span ng-show="allMedicinesInPrescriptionAvailableForIPD && drugOrder.careSetting==='INPATIENT'"> | {{ ::'IPD_BUTTON' | translate}}</span>
+                                        <span ng-show="allMedicinesInPrescriptionAvailableForIPD && drugOrder.careSetting==='OUTPATIENT'"> | {{ ::'OPD_BUTTON' | translate}}</span>
+                                    </div>
                                     <div class="footer-note">
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
