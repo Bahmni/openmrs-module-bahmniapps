@@ -85,7 +85,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                             units: conceptDetail.units
                         };
                     });
-                    if (scope.config.customSortNeeded && scope.config.obsConcepts) {
+                    if (scope.config.obsConcepts) {
                         concepts.sort(function (a, b) {
                             const indexOfA = scope.config.obsConcepts.indexOf(a.name);
                             const indexOfB = scope.config.obsConcepts.indexOf(b.name);
