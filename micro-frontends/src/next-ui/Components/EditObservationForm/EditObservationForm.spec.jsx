@@ -102,22 +102,21 @@ describe('EditObservationForm', () => {
         "closeEditObservationForm": jest.fn(),
         "handleSave": jest.fn()
     };
-    
-  it('should render the component', async () => {
-    render(<EditObservationForm {...mockProps} />);
-    await waitFor(() => {
-        expect(screen.getByText('Radiology Study Report')).toBeTruthy();
+    it('should render the component', async () => {
+        render(<EditObservationForm {...mockProps} />);
+        await waitFor(() => {
+            expect(screen.getByText('Radiology Study Report')).toBeTruthy();
+        });
     });
-  });
 
-  it('should show Loading screen if form is loading', async () => {
-    var updatedProps = mockProps;
-    updatedProps.isEditFormLoading = true;
+    it('should show Loading screen if form is loading', async () => {
+        var updatedProps = mockProps;
+        updatedProps.isEditFormLoading = true;
 
-    render(<EditObservationForm {...updatedProps} />);
-    await waitFor(() => {
-        expect(screen.queryAllByText("Active loading indicator")).toHaveLength(2);
+        render(<EditObservationForm {...updatedProps} />);
+        await waitFor(() => {
+            expect(screen.queryAllByText("Active loading indicator")).toHaveLength(2);
+        });
     });
-  });
 
 });
