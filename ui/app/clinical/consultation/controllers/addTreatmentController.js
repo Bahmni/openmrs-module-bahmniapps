@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state', 'observationsService', 'diagnosisService',
+        'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state', 'observationsService', 'diagnosisService', 'visitService',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
             clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-            orderSetService, $q, locationService, spinner, $translate, $state, observationsService, diagnosisService) {
+            orderSetService, $q, locationService, spinner, $translate, $state, observationsService, diagnosisService, visitService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -18,6 +18,16 @@ angular.module('bahmni.clinical')
             $scope.cdssEnabled = false;
             $scope.clearButtonClicked = false;
             $scope.conceptSource = localStorage.getItem("conceptSource") || "";
+
+            $scope.allMedicinesInPrescriptionAvailableForIPD = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD");
+            let currentVisitType;
+            if ($scope.allMedicinesInPrescriptionAvailableForIPD) {
+                visitService.search(
+                    {patient: $state.params.patientUuid, includeInactive: false, v: "custom:(uuid,visitType,startDatetime,stopDatetime,location,encounters:(uuid))"}
+                ).then(function (response) {
+                    currentVisitType = response.data.results[0].visitType.display;
+                });
+            }
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -367,6 +377,9 @@ angular.module('bahmni.clinical')
                         (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
                     ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order') && $scope.confirmedDiagnoses.length == 0)) {
                     return;
+                }
+                if ($scope.allMedicinesInPrescriptionAvailableForIPD && currentVisitType === 'IPD') {
+                    $scope.treatment.careSetting = Bahmni.Clinical.Constants.careSetting.inPatient;
                 }
                 if ($scope.treatment.isNewOrderSet) {
                     treatments = $scope.orderSetTreatments;
