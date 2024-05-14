@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
             $scope.conceptSource = localStorage.getItem("conceptSource") || "";
 
             $scope.allMedicinesInPrescriptionAvailableForIPD = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD");
-            let currentVisitType;
+            var currentVisitType;
             if ($scope.allMedicinesInPrescriptionAvailableForIPD) {
                 visitService.search(
                     {patient: $state.params.patientUuid, includeInactive: false, v: "custom:(uuid,visitType,startDatetime,stopDatetime,location,encounters:(uuid))"}
