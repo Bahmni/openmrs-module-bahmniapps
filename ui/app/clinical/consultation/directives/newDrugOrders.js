@@ -2,15 +2,19 @@
 
 angular.module('bahmni.clinical')
     .directive('newDrugOrders', ['messagingService', function (messagingService) {
-        var controller = function ($scope, $rootScope) {
+        var controller = function ($scope, $rootScope, appService) {
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+            if ($scope.enableIPDFeature) {
+                $scope.toggleCareSetting = function (newTreatment) {
+                    newTreatment.careSetting = newTreatment.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                };
+            }
             $scope.edit = function (drugOrder, index) {
                 $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
             };
-
             $scope.remove = function (index) {
                 $rootScope.$broadcast("event:removeDrugOrder", index);
             };
-
             var defaultBulkDuration = function () {
                 return {
                     bulkDurationUnit: $scope.treatmentConfig.durationUnits ? $scope.treatmentConfig.durationUnits[0].name : ""

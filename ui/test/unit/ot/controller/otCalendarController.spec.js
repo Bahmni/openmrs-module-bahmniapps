@@ -1,11 +1,18 @@
 'use strict';
 
 describe("otCalendarController", function () {
-    var scope, controller, q, spinner, state;
+    var scope, controller, q, spinner;
+    var state = jasmine.createSpyObj('$state', ['go']);
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
-    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
+    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange', 'getSurgeons', 'getBulkNotes', 'saveNoteForADay']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appDescriptor.getConfigValue.and.returnValue({primarySurgeonsForOT: ["Doctor Strange", "Doctor Malhotra"]});
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
+    var surgicalAppointmentHelper = jasmine.createSpyObj('surgicalAppointmentHelper', ['filterProvidersByName']);
+    surgicalAppointmentHelper.filterProvidersByName.and.returnValue([{uuid: "providerUuid1", display: "Doctor Strange"},{uuid: "providerUuid2", display: "Doctor Malhotra"}]);
 
     var surgicalBlocks = [
         {
@@ -48,6 +55,32 @@ describe("otCalendarController", function () {
         }
     ];
 
+    var surgeons = [
+        {
+            id: 1,
+            person: {uuid: "personUuid1", display: "Doctor Strange"},
+            attributes: [],
+            uuid: "providerUuid1"
+        },
+        {
+            id: 2,
+            person: {uuid: "personUuid2", display: "Doctor Malhotra"},
+            attributes: [],
+            uuid: "providerUuid2"
+        }
+    ];
+
+    var notes = [
+        {
+            id: 1,
+            noteText: "note1",
+            noteType: "OT module",
+            noteDate: "2017-02-19T09:00:00.000+0530",
+            uuid: "note1-uuid",
+            location: "location1"
+        }
+    ];
+
     locationService.getAllByTag.and.callFake(function () {
         return {data: {results: [{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]}};
     });
@@ -67,13 +100,18 @@ describe("otCalendarController", function () {
         scope.dayViewStart = '09:00';
         scope.dayViewEnd = '16:30';
         scope.dayViewSplit = '60';
+        scope.notesStartDate = false;
+        scope.notesEndDate = false;
         scope.viewDate = moment('2017-02-19').toDate();
         controller('otCalendarController', {
             $scope: scope,
             locationService: locationService,
+            $state: state,
             $q: q,
             spinner: spinner,
-            surgicalAppointmentService: surgicalAppointmentService
+            surgicalAppointmentService: surgicalAppointmentService,
+            appService: appService,
+            surgicalAppointmentHelper: surgicalAppointmentHelper
 
         });
         scope.$apply();
@@ -84,6 +122,12 @@ describe("otCalendarController", function () {
             surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
                 return {data: {results: surgicalBlocks}};
             });
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
             createController();
 
             var intervals = scope.intervals();
@@ -93,6 +137,12 @@ describe("otCalendarController", function () {
         it('should give the rows for the calendar', function () {
             surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
                 return {data: {results: surgicalBlocks}};
+            });
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
             });
             createController();
 
@@ -109,6 +159,12 @@ describe("otCalendarController", function () {
             surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
                 return {data: {results: surgicalBlocks}};
             });
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
             createController();
 
             expect(locationService.getAllByTag).toHaveBeenCalledWith('Operation Theater');
@@ -121,12 +177,36 @@ describe("otCalendarController", function () {
             surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
                 return {data: {results: surgicalBlocks}};
             });
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
             scope.weekOrDay = 'day';
             createController();
             expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'), false, true);
-            expect(scope.surgicalBlocksByLocation.length).toEqual(2);
-            expect(scope.surgicalBlocksByLocation[0][0]).toEqual(surgicalBlocks[0]);
-            expect(scope.surgicalBlocksByLocation[1][0]).toEqual(surgicalBlocks[1]);
+            expect(scope.surgicalBlocks.length).toEqual(2);
+            expect(scope.surgicalBlocks[0][0]).toEqual(surgicalBlocks[0]);
+            expect(scope.surgicalBlocks[1][0]).toEqual(surgicalBlocks[1]);
+        });
+
+        it('should group the surgical blocks by the provider', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: surgicalBlocks}};
+            });
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            scope.weekOrDay = 'day';
+            createController();
+            scope.$broadcast("event:providerView", true);
+            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'), false, true);
+            expect(surgicalAppointmentService.getSurgeons).toHaveBeenCalled();
+            expect(surgicalAppointmentHelper.filterProvidersByName).toHaveBeenCalled();
+            expect(scope.surgicalBlocks.length).toEqual(2);
+            expect(scope.surgicalBlocks[0][0]).toEqual(surgicalBlocks[0]);
+            expect(scope.surgicalBlocks[1][0]).toEqual(surgicalBlocks[1]);
         });
 
         it('should set the day view split as integer', function () {
@@ -208,4 +288,140 @@ describe("otCalendarController", function () {
         });
     });
 
+    describe('notes', function () {
+        it('should set startDate and endDate to selectedDate when showNotesPopup is called', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: weekSurgicalBlocks}};
+            });
+            scope.weekOrDay = 'week';
+            scope.weekStartDate = moment('2020-04-06').toDate();
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
+            createController();
+            const weekStartDate = moment('2023-07-02').toDate();
+            const expectedDate = moment('2023-07-05').toDate();
+            scope.showNotesPopup(weekStartDate, 3);
+            expect(scope.notesStartDate).toEqual(expectedDate);
+            expect(scope.notesEndDate).toEqual(expectedDate);
+        });
+        it('should set startDate and endDate to selectedDate when we try to edit existing note', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: weekSurgicalBlocks}};
+            });
+            scope.weekOrDay = 'week';
+            scope.weekStartDate = moment('2020-04-06').toDate();
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
+            createController();
+            const weekStartDate = moment('2023-07-02').toDate();
+            const expectedDate = moment('2023-07-05').toDate();
+            scope.showNotesPopupEdit(weekStartDate, 3, 'note to show');
+            expect(scope.notesStartDate).toEqual(expectedDate);
+            expect(scope.notesEndDate).toEqual(expectedDate);
+        });
+        it('should clear startDate and endDate notes popup is closed', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: weekSurgicalBlocks}};
+            });
+            scope.weekOrDay = 'week';
+            scope.weekStartDate = moment('2020-04-06').toDate();
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
+            createController();
+            const weekStartDate = moment('2023-07-02').toDate();
+            const expectedDate = moment('2023-07-05').toDate();
+            scope.showNotesPopupEdit(weekStartDate, 3, 'note to show');
+            expect(scope.notesStartDate).toEqual(expectedDate);
+            expect(scope.notesEndDate).toEqual(expectedDate);
+            scope.closeNotes();
+            expect(scope.notesStartDate).toEqual(undefined);
+            expect(scope.notesEndDate).toEqual(undefined);
+            expect(scope.otNotesField).toEqual('');
+        });
+        it('should set the notes popup fields and save', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: weekSurgicalBlocks}};
+            });
+            scope.weekOrDay = 'week';
+            scope.weekStartDate = moment('2020-04-06').toDate();
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
+            createController();
+            const viewDate = moment('2023-07-05').toDate();
+            scope.setNotesStartDate(viewDate);
+            scope.setNotesEndDate(viewDate);
+            scope.setNotes('note to show');
+            scope.saveNotes();
+            expect(scope.notesStartDate).toEqual(viewDate);
+            expect(scope.notesEndDate).toEqual(viewDate);
+            expect(scope.otNotesField).toEqual('note to show');
+        });
+        it('should set error field for empty notes when we try to save empty notes', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: weekSurgicalBlocks}};
+            });
+            scope.weekOrDay = 'week';
+            scope.weekStartDate = moment('2020-04-06').toDate();
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
+            createController();
+            scope.setNotes('');
+            scope.saveNotes();
+            expect(scope.emptyNoteError).toEqual(true);
+        });
+        it('should set error field when start Date is before endDate', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: weekSurgicalBlocks}};
+            });
+            scope.weekOrDay = 'week';
+            scope.weekStartDate = moment('2020-04-06').toDate();
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
+            createController();
+            scope.setNotesStartDate(moment('2023-07-05').toDate());
+            scope.setNotesEndDate(moment('2023-07-02').toDate());
+            scope.saveNotes();
+            expect(scope.startDateBeforeEndDateError).toEqual(true);
+        });
+        it('should get styling of last block', function () {
+            surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
+                return {data: {results: weekSurgicalBlocks}};
+            });
+            scope.weekOrDay = 'week';
+            scope.weekStartDate = moment('2020-04-06').toDate();
+            surgicalAppointmentService.getSurgeons.and.callFake(function () {
+                return {data: {results: surgeons}};
+            });
+            surgicalAppointmentService.getBulkNotes.and.callFake(function () {
+                return {data: notes}
+            });
+            createController();
+            const style = scope.styleForBlock(6);
+            expect(style).toEqual({ 'border-right': '.5px solid lightgrey'});
+        });
+    });
 });

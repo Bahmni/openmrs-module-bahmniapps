@@ -5,7 +5,126 @@ describe("SurgicalBlockMapper", function () {
     beforeEach(function () {
         surgicalBlockMapper = new Bahmni.OT.SurgicalBlockMapper();
     });
-
+    var singlePrimaryDiagnosis = [
+        {
+            "uuid": "adbd89ba-c847-4d6c-abda-ac32ff6fac7b",
+            "display": "Coded Diagnosis: Pneumonia",
+            "concept": {
+                "display": "Coded Diagnosis"
+            },
+            "obsDatetime": "2024-02-10T10:00:00.000+0000",
+            "obsGroup": {
+                "display": "Visit Diagnoses: Pneumonia, Confirmed, Primary"
+            },
+            "value": {
+                "display": "Pneumonia"
+            },
+            "links": [
+                {
+                    "rel": "self",
+                    "uri": "http://example.com/obs/1"
+                }
+            ]
+        },
+        {
+            "uuid": "5",
+            "display": "Non-coded Diagnosis",
+            "concept": {
+                "display": "Non-coded Diagnosis"
+            },
+            "obsDatetime": "2024-02-13T10:00:00.000+0000",
+            "obsGroup": {
+                "display": "Visit Diagnoses: Uncoded, Confirmed, Primary"
+            },
+            "value": "Uncoded Diagnosis",
+            "links": [
+                {
+                    "rel": "self",
+                    "uri": "http://example.com/obs/5"
+                }
+            ]
+        },
+        {
+            "uuid": "3",
+            "display": "Coded Diagnosis: Hypertension",
+            "concept": {
+                "display": "Coded Diagnosis"
+            },
+            "obsDatetime": "2024-02-12T10:00:00.000+0000",
+            "obsGroup": {
+                "display": "Visit Diagnoses: Hypertension, Confirmed, Primary"
+            },
+            "value": {
+                "display": "Hypertension"
+            },
+            "links": [
+                {
+                    "rel": "self",
+                    "uri": "http://example.com/obs/3"
+                }
+            ]
+        },
+        {
+            "uuid": "4",
+            "display": "Coded Diagnosis: Hypertension",
+            "concept": {
+                "display": "Coded Diagnosis"
+            },
+            "obsDatetime": "2024-02-11T09:00:00.000+0000",
+            "obsGroup": {
+                "display": "Visit Diagnoses: Hypertension, Confirmed"
+            },
+            "value": {
+                "display": "Hypertension"
+            },
+            "links": [
+                {
+                    "rel": "self",
+                    "uri": "http://example.com/obs/4"
+                }
+            ]
+        },
+        {
+            "uuid": "2",
+            "display": "Coded Diagnosis: Bronchitis",
+            "concept": {
+                "display": "Coded Diagnosis"
+            },
+            "obsDatetime": "2024-02-11T10:00:00.000+0000",
+            "obsGroup": {
+                "display": "Visit Diagnoses: Bronchitis, Confirmed, Primary"
+            },
+            "value": {
+                "display": "Bronchitis"
+            },
+            "links": [
+                {
+                    "rel": "self",
+                    "uri": "http://example.com/obs/2"
+                }
+            ]
+        },
+        {
+            "uuid": "2",
+            "display": "Coded Diagnosis: Bronchitis",
+            "concept": {
+                "display": "Coded Diagnosis"
+            },
+            "obsDatetime": "2024-02-11T11:00:00.000+0000",
+            "obsGroup": {
+                "display": "Visit Diagnoses: Bronchitis, Confirmed, Primary"
+            },
+            "value": {
+                "display": "Bronchitis"
+            },
+            "links": [
+                {
+                    "rel": "self",
+                    "uri": "http://example.com/obs/2"
+                }
+            ]
+        }
+    ]
     var surgeonList = [
         {
             "id": 18,
@@ -65,6 +184,10 @@ describe("SurgicalBlockMapper", function () {
         {
             "uuid": "bde9821c-3f81-11e7-97ea-0800274a5156",
             "name": "notes"
+        },
+        {
+            "uuid": "bde93f81-821c-11e7-97ea-0800274a5156",
+            "name": "patientObservations"
         }
     ];
 
@@ -352,7 +475,7 @@ describe("SurgicalBlockMapper", function () {
         surgicalBlock.endDatetime = "2017-05-25T18:00:00.000+0530";
         surgicalBlock.provider = {uuid: "providerUuid"};
         surgicalBlock.location = {uuid: "locationUuid"};
-        surgicalBlock.surgicalAppointments = [{id: 11, uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 1, bedLocation: "Ward", bedNumber: "209/2", surgicalAppointmentAttributes: surgicalAppointmentAttributesResponseFromServer},
+        surgicalBlock.surgicalAppointments = [{id: 11, patientObservations: singlePrimaryDiagnosis, uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 1, bedLocation: "Ward", bedNumber: "209/2", surgicalAppointmentAttributes: surgicalAppointmentAttributesResponseFromServer},
             {id: 12, uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, notes: "need more assistants", bedLocation: null, bedNumber: null, sortWeight: 0, surgicalAppointmentAttributes: []}];
 
         var surgicalForm = {};
@@ -379,6 +502,7 @@ describe("SurgicalBlockMapper", function () {
         expect(mappedToUISurgicalBlock.surgicalAppointments[0].bedNumber).toBe("");
         expect(mappedToUISurgicalBlock.surgicalAppointments[1].bedLocation).toBe("Ward");
         expect(mappedToUISurgicalBlock.surgicalAppointments[1].bedNumber).toBe("209/2");
+        expect(mappedToUISurgicalBlock.surgicalAppointments[1].primaryDiagnosis).toBe("Pneumonia, Uncoded Diagnosis, Hypertension, Bronchitis")
     });
 
     it('Should map the UISurgicalBlock with appointments and appointment attributes to the openmrsSurgicalBlock', function () {
@@ -443,7 +567,7 @@ describe("SurgicalBlockMapper", function () {
         var mappedAttributes = surgicalBlockMapper.mapAttributes(attributes, appointmentAttributeTypes);
 
 
-        expect(_.keys(mappedAttributes).length).toBe(10);
+        expect(_.keys(mappedAttributes).length).toBe(11);
         expect(mappedAttributes.cleaningTime.value).toBe(15);
         expect(mappedAttributes.estTimeMinutes.value).toBe(0);
         expect(mappedAttributes.estTimeHours.value).toBe(0);

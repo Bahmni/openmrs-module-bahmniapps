@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$q', '$scope', '$filter', '$stateParams', 'activeDrugOrders',
+    .controller('DrugOrderHistoryController', ['$q', '$scope', '$filter', '$stateParams', 'activeDrugOrders', 'appService',
         'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope', 'providerService', 'observationsService', 'diagnosisService',
-        function ($q, $scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
-                  drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService, observationsService, diagnosisService) {
+        function ($q, $scope, $filter, $stateParams, activeDrugOrders, appService,
+            treatmentConfig, treatmentService, spinner, drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService, observationsService, diagnosisService) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = visitHistory.activeVisit;
@@ -14,6 +14,13 @@ angular.module('bahmni.clinical')
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+
+            if ($scope.enableIPDFeature) {
+                $scope.toggleCareSetting = function (drugOrder) {
+                    drugOrder.careSetting = drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                };
+            }
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];

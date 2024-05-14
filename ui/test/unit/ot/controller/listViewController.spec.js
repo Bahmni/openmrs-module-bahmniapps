@@ -690,4 +690,19 @@ describe('listViewController', function () {
         expect(scope.tableInfo[17].heading).toBe('notes');
         expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
     })
+
+    it('should have primaryDiagnosisInfo attributes in table info', function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
+        createController();
+        console.log(scope.tableInfo)
+        expect(scope.tableInfo.length).toBe(22);
+        expect(scope.tableInfo[21].heading).toBe('Primary Diagnoses');
+        expect(scope.tableInfo[21].sortInfo).toBe('patientObservations');
+        })
 });

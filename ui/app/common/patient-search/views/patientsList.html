@@ -64,14 +64,20 @@
                         <!-- <td>
                             {{$index + 1}}
                         </td> -->
-                        <td ng-repeat="heading in activeHeaders">
+                        <td ng-repeat="heading in activeHeaders"  style="height: 50px;">
                             <a ng-if="::isHeadingOfLinkColumn(heading.name)"
                                ng-click="forwardPatient(row, heading)">{{::row[heading.name]}}</a>
-                            <span ng-if="::isHeadingOfName(heading.name)" ng-click="forwardPatient(row)">{{::row[heading.name]}}
-                                <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
-                            </span>
+                            <div ng-if="::isHeadingOfName(heading.name)" style="min-width: 150px" ng-click="forwardPatient(row)">
+                                <div style="width: 80%;">
+                                    {{::(isHeadingOfDateColumn(heading.name) ? (row[heading.name] | bahmniDate) : row[heading.name])}}
+                                </div>
+                                <span class="icons-container">
+                                    <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
+                                    <i ng-if="::iconAttributeConfig.attrName && (row[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue || (row.customAttribute ? row.customAttribute[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue : false))" class="ipd-indication list-icon-style" ng-class="iconAttributeConfig.icon" ng-style="{{iconAttributeConfig.iconStyle}}"></i>
+                                </span>
+                            </div>
                             <span ng-if="::(!isHeadingOfLinkColumn(heading.name) && !isHeadingOfName(heading.name))">
-                            {{::row[heading.name]}}
+                                {{::(isHeadingOfDateColumn(heading.name) ? (row[heading.name] | bahmniDate) : row[heading.name])}}
                             </span>
                         </td>
                     </tr>
@@ -87,7 +93,10 @@
                     <div class="patient-name">{{::patient.name}}</div>
                     <div ng-if="!preferExtraIdInSearchResults" class="patient-id">{{::patient.identifier}}</div>
                     <div ng-if="preferExtraIdInSearchResults" class="patient-id">{{::patient.extraIdentifier}}</div>
-                    <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')"></i>
+                    <span class="icons-container">
+                        <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')"></i>
+                        <i ng-if="::iconAttributeConfig.attrName && patient[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue || (patient.customAttribute ? patient.customAttribute[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue : false)" class="ipd-indication" ng-class="iconAttributeConfig.icon" ng-style="{{iconAttributeConfig.iconStyle}}"></i>
+                    </span>
                 </li>
             </ul>
         </resize>

@@ -152,6 +152,8 @@
     "MEDICATION_ADD_ACCESS_KEY": "a",
     "MEDICATION_REFILL_ALL": "Refill All",
     "MEDICATION_PRINT": "Print",
+    "ADD_TO_DRUG_CHART_KEY": "Add to Drug Chart",
+    "IPD_BUTTON": "IPD",
     "MEDICATION_NO_RECENT_TREATMENT": "No Recent Treatments",
     "MEDICATION_STOP": "Stop",
     "MEDICATION_REFILL": "Refill",
