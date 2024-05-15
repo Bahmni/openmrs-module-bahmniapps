@@ -42,7 +42,7 @@
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
-                                        <button ng-show="enableIPDFeature" class="ipd-btn" ng-click="toggleCareSetting(drugOrder)">
+                                        <button ng-show="!allMedicinesInPrescriptionAvailableForIPD" class="ipd-btn" ng-click="updateOrderType(drugOrder, drugOrderGroup.drugOrders)" ng-disabled="disableIPDButton(drugOrder)">
                                             <i class="fa fa-check" ng-show="drugOrder.careSetting === 'INPATIENT'"></i>
                                             {{ ::'IPD_BUTTON' | translate}}
                                         </button>
@@ -80,8 +80,12 @@
                                         <span nf-if="drugOrder.route"> {{drugOrder.route}}, </span>
                                         {{drugOrder.instructions}} | 
                                     </div>
-                                    <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} | </div>
-                                    <div>{{drugOrder.getQuantityWithUnit()}}</div>
+                                    <div ng-if="drugOrder.additionalInstructions"> | {{drugOrder.additionalInstructions}}</div>
+                                    <div ng-if="drugOrder.getQuantityWithUnit()"> | {{drugOrder.getQuantityWithUnit()}}</div>
+                                    <div>
+                                        <span ng-show="allMedicinesInPrescriptionAvailableForIPD && drugOrder.careSetting==='INPATIENT'"> | {{ ::'IPD_BUTTON' | translate}}</span>
+                                        <span ng-show="allMedicinesInPrescriptionAvailableForIPD && drugOrder.careSetting==='OUTPATIENT'"> | {{ ::'OPD_BUTTON' | translate}}</span>
+                                    </div>
                                     <div class="footer-note">
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDateTime}}</span>
