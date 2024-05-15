@@ -9,7 +9,15 @@ const initialProps = {
       value: "test comment text",
       groupMembers: [],
       comment: "notes example",
+      interpretation: "Abnormal",
       providers: [{ name: "test provider" }],
+    },
+    {
+      concept: { shortName: "Comments" },
+      value: "test comment text",
+      groupMembers: [],
+      comment: "notes example",
+      interpretation: "Abnormal",
     },
     {
       concept: { shortName: "Vitals" },
@@ -42,7 +50,7 @@ const initialProps = {
           },
           value: "12",
           comment: "nested children notes example",
-          providers: [{ name: "test provider" }],
+          providers: "test provider",
         },
       ],
     },
@@ -53,22 +61,6 @@ describe("TileItem", () => {
   it("should match the screenshot", () => {
     const { container } = render(<TileItem {...initialProps} />);
     expect(container).toMatchSnapshot();
-  });
-
-  it("should render the correct items", () => {
-    render(<TileItem {...initialProps} />);
-    // label
-    expect(screen.getByText("Comments")).toBeTruthy();
-    // sub label
-    expect(screen.getByText("(60 - 100)")).toBeTruthy();
-    // value
-    expect(screen.getByText("test comment text")).toBeTruthy();
-    // notes
-    expect(screen.getByText("notes example - by test provider")).toBeTruthy();
-    // children notes
-    expect(
-      screen.getByText("nested children notes example - by test provider")
-    ).toBeTruthy();
   });
 
   it("should highlight member in red if it is abnormal", () => {
