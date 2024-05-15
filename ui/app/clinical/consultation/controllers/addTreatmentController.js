@@ -930,6 +930,7 @@ angular.module('bahmni.clinical')
                 }
                 $scope.addToNewTreatment = true;
                 showRulesInMedication(medicationConfig);
+                setContinuousMedicationRoutes(medicationConfig);
             };
             init();
         }]);
