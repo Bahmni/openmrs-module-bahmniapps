@@ -12,11 +12,11 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
-            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+            $scope.allMedicinesInPrescriptionAvailableForIPD = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD") !== null ? appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD") : true;
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
 
-            if ($scope.enableIPDFeature) {
+            if (!$scope.allMedicinesInPrescriptionAvailableForIPD) {
                 $scope.updateOrderType = function (drugOrder) {
                     var updatedDrugOrder = angular.copy(drugOrder);
                     updatedDrugOrder.careSetting = updatedDrugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.outPatient ? Bahmni.Clinical.Constants.careSetting.inPatient : Bahmni.Clinical.Constants.careSetting.outPatient;
@@ -220,7 +220,7 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.enableIPDFeature && spinner.forPromise(treatmentService.getMedicationSchedulesForOrders($stateParams.patientUuid, getActiveAndPrescribedDrugOrdersUuids()).then(function (response) {
+            !$scope.allMedicinesInPrescriptionAvailableForIPD && spinner.forPromise(treatmentService.getMedicationSchedulesForOrders($stateParams.patientUuid, getActiveAndPrescribedDrugOrdersUuids()).then(function (response) {
                 $scope.medicationSchedules = response.data;
             }));
 

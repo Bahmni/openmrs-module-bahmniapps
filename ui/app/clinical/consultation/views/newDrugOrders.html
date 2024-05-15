@@ -41,7 +41,7 @@
             </div>
             <div class="button-group-wrapper">
                 <div class="button-group">
-                    <button ng-show="enableIPDFeature" class="ipd-btn" ng-click="toggleCareSetting(newTreatment)" ng-disabled="shouldDisableIPDButton(newTreatment)">
+                    <button ng-show="!allMedicinesInPrescriptionAvailableForIPD" class="ipd-btn" ng-click="toggleCareSetting(newTreatment)" ng-disabled="shouldDisableIPDButton(newTreatment)">
                         <i class="fa fa-check" ng-show="newTreatment.careSetting === 'INPATIENT'"></i>
                         {{ ::'IPD_BUTTON' | translate}}
                     </button>
@@ -65,6 +65,10 @@
                      | {{newTreatment.additionalInstructions}}
                 </div>
                 <div ng-if="newTreatment.getQuantityWithUnit()"> | {{newTreatment.getQuantityWithUnit()}}</div>
+                <div>
+                    <span ng-show="allMedicinesInPrescriptionAvailableForIPD && newTreatment.careSetting==='INPATIENT'"> | {{ ::'IPD_BUTTON' | translate}}</span>
+                    <span ng-show="allMedicinesInPrescriptionAvailableForIPD && newTreatment.careSetting==='OUTPATIENT'"> | {{ ::'OPD_BUTTON' | translate}}</span>
+                </div>
             </div>
         </li>
     </ul>

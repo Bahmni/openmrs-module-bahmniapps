@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .directive('newDrugOrders', ['messagingService', function (messagingService) {
-        var controller = function ($scope, $rootScope, appService) {
-            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
-            if ($scope.enableIPDFeature) {
+        var controller = function ($scope, $rootScope, $stateParams, appService, visitService) {
+            $scope.allMedicinesInPrescriptionAvailableForIPD = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD") !== null ? appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD") : true;
+            if (!$scope.allMedicinesInPrescriptionAvailableForIPD) {
                 $rootScope.$on("event:setEncounterId", function (event, encounterId) {
                     $scope.encounterId = encounterId;
                 });
