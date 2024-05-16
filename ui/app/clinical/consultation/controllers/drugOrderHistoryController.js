@@ -129,12 +129,19 @@ angular.module('bahmni.clinical')
                         dispenserInfo = treatmentService.getOrderedProviderAttributesForPrint(dispenserAttributes, $scope.printPrescriptionFeature.providerAttributesForPrint);
                         angular.forEach(diagnoses, function (diagnosis) {
                             if (diagnosis.order === $scope.printPrescriptionFeature.printDiagnosis.order &&
-                                diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity &&
-                                diagnosis.codedAnswer !== null) {
+                                diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity) {
                                 if (diagnosesCodes.length > 0) {
                                     diagnosesCodes += ", ";
                                 }
-                                diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
+                                if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
+                                    diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                }
+                                else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
+                                    diagnosesCodes += diagnosis.codedAnswer.name;
+                                }
+                                else if (diagnosis.codedAnswer == null && diagnosis.freeTextAnswer !== null) {
+                                    diagnosesCodes += diagnosis.freeTextAnswer;
+                                }
                             }
                         });
                     });
