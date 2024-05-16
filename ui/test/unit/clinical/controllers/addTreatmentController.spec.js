@@ -2151,4 +2151,27 @@ describe("AddTreatmentController", function () {
             ]);
         });
     });
+
+    describe('isRuleMode check', function () {
+        it('should set dose units as mg if dosing rule is present', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = "mg/Kg";
+            expect(scope.isRuleMode(drugOrder1)).toBeTruthy();
+        });
+
+        it('should set return false if dosing rule is null', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = null;
+            expect(scope.isRuleMode(drugOrder1)).toBeFalsy();
+        });
+    });
+
+    describe('calculate dose when having dosing rules', function () {
+        it('should set return the treatment if dosing rule is not null', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = "mg/Kg";
+            const treatment = scope.calculateDose(drugOrder1);
+            expect(treatment).toBe(drugOrder1);
+        });
+    });
 });
