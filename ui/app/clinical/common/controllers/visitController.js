@@ -82,12 +82,19 @@ angular.module('bahmni.clinical')
                             $scope.observationsEntries = response[1].data;
                             angular.forEach(diagnoses, function (diagnosis) {
                                 if (diagnosis.order === printConfig.printDiagnosis.order &&
-                                    diagnosis.certainty === printConfig.printDiagnosis.certainity &&
-                                    diagnosis.codedAnswer !== null) {
+                                    diagnosis.certainty === printConfig.printDiagnosis.certainity) {
                                     if ($scope.diagnosesCodes.length > 0) {
                                         $scope.diagnosesCodes += ", ";
                                     }
-                                    $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
+                                    if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer == null && diagnosis.freeTextAnswer !== null) {
+                                        $scope.diagnosesCodes += diagnosis.freeTextAnswer;
+                                    }
                                 }
                             });
                         });
