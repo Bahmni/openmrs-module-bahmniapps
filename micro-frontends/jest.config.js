@@ -6,4 +6,7 @@ module.exports = {
     "\\.(css|scss|sass)$": "<rootDir>/src/__mocks__/styleMock.js",
   },
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
+  coveragePathIgnorePatterns: [
+    "next-ui/constants.js"
+  ]
 };

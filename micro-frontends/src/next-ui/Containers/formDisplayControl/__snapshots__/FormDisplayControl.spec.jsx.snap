@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormDisplayControl Component should render the component 1`] = `
+<div>
+  <div>
+    <div>
+      <h2
+        class="forms-display-control-section-title"
+      >
+        Observation Forms
+      </h2>
+      <div
+        class="loading-message"
+      >
+        Loading... Please Wait
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FormDisplayControl Component with Accordion and Non-Accordion should render the component with form data 1`] = `
+<div>
+  <div>
+    <div>
+      <h2
+        class="forms-display-control-section-title"
+      >
+        Observation Forms
+      </h2>
+      <div
+        class="loading-message"
+      >
+        Loading... Please Wait
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService) {
+    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService',
+        function ($scope, $state, $rootScope, $q, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
             $scope.currentVisitUrl = $state.current.views['dashboard-content'].templateUrl ||
                 $state.current.views['print-content'].templateUrl;
+            var showProviderInfo = appService.getAppDescriptor().getConfigValue('showProviderInfoinVisits');
+            $scope.showProviderInfo = showProviderInfo !== false ? true : showProviderInfo;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
             $scope.visitTabConfig = visitConfig;
@@ -184,7 +186,7 @@ angular.module('bahmni.clinical')
                 var tabToOpen = getTab();
                 $scope.visitTabConfig.switchTab(tabToOpen);
                 printOnPrint();
-                getCertificateHeader();
+                $scope.showProviderInfo ? getCertificateHeader() : null;
             };
             init();
         }]);

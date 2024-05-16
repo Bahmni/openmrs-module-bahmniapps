@@ -1,0 +1,40 @@
+.error-message-container {
+    background: -webkit-linear-gradient(top, #d87777 1%, #d95757 100%);
+    border: 1px solid #b72224;
+}
+
+.message-container {
+    width: 35%;
+    margin: 5px auto;
+    padding: 7px 10px;
+    border-radius: 2px;
+    font-size: 14px;
+    color: #FFF;
+    font-family: OpenSansSemiBold;
+    text-align: center;
+    position: fixed;
+    top: 50px;
+    left: 32%;
+    z-index: 99999999;
+    display: table;
+}
+
+.types-of-errors {
+    display: block;
+    text-align: left !important;
+    padding: 0 0 7px;
+}
+
+.types-for-errors.error-message {
+  margin: 7px 0px;
+  text-align: left;
+  padding: 0px 0px 7px;
+}
+
+.show-btn {
+    padding: 5px;
+    font-family: OpenSansSemiBold;
+    font-size: 12px;
+    float: right;
+    width: 74px;
+}

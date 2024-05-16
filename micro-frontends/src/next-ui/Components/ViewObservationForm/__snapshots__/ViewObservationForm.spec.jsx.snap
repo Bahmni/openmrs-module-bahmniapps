@@ -1,0 +1,304 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewObservationForm should match the screenshot 1`] = `
+<div>
+  <div>
+    <div
+      class="bx--modal is-visible view-observation-form-modal"
+      role="presentation"
+    >
+      <span
+        class="bx--visually-hidden"
+        role="link"
+        tabindex="0"
+      >
+        Focus sentinel
+      </span>
+      <div
+        aria-label=""
+        aria-modal="true"
+        class="bx--modal-container"
+        role="dialog"
+        tabindex="-1"
+      >
+        <div
+          class="bx--modal-header"
+        >
+          <button
+            aria-label="close"
+            class="bx--modal-close"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="bx--modal-close__icon"
+              fill="currentColor"
+              focusable="false"
+              height="20"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 32 32"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"
+              />
+            </svg>
+          </button>
+          
+          <h3
+            class="bx--modal-header__heading"
+            id="bx--modal-header__heading--modal-1"
+          />
+        </div>
+        <div
+          aria-labelledby="bx--modal-header__heading--modal-1"
+          class="bx--modal-content"
+          id="bx--modal-body--modal-1"
+        >
+          <section
+            class="content-body"
+          >
+            <h2
+              class="section-title"
+            >
+              Vitals
+            </h2>
+            <section
+              class="section-body"
+            >
+              <div
+                class="bx--tile"
+              >
+                <div
+                  style="display: flex;"
+                >
+                  <span
+                    class="section-header row-label is-abnormal"
+                    data-testid="section-label-0"
+                  >
+                    Pulse
+                     
+                    <span
+                      class="sub-label"
+                    >
+                      (60 - 100)
+                    </span>
+                  </span>
+                  <div
+                    class="row-value is-abnormal"
+                  >
+                    105
+                     
+                    
+                  </div>
+                </div>
+                <span
+                  class="notes-section"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="document-icon"
+                    fill="currentColor"
+                    focusable="false"
+                    height="16"
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 32 32"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M25.7,9.3l-7-7C18.5,2.1,18.3,2,18,2H8C6.9,2,6,2.9,6,4v24c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V10C26,9.7,25.9,9.5,25.7,9.3 z M18,4.4l5.6,5.6H18V4.4z M24,28H8V4h8v6c0,1.1,0.9,2,2,2h6V28z"
+                    />
+                    <path
+                      d="M10 22H22V24H10zM10 16H22V18H10z"
+                    />
+                  </svg>
+                  notes example - by test provider
+                </span>
+              </div>
+              <div
+                class="bx--tile"
+              >
+                <div
+                  style="display: flex;"
+                >
+                  <span
+                    class="section-header row-label "
+                    data-testid="section-label-1"
+                  >
+                    Pulse
+                     
+                    <span
+                      class="sub-label"
+                    >
+                      (60 - 100)
+                    </span>
+                  </span>
+                  <div
+                    class="row-value "
+                  >
+                    
+                     
+                    beats/min
+                  </div>
+                </div>
+                <span
+                  class="notes-section"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="document-icon"
+                    fill="currentColor"
+                    focusable="false"
+                    height="16"
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 32 32"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M25.7,9.3l-7-7C18.5,2.1,18.3,2,18,2H8C6.9,2,6,2.9,6,4v24c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V10C26,9.7,25.9,9.5,25.7,9.3 z M18,4.4l5.6,5.6H18V4.4z M24,28H8V4h8v6c0,1.1,0.9,2,2,2h6V28z"
+                    />
+                    <path
+                      d="M10 22H22V24H10zM10 16H22V18H10z"
+                    />
+                  </svg>
+                  notes example - by 
+                </span>
+              </div>
+              <div
+                class="bx--tile"
+              >
+                <div
+                  style="display: block;"
+                >
+                  <span
+                    class="section-header  "
+                    data-testid="section-label-2"
+                  >
+                    Blood Pressure
+                     
+                    <span
+                      class="sub-label"
+                    />
+                  </span>
+                  <div
+                    class="row-body"
+                  >
+                    <div
+                      class="row-element is-abnormal"
+                    >
+                      <div
+                        class="row-content"
+                      >
+                        <div
+                          class="row-label"
+                        >
+                          Systolic Blood Pressure
+                           
+                          <span
+                            class="sub-label"
+                          >
+                            (100 - 140)
+                          </span>
+                        </div>
+                        <div
+                          class="row-value"
+                        >
+                          120
+                           
+                          mmHg
+                        </div>
+                      </div>
+                      <span
+                        class="notes-section"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="document-icon"
+                          fill="currentColor"
+                          focusable="false"
+                          height="16"
+                          preserveAspectRatio="xMidYMid meet"
+                          viewBox="0 0 32 32"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M25.7,9.3l-7-7C18.5,2.1,18.3,2,18,2H8C6.9,2,6,2.9,6,4v24c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V10C26,9.7,25.9,9.5,25.7,9.3 z M18,4.4l5.6,5.6H18V4.4z M24,28H8V4h8v6c0,1.1,0.9,2,2,2h6V28z"
+                          />
+                          <path
+                            d="M10 22H22V24H10zM10 16H22V18H10z"
+                          />
+                        </svg>
+                        notes example - by test provider
+                      </span>
+                    </div>
+                    <div
+                      class="row-element "
+                    >
+                      <div
+                        class="row-content"
+                      >
+                        <div
+                          class="row-label"
+                        >
+                          Diastolic Blood Pressure
+                           
+                          <span
+                            class="sub-label"
+                          >
+                            (60 - 90)
+                          </span>
+                        </div>
+                        <div
+                          class="row-value"
+                        >
+                          80
+                           
+                          mmHg
+                        </div>
+                      </div>
+                      <span
+                        class="notes-section"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="document-icon"
+                          fill="currentColor"
+                          focusable="false"
+                          height="16"
+                          preserveAspectRatio="xMidYMid meet"
+                          viewBox="0 0 32 32"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M25.7,9.3l-7-7C18.5,2.1,18.3,2,18,2H8C6.9,2,6,2.9,6,4v24c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V10C26,9.7,25.9,9.5,25.7,9.3 z M18,4.4l5.6,5.6H18V4.4z M24,28H8V4h8v6c0,1.1,0.9,2,2,2h6V28z"
+                          />
+                          <path
+                            d="M10 22H22V24H10zM10 16H22V18H10z"
+                          />
+                        </svg>
+                        notes example - by 
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+        </div>
+      </div>
+      <span
+        class="bx--visually-hidden"
+        role="link"
+        tabindex="0"
+      >
+        Focus sentinel
+      </span>
+    </div>
+  </div>
+</div>
+`;
