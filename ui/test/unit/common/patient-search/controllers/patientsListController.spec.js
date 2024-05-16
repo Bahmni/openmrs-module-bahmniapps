@@ -1,7 +1,7 @@
 'use strict';
 
 describe("PatientsListController", function () {
-        var _spinner, _patientService, _appService, $bahmniCookieStore, _window, _printer;
+        var _spinner, _patientService, _appService, $bahmniCookieStore, _window, _printer, $timeout;
         var controller, scope, findPatientsPromise, searchPatientsPromise, retrospectiveEntryService, getRecentPatientsPromise,configurationService, getAppDescriptor;
         var stateParams = { location: "Ganiyari"};
 
@@ -16,7 +16,9 @@ describe("PatientsListController", function () {
                 "extensionParams": {
                     "searchHandler": "emrapi.sqlSearch.activePatients",
                     "display": "All active patients",
-                    "refreshTime": "10"
+                    "refreshTime": "10",
+                    "forwardUrl" : "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
+                    "targetedTab": "In Patient"
                 },
                 "label": "All active patients",
                 "order": 1,
@@ -96,15 +98,15 @@ describe("PatientsListController", function () {
             configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({identifierTypesConfig:[{primary:true,name:"Bahmni Id"}]}));
         });
 
-        beforeEach(inject(function ($rootScope) {
+        beforeEach(inject(['$rootScope', '$timeout', function ($rootScope, timeout) {
             scope = $rootScope.$new();
             $rootScope.patientConfig = Bahmni.Registration.PatientConfig();
-            $rootScope.currentProvider = {uuid: "1111-2222"}
-
+            $rootScope.currentProvider = {uuid: "1111-2222"};
+            $timeout = timeout;
             var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
             retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
             retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
-        }));
+        },]));
 
         var setUp = function () {
             inject(function ($controller, $rootScope) {
@@ -127,7 +129,7 @@ describe("PatientsListController", function () {
             it('should initialize configurations and fetch patients', function () {
                 scope.$apply(setUp);
 
-                expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : undefined, targetedTab : null, id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
+                expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/", targetedTab : "In Patient", id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
                     showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, patientCount : '...', linkColumn : undefined, links : undefined});
                 expect(_patientService.findPatients).toHaveBeenCalled();
 

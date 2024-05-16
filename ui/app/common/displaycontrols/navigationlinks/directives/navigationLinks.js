@@ -13,32 +13,38 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 {
                     "name": "home",
                     "translationKey": "HOME_DASHBOARD_KEY",
-                    "url": "../home/#/dashboard"
+                    "url": "../home/#/dashboard",
+                    "title": "Home"
                 },
                 {
                     "name": "visit",
+                    "translationKey": "PATIENT_VISIT_PAGE_KEY",
                     "url": "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active",
-                    "translationKey": "PATIENT_VISIT_PAGE_KEY"
+                    "title": "Visit"
                 },
                 {
                     "name": "inpatient",
                     "translationKey": "PATIENT_ADT_PAGE_KEY",
-                    "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
+                    "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
+                    "title": "In Patient"
                 },
                 {
                     "name": "enrolment",
                     "translationKey": "PROGRAM_MANAGEMENT_PAGE_KEY",
-                    "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext"
+                    "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext",
+                    "title": "Enrolment"
                 },
                 {
                     "name": "visitAttribute",
                     "translationKey": "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY",
-                    "url": "../registration/#/patient/{{patientUuid}}/visit"
+                    "url": "../registration/#/patient/{{patientUuid}}/visit",
+                    "title": "Patient Visit Attributes"
                 },
                 {
                     "name": "registration",
                     "translationKey": "PATIENT_REGISTRATION_PAGE_KEY",
-                    "url": "../registration/#/patient/{{patientUuid}}"
+                    "url": "../registration/#/patient/{{patientUuid}}",
+                    "title": "Registration"
                 },
                 {
                     "name": "labEntry",
