@@ -93,3 +93,220 @@ export const mockLatestPublishedForms = [
         "nameTranslation": "[{\"display\":\"Patient Progress Notes and Orders\",\"locale\":\"en\"}]"
     }
 ]
+
+export const mockEncounterData = {
+    encounterUuid: "123",
+    observations: [{
+        "formFieldPath": "Dummy form.1/4-0",
+        "groupMembers": [{
+            "encounterDateTime": 1715245423000,
+            "providers": [{
+              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+              "name": "Super Man"
+            }],
+            "type": "Numeric",
+            "concept": {
+              "shortName": "Systolic",
+              "units": "mm Hg"
+            },
+            "observationDateTime": 1715245524000,
+            "valueAsString": "150.0",
+            "value": 150
+          },
+          {
+            "formFieldPath": "Dummy form.1/4-0",
+            "encounterDateTime": 1715245423000,
+            "providers": [{
+              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+              "name": "Super Man"
+            }],
+            "type": "Boolean",
+            "concept": {
+              "shortName": "Systolic Abnormal"
+            },
+            "observationDateTime": 1715245524000,
+            "valueAsString": "Yes",
+            "value": true
+          }
+        ],
+        "concept": {
+          "shortName": "Dummy form"
+        },
+        "encounterUuid": "73164be4-c61a-4c7e-934c-ee48821cfdaa"
+      },
+      {
+        "formFieldPath": "Dummy form2.1/4-0",
+        "groupMembers": [{
+            "encounterDateTime": 1715245423000,
+            "providers": [{
+              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+              "name": "Super Man"
+            }],
+            "type": "Numeric",
+            "concept": {
+              "shortName": "Systolic",
+              "units": "mm Hg"
+            },
+            "observationDateTime": 1715245524000,
+            "valueAsString": "150.0",
+            "value": 150
+          },
+          {
+            "formFieldPath": "Dummy form.1/4-0",
+            "encounterDateTime": 1715245423000,
+            "providers": [{
+              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+              "name": "Super Man"
+            }],
+            "type": "Boolean",
+            "concept": {
+              "shortName": "Systolic Abnormal"
+            },
+            "observationDateTime": 1715245524000,
+            "valueAsString": "Yes",
+            "value": true
+          }
+        ],
+        "concept": {
+          "shortName": "Dummy form"
+        },
+        "encounterUuid": "73164be4-c61a-4c7e-934c-ee48821cfdaa"
+      },
+      {
+        "groupMembers": [{
+            "encounterDateTime": 1715245423000,
+            "providers": [{
+              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+              "name": "Super Man"
+            }],
+            "type": "Numeric",
+            "concept": {
+              "shortName": "Systolic",
+              "units": "mm Hg"
+            },
+            "observationDateTime": 1715245524000,
+            "valueAsString": "150.0",
+            "value": 150
+          },
+          {
+            "formFieldPath": "Dummy form.1/4-0",
+            "encounterDateTime": 1715245423000,
+            "providers": [{
+              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+              "name": "Super Man"
+            }],
+            "type": "Boolean",
+            "concept": {
+              "shortName": "Systolic Abnormal"
+            },
+            "observationDateTime": 1715245524000,
+            "valueAsString": "Yes",
+            "value": true
+          }
+        ],
+        "concept": {
+          "shortName": "Dummy form"
+        },
+        "encounterUuid": "73164be4-c61a-4c7e-934c-ee48821cfdaa"
+      }
+    ],
+};
+
+export const mockObservations = [
+    {
+        "value": [{
+            "groupMembers": [{
+                "encounterDateTime": 1715245423000,
+                "providers": [{
+                  "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                  "name": "Super Man"
+                }],
+                "type": "Numeric",
+                "concept": {
+                  "shortName": "Systolic",
+                  "units": "mm Hg"
+                },
+                "observationDateTime": 1715245524000,
+                "valueAsString": "150.0",
+                "value": 150
+              },
+              {
+                "formFieldPath": "Dummy form.1/4-0",
+                "encounterDateTime": 1715245423000,
+                "providers": [{
+                  "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                  "name": "Super Man"
+                }],
+                "type": "Boolean",
+                "concept": {
+                  "shortName": "Systolic Abnormal"
+                },
+                "observationDateTime": 1715245524000,
+                "valueAsString": "Yes",
+                "value": true
+              }
+            ],
+            "groupMembers": [{
+                "encounterDateTime": 1715245423000,
+                "providers": [{
+                  "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                  "name": "Super Man"
+                }],
+                "type": "Numeric",
+                "concept": {
+                  "shortName": "Systolic",
+                  "units": "mm Hg"
+                },
+                "observationDateTime": 1715245524000,
+                "valueAsString": "150.0",
+                "value": 150
+              },
+              {
+                "formFieldPath": "Dummy form.1/4-0",
+                "encounterDateTime": 1715245423000,
+                "providers": [{
+                  "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                  "name": "Super Man"
+                }],
+                "type": "Boolean",
+                "concept": {
+                  "shortName": "Systolic Abnormal"
+                },
+                "observationDateTime": 1715245524000,
+                "valueAsString": "Yes",
+                "value": true
+              }
+            ],
+            "groupMembers": [{
+                "encounterDateTime": 1715245423000,
+                "providers": [{
+                  "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                  "name": "Super Man"
+                }],
+                "type": "Numeric",
+                "concept": {
+                  "shortName": "Systolic",
+                  "units": "mm Hg"
+                },
+                "observationDateTime": 1715245524000,
+                "valueAsString": "150.0",
+                "value": 150
+              },
+              {
+                "formFieldPath": "Dummy form.1/4-0",
+                "encounterDateTime": 1715245423000,
+                "providers": [{
+                  "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                  "name": "Super Man"
+                }],
+                "type": "Boolean",
+                "concept": {
+                  "shortName": "Systolic Abnormal"
+                },
+                "observationDateTime": 1715245524000,
+                "valueAsString": "Yes",
+                "value": true
+              }
+            ],},]
+    }
+]
