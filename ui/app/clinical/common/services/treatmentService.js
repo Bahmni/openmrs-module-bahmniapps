@@ -36,6 +36,16 @@ angular.module('bahmni.clinical')
             });
         };
 
+        var getMedicationSchedulesForOrders = function (patientUuid, orderUuids) {
+            return $http.get(Bahmni.Common.Constants.medicationSchedulesForOrders, {
+                params: {
+                    patientUuid: patientUuid,
+                    orderUuids: orderUuids
+                },
+                withCredentials: true
+            });
+        };
+
         var getConfig = function () {
             return $http.get(Bahmni.Common.Constants.drugOrderConfigurationUrl, {
                 withCredentials: true
@@ -155,7 +165,7 @@ angular.module('bahmni.clinical')
                             }];
                             var subject = "Prescription for consultation at " + $rootScope.facilityLocation.name + " on " + $filter("bahmniDate")(prescriptionDetails.visitDate);
                             var body = transmissionService.getSharePrescriptionMailContent(prescriptionDetails);
-                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, {'patientUuid': prescriptionDetails.patient.uuid});
+                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, { 'patientUuid': prescriptionDetails.patient.uuid });
                             transmissionService.sendEmail(attachments, subject, body, emailUrl, [], []);
                         });
                         renderAndSendPromise.resolve();
@@ -167,15 +177,15 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getOrderedProviderAttributesForPrint = function (providerAttributeData) {
-            const providerAttributeTypesToFilter = appService.getAppDescriptor().getConfigValue("providerAttributesForPrint") || [];
-            var filteredProviderAttributes = providerAttributeData.filter(function (attribute) {
-                return providerAttributeTypesToFilter.includes(attribute.attributeType.display);
+        var getOrderedProviderAttributesForPrint = function (attributeData, attributeTypesToFilter) {
+            if (!attributeTypesToFilter) return;
+            var filteredAttributes = attributeData.filter(function (attribute) {
+                return attributeTypesToFilter.includes(attribute.attributeType.display);
             });
-            filteredProviderAttributes.sort(function (a, b) {
-                return providerAttributeTypesToFilter.indexOf(a.attributeType.display) - providerAttributeTypesToFilter.indexOf(b.attributeType.display);
+            filteredAttributes.sort(function (a, b) {
+                return attributeTypesToFilter.indexOf(a.attributeType.display) - attributeTypesToFilter.indexOf(b.attributeType.display);
             });
-            return filteredProviderAttributes;
+            return filteredAttributes;
         };
 
         var printSelectedPrescriptions = function (printPrescriptionFeatureConfig, drugOrdersForPrint, patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, allergiesData) {
@@ -218,6 +228,7 @@ angular.module('bahmni.clinical')
             getConfig: getConfig,
             getPrescribedDrugOrders: getPrescribedDrugOrders,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
+            getMedicationSchedulesForOrders: getMedicationSchedulesForOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
             voidDrugOrder: voidDrugOrder,

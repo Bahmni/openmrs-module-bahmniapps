@@ -4,6 +4,7 @@
     var OBSERVATION_SECTION_URL = "../common/displaycontrols/dashboard/views/sections/observationSection.html";
     var COMMON_DISPLAY_CONTROL_URL = "../common/displaycontrols/dashboard/views/sections/SECTION_NAME.html";
     var CLINICAL_DISPLAY_CONTROL_URL = "../clinical/dashboard/views/dashboardSections/SECTION_NAME.html";
+    var DISPLAY_CONTROL_REACT_URL = "../common/displaycontrols/dashboard/views/sections/nextUISection.html";
     var commonDisplayControlNames = [
         "admissionDetails",
         "bacteriologyResultsControl",
@@ -20,8 +21,15 @@
         "patientInformation",
         "conditionsList"
     ];
+    var reactDisplayControls = [
+        "allergies",
+        "formsV2React"
+    ];
 
     var getViewUrl = function (section) {
+        if (reactDisplayControls.includes(section.type)) {
+            return DISPLAY_CONTROL_REACT_URL;
+        }
         if (section.isObservation) {
             return OBSERVATION_SECTION_URL;
         }

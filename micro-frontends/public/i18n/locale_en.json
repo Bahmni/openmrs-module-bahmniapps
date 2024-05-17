@@ -1,0 +1,19 @@
+{
+  "NO_FORM": "No Form found for this patient....",
+  "DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY": "Observation Forms",
+  "LOADING_MESSAGE": "Loading... Please Wait",
+  "NO_ALLERGIES": "No Allergies recorded for this patient.",
+  "BACK_TO_ALLERGEN": "Back to Allergies",
+  "ALLERGIES_HEADING": "Allergies and Reactions",
+  "ALLERGIES_DISPLAY_CONTROL_HEADING": "Allergies",
+  "SEVERITY": "Severity",
+  "SAVE": "Save",
+  "CANCEL": "Cancel",
+  "NO_ALLERGENS_FOUND": "No Allergen found",
+  "SEARCH_ALLERGEN": "Search Allergen",
+  "REACTIONS": "Reaction(s)",
+  "SEARCH_REACTION": "Search Reaction",
+  "COMMON_REACTIONS": "Common Reactions",
+  "ALLERGEN": "Allergen",
+  "EDIT_FORM_ERROR_MESSAGE": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed"
+}

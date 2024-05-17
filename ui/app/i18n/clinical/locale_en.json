@@ -7,7 +7,7 @@
   "NO_DOCUMENTS_MESSAGE": "No documents for this patient.",
   "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY": "No dispositions available.",
   "NO_LAB_ORDERS_FOR_PATIENT_MESSAGE_KEY": "No Lab Orders for this patient.",
-  "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
+  "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} recorded for this patient",
   "NO_DIAGNOSIS_MESSAGE": "No diagnosis for this patient",
   "NO_SPECIMEN_RESULT_FOUND_MESSAGE": "No Result found for this specimen",
   "NO_SPECIMEN_FOUND_MESSAGE": "No specimen for this patient",

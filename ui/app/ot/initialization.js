@@ -5,9 +5,10 @@ angular.module('bahmni.ot').factory('initialization', ['$rootScope', '$q', 'surg
         var initApp = function () {
             return appService.initApp('ot', {'app': true, 'extension': true}).then(function (data) {
                 var providerNames = data.getConfigValue("primarySurgeonsForOT");
-                return $q.all([surgicalAppointmentService.getSurgeons(), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
+                return $q.all([surgicalAppointmentService.getSurgeons(), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes(), surgicalAppointmentService.getPrimaryDiagnosisConfigForOT()]).then(function (response) {
                     $rootScope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNames, response[0].data.results);
                     $rootScope.attributeTypes = response[1].data.results;
+                    $rootScope.showPrimaryDiagnosisForOT = response[2].data;
                     return response;
                 });
             });

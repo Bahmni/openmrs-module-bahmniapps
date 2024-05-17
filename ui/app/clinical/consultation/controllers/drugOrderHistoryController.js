@@ -16,10 +16,28 @@ angular.module('bahmni.clinical')
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+            $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
+            $scope.selectedDrugs = {};
 
             if ($scope.enableIPDFeature) {
-                $scope.toggleCareSetting = function (drugOrder) {
-                    drugOrder.careSetting = drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                $scope.updateOrderType = function (drugOrder) {
+                    var updatedDrugOrder = angular.copy(drugOrder);
+                    updatedDrugOrder.careSetting = updatedDrugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.outPatient ? Bahmni.Clinical.Constants.careSetting.inPatient : Bahmni.Clinical.Constants.careSetting.outPatient;
+                    if (updatedDrugOrder.previousOrderUuid !== undefined) {
+                        updatedDrugOrder.previousOrderUuid = null;
+                        updatedDrugOrder.scheduledDate = null;
+                    }
+                    $rootScope.$broadcast("event:updateDrugOrderType", updatedDrugOrder);
+                    $rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+                };
+
+                $scope.disableIPDButton = function (drugOrder) {
+                    return ($scope.medicationSchedules &&
+                        $scope.medicationSchedules.some(function (schedule) {
+                            return schedule.order.uuid === drugOrder.uuid;
+                        })) ||
+                        !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed ||
+                        $scope.consultation.encounterUuid !== drugOrder.encounterUuid;
                 };
             }
 
@@ -142,7 +160,7 @@ angular.module('bahmni.clinical')
                 var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
                     var allergies = response.data;
                     var allergiesList = [];
-                    if (response.status === 200 && allergies.entry) {
+                    if (response.status === 200 && allergies.length > 0) {
                         allergies.entry.forEach(function (allergy) {
                             if (allergy.resource.code.coding) {
                                 allergiesList.push(allergy.resource.code.coding[0].display);
@@ -198,6 +216,17 @@ angular.module('bahmni.clinical')
                         createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
                     }));
             };
+
+            const getActiveAndPrescribedDrugOrdersUuids = function () {
+                return $scope.consultation.activeAndScheduledDrugOrders.map(function (drugOrder) {
+                    return drugOrder.uuid;
+                });
+            };
+
+            $scope.enableIPDFeature && spinner.forPromise(treatmentService.getMedicationSchedulesForOrders($stateParams.patientUuid, getActiveAndPrescribedDrugOrdersUuids()).then(function (response) {
+                $scope.medicationSchedules = response.data;
+            }));
+
             $scope.getOrderReasonConcept = function (drugOrder) {
                 if (drugOrder.orderReasonConcept) {
                     return drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name;

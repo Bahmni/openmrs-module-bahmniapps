@@ -17,6 +17,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 }
 
                 scope.groupBy = scope.config.groupBy || "visits";
+                scope.heading = scope.config.rowHeading || scope.groupBy;
                 scope.groupByEncounters = scope.groupBy === "encounters";
                 scope.groupByVisits = scope.groupBy === "visits";
 
@@ -36,7 +37,8 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     if (conceptName && conceptSetUiConfigService.getConfig()[conceptName] && conceptSetUiConfigService.getConfig()[conceptName].displayMonthAndYear == true) {
                         return Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(value);
                     }
-                    return scope.isLonger(value) ? value.substring(0, 10) + "..." : value;
+                    const number = Number.parseFloat(value);
+                    return number ? number : scope.isLonger(value) ? value.substring(0, 10) + "..." : value;
                 };
 
                 scope.scrollLeft = function () {
@@ -83,6 +85,13 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                             units: conceptDetail.units
                         };
                     });
+                    if (scope.config.obsConcepts) {
+                        concepts.sort(function (a, b) {
+                            const indexOfA = scope.config.obsConcepts.indexOf(a.name);
+                            const indexOfB = scope.config.obsConcepts.indexOf(b.name);
+                            return indexOfA - indexOfB;
+                        });
+                    }
                     var tabluarDataInAscOrderByDate = _(response.data.tabularData).toPairs().sortBy(0).fromPairs().value();
                     scope.result = {concepts: concepts, tabularData: tabluarDataInAscOrderByDate};
                     scope.hasData = !_.isEmpty(scope.result.tabularData);

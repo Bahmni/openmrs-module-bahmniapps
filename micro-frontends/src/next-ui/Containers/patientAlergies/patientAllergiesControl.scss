@@ -1,0 +1,30 @@
+.section-title-next-ui {
+  font-family: OpenSans, Arial, sans-serif;
+  padding: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #FFFFFF;
+  font-size: 16px;
+  clear: both;
+  background: #669999;
+  position: relative;
+  border-radius: 2px 2px 0 0;
+}
+
+.placeholder-text {
+  background: #fff;
+  padding: 5px;
+  color: #444 !important;
+}
+
+.add-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.severity-options-group{
+  flex-wrap: wrap;
+  gap: 10px;
+}

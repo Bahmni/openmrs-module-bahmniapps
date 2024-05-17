@@ -1,0 +1,126 @@
+.view-observation-form-modal {
+  .bx--modal-container {
+    background: #f0f0f0;
+    border-radius: 5px;
+    width: 80%;
+    height: 84%;
+    max-width: 1180px;
+  }
+
+  .bx--modal-content {
+    padding-bottom: 10px;
+    margin-bottom: 35px;
+    padding-top: 0;
+  }
+
+  .bx--tile {
+    margin-bottom: 20px;
+    min-height: auto;
+    padding: 10px;
+  }
+
+  .content-body {
+    border: 1px solid #669999;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0px 4px 4px 0px #0000004f;
+  }
+
+  .section-title {
+    font-family: OpenSans, Arial, sans-serif;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #ffffff;
+    font-size: 16px;
+    clear: both;
+    background: #669999;
+    position: sticky;
+    border-radius: 0;
+    top: 0;
+  }
+
+  .section-body {
+    padding: 20px 10px;
+    background-color: #ffffff;
+    color: #525252;
+  }
+
+  .section-header {
+    font-family: IBM Plex Sans;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+  }
+
+  .row-body {
+    background-color: #ffffff;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .row-element {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    border-bottom: 1px solid #c6c6c6;
+  }
+
+  .row-body div:last-child {
+    border-bottom: none;
+  }
+
+  .row-content {
+    display: flex;
+  }
+
+  .row-label {
+    width: 30%;
+    margin-right: 10px;
+    word-break: break-word;
+  }
+
+  .row-value {
+    width: 70%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .w-70 {
+    width: 70%;
+  }
+
+  .sub-items-title {
+    display: block;
+    padding-top: 10px;
+  }
+
+  .sub-items-body {
+    background: #f4f4f4;
+    padding-bottom: 20px;
+  }
+
+  .notes-section {
+    display: block;
+    background: #d0e2ff;
+    color: #525252;
+    min-height: 40px;
+    margin-top: 10px;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0em;
+  }
+
+  .document-icon {
+    margin-right: 10px;
+  }
+
+  .sub-label {
+    font-size: 11px;
+  }
+
+  .is-abnormal {
+    color: red;
+  }
+}
