@@ -164,7 +164,7 @@ angular.module('bahmni.registration')
                             if (forwardUrl) {
                                 var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, { 'patientUuid': patientProfileData.patient.uuid });
                                 $window.location.href = updatedForwardUrl;
-                                if(showSuccessMessage){
+                                if (showSuccessMessage) {
                                     messagingService.showMessage("info", "REGISTRATION_LABEL_SAVE_REDIRECTION");
                                 }
                             } else {
