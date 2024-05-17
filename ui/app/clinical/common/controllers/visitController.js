@@ -88,11 +88,25 @@ angular.module('bahmni.clinical')
                                         $scope.diagnosesCodes += ", ";
                                     }
                                     $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                    diagnosis.certainty === printConfig.printDiagnosis.certainity) {
+                                    if ($scope.diagnosesCodes.length > 0) {
+                                        $scope.diagnosesCodes += ", ";
+                                    }
+                                    if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer == null && diagnosis.freeTextAnswer !== null) {
+                                        $scope.diagnosesCodes += diagnosis.freeTextAnswer;
+                                    }
                                 }
                             });
                         });
                         promises.push(promise);
                     }
+
                     $scope.allergies = "";
                     var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
                         var allergies = response.data;
