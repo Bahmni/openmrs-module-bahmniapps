@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-.controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
+.controller('PatientsListController', ['$scope', '$window', '$timeout', 'patientService', '$rootScope', 'appService', 'spinner',
     '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
+    function ($scope, $window, $timeout, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
         $scope.preferExtraIdInSearchResults = appService.getAppDescriptor().getConfigValue("preferExtraIdInSearchResults");
         $scope.activeHeaders = [];
         const DEFAULT_FETCH_DELAY = 2000;
@@ -176,6 +176,7 @@ angular.module('bahmni.common.patientSearch')
                 display: appExtn.extensionParams.display,
                 handler: appExtn.extensionParams.searchHandler,
                 forwardUrl: appExtn.extensionParams.forwardUrl,
+                targetedTab: appExtn.extensionParams.targetedTab || null,
                 id: appExtn.id,
                 params: appExtn.extensionParams.searchParams,
                 refreshTime: appExtn.extensionParams.refreshTime || 0,
@@ -232,10 +233,26 @@ angular.module('bahmni.common.patientSearch')
                 newTab: true
             } : {url: $scope.search.searchType.forwardUrl, newTab: false};
             if ($scope.search.searchType.links) {
-                link = _.find($scope.search.searchType.links, {linkColumn: heading}) || link;
+                link = _.find($scope.search.searchType.links, {linkColumn: heading}) || _.find($scope.search.searchType.links, { linkColumn: heading.name }) || link;
+            }
+            if ($scope.search.searchType.targetedTab) {
+                link.targetedTab = $scope.search.searchType.targetedTab;
             }
             if (link.url && link.url !== null) {
-                $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : "_self");
+                var redirectUrl = link.url;
+                if (typeof link.url === 'object') {
+                    const rowName = patient[heading.name] ? patient[heading.name].replace(/\s/g, "").toLowerCase() : "";
+                    redirectUrl = rowName && link.url[rowName] ? link.url[rowName] : link.url.default;
+                }
+                var newWindow = $window.open(
+                appService.getAppDescriptor().formatUrl(redirectUrl, options, true),
+                link.newTab ? '_blank' : link.targetedTab ? link.targetedTab : '_self');
+                if (link.targetedTab) {
+                    $timeout(function () {
+                        newWindow.document.title = link.targetedTab;
+                        newWindow.location.reload();
+                    }, 1000);
+                }
             }
         };
         var getPatientCountSeriallyBySearchIndex = function (index) {
