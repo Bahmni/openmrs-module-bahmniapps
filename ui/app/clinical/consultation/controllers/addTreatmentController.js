@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state', 'cdssService',
+        'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state', 'cdssService', 'observationsService', 'diagnosisService',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-                  orderSetService, $q, locationService, spinner, $translate, $state, cdssService) {
+                  orderSetService, $q, locationService, spinner, $translate, $state, cdssService, observationsService, diagnosisService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -357,6 +357,11 @@ angular.module('bahmni.clinical')
 
             $scope.add = function () {
                 var treatments = $scope.treatments;
+                if (($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && ($scope.obs.length == 0 ||
+                        (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
+                    ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration') && $scope.confirmedDiagnoses.length == 0)) {
+                    return;
+                }
                 if ($scope.treatment.isNewOrderSet) {
                     treatments = $scope.orderSetTreatments;
                 }
@@ -824,6 +829,75 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            var showRulesInMedication = function (medicationConfig) {
+                $scope.showRulesInMedication = false;
+                if (medicationConfig !== 'undefined' && medicationConfig.tabConfig !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig
+                    !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig.orderSet !== 'undefined') {
+                    if (medicationConfig.tabConfig.allMedicationTabConfig.orderSet.showRulesInMedication) {
+                        $scope.showRulesInMedication = true;
+                    }
+                }
+            };
+
+            $scope.$watch('treatment.route', function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $scope.checkForContinuousMedication(newValue);
+                }
+            });
+
+            $scope.$watch('treatment.quantity', function (newValue) {
+                if (newValue === 0 && $scope.isContinuousMedication && !$scope.treatment.uniformDosingType.frequency) {
+                    $scope.treatment.quantity = null;
+                }
+            });
+
+            $scope.checkForContinuousMedication = function (route) {
+                $scope.isContinuousMedication = $scope.continuousMedicationRoutes.includes(route);
+            };
+
+            var setContinuousMedicationRoutes = function (medicationConfig) {
+                $scope.continuousMedicationRoutes = [];
+                if (medicationConfig && medicationConfig.tabConfig && medicationConfig.tabConfig.allMedicationTabConfig
+                    && medicationConfig.tabConfig.allMedicationTabConfig.inputOptionsConfig) {
+                    $scope.continuousMedicationRoutes = medicationConfig.tabConfig.allMedicationTabConfig.inputOptionsConfig.continuousMedicationRoutes || [];
+                }
+            };
+
+            $scope.verifyAdd = function (treatment) {
+                if (!$scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && !$scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
+                    return $scope.addForm.$valid && $scope.calculateDose(treatment);
+                } else {
+                    var patientWeightError = false;
+                    var diagnosisError = false;
+                    if ($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
+                        if ($scope.obs.length == 0 || (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration)) {
+                            patientWeightError = true;
+                        }
+                    }
+                    if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
+                        if ($scope.confirmedDiagnoses.length == 0) {
+                            diagnosisError = true;
+                        }
+                    }
+                    if (patientWeightError && diagnosisError) {
+                        messagingService.showMessage("error", $translate.instant("PATIENT_WEIGHT_AND_DIAGNOSIS_ERROR"));
+                        $scope.clearForm();
+                        return false;
+                    } else if (patientWeightError) {
+                        messagingService.showMessage("error", $translate.instant("ENTER_PATIENT_WEIGHT_ERROR"));
+                        $scope.clearForm();
+                        return false;
+                    } else if (diagnosisError) {
+                        messagingService.showMessage("error", $translate.instant("ENTER_DIAGNOSIS_ERROR"));
+                        $scope.clearForm();
+                        return false;
+                    } else {
+                        $scope.addToNewTreatment = true;
+                        return $scope.addForm.$valid && $scope.calculateDose(treatment);
+                    }
+                }
+            };
+
             var init = function () {
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
@@ -833,6 +907,26 @@ angular.module('bahmni.clinical')
                 mergeActiveAndScheduledWithDiscontinuedOrders();
 
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
+                var medicationConfig = appService.getAppDescriptor().getConfigForPage('medication') || {};
+                $scope.addTreatmentWithPatientWeight = appService.getAppDescriptor().getConfigValue('addTreatmentWithPatientWeight') || {};
+                $scope.addTreatmentWithDiagnosis = appService.getAppDescriptor().getConfigValue('addTreatmentWithDiagnosis') || {};
+                if ($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
+                    observationsService.fetch($scope.patient.uuid, $scope.addTreatmentWithPatientWeight.conceptNames, "latest", 1, null, null, null, null).then(function (response) {
+                        $scope.currentEpoch = Math.floor(new Date().getTime() / 1000) * 1000;
+                        $scope.obs = response.data;
+                    });
+                }
+                if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
+                    diagnosisService.getPatientDiagnosis($scope.patient.uuid).then(function (response) {
+                        $scope.currentEpoch = Math.floor(new Date().getTime() / 1000) * 1000;
+                        $scope.confirmedDiagnoses = response.data.filter(function (diagnosis) {
+                            return diagnosis.order === 'PRIMARY';
+                        });
+                    });
+                }
+                $scope.addToNewTreatment = true;
+                showRulesInMedication(medicationConfig);
+                setContinuousMedicationRoutes(medicationConfig);
             };
             init();
         }]);
