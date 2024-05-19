@@ -60,6 +60,15 @@ resource_name          = IPD App
 replace_edited_strings = false
 keep_translations      = false
 
+[o:openmrs:p:bahmni:r:micro-frontend-app]
+file_filter            = micro-frontends/public/i18n/locale_<lang>.json
+source_file            = micro-frontends/public/i18n/locale_en.json
+type                   = KEYVALUEJSON
+minimum_perc           = 0
+resource_name          = Micro Frontend App
+replace_edited_strings = false
+keep_translations      = false
+
 [o:openmrs:p:bahmni:r:orders-app]
 file_filter            = ui/app/i18n/orders/locale_<lang>.json
 source_file            = ui/app/i18n/orders/locale_en.json
