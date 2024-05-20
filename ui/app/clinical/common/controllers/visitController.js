@@ -82,12 +82,6 @@ angular.module('bahmni.clinical')
                             $scope.observationsEntries = response[1].data;
                             angular.forEach(diagnoses, function (diagnosis) {
                                 if (diagnosis.order === printConfig.printDiagnosis.order &&
-                                    diagnosis.certainty === printConfig.printDiagnosis.certainity &&
-                                    diagnosis.codedAnswer !== null) {
-                                    if ($scope.diagnosesCodes.length > 0) {
-                                        $scope.diagnosesCodes += ", ";
-                                    }
-                                    $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
                                     diagnosis.certainty === printConfig.printDiagnosis.certainity) {
                                     if ($scope.diagnosesCodes.length > 0) {
                                         $scope.diagnosesCodes += ", ";
@@ -106,12 +100,11 @@ angular.module('bahmni.clinical')
                         });
                         promises.push(promise);
                     }
-
                     $scope.allergies = "";
                     var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
                         var allergies = response.data;
                         var allergiesList = [];
-                        if (response.status === 200) {
+                        if (response.status === 200 && allergies.entry) {
                             allergies.entry.forEach(function (allergy) {
                                 if (allergy.resource.code.coding) {
                                     allergiesList.push(allergy.resource.code.coding[0].display);
