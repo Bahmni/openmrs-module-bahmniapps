@@ -1,0 +1,8 @@
+button[class*="bx--"]{
+  &:hover{
+    background-image: none;
+    opacity: 1;
+  }
+  margin: 0;
+  background-image: none;
+}

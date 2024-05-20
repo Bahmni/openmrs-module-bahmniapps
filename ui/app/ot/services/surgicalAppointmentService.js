@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .service('surgicalAppointmentService', ['$http', function ($http) {
+    .service('surgicalAppointmentService', ['$http', 'appService', function ($http, appService) {
         this.getSurgeons = function () {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
@@ -51,6 +51,7 @@ angular.module('bahmni.ot')
         };
 
         this.getSurgicalBlocksInDateRange = function (startDatetime, endDatetime, includeVoided, activeBlocks) {
+            var additionalCustomParam = appService.getAppDescriptor().getConfigValue("additionalCustomParam");
             return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl, {
                 method: "GET",
                 params: {
@@ -60,10 +61,24 @@ angular.module('bahmni.ot')
                     activeBlocks: activeBlocks || false,
                     v: "custom:(id,uuid," +
                     "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
-                    "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +
-                    "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes))"
+                    "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age,gender,birthdate))," +
+                    "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes" +
+                    (additionalCustomParam ? "," + additionalCustomParam : "") + "))"
                 },
                 withCredentials: true
+            });
+        };
+
+        this.getPrimaryDiagnosisConfigForOT = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'obs.conceptMappingsForOT'
+                },
+                withCredentials: true,
+                headers: {
+                    Accept: 'text/plain'
+                }
             });
         };
         this.getBulkNotes = function (startDate, endDate) {

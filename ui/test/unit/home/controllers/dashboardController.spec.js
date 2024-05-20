@@ -4,11 +4,12 @@ describe('dashboardController', function () {
 
 
     var $aController, window, navigator;
-    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, appServiceMock;
+    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, appServiceMock, sessionService;
 
     beforeEach(module('bahmni.home'));
 
     beforeEach(module(function () {
+        sessionService = jasmine.createSpyObj('sessionService', ['updateSession']);
         scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
         rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
@@ -54,7 +55,8 @@ describe('dashboardController', function () {
             locationService: locationService,
             spinner: _spinner,
             appService: appServiceMock,
-            $bahmniCookieStore: $bahmniCookieStore
+            $bahmniCookieStore: $bahmniCookieStore,
+            sessionService: sessionService
         });
     });
 
@@ -166,5 +168,55 @@ describe('dashboardController', function () {
             return true;
         });
         expect(scopeMock.isVisibleExtension(extension)).toBeFalsy();
+    });
+
+    it("should return true if the extension has neither exclusiveOnlineModule nor exclusiveOfflineModule set", function () {
+        var extension = {
+            "extensionPointId": "org.bahmni.home.dashboard",
+            "url": "../clinical/index.html",
+            "order": 3,
+            "translationKey": "Clinical",
+            "requiredPrivilege": "app:clinical",
+            "type": "link",
+            "id": "bahmni.clinical",
+            "icon": "fa-stethoscope"
+        };
+    
+        window.navigator.__defineGetter__('onLine', function(){
+            return true;
+        });
+    
+        expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
+    });
+    
+    it("should return true if the current location matches the selected location", function () {
+        var currentLocation = { uuid: 1, display: "Location" };
+        $bahmniCookieStore.get.and.callFake(function(cookieName) {
+            if (cookieName == Bahmni.Common.Constants.locationCookieName) {
+                return currentLocation;
+            }
+        });
+    
+        var selectedLocation = currentLocation;
+    
+        expect(scopeMock.isCurrentLocation(selectedLocation)).toBe(true);
+    });
+
+    it("should return the location object for the given UUID", function () {
+        scopeMock.getLocationFor = function (uuid) {
+            return _.find(scopeMock.locations, function (location) {
+                return location.uuid === uuid;
+            });
+        };
+
+        var locations = [
+            { uuid: "uuid1", display: "Location 1" },
+            { uuid: "uuid2", display: "Location 2" },
+            { uuid: "uuid3", display: "Location 3" }
+        ];
+    
+        scopeMock.locations = locations;
+        var result = scopeMock.getLocationFor("uuid2");
+        expect(result).toEqual(locations[1]);
     });
 });

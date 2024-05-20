@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService) {
+    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService',
+        function ($scope, $state, $rootScope, $q, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
             $scope.currentVisitUrl = $state.current.views['dashboard-content'].templateUrl ||
                 $state.current.views['print-content'].templateUrl;
+            var showProviderInfo = appService.getAppDescriptor().getConfigValue('showProviderInfoinVisits');
+            $scope.showProviderInfo = showProviderInfo !== false ? true : showProviderInfo;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
             $scope.visitTabConfig = visitConfig;
@@ -67,7 +69,56 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("event:printVisitTab", function () {
-                printer.printFromScope("common/views/visitTabPrint.html", $scope);
+                var printConfig = $scope.visitTabConfig.currentTab.printing;
+                var templateUrl = printConfig.templateUrl;
+                if (templateUrl) {
+                    var promises = [];
+                    $scope.diagnosesCodes = "";
+                    $scope.observationsEntries = [];
+
+                    if (printConfig.observationsConcepts !== undefined) {
+                        var promise = $q.all([diagnosisService.getPatientDiagnosis($stateParams.patientUuid), observationsService.fetch($stateParams.patientUuid, printConfig.observationsConcepts, "latest", null, null, null, null, null)]).then(function (response) {
+                            const diagnoses = response[0].data;
+                            $scope.observationsEntries = response[1].data;
+                            angular.forEach(diagnoses, function (diagnosis) {
+                                if (diagnosis.order === printConfig.printDiagnosis.order &&
+                                    diagnosis.certainty === printConfig.printDiagnosis.certainity) {
+                                    if ($scope.diagnosesCodes.length > 0) {
+                                        $scope.diagnosesCodes += ", ";
+                                    }
+                                    if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
+                                        $scope.diagnosesCodes += diagnosis.codedAnswer.name;
+                                    }
+                                    else if (diagnosis.codedAnswer == null && diagnosis.freeTextAnswer !== null) {
+                                        $scope.diagnosesCodes += diagnosis.freeTextAnswer;
+                                    }
+                                }
+                            });
+                        });
+                        promises.push(promise);
+                    }
+
+                    Promise.all(promises).then(function () {
+                        $scope.additionalInfo = {};
+                        $scope.additionalInfo.visitSummary = $scope.visitSummary;
+                        $scope.additionalInfo.currentDate = new Date();
+                        $scope.additionalInfo.facilityLocation = $rootScope.facilityLocation;
+                        var tabName = printConfig.header.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function (match, chr) {
+                            return chr.toUpperCase();
+                        }).replace(/^[a-z]/, function (match) {
+                            return match.toUpperCase();
+                        });
+                        $scope.pageTitle = $scope.patient.givenName + $scope.patient.familyName + "_" + $scope.patient.identifier + "_" + tabName;
+                        printer.printFromScope(templateUrl, $scope);
+                    }).catch(function (error) {
+                        console.error("Error fetching details for print: ", error);
+                    });
+                } else {
+                    printer.printFromScope("common/views/visitTabPrint.html", $scope);
+                }
             });
 
             $scope.$on("event:clearVisitBoard", function () {
@@ -121,7 +172,7 @@ angular.module('bahmni.clinical')
                 var tabToOpen = getTab();
                 $scope.visitTabConfig.switchTab(tabToOpen);
                 printOnPrint();
-                getCertificateHeader();
+                $scope.showProviderInfo ? getCertificateHeader() : null;
             };
             init();
         }]);
