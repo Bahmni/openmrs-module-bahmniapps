@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Visits Table display control", function () {
-    var element, scope, $compile, mockBackend, conceptSetService, visitFormService,patientVisitHistoryService, $translate;
+    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, patientVisitHistoryService, $translate, appService;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.clinical'));
