@@ -367,9 +367,9 @@ angular.module('bahmni.clinical')
 
             $scope.add = function () {
                 var treatments = $scope.treatments;
-                if (($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && ($scope.obs.length == 0 ||
-                        (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
-                    ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order') && $scope.confirmedDiagnoses.length == 0)) {
+                if (($scope.addTreatmentWithPatientWeight && $scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && ($scope.obs.length == 0 ||
+                        (($scope.addTreatmentWithPatientWeight && $scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
+                    ($scope.addTreatmentWithDiagnosis && $scope.addTreatmentWithDiagnosis.hasOwnProperty('order') && $scope.confirmedDiagnoses.length == 0)) {
                     return;
                 }
                 if ($scope.allMedicinesInPrescriptionAvailableForIPD && currentVisitType === 'IPD') {

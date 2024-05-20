@@ -13,6 +13,18 @@ describe("AddTreatmentController", function () {
     }));
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
+    var medicationConfig = {
+        "commonConfig": {},
+        "tabConfig": {
+            "allMedicationTabConfig": {
+                "orderSet": {
+                    "calculateDoseOnlyOnCurrentVisitValues": false,
+                    "showRulesInMedication": true
+                }
+            }
+        }
+        };
+
     var activeDrugOrder = {
         "uuid": "activeOrderUuid",
         "action": "NEW",
@@ -243,7 +255,7 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, cdssService;
+        encounterDateTime, appService, appDescriptor, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, cdssService;
 
     stateParams = {
         tabConfigName: null
@@ -293,6 +305,7 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink']);
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
             scope.patient = {uuid: "patient.uuid"};
@@ -319,6 +332,8 @@ describe("AddTreatmentController", function () {
             cdssService.sortInteractionsByStatus.and.returnValue(specUtil.respondWith(cdssResponse));
 
             appService.getAppDescriptor.and.returnValue(appConfig);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            appDescriptor.getConfigForPage.and.returnValue(medicationConfig);
             orderSets = [{
                 "orderSetId": 3,
                 "uuid": "497b959b-101b-41a8-8154-3f252b2771d7",
