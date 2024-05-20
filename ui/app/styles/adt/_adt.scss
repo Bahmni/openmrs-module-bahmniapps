@@ -63,7 +63,7 @@ div[ng-app="adt"] {
 
             span.ward-header {
                 display: inline-block;
-                width: 90%;
+                width: 85%;
                 height: 37px;
                 padding: 10px;
             }
@@ -84,14 +84,13 @@ div[ng-app="adt"] {
         overflow-x: auto;
 
         input {
-            float: left;
-            min-width: 300px;
-            margin: 10px 10px;
-            padding: 2px 10px;
-            &:focus {
-                outline: 2px solid #007fff;
-			}
-            border: 1px solid #DDD;
+            border-top-width: 3px;
+            border-right-width: 3px;
+            border-left-width: 3px;
+            border-bottom-width: 3px;
+            padding: 2px;
+            margin-left: auto;
+            width: 176px;
         }
 
         table {
