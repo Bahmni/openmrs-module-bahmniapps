@@ -320,6 +320,8 @@ export function FormDisplayControl(props) {
                   formNameTranslations={formNameTranslations}
                   closeViewObservationForm={closeViewObservationForm}
                   formData={formData}
+                  showPrintOption={props?.hostData?.showPrintOption}
+                  printForm={printForm}
                 />
               ) : null}
               {showEditObservationForm ? (

@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import moment from "moment";
+import { render, screen, waitFor } from "@testing-library/react";
 import { FormDisplayControl } from "./FormDisplayControl";
 import {
   mockFormResponseData,
@@ -14,31 +15,15 @@ import { defaultDateTimeFormat } from "../../constants";
 
 const mockFetchFormData = jest.fn();
 const mockGetLatestPublishedForms = jest.fn();
-const mockOpenEditObservationForm = jest.fn();
-const mockHostApi = {
-  handleEditSave: jest.fn(),
-};
-const mockFindByEncounterUuid = jest.fn();
-const mockBuildFormMap = jest.fn();
 
 jest.mock("../../utils/FormDisplayControl/FormUtils", () => ({
   fetchFormData: () => mockFetchFormData(),
   getLatestPublishedForms: () => mockGetLatestPublishedForms(),
-  openEditObservationForm: () => mockOpenEditObservationForm(),
 }));
-
-jest.mock('../../utils/FormDisplayControl/FormUtils');
 
 jest.mock("../../Components/i18n/I18nProvider", () => ({
   I18nProvider: ({ children }) => <div>{children}</div>,
 }));
-
-jest.mock("../../utils/FormDisplayControl/FormView", () => ({
-  findByEncounterUuid: () => mockFindByEncounterUuid(),
-  buildFormMap: () => mockBuildFormMap()
-}));
-
-jest.mock("../../utils/FormDisplayControl/BuildFormView")
 
 const mockHostData = {
   patientUuid: "some-patient-uuid",
@@ -106,9 +91,6 @@ describe("FormDisplayControl Component with Accordion and Non-Accordion", () => 
   beforeEach(() => {
     mockFetchFormData.mockResolvedValue(mockFormResponseData);
     mockGetLatestPublishedForms.mockResolvedValue(mockLatestPublishedForms);
-    mockOpenEditObservationForm.mockResolvedValue({});
-    mockFindByEncounterUuid.mockResolvedValue(mockEncounterData);
-    mockBuildFormMap.mockResolvedValue([{value: [{groupMembers: []}]}]);
   });
   // TODO: fix this test
   //  it("should render the component with form data", async() => {
