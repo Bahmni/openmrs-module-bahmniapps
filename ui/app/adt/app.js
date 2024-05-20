@@ -28,8 +28,20 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'content': {
                     templateUrl: 'views/home.html',
-                    controller: function ($scope, appService) {
+                    controller: function ($rootScope, $scope, appService) {
+                        $scope.showCareViewDashboard = false;
+                        $scope.openCareView = function () {
+                            $scope.showCareViewDashboard = true;
+                        };
+                        $scope.hostData = {};
+                        $scope.hostApi = {
+                            onHome: function () {
+                                $scope.showCareViewDashboard = false;
+                                $scope.$apply();
+                            }
+                        };
                         $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
+                        $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                     }
                 },
                 'wards@home': {
