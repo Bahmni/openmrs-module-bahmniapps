@@ -19,14 +19,21 @@ angular.module('bahmni.clinical')
             $scope.showTrends = true;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
-            $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null;
+            $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD";
+            $scope.isIpdReadMode = true;
+            if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null) {
+                $scope.isIpdReadMode = false;
+            } else if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime !== null) {
+                $scope.isIpdReadMode = true;
+            }
             $scope.ipdDashboard = {
                 hostData: {
                     patient: {uuid: $scope.patientUuid},
-                    visitSummary: $scope.visitSummary,
                     forDate: new Date().toUTCString(),
                     provider: $rootScope.currentProvider,
-                    visitUuid: $scope.visitUuid
+                    visitSummary: $scope.visitSummary,
+                    visitUuid: $scope.visitUuid,
+                    isReadMode: $scope.isIpdReadMode
                 },
                 hostApi: {
                     navigation: {
