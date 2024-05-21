@@ -5,16 +5,16 @@ angular.module('bahmni.registration')
         'messagingService', '$translate', '$filter',
         function ($rootScope, $scope, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
             $scope.results = [];
-            var searchDisplayOptions = appService.getAppDescriptor().getConfigValue("patientSearchResultOptions") || {};
-            var ignoredIdentifiers = new Set(searchDisplayOptions.ignorePatientIdentifiers || []);
-            $scope.showAge = searchDisplayOptions.showAge != null ? searchDisplayOptions.showAge : true;
-            $scope.showDOB = searchDisplayOptions.showDOB != null ? searchDisplayOptions.showDOB : false;
+            var searching = false;
+            var maxAttributesFromConfig = 5;
+            const allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
+            const patientSearchResultOptions = allSearchConfigs.patientSearchResultOptions != null ? allSearchConfigs.patientSearchResultOptions : {};
+            const ignoredIdentifiers = new Set(patientSearchResultOptions.ignorePatientIdentifiers || []);
+            $scope.showAge = patientSearchResultOptions.showAge != null ? patientSearchResultOptions.showAge : true;
+            $scope.showDOB = patientSearchResultOptions.showDOB != null ? patientSearchResultOptions.showDOB : false;
             $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
                 return !identifierType.primary && !ignoredIdentifiers.has(identifierType.name);
             });
-            var searching = false;
-            var maxAttributesFromConfig = 5;
-            var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
             var patientSearchResultConfigs = appService.getAppDescriptor().getConfigValue("patientSearchResults") || {};
             maxAttributesFromConfig = !_.isEmpty(allSearchConfigs.programAttributes) ? maxAttributesFromConfig - 1 : maxAttributesFromConfig;
 
