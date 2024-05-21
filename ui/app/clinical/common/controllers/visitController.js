@@ -100,6 +100,20 @@ angular.module('bahmni.clinical')
                         });
                         promises.push(promise);
                     }
+                    $scope.allergies = "";
+                    var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
+                        var allergies = response.data;
+                        var allergiesList = [];
+                        if (response.status === 200 && allergies.entry) {
+                            allergies.entry.forEach(function (allergy) {
+                                if (allergy.resource.code.coding) {
+                                    allergiesList.push(allergy.resource.code.coding[0].display);
+                                }
+                            });
+                        }
+                        $scope.allergies = allergiesList.join(", ");
+                    });
+                    promises.push(allergyPromise);
 
                     Promise.all(promises).then(function () {
                         $scope.additionalInfo = {};
