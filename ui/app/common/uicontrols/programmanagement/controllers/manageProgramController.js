@@ -67,7 +67,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 }), id);
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
-                $scope.disableProgramOutcome = programService.disableProgramOutcome();
+                $scope.disableProgramOutcomeEditOption = programService.disableProgramOutcomeEditOption();
                 updateActiveProgramsList();
             };
 

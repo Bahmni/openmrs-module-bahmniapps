@@ -121,8 +121,8 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        var disableProgramOutcome = function () {
-            return appService.getAppDescriptor().getConfigValue('disableProgramOutcome') || false;
+        var disableProgramOutcomeEditOption = function () {
+            return appService.getAppDescriptor().getConfigValue('disableProgramOutcomeEditOption') || false;
         };
 
         return {
@@ -137,6 +137,6 @@ angular.module('bahmni.common.domain')
             getEnrollmentInfoFor: getEnrollmentInfoFor,
             getDefaultProgram: getDefaultProgram,
             getProgramRedirectionConfig: getProgramRedirectionConfig,
-            disableProgramOutcome: disableProgramOutcome
+            disableProgramOutcomeEditOption: disableProgramOutcomeEditOption
         };
     }]);
