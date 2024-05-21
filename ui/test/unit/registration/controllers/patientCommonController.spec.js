@@ -54,7 +54,8 @@ describe('PatientCommonController', function () {
                                 "state": "stateProvince",
                                 "postalCode": "postalCode",
                                 "line": ["address1"]
-                            }
+                            },
+                            "buttons": "<button>Exit Button</button>"
                         }
                     }];
                 }
@@ -473,6 +474,16 @@ it('checks that the confirmation popup is not prompted on the Registration secon
 
         })
 
+    })
+
+    describe("getExtButtons", function () {
+        it("should return null when identifierType is not passed", function () {
+            expect(scope.getExtButtons()).toBe(null);
+        })
+
+        it("should return Exit Button when identifierType is passed", function () {
+            expect(scope.getExtButtons("ABHA Address")).toBe("<button>Exit Button</button>");
+        })
     })
 })
 
