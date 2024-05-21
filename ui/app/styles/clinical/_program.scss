@@ -130,7 +130,8 @@
     font-family: openSansSemiBold;
   }
   .select-program-option {
-    padding: 10px 0px;
+    padding: 10px 10px;
+    border: 1px solid #669999;
     &.form-field{
       .field-attribute label{
         width: auto;
