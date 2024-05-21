@@ -869,12 +869,12 @@ angular.module('bahmni.clinical')
                 } else {
                     var patientWeightError = false;
                     var diagnosisError = false;
-                    if ($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
+                    if ($scope.addTreatmentWithPatientWeight && $scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
                         if ($scope.obs.length == 0 || (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration)) {
                             patientWeightError = true;
                         }
                     }
-                    if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order')) {
+                    if ($scope.addTreatmentWithDiagnosis && $scope.addTreatmentWithDiagnosis.hasOwnProperty('order')) {
                         if ($scope.confirmedDiagnoses.length == 0) {
                             diagnosisError = true;
                         }

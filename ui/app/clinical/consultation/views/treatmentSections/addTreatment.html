@@ -265,7 +265,8 @@
 
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
-                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
+                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug"
+                            ng-click="verifyAdd(treatment)">
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>
