@@ -911,30 +911,6 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.$watch('treatment.route', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    $scope.checkForContinuousMedication(newValue);
-                }
-            });
-
-            $scope.$watch('treatment.quantity', function (newValue) {
-                if (newValue === 0 && $scope.isContinuousMedication && !$scope.treatment.uniformDosingType.frequency) {
-                    $scope.treatment.quantity = null;
-                }
-            });
-
-            $scope.checkForContinuousMedication = function (route) {
-                $scope.isContinuousMedication = $scope.continuousMedicationRoutes.includes(route);
-            };
-
-            var setContinuousMedicationRoutes = function (medicationConfig) {
-                $scope.continuousMedicationRoutes = [];
-                if (medicationConfig && medicationConfig.tabConfig && medicationConfig.tabConfig.allMedicationTabConfig
-                    && medicationConfig.tabConfig.allMedicationTabConfig.inputOptionsConfig) {
-                    $scope.continuousMedicationRoutes = medicationConfig.tabConfig.allMedicationTabConfig.inputOptionsConfig.continuousMedicationRoutes || [];
-                }
-            };
-
             var init = function () {
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
