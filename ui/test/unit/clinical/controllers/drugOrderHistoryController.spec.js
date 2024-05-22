@@ -110,7 +110,7 @@ describe("DrugOrderHistoryController", function () {
             expect(Object.keys(scope.selectedDrugs).length).toBe(3);
             expect()
         })
-        it("should selectAllDrugs for print", function () {
+        it("should not selectAllDrugs for print when auto select is not allowed", function () {
             translate.instant.and.returnValue("Recent");
             initController();
             expect(scope.consultation.drugOrderGroups.length).toBe(3);
