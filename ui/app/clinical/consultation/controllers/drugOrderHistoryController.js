@@ -16,8 +16,6 @@ angular.module('bahmni.clinical')
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
-            $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
-            $scope.selectedDrugs = {};
 
             if ($scope.enableIPDFeature) {
                 $scope.updateOrderType = function (drugOrder) {
