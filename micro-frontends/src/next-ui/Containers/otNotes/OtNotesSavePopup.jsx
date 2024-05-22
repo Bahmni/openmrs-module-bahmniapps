@@ -1,0 +1,100 @@
+import React, {useState} from "react";
+import PropTypes from "prop-types";
+import {Modal, TextArea, DatePicker, DatePickerInput} from "carbon-components-react";
+import "../../../styles/carbon-conflict-fixes.scss";
+import "../../../styles/carbon-theme.scss";
+import "./OtNotes.scss";
+import {FormattedMessage} from "react-intl";
+import {I18nProvider} from '../../Components/i18n/I18nProvider';
+
+export function OtNotesSavePopup(props) {
+    const {hostData, hostApi} = props;
+    const {notes, weekEndDateTime, weekStartDateTime, isDayView, validStartDate, viewDate, noteId, noteDate} = hostData;
+    const [modalNotes, setModalNotes] = useState(notes || "");
+    const [startDate, setStartDate] = useState(new Date(noteDate));
+    const [endDate, setEndDate] = useState(new Date(noteDate));
+    const [shouldShowErrors, setShouldShowErrors] = useState(false);
+
+    const checkForErrors = () => {
+        return !modalNotes || !startDate || !endDate || startDate > endDate;
+    }
+
+    return (
+        <I18nProvider>
+            <Modal
+                open
+                className={"next-ui ot-notes-popup"}
+                modalHeading={noteId ? <FormattedMessage id={'UPDATE_NOTE_TITLE'} defaultMessage={"Update Notes"}/> :
+                    <FormattedMessage id={'ADD_NOTE_TITLE'} defaultMessage={"Add Notes"}/>}
+                primaryButtonText={noteId ? <FormattedMessage id={"UPDATE"} defaultMessage={"Update"}/> :
+                    <FormattedMessage id={"SAVE"} defaultMessage={"Save"}/>}
+                secondaryButtonText={<FormattedMessage id={"CANCEL"} defaultMessage={"Cancel"}/>}
+                onRequestClose={hostApi?.onClose}
+                onRequestSubmit={() => {
+                    console.log("Values", modalNotes, startDate, endDate);
+                    checkForErrors();
+                    setShouldShowErrors(true);
+                }}
+            >
+                <TextArea labelText={<FormattedMessage id={"OT_NOTES"} defaultMessage={"Notes"}/>}
+                          placeholder={"Enter a maximum of 150 characters"} maxCount={150} onChange={e => {
+                    setModalNotes(e?.target?.value);
+                }}/>
+                {shouldShowErrors && !modalNotes ?
+                    <p className={"error-text"}><FormattedMessage id={"EMPTY_NOTES_ERROR"}
+                                                                  defaultMessage={"Note cannot be empty"}/>
+                    </p> : <div style={{height: "20px"}}></div>}
+                <div className={"date-range"}>
+                    <div>
+                        <DatePicker datePickerType="single" maxDate={new Date(weekEndDateTime)} dateFormat={"d/m/Y"}
+                                    minDate={new Date(weekStartDateTime)} value={startDate}
+                                    onChange={(e) => {
+                                        if (e.length === 1) {
+                                            setStartDate(e[0]);
+                                        }
+                                    }}>
+                            <DatePickerInput
+                                id="date-picker-input-id-start"
+                                placeholder="dd/mm/yyyy"
+                                labelText="Start date"
+                            />
+                        </DatePicker>
+                        {shouldShowErrors && !startDate ?
+                            <div className={"error-text"}><FormattedMessage id={'DATE_OUT_OF_RANGE_ERROR'}
+                                                                            defaultMessage={"Please select date within the valid range"}/>
+                            </div> : startDate > endDate ?
+                                <div className={"error-text"}><FormattedMessage id={'FROM_DATE_BEFORE_TO_DATE_ERROR'}
+                                                                                defaultMessage={"From date should be before To date"}/>
+                                </div> :
+                                <div style={{height: "20px"}}></div>
+                        }
+                    </div>
+                    <div>
+                        <DatePicker datePickerType="single" maxDate={new Date(weekEndDateTime)} dateFormat={"d/m/Y"}
+                                    minDate={startDate ? startDate : new Date(weekStartDateTime)} value={endDate}
+                                    onChange={(e) => {
+                                        if (e.length === 1) {
+                                            setEndDate(e[0]);
+                                        }
+                                    }}>
+                            <DatePickerInput
+                                id="date-picker-input-id-finish"
+                                placeholder="dd/mm/yyyy"
+                                labelText="End date"
+                            />
+                        </DatePicker>
+                        {shouldShowErrors && !endDate ?
+                            <div className={"error-text"}><FormattedMessage id={'DATE_OUT_OF_RANGE_ERROR'}
+                                                                            defaultMessage={"Please select date within the valid range"}/>
+                            </div> : <div style={{height: "20px"}}></div>}
+                    </div>
+                </div>
+            </Modal>
+        </I18nProvider>
+    );
+}
+
+OtNotesSavePopup.propTypes = {
+    hostData: PropTypes.any,
+    hostApi: PropTypes.any,
+}
