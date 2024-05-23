@@ -82,37 +82,7 @@ angular.module('bahmni.ot')
                     providerUuid: $rootScope.currentProvider.uuid
                 };
             };
-            $scope.closeNotes = function () {
-                $scope.isModalVisible = false;
-                $scope.startDateBeforeEndDateError = false;
-                $scope.emptyNoteError = false;
-                $scope.dateOutOfRangeError = false;
-                $scope.notesStartDate = undefined;
-                $scope.notesEndDate = undefined;
-                $scope.otNotesField = '';
-                $scope.isEdit = false;
-            };
-            $scope.setNotesEndDate = function (date) {
-                $scope.dateOutOfRangeError = date === undefined;
-                $scope.startDateBeforeEndDateError = date < $scope.notesStartDate;
-                $scope.notesEndDate = date;
-            };
 
-            $scope.setNotesStartDate = function (date) {
-                $scope.dateOutOfRangeError = date === undefined;
-                $scope.startDateBeforeEndDateError = date > $scope.notesEndDate;
-                $scope.notesStartDate = date;
-            };
-
-            $scope.setNotes = function (notes) {
-                $scope.otNotesField = notes;
-                if (notes) {
-                    $scope.emptyNoteError = false;
-                }
-                if (notes && notes.id) {
-                    $scope.notesId = notes.id;
-                }
-            };
             $scope.openDeletePopup = function (weekStartDate, index) {
                 if (weekStartDate) {
                     $scope.currentDate = new Date(weekStartDate);
@@ -120,20 +90,12 @@ angular.module('bahmni.ot')
                     $scope.hostData = {
                         noteId: $scope.getNotesForWeek(weekStartDate, index)[0].noteId
                     };
+                } else {
+                    $scope.hostData = {
+                        noteId: $scope.noteId
+                    };
                 }
                 $scope.showDeletePopUp = true;
-            };
-            $scope.closeDeletePopup = function () {
-                $scope.showDeletePopUp = false;
-            };
-            $scope.deleteNotes = function () {
-                var noteId;
-                if ($scope.weekOrDay === "week") {
-                    noteId = $scope.notesForWeek[$scope.currentDate].noteId;
-                }
-                surgicalAppointmentService.deleteNoteForADay(noteId || $scope.noteId);
-                $scope.showDeletePopUp = false;
-                $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
             $scope.hostApi = {
@@ -147,39 +109,6 @@ angular.module('bahmni.ot')
                     });
                 }
             };
-
-            $scope.saveNotes = function () {
-                if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
-                    return;
-                }
-                if (!$scope.otNotesField) {
-                    $scope.emptyNoteError = true;
-                    return;
-                }
-                if ($scope.isDayView) {
-                    surgicalAppointmentService.saveNoteForADay($scope.viewDate, $scope.otNotesField);
-                } else {
-                    surgicalAppointmentService.saveNoteForADay($scope.notesStartDate, $scope.otNotesField, $scope.notesEndDate);
-                }
-                $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
-            };
-
-            $scope.updateNotes = function () {
-                if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
-                    return;
-                }
-                if (!$scope.otNotesField) {
-                    $scope.emptyNoteError = true;
-                    return;
-                }
-                var note;
-                if ($scope.weekOrDay === "week") {
-                    note = $scope.notesForWeek[$scope.notesStartDate];
-                }
-                surgicalAppointmentService.updateNoteForADay(note ? note.noteId : $scope.noteId, $scope.otNotesField, $rootScope.currentProvider.uuid);
-                $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
-            };
-
             var heightPerMin = 120 / $scope.dayViewSplit;
             var showToolTipForNotes = function () {
                 $('.notes-text').tooltip({
@@ -205,7 +134,6 @@ angular.module('bahmni.ot')
                 $scope.editDisabled = true;
                 $scope.cancelDisabled = true;
                 $scope.addActualTimeDisabled = true;
-                $scope.otNotes = "";
                 $scope.isModalVisible = false;
                 $scope.showDeletePopUp = false;
                 $scope.dayViewSplit = parseInt($scope.dayViewSplit) > 0 ? parseInt($scope.dayViewSplit) : 60;
@@ -232,14 +160,6 @@ angular.module('bahmni.ot')
                             $scope.noteForTheDay = '';
                             $scope.noteId = '';
                         }
-
-                        $scope.hostData = {
-                            notes: response[3].data.length > 0 ? response[3].data[0].noteText : '',
-                            noteId: response[3].data.length > 0 ? response[3].data[0].noteId : '',
-                            validStartDate: $scope.blocksStartDatetime,
-                            validEndDate: $scope.blocksEndDatetime,
-                            viewDate: $scope.viewDate
-                        };
                         var providerNames = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                         $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNames, response[2].data.results);
                         var surgicalBlocksBySurgeons = _.map($scope.surgeons, function (surgeon) {
