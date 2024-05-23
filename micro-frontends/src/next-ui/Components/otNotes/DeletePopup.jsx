@@ -13,7 +13,7 @@ export function DeletePopup(props) {
         open
         danger
         className="next-ui ot-notes-popup"
-        modalHeading={<FormattedMessage id={"DELETE_OT_NOTE_HEADING"} defaultMessage={"Delete Note"}/>}
+        modalHeading={<FormattedMessage id={"DELETE_NOTE_TITLE"} defaultMessage={"Delete Note"}/>}
         primaryButtonText={isLoading? <FormattedMessage id={"LOADING"} defaultMessage={"Loading..."}/> : <FormattedMessage id={"YES"} defaultMessage={"Yes"}/>}
         secondaryButtonText={<FormattedMessage id={"NO"} defaultMessage={"No"}/>}
         onRequestClose={hostApi?.onClose}
@@ -26,7 +26,7 @@ export function DeletePopup(props) {
             });
         }}
     >
-        <FormattedMessage id={"DELETE_OT_NOTE_MESSAGE"} defaultMessage={"Are you sure you want to delete this OT Note?"}/>
+        <FormattedMessage id={"DELETE_NOTE_MESSAGE"} defaultMessage={"Are you sure you want to delete this OT Note?"}/>
     </Modal>
 }
 

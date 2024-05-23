@@ -4,7 +4,7 @@ import {Modal, TextArea, DatePicker, DatePickerInput} from "carbon-components-re
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
 import "./OtNotes.scss";
-import {FormattedMessage} from "react-intl";
+import {FormattedMessage, useIntl} from "react-intl";
 import {I18nProvider} from '../i18n/I18nProvider';
 import moment from "moment";
 import {saveNote, updateNoteForADay} from "./OtNotesUtils";
@@ -27,19 +27,19 @@ export function SavePopup(props) {
     const validMinStartDate = noteId || isDayView ? new Date(noteDate) : new Date(weekStartDateTime);
     const [validMinEndDate, setValidMinEndDate] = useState(noteId || isDayView ? new Date(noteDate) : new Date(weekEndDateTime));
     const [isLoading, setIsLoading] = useState(false);
+    const intl = useIntl();
 
     const checkForErrors = () => {
         return !modalNotes || !startDate || !endDate || startDate > endDate;
     }
 
     const handleSave = () => {
-        if(noteId) {
+        if (noteId) {
             updateNoteForADay(noteId, modalNotes, providerUuid).then(() => {
                 setIsLoading(false);
                 hostApi?.onSuccess();
             });
-        }
-        else if(isDayView){
+        } else if (isDayView) {
             saveNote(modalNotes, startDate).then(() => {
                 setIsLoading(false);
                 hostApi?.onSuccess();
@@ -69,7 +69,7 @@ export function SavePopup(props) {
                 onRequestClose={hostApi?.onClose}
                 onRequestSubmit={() => {
                     setShouldShowErrors(true);
-                    if(!checkForErrors()) {
+                    if (!checkForErrors()) {
                         setIsLoading(true);
                         handleSave();
                     }
@@ -77,7 +77,10 @@ export function SavePopup(props) {
             >
                 <TextArea labelText={<FormattedMessage id={"OT_NOTES"} defaultMessage={"Notes"}/>}
                           value={modalNotes}
-                          placeholder={"Enter a maximum of 150 characters"} maxCount={150} onChange={e => {
+                          placeholder={intl.formatMessage({
+                              id: "NOTES_PLACEHOLDER",
+                              defaultMessage: "Enter a maximum of 150 characters"
+                          })} maxCount={150} onChange={e => {
                     setModalNotes(e?.target?.value);
                 }}/>
                 {shouldShowErrors && !modalNotes ?
