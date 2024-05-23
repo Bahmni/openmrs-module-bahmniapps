@@ -117,6 +117,9 @@ angular.module('bahmni.ot')
                 if (weekStartDate) {
                     $scope.currentDate = new Date(weekStartDate);
                     $scope.currentDate.setDate($scope.currentDate.getDate() + index);
+                    $scope.hostData = {
+                        noteId: $scope.getNotesForWeek(weekStartDate, index)[0].noteId
+                    };
                 }
                 $scope.showDeletePopUp = true;
             };

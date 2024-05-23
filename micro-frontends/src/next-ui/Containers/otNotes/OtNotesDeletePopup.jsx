@@ -22,7 +22,7 @@ export function OtNotesDeletePopup(props) {
             setIsLoading(true);
             deleteOtNote(hostData?.noteId).then(() => {
                 setIsLoading(false);
-                hostApi?.onDelete();
+                hostApi?.onSuccess();
             });
         }}
     >
