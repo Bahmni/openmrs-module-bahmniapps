@@ -1,7 +1,7 @@
 describe('allergyService', function() {
     var _$http, appService;
 
-    beforeEach(module('bahmni.clinical'));
+    beforeEach(module('bahmni.common.util'));
     
     beforeEach(module(function () {
         _$http = jasmine.createSpyObj('$http', ['get', 'delete']);
