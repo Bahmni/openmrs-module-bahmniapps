@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', '$rootScope', 'cdssService',
-        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, $rootScope, cdssService) {
+    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', '$rootScope', 'cdssService', 'appService', '$filter',
+        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, $rootScope, cdssService, appService, $filter) {
             var init = function () {
                 var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
                 $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';
