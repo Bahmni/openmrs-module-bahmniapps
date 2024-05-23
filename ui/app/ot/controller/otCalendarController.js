@@ -70,15 +70,17 @@ angular.module('bahmni.ot')
                 };
             };
             $scope.showNotesPopupEdit = function (weekStartDate, addIndex) {
-                const note = $scope.getNotesForDay(weekStartDate, addIndex);
-                const currentDate = new Date(weekStartDate);
-                $scope.otNotesField = note;
-                currentDate.setDate(currentDate.getDate() + addIndex);
-                $scope.notesStartDate = currentDate;
-                $scope.notesEndDate = currentDate;
                 $scope.isModalVisible = true;
-                $scope.isEdit = true;
-                $scope.dateOutOfRangeError = false;
+                const getNoteForTheDay = $scope.getNotesForWeek(weekStartDate, addIndex);
+                $scope.hostData = {
+                    notes: getNoteForTheDay[0].noteText,
+                    noteId: getNoteForTheDay[0].noteId,
+                    isDayView: $state.weekOrDay === 'day',
+                    weekStartDateTime: $scope.validStartDate,
+                    weekEndDateTime: $scope.validEndDate,
+                    noteDate: new Date(getNoteForTheDay[0].noteDate),
+                    providerUuid: $rootScope.currentProvider.uuid
+                };
             };
             $scope.closeNotes = function () {
                 $scope.isModalVisible = false;
@@ -131,15 +133,8 @@ angular.module('bahmni.ot')
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
-            // $scope.hostData = {
-            //     notes: $scope.noteForTheDay,
-            //     noteId: $scope.notesId,
-            //     validStartDate: $scope.validStartDate,
-            //     validEndDate: $scope.validEndDate
-            // };
-
             $scope.hostApi = {
-                onDelete: () => {
+                onSuccess: () => {
                     $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
                 },
                 onClose: () => {
