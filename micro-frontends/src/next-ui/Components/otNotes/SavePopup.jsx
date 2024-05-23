@@ -7,7 +7,7 @@ import "./OtNotes.scss";
 import {FormattedMessage, useIntl} from "react-intl";
 import {I18nProvider} from '../i18n/I18nProvider';
 import moment from "moment";
-import {saveNote, updateNoteForADay} from "./OtNotesUtils";
+import {saveNote, updateNoteForADay} from "./utils";
 
 export function SavePopup(props) {
     const {hostData, hostApi} = props;
@@ -29,7 +29,7 @@ export function SavePopup(props) {
     const [isLoading, setIsLoading] = useState(false);
     const intl = useIntl();
 
-    const checkForErrors = () => {
+    const hasActiveErrors = () => {
         return !modalNotes || !startDate || !endDate || startDate > endDate;
     }
 
@@ -69,7 +69,7 @@ export function SavePopup(props) {
                 onRequestClose={hostApi?.onClose}
                 onRequestSubmit={() => {
                     setShouldShowErrors(true);
-                    if (!checkForErrors()) {
+                    if (!hasActiveErrors()) {
                         setIsLoading(true);
                         handleSave();
                     }

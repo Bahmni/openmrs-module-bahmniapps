@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Modal } from "carbon-components-react";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
-import { deleteOtNote } from "./OtNotesUtils";
+import { deleteOtNote } from "./utils";
 import {FormattedMessage} from "react-intl";
 import "./OtNotes.scss";
 export function DeletePopup(props) {
