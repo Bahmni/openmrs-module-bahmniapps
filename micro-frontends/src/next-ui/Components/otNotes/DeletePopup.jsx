@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Modal } from "carbon-components-react";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
-import { deleteOtNote } from "./utils/otNotesUtils";
+import { deleteOtNote } from "./OtNotesUtils";
 import {FormattedMessage} from "react-intl";
 import "./OtNotes.scss";
-export function OtNotesDeletePopup(props) {
+export function DeletePopup(props) {
     const { hostData, hostApi} = props;
     const [isLoading, setIsLoading] = useState(false);
     return <Modal
@@ -30,7 +30,7 @@ export function OtNotesDeletePopup(props) {
     </Modal>
 }
 
-OtNotesDeletePopup.propTypes = {
+DeletePopup.propTypes = {
     hostData: PropTypes.Object,
     hostApi: PropTypes.Object,
 }

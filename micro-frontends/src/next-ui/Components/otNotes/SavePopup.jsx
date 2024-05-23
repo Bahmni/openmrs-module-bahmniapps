@@ -5,11 +5,11 @@ import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
 import "./OtNotes.scss";
 import {FormattedMessage} from "react-intl";
-import {I18nProvider} from '../../Components/i18n/I18nProvider';
+import {I18nProvider} from '../i18n/I18nProvider';
 import moment from "moment";
-import {saveNote, updateNoteForADay} from "./utils/otNotesUtils";
+import {saveNote, updateNoteForADay} from "./OtNotesUtils";
 
-export function OtNotesSavePopup(props) {
+export function SavePopup(props) {
     const {hostData, hostApi} = props;
     const {
         notes,
@@ -136,7 +136,7 @@ export function OtNotesSavePopup(props) {
     );
 }
 
-OtNotesSavePopup.propTypes = {
+SavePopup.propTypes = {
     hostData: PropTypes.any,
     hostApi: PropTypes.any,
 }

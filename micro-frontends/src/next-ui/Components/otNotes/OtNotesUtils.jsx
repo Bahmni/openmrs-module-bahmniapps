@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { OT_NOTES_BASE_URL } from "../../../constants";
+import { OT_NOTES_BASE_URL } from "../../constants";
 
 export const deleteOtNote = async (id) => {
     try {
