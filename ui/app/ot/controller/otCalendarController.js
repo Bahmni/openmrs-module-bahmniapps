@@ -99,11 +99,11 @@ angular.module('bahmni.ot')
             };
 
             $scope.hostApi = {
-                onSuccess: () => {
+                onSuccess: function () {
                     $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
                 },
-                onClose: () => {
-                    $scope.$apply(() => {
+                onClose: function () {
+                    $scope.$apply(function () {
                         $scope.showDeletePopUp = false;
                         $scope.isModalVisible = false;
                     });
