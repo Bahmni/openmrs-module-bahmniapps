@@ -1,5 +1,5 @@
-<article class="patient-dashboard visit">
-    <div class="pgContainer">
+<article ng-class="tabConfigName === 'allMedicationTabConfig' ? '' :'patient-dashboard visit'">
+    <div ng-class="tabConfigName === 'allMedicationTabConfig' ? '' :'pgContainer'">
         <article>
             <div ng-repeat="sections in sectionGroups" class="dashboard-sections-wrapper">
                 <div ng-if="::isFullPageSection(sections)" ng-repeat="section in sections" class="dashboard-sections fullpage-container">
