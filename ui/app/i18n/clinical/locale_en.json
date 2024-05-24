@@ -129,6 +129,8 @@
   "MEDICATION_ADD_DRUG_FORM_TITLE": "Order Drug",
   "MEDICATION_ADD_ORDERSET_FORM_TITLE": "Order an Order Set",
   "MEDICATION_LABEL_DOSE": "Dose",
+  "MEDICATION_LABEL_RULE": "Rule",
+  "MEDICATION_CHOOSE_RULE":"Choose Rule",
   "MEDICATION_LABEL_UNITS": "Units",
   "MEDICATION_LABEL_FREQUENCY": "Frequency",
   "MEDICATION_LABEL_ROUTE": "Route",
@@ -163,6 +165,8 @@
   "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
   "CLEAR_CONFIRMATION_KEY": "Are you sure you want to clear?",
   "REMOVE_DRUG_ORDER_KEY": "Are you sure you want to remove drug : {{ drugName }} ?",
+  "ENTER_PATIENT_WEIGHT_ERROR": "Patient weight has not been captured recently, Prescription cannot be created.",
+
   "DRUG_DETAILS_DRUG_NAME": "Drug",
   "DRUG_DETAILS_DOSE_INFO": "Dose",
   "DRUG_DETAILS_ROUTE": "Route",
