@@ -67,11 +67,6 @@ export const memberTypes = {
   COMPLEX: "Complex",
   BOOLEAN: "Boolean",
 };
-
-export const formatDate = (value, format = "DD-MMM-YYYY") => {
-  return value ? moment(value).format(format) : value;
-};
-
 export const getValue = (member) => {
   const { value = "", type, complexData = {}, valueAsString } = member;
   let finalValue = value?.shortName || value;

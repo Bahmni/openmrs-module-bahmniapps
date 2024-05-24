@@ -125,7 +125,7 @@ angular.module('bahmni.common.domain')
             return appService.getAppDescriptor().getConfigValue('disableProgramOutcomeEditOption') || false;
         };
 
-        const getObservationFormsConfig = () => {
+        var getObservationFormsConfig = function () {
             return appService.getAppDescriptor().getConfigValue('observationForms') || {};
         };
 
@@ -142,6 +142,6 @@ angular.module('bahmni.common.domain')
             getDefaultProgram: getDefaultProgram,
             getProgramRedirectionConfig: getProgramRedirectionConfig,
             disableProgramOutcomeEditOption: disableProgramOutcomeEditOption,
-            getObservationFormsConfig
+            getObservationFormsConfig: getObservationFormsConfig
         };
     }]);
