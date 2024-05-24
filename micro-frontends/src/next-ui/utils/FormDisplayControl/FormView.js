@@ -1,9 +1,10 @@
 import axios from "axios";
-import moment from "moment";
 import { ENCOUNTER_BASE_URL } from "../../constants";
 import { build } from "../FormDisplayControl/BuildFormView";
+import { defaultDateFormat } from "../../constants";
+import { formatDate } from "../../index";
 
-export const findByEncounterUuid = async (encounterUuid) => {
+var findByEncounterUuid = async (encounterUuid) => {
   const apiURL = ENCOUNTER_BASE_URL.replace("{encounterUuid}", encounterUuid);
   const params = {
     includeAll: false,
