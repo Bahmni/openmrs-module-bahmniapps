@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
-            $scope.autoSelectNotAllowed = $scope.printPrescriptionFeature.autoSelectNotAllowed;
+            $scope.autoSelectNotAllowed = $scope.printPrescriptionFeature && $scope.printPrescriptionFeature.autoSelectNotAllowed != null ? $scope.printPrescriptionFeature.autoSelectNotAllowed : false;
             $scope.selectedDrugs = {};
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
 
