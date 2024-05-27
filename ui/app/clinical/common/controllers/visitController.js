@@ -100,6 +100,8 @@ angular.module('bahmni.clinical')
                         });
                         promises.push(promise);
                     }
+                    $scope.allergies = allergyService.fetchAndProcessAllergies($scope.patient.uuid);
+                    promises.push(allergyPromise);
 
                     Promise.all(promises).then(function () {
                         $scope.additionalInfo = {};

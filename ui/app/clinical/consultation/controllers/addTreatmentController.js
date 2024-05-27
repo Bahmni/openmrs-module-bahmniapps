@@ -62,6 +62,13 @@ angular.module('bahmni.clinical')
                 return !!($scope.doseFractions && !_.isEmpty($scope.doseFractions));
             };
 
+            $scope.isRuleMode = function (treatment) {
+                if (treatment.dosingRule != undefined || treatment.dosingRule != null) {
+                    return true;
+                }
+                return false;
+            };
+
             $scope.isSelected = function (drug) {
                 var selectedDrug = $scope.treatment.drug;
                 return selectedDrug && drug.drug.name === selectedDrug.name;
@@ -354,6 +361,34 @@ angular.module('bahmni.clinical')
             $scope.$watch(watchFunctionForQuantity, function () {
                 $scope.treatment.calculateQuantityAndUnit();
             }, true);
+
+            $scope.calculateDose = function (treatment) {
+                if (treatment.dosingRule != null || treatment.dosingRule != undefined) {
+                    var visitUuid = treatmentConfig.orderSet.calculateDoseOnlyOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
+                    var calculatedDose = orderSetService.getCalculatedDose($scope.patient.uuid, treatment.drug.name, treatment.uniformDosingType.dose, treatment.uniformDosingType.doseUnits, '', treatment.dosingRule, visitUuid);
+                    calculatedDose.then(function (calculatedDosage) {
+                        treatment.uniformDosingType.dose = calculatedDosage.dose;
+                        treatment.calculateQuantityAndUnit();
+                        return treatment;
+                    });
+                    return treatment;
+                }
+            };
+
+            $scope.$watch('calculateDose', $scope.treatment, true);
+
+            $scope.getFinalDosingUnits = function (treatment) {
+                const ruleUnitList = $scope.ruleUnitsMap && $scope.ruleUnitsMap[treatment.dosingRule] ? $scope.ruleUnitsMap[treatment.dosingRule] : [];
+                if ($scope.isRuleMode(treatment) && ruleUnitList.length > 0) {
+                    return treatmentConfig.getDoseUnits().filter(function (unitMap) {
+                        if (ruleUnitList.includes(unitMap.name)) {
+                            return unitMap;
+                        }
+                    });
+                } else {
+                    return treatmentConfig.getDoseUnits();
+                }
+            };
 
             $scope.add = function () {
                 var treatments = $scope.treatments;
@@ -832,9 +867,10 @@ angular.module('bahmni.clinical')
             var showRulesInMedication = function (medicationConfig) {
                 $scope.showRulesInMedication = false;
                 if (medicationConfig !== 'undefined' && medicationConfig.tabConfig !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig
-                    !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig.orderSet !== 'undefined') {
+                 !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig.orderSet !== 'undefined') {
                     if (medicationConfig.tabConfig.allMedicationTabConfig.orderSet.showRulesInMedication) {
                         $scope.showRulesInMedication = true;
+                        $scope.ruleUnitsMap = medicationConfig.tabConfig.allMedicationTabConfig.orderSet.dosageRuleUnitsMap || [];
                     }
                 }
             };

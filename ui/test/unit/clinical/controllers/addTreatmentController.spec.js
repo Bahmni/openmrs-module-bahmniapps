@@ -258,7 +258,8 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appDescriptor, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, cdssService, diagnosisService;
+        encounterDateTime, appDescriptor, appService, appConfig, defaultDrugsPromise, 
+        orderSetService, locationService, $state, cdssService, calculateQuantityAndUnit, diagnosisService;
 
     stateParams = {
         tabConfigName: null
@@ -281,6 +282,9 @@ describe("AddTreatmentController", function () {
         },
         getDoseFractions: function () {
             return [{"value": 0.50, "label": "½"}];
+        },
+        getDoseUnits: function () {
+            return ["m1", "mg"];
         },
         frequencies: [{name: 'Twice a day', frequencyPerDay: 2}],
         durationUnits: [
@@ -310,7 +314,9 @@ describe("AddTreatmentController", function () {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
+            calculateQuantityAndUnit= jasmine.createSpy('calculateQuantityAndUnit');
             scope.patient = {uuid: "patient.uuid"};
             orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
                 dose: 20, doseUnit: 'mg'
@@ -392,6 +398,7 @@ describe("AddTreatmentController", function () {
                 ngDialog: ngDialog,
                 appService: appService,
                 locationService: locationService,
+                appDescriptor: appDescriptor,
                 drugService: drugService,
                 treatmentConfig: treatmentConfig,
                 orderSetService: orderSetService,
@@ -2121,6 +2128,110 @@ describe("AddTreatmentController", function () {
 
             expect(orderSetDrugOrder.include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();
+        });
+    });
+
+    describe('isRuleMode', function() {
+        it('should return true if dosingRule is defined', function() {
+            var treatment = { dosingRule: 'someRule' };
+            expect(scope.isRuleMode(treatment)).toBe(true);
+        });
+    
+        it('should return false if dosingRule is not defined', function() {
+            var treatment = { dosingRule: null };
+            expect(scope.isRuleMode(treatment)).toBe(false);
+    
+            treatment = { dosingRule: undefined };
+            expect(scope.isRuleMode(treatment)).toBe(false);
+        });
+    });
+
+    describe('calculateDose', function() {
+        it('should call getCalculatedDose with correct parameters', function() {
+            var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            scope.calculateDose(treatment);
+    
+            expect(orderSetService.getCalculatedDose).toHaveBeenCalledWith(
+                scope.patient.uuid,
+                treatment.drug.name,
+                treatment.uniformDosingType.dose,
+                treatment.uniformDosingType.doseUnits,
+                '',
+                treatment.dosingRule,
+                undefined
+            );
+        });
+    
+        it('should update dose and call calculateQuantityAndUnit', function() {
+            var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            var deferred = $q.defer();
+            var mockCalculatedDosage = { dose: 100 };
+    
+            spyOn(deferred.promise, 'then').and.callFake(function(callback) {
+                callback(mockCalculatedDosage);
+            });
+    
+            orderSetService.getCalculatedDose.and.returnValue(deferred.promise);
+    
+            scope.calculateDose(treatment);
+            rootScope.$digest();
+    
+            expect(treatment.uniformDosingType.dose).toEqual(mockCalculatedDosage.dose);
+            expect(treatment.calculateQuantityAndUnit).toHaveBeenCalled();
+        });
+
+        it('should not calculate dose if dosingRule is not defined', function() {
+            var treatment = { dosingRule: null, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' } };
+    
+            scope.calculateDose(treatment);
+            expect(orderSetService.getCalculatedDose).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('getFinalDosingUnits', function() {
+        it('should return all dose units if not in rule mode', function() {
+            var treatment = { dosingRule: null };
+            var doseUnits = scope.getFinalDosingUnits(treatment);
+            expect(doseUnits).toEqual(treatmentConfig.getDoseUnits());
+        });
+    
+        it('should return dose units based on ruleUnitList if in rule mode', function() {
+            var treatment = { dosingRule: 'someRule' };
+            scope.ruleUnitsMap = {
+                'someRule': ['mg', 'ml']
+            };
+            spyOn(scope, 'isRuleMode').and.returnValue(true);
+            spyOn(treatmentConfig, 'getDoseUnits').and.returnValue([{ name: 'mg' }, { name: 'ml' }]);
+            
+            var doseUnits = scope.getFinalDosingUnits(treatment);
+            
+            expect(doseUnits).toEqual([
+                { name: 'mg' },
+                { name: 'ml' }
+            ]);
+        });
+    });
+
+    describe('isRuleMode check', function () {
+        it('should set dose units as mg if dosing rule is present', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = "mg/Kg";
+            expect(scope.isRuleMode(drugOrder1)).toBeTruthy();
+        });
+
+        it('should set return false if dosing rule is null', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = null;
+            expect(scope.isRuleMode(drugOrder1)).toBeFalsy();
+        });
+    });
+
+    describe('calculate dose when having dosing rules', function () {
+        it('should set return the treatment if dosing rule is not null', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = "mg/Kg";
+            const treatment = scope.calculateDose(drugOrder1);
+            expect(treatment).toBe(drugOrder1);
         });
     });
 });
