@@ -138,8 +138,13 @@ angular.module('bahmni.clinical')
                     });
                     promises.push(promise);
                 }
-                $scope.allergies = allergyService.fetchAndProcessAllergies($scope.patient.uuid);
+
+                $scope.allergies = "";
+                var allergyPromise = allergyService.fetchAndProcessAllergies($scope.patient.uuid).then(function (allergies) {
+                    $scope.allergies = allergies;
+                });
                 promises.push(allergyPromise);
+
                 Promise.all(promises).then(function () {
                     var additionalInfo = {};
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
