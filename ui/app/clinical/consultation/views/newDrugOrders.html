@@ -40,9 +40,9 @@
                             <cdss-popover alerts="newTreatment.alerts"></cdss-popover>
                         </div>
                         <div class="dosage-frequency">
-                            <span ng-show="newTreatment.getDoseAndUnits()">{{newTreatment.getDoseAndUnits()}} | </span>
-                            <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length">{{newTreatment.getFrequency()}} | </span>
-                            {{newTreatment.getDurationAndDurationUnits()}}
+                            <span ng-show="newTreatment.getDoseAndUnits()">{{newTreatment.getDoseAndUnits()}}</span>
+                            <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length"> | {{newTreatment.getFrequency()}}</span>
+                            <span ng-show="newTreatment.getDurationAndDurationUnits()"> | {{newTreatment.getDurationAndDurationUnits()}}</span>
                         </div>
                     </div>
                 </div>
@@ -67,12 +67,12 @@
                 <div>
                     <span ng-if="newTreatment.asNeeded">{{newTreatment.getAsNeededText(newTreatment.asNeeded)}}, </span>
                     <span ng-if="newTreatment.route">{{newTreatment.route}}, </span>
-                    {{newTreatment.instructions}} | 
+                    {{newTreatment.instructions}}
                 </div>
                 <div ng-if="newTreatment.additionalInstructions">
-                    {{newTreatment.additionalInstructions}} | 
+                     | {{newTreatment.additionalInstructions}}
                 </div>
-                <div>{{newTreatment.getQuantityWithUnit()}}</div>
+                <div ng-if="newTreatment.getQuantityWithUnit()"> | {{newTreatment.getQuantityWithUnit()}}</div>
             </div>
             <cdss-alert-row alerts="newTreatment.alerts"></cdss-alert-row>
         </li>
