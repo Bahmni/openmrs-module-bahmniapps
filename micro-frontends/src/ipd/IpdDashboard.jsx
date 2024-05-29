@@ -6,7 +6,7 @@ export function IpdDashboard(props) {
 
   return (
     <>
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<Loader />}>
         <LazyApp
           hostData={props.hostData}
           hostApi={props.hostApi}
