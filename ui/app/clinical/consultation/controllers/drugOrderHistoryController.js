@@ -166,7 +166,7 @@ angular.module('bahmni.clinical')
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
                     additionalInfo.currentDate = new Date();
                     additionalInfo.facilityLocation = $rootScope.facilityLocation;
-                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, $scope.allergies);
+                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, $scope.allergies, currentVisit.startDatetime);
                     $scope.selectedDrugs = {};
                 }).catch(function (error) {
                     console.error("Error fetching details for print: ", error);
