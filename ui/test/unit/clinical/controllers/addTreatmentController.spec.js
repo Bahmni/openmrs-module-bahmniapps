@@ -13,6 +13,21 @@ describe("AddTreatmentController", function () {
     }));
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
+    var medicationConfig = {
+        "commonConfig": {},
+        "tabConfig": {
+            "allMedicationTabConfig": {
+                "orderSet": {
+                    "calculateDoseOnlyOnCurrentVisitValues": false,
+                    "showRulesInMedication": true,
+                    "dosageRuleUnitsMap": {
+                        "mg/kg": ["mg", "ml"]
+                    }
+                }
+            }
+        }
+    };
+
     var activeDrugOrder = {
         "uuid": "activeOrderUuid",
         "action": "NEW",
@@ -243,7 +258,8 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, cdssService;
+        encounterDateTime, appDescriptor, appService, appConfig, defaultDrugsPromise, 
+        orderSetService, locationService, $state, cdssService, calculateQuantityAndUnit, diagnosisService;
 
     stateParams = {
         tabConfigName: null
@@ -266,6 +282,9 @@ describe("AddTreatmentController", function () {
         },
         getDoseFractions: function () {
             return [{"value": 0.50, "label": "½"}];
+        },
+        getDoseUnits: function () {
+            return ["m1", "mg"];
         },
         frequencies: [{name: 'Twice a day', frequencyPerDay: 2}],
         durationUnits: [
@@ -293,8 +312,11 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink']);
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
+            calculateQuantityAndUnit= jasmine.createSpy('calculateQuantityAndUnit');
             scope.patient = {uuid: "patient.uuid"};
             orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
                 dose: 20, doseUnit: 'mg'
@@ -302,6 +324,7 @@ describe("AddTreatmentController", function () {
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
             drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept', 'sendDiagnosisDrugBundle', 'getCdssEnabled', 'cdssAudit', 'getDrugConceptSourceMapping']);
+            diagnosisService = jasmine.createSpyObj('diagnosisService', ['getPatientDiagnosis']);
             drugs = [
                 {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
                 {name: "A", dosageForm: {display: "something"}, uuid: "123-12321"},
@@ -317,8 +340,11 @@ describe("AddTreatmentController", function () {
             cdssService = jasmine.createSpyObj('cdssService', ['createFhirBundle', 'sendDiagnosisDrugBundle', 'createParams', 'addNewAlerts', 'sortInteractionsByStatus', 'getAlerts']);
             cdssService.getAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
             cdssService.sortInteractionsByStatus.and.returnValue(specUtil.respondWith(cdssResponse));
+            diagnosisService.getPatientDiagnosis.and.returnValue([]);
 
             appService.getAppDescriptor.and.returnValue(appConfig);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            appDescriptor.getConfigForPage.and.returnValue(medicationConfig);
             orderSets = [{
                 "orderSetId": 3,
                 "uuid": "497b959b-101b-41a8-8154-3f252b2771d7",
@@ -372,11 +398,13 @@ describe("AddTreatmentController", function () {
                 ngDialog: ngDialog,
                 appService: appService,
                 locationService: locationService,
+                appDescriptor: appDescriptor,
                 drugService: drugService,
                 treatmentConfig: treatmentConfig,
                 orderSetService: orderSetService,
                 $state: $state,
-                cdssService: cdssService
+                cdssService: cdssService,
+                diagnosisService: diagnosisService
             });
             scope.treatments = [];
             scope.orderSetTreatments = [];
@@ -403,9 +431,89 @@ describe("AddTreatmentController", function () {
         });
     });
 
+    describe("verifyAdd()", function () {
+        it("should continue normal flow when treatments can be added without any restrictions from patient weight and diagnosis", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.calculateDose = jasmine.createSpy('calculateDose');
+            scope.verifyAdd(treatment);
+            expect(scope.calculateDose).toHaveBeenCalledWith(treatment);
+        });
+
+        it("should return false when patient weight is not captured and user is trying to add treatments", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithPatientWeight = {
+                "duration": 604800,
+                conceptNames: ["Weight"]
+            };
+            scope.obs = [];
+            const response = scope.verifyAdd(treatment);
+            expect(response).toBeFalsy();
+        });
+
+        it("should return false when patient diagnosis is not captured and user is trying to add treatments", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.calculateDose = jasmine.createSpy('calculateDose');
+            scope.addTreatmentWithDiagnosis = {
+                "duration": 604800,
+            };
+            scope.confirmedDiagnoses = [];
+            const response = scope.verifyAdd(treatment);
+            expect(response).toBeFalsy();
+        });
+    });
+
     describe("add()", function () {
         beforeEach(function () {
             scope.treatments = [];
+        });
+
+        it("should not add treatment object to list of treatments if diagnosis is not captured", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithDiagnosis = {
+                order: "PRIMARY"
+            };
+            scope.confirmedDiagnoses = [];
+            scope.add();
+            expect(scope.treatments.length).toBe(0);
+        });
+
+        it("should add treatment object to list of treatments if primary diagnosis is captured", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithDiagnosis = {
+                "duration": 604800
+            };
+            scope.confirmedDiagnoses = [{diagnosisName: "test diagnosis", id: 1, order: "PRIMARY"}];
+            scope.add();
+            expect(scope.treatments.length).toBe(1);
+        });
+
+        it("should not add treatment object to list of treatments if no patient weight is captured", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithPatientWeight = {
+                "duration": 604800,
+                conceptNames: ["Weight"]
+            };
+            scope.obs = [];
+            scope.add();
+            expect(scope.treatments.length).toBe(0);
+        });
+
+        it("should add treatment object to list of treatments if patient weight is captured in given timeframe", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithPatientWeight = {
+                "duration": 604800,
+                "conceptNames": ["Weight"]
+            };
+            scope.currentEpoch = 1900000;
+            scope.obs = [{observationDateTime: 1890000}];
+            scope.add();
+            expect(scope.treatments.length).toBe(1);
         });
 
         it("adds treatment object to list of treatments if newOrderSet flag is false", function () {
@@ -2020,6 +2128,110 @@ describe("AddTreatmentController", function () {
 
             expect(orderSetDrugOrder.include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();
+        });
+    });
+
+    describe('isRuleMode', function() {
+        it('should return true if dosingRule is defined', function() {
+            var treatment = { dosingRule: 'someRule' };
+            expect(scope.isRuleMode(treatment)).toBe(true);
+        });
+    
+        it('should return false if dosingRule is not defined', function() {
+            var treatment = { dosingRule: null };
+            expect(scope.isRuleMode(treatment)).toBe(false);
+    
+            treatment = { dosingRule: undefined };
+            expect(scope.isRuleMode(treatment)).toBe(false);
+        });
+    });
+
+    describe('calculateDose', function() {
+        it('should call getCalculatedDose with correct parameters', function() {
+            var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            scope.calculateDose(treatment);
+    
+            expect(orderSetService.getCalculatedDose).toHaveBeenCalledWith(
+                scope.patient.uuid,
+                treatment.drug.name,
+                treatment.uniformDosingType.dose,
+                treatment.uniformDosingType.doseUnits,
+                '',
+                treatment.dosingRule,
+                undefined
+            );
+        });
+    
+        it('should update dose and call calculateQuantityAndUnit', function() {
+            var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            var deferred = $q.defer();
+            var mockCalculatedDosage = { dose: 100 };
+    
+            spyOn(deferred.promise, 'then').and.callFake(function(callback) {
+                callback(mockCalculatedDosage);
+            });
+    
+            orderSetService.getCalculatedDose.and.returnValue(deferred.promise);
+    
+            scope.calculateDose(treatment);
+            rootScope.$digest();
+    
+            expect(treatment.uniformDosingType.dose).toEqual(mockCalculatedDosage.dose);
+            expect(treatment.calculateQuantityAndUnit).toHaveBeenCalled();
+        });
+
+        it('should not calculate dose if dosingRule is not defined', function() {
+            var treatment = { dosingRule: null, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' } };
+    
+            scope.calculateDose(treatment);
+            expect(orderSetService.getCalculatedDose).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('getFinalDosingUnits', function() {
+        it('should return all dose units if not in rule mode', function() {
+            var treatment = { dosingRule: null };
+            var doseUnits = scope.getFinalDosingUnits(treatment);
+            expect(doseUnits).toEqual(treatmentConfig.getDoseUnits());
+        });
+    
+        it('should return dose units based on ruleUnitList if in rule mode', function() {
+            var treatment = { dosingRule: 'someRule' };
+            scope.ruleUnitsMap = {
+                'someRule': ['mg', 'ml']
+            };
+            spyOn(scope, 'isRuleMode').and.returnValue(true);
+            spyOn(treatmentConfig, 'getDoseUnits').and.returnValue([{ name: 'mg' }, { name: 'ml' }]);
+            
+            var doseUnits = scope.getFinalDosingUnits(treatment);
+            
+            expect(doseUnits).toEqual([
+                { name: 'mg' },
+                { name: 'ml' }
+            ]);
+        });
+    });
+
+    describe('isRuleMode check', function () {
+        it('should set dose units as mg if dosing rule is present', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = "mg/Kg";
+            expect(scope.isRuleMode(drugOrder1)).toBeTruthy();
+        });
+
+        it('should set return false if dosing rule is null', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = null;
+            expect(scope.isRuleMode(drugOrder1)).toBeFalsy();
+        });
+    });
+
+    describe('calculate dose when having dosing rules', function () {
+        it('should set return the treatment if dosing rule is not null', function () {
+            var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            drugOrder1.dosingRule = "mg/Kg";
+            const treatment = scope.calculateDose(drugOrder1);
+            expect(treatment).toBe(drugOrder1);
         });
     });
 });

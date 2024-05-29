@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', '$rootScope', 'cdssService',
-        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, $rootScope, cdssService) {
+    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', '$rootScope', 'cdssService', 'appService', '$filter',
+        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, $rootScope, cdssService, appService, $filter) {
             var init = function () {
                 var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
                 $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';
                 $scope.tabConfigName = $stateParams.tabConfigName || 'default';
+                var extensionParams = appService.getAppDescriptor().getExtensionById("bahmni.clinical.billing.treatment").extensionParams;
+                $scope.medicationTabDisplayControls = extensionParams && extensionParams.sections ? extensionParams : {sections: {}};
+                var dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.medicationTabDisplayControls || {}, $filter);
+                $scope.sectionGroups = dashboard.getSections([]);
 
                 var initializeTreatments = function () {
                     $scope.consultation.newlyAddedTabTreatments = $scope.consultation.newlyAddedTabTreatments || {};

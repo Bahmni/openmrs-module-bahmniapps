@@ -34,9 +34,9 @@
                                         </div>
                                 
                                         <div class="dosage-frequency">
-                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
-                                            <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
-                                            {{drugOrder.getDurationAndDurationUnits()}}
+                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}}</span>
+                                            <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length"> | {{drugOrder.getFrequency()}}</span> 
+                                            <span ng-show="drugOrder.getDurationAndDurationUnits()"> | {{drugOrder.getDurationAndDurationUnits()}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                             <i class="fa fa-check" ng-show="orderAttribute.value"></i>
                                             {{orderAttribute.name.substring(0,1)}}
                                         </button>
-                                        <button ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed" ng-click="revise(drugOrder, drugOrderGroup.drugOrders)">
+                                        <button ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed || disableEditButton(drugOrder)" ng-click="revise(drugOrder, drugOrderGroup.drugOrders)">
                                             <i class="fa fa-edit"></i>
                                         </button>
                                         <button class="undo-btn" ng-if="drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
@@ -78,10 +78,10 @@
                                     <div>
                                         <span ng-if="drugOrder.asNeeded">{{drugOrder.getAsNeededText(drugOrder.asNeeded)}}, </span>
                                         <span nf-if="drugOrder.route"> {{drugOrder.route}}, </span>
-                                        {{drugOrder.instructions}} | 
+                                        {{drugOrder.instructions}}
                                     </div>
-                                    <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} | </div>
-                                    <div>{{drugOrder.getQuantityWithUnit()}}</div>
+                                    <div ng-if="drugOrder.additionalInstructions"> | {{drugOrder.additionalInstructions}}</div>
+                                    <div ng-if="drugOrder.getQuantityWithUnit()"> | {{drugOrder.getQuantityWithUnit()}}</div>
                                     <div class="footer-note">
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDateTime}}</span>

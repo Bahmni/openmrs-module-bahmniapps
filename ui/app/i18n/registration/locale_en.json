@@ -123,5 +123,5 @@
     "PATIENT_ATTRIBUTE_FAMILY_NAME_LOCAL": "Last Name in Arabic",
     "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic",
     "RELATED_PATIENT_IDENTIFIER_LABEL": "Patient",
-    "REGISTRATION_LABEL_SAVE_REDIRECTION" : "Saved and Visit Started Successfully"
+    "REGISTRATION_LABEL_SAVE_REDIRECTION": "Saved and Visit Started Successfully"
 }

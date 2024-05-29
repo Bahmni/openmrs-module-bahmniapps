@@ -36,6 +36,13 @@ angular.module('bahmni.clinical')
                         !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed ||
                         $scope.consultation.encounterUuid !== drugOrder.encounterUuid;
                 };
+
+                $scope.disableEditButton = function (drugOrder) {
+                    return ($scope.medicationSchedules &&
+                        $scope.medicationSchedules.some(function (schedule) {
+                            return schedule.order.uuid === drugOrder.uuid;
+                        }));
+                };
             }
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
@@ -138,20 +145,13 @@ angular.module('bahmni.clinical')
                     });
                     promises.push(promise);
                 }
+
                 $scope.allergies = "";
-                var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
-                    var allergies = response.data;
-                    var allergiesList = [];
-                    if (response.status === 200 && allergies.length > 0) {
-                        allergies.entry.forEach(function (allergy) {
-                            if (allergy.resource.code.coding) {
-                                allergiesList.push(allergy.resource.code.coding[0].display);
-                            }
-                        });
-                    }
-                    $scope.allergies = allergiesList.join(", ");
+                var allergyPromise = allergyService.fetchAndProcessAllergies($scope.patient.uuid).then(function (allergies) {
+                    $scope.allergies = allergies;
                 });
                 promises.push(allergyPromise);
+
                 Promise.all(promises).then(function () {
                     var additionalInfo = {};
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";

@@ -28,5 +28,7 @@ Bahmni.Clinical.DrugOrderOptions = (function () {
         this.labels = inputConfig.labels || {};
         this.doseFractions = itemsForInputConfig(masterConfig.doseFractions, inputConfig.doseFractions, 'label');
         this.allowNonCodedDrugs = !inputConfig.allowOnlyCodedDrugs;
+        this.asNeededToBeACheckbox = inputConfig.asNeededToBeACheckbox || false;
+        this.autopopulateDurationsBasedOnFrequency = inputConfig.autopopulateDurationsBasedOnFrequency || [];
     };
 })();
