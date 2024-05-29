@@ -63,7 +63,7 @@ angular.module('bahmni.ot')
                 $scope.hostData = {
                     notes: '',
                     noteId: '',
-                    isDayView,
+                    isDayView: isDayView,
                     weekStartDateTime: $scope.validStartDate,
                     weekEndDateTime: $scope.validEndDate,
                     noteDate: currentDate
