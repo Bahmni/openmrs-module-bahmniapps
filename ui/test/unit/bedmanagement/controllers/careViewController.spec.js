@@ -3,7 +3,7 @@
 describe("CareViewController", function () {
     var scope, controller, auditLogService, sessionService, $window;
     var state = jasmine.createSpyObj('$state', ['go']);
-    beforeEach(module('bahmni.adt'));
+    beforeEach(module('bahmni.ipd'));
     beforeEach(inject(function ($controller, $rootScope,_$window_) {
         controller = $controller;
         scope = $rootScope.$new();
