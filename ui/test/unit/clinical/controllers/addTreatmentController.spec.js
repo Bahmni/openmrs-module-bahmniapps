@@ -266,6 +266,7 @@ describe("AddTreatmentController", function () {
     };
 
     var orderSets;
+    let appDescriptor;
 
     var treatmentConfig = {
         getDrugConceptSet: function () {

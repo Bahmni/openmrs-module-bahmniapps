@@ -89,6 +89,7 @@
   "CLINICAL_SAVE_TRANSLATION_KEY": "<u>S</u>ave",
   "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY": "Saved",
   "CLINICAL_SAVE_FAILURE_MESSAGE_KEY": "An error has occurred on the server. Information not saved.",
+  "CLINICAL_FORM_ERRORS_ON_OBSERVATION_TAB_MESSAGE_KEY": "Please enter values in the mandatory fields in observations to proceed",
   "CLINICAL_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
   "CLINICAL_FORM_EDIT_ERROR_MESSAGE_KEY": "Form not found",
   "CLINICAL_ORDER_RADIOLOGY_NEED_PRINT": "Need Print for this order.",

@@ -2,7 +2,7 @@
 
 describe("conceptSet", function () {
     var appService, spinner, conceptSetUiConfigService, contextChangeHandler, observationsService,
-        messagingService, compile, scope, conceptSetService, httpBackend,element, compiledElementScope;
+        messagingService, compile, scope, conceptSetService, httpBackend,element, compiledElementScope, $state;
 
     beforeEach(function () {
         module('bahmni.common.conceptSet');
@@ -21,11 +21,22 @@ describe("conceptSet", function () {
             $provide.value('messagingService', messagingService);
             $provide.value('conceptSetUiConfigService', conceptSetUiConfigService);
             $provide.value('spinner', spinner);
+            $provide.value('$state', $state);
         });
         inject(function ($compile, $rootScope, $httpBackend) {
             compile = $compile;
             scope = $rootScope.$new();
             httpBackend = $httpBackend;
+            scope.obsForm = { $dirty: true };
+        });
+        it("should set dirtyConsultationForm flag when state changes with dirty form", function () {
+            scope.$broadcast("$stateChangeStart");
+            expect($state.dirtyConsultationForm).toBeTruthy();
+        });
+
+        it("should reset form's dirty state on changes saved event", function () {
+            scope.$broadcast("event:changes-saved");
+            expect(scope.obsForm.$dirty).toBe(false);
         });
     });
     beforeEach(function () {
