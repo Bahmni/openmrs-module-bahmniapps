@@ -4,7 +4,7 @@
     justify-content: start;
     align-items: center;
 
-    .patient-info { 
+    .patient-info {
         display: flex;
         flex-flow: row;
         justify-content: start;
@@ -17,4 +17,10 @@
         color: #2b95ff;
         font-size: .875rem;
     }
+}
+
+.warning {
+    display: flex;
+    color: red;
+    align-items: center;
 }

@@ -7,25 +7,13 @@ import PatientsList from '../../Components/ProviderNotificationPatients/Patients
 
 export function ProviderNotifications(props) {
     const acknowledgementRequiredText = <FormattedMessage id="AKNOWLEDGEMENT_REQUIRED_TEXT" defaultMessage="Acknowledgement required" />;
-    const archiveText = <FormattedMessage id="ARCHIVE_TEXT" defaultMessage="Archive" />;
+
+
     return (
         <div className='provider-notifications-next-ui'>
-            <ComboBox
-                id="search"
-                titleText=""
-                placeholder="Search a Patient"
-                // items={props.hostData.notifications}
-                // itemToString={(item) => (item ? item.text : '')}
-                // onChange={(event) => props.hostApi.selectNotification(event.selectedItem)}
-                // selectedItem={props.hostData.selectedNotification}
-            />
-
-            <div className='provider-notification-headers'>
-                <span>{acknowledgementRequiredText}</span>
-                <Link href="#" className="notification-link">{archiveText}</Link>
+          <div className='provider-notification-headers'>
+                <span>{acknowledgementRequiredText}: </span>
             </div>
-
-            
             <PatientsList />
         </div>
     )

@@ -83,6 +83,10 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
         return self.searchType && self.searchType.view === Bahmni.Common.PatientSearch.Constants.searchExtensionTabularViewType;
     };
 
+    self.isCustomView = function () {
+        return self.searchType && self.searchType.view === Bahmni.Common.PatientSearch.Constants.searchExtensionCustomViewType;
+    };
+
     self.showPatientCountOnSearchParameter = function (searchType) {
         return showPatientCount(searchType) && self.searchParameter;
     };

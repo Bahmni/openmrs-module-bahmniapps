@@ -129,8 +129,8 @@ describe("PatientsListController", function () {
             it('should initialize configurations and fetch patients', function () {
                 scope.$apply(setUp);
 
-                expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/", targetedTab : "In Patient", id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
-                    showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, patientCount : '...', linkColumn : undefined, links : undefined});
+                expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : undefined, targetedTab : null, id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
+                tabularViewHeadingOrder : [], dateColumns : [], tabularViewIgnoreHeadingsList : [], showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, patientCount : '...', linkColumn : undefined, links : undefined, templateUrl: null});
                 expect(_patientService.findPatients).toHaveBeenCalled();
 
                 findPatientsPromise.callThenCallBack({data: patients});
@@ -273,10 +273,10 @@ describe("PatientsListController", function () {
                 scope.ignoredTabularViewHeadingsConfig = ["display", "uuid", "image", "activeVisitUuid", "forwardUrl", "hasBeenAdmitted", "programUuid", "enrollment"];
                 scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 scope.getHeadings();
-                expect(scope.activeHeaders).toEqual([ 
-                    { name : 'emr_id', sortInfo : 'emr_id' }, 
-                    { name : 'treatment', sortInfo : 'treatment' }, 
-                    { name : 'DQ_COLUMN_TITLE_ACTION', sortInfo : 'DQ_COLUMN_TITLE_ACTION' } 
+                expect(scope.activeHeaders).toEqual([
+                    { name : 'emr_id', sortInfo : 'emr_id' },
+                    { name : 'treatment', sortInfo : 'treatment' },
+                    { name : 'DQ_COLUMN_TITLE_ACTION', sortInfo : 'DQ_COLUMN_TITLE_ACTION' }
                 ]);
             });
 
@@ -285,8 +285,8 @@ describe("PatientsListController", function () {
                 scope.ignoredTabularViewHeadingsConfig = ["display", "uuid", "image", "activeVisitUuid", "forwardUrl", "hasBeenAdmitted", "programUuid", "enrollment"];
                 scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 var headings = scope.getPrintableHeadings();
-                expect(headings).toEqual([ 
-                    { name : 'emr_id', sortInfo : 'emr_id' }, 
+                expect(headings).toEqual([
+                    { name : 'emr_id', sortInfo : 'emr_id' },
                     { name : 'treatment', sortInfo : 'treatment' }
                 ]);
             });
@@ -540,7 +540,7 @@ describe("PatientsListController", function () {
                 { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
             ]);
         });
-    
+
         it("should sort visible patients by date property in ascending order", function() {
             scope.search = {
                 searchResults: [
@@ -558,7 +558,7 @@ describe("PatientsListController", function () {
                 { id: 1, name: 'Shyam', dob: '13 Aug 1997' }
             ]);
         });
-    
+
         it('should handle reverse sort', function () {
             scope.search = {
                 searchResults: [
@@ -569,7 +569,7 @@ describe("PatientsListController", function () {
                 visiblePatients: [],
                 reverseSort: false
             };
-            scope.sortVisiblePatientsBy('name'); 
+            scope.sortVisiblePatientsBy('name');
             expect(scope.search.visiblePatients).toEqual([
                 { id: 3, name: 'Ganesh', dob: '05 Jan 1994' },
                 { id: 2, name: 'Ram', dob: '26 Nov 1986' },
@@ -606,6 +606,6 @@ describe("PatientsListController", function () {
                 { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
             ]);
         });
-    });  
-    
+    });
+
 });

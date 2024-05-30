@@ -12,13 +12,19 @@
         align-items: start;
 
         .notes {
-            background-color: #ededed;
             display: flex;
             flex-flow: row wrap;
             justify-content: start;
             align-items: end;
 
+            .patient-list-text-area {
+                flex: 1;
+                min-height: 48px;
+            }
+
             .patient-list-button {
+                width: 116px;
+                height: 48px;
                 margin-left: 10px;
 
                 @media screen and (max-width: 640px) {

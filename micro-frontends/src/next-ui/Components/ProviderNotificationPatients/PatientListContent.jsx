@@ -1,31 +1,58 @@
-import React from 'react'
-import { Button, TextArea } from 'carbon-components-react';
-import './PatientListContent.scss';
+import React, { useState } from "react";
+import { Button, TextArea } from "carbon-components-react";
+import "./PatientListContent.scss";
+import { Title } from "bahmni-carbon-ui";
+import { formatArrayDateToDefaultDateFormat } from "../../utils/utils";
+import {
+  updateEmergencyMedication
+} from "../../utils/providerNotifications/ProviderNotificationUtils";
+import { verifierFunction} from "../../constants";
 
-const PatientListContent = () => {
+const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPatients}) => {
+  const [notes, setNotes] = useState("");
+  const { administered_date_time, administered_drug_name, medication_administration_performer_uuid, medication_administration_uuid } =
+    patientMedicationDetails;
+
+  const handleOnClick = async () => {
+    await updateEmergencyMedication({ providers: [
+        {
+          uuid:medication_administration_performer_uuid,
+          providerUuid,
+          function: verifierFunction
+        }
+      ],
+      notes: [{ authorUuid: providerUuid, text: notes }]}, medication_administration_uuid
+    );
+    refreshPatients();
+    setNotes("");
+  };
+
   return (
-    <div className='patient-list-content'>
-        <span>dd/mm/yyyy</span>
-        <div className='content-info'>
-            <span>Drug Name</span>
-            <div className='notes'>
-                <TextArea
-                    className='patient-list-text-area'
-                    labelText='Note'
-                    placeholder="Enter Notes"
-                    rows={1}
-                    required={true}
-                    // value={props.hostData.notificationMessage}
-                    // onChange={(event) => props.hostApi.updateNotificationMessage(event.target.value)}
-                />
-                <Button
-                    className='patient-list-button'
-                    // onClick={() => props.hostApi.sendNotification()}
-                >Acknowledge</Button>
-            </div>
+    <div className="patient-list-content ">
+      <span>{formatArrayDateToDefaultDateFormat(administered_date_time)}</span>
+      <div className="content-info">
+        <span>{administered_drug_name}</span>
+        <div className="notes">
+          <TextArea
+            className="patient-list-text-area"
+            labelText={<Title text={"Note"} isRequired={true} />}
+            placeholder="Enter Notes"
+            rows={1}
+            required={true}
+            value={notes}
+            onChange={(e)=> setNotes(e.target.value)}
+          />
+          <Button
+            className="patient-list-button"
+            disabled={notes.trim() === ""}
+            onClick={handleOnClick}
+          >
+            Acknowledge
+          </Button>
         </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default PatientListContent
+export default PatientListContent;
