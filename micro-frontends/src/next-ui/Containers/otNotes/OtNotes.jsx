@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {I18nProvider} from "../../Components/i18n/I18nProvider";
-import {SavePopup} from "../../Components/otNotes/SavePopup";
-import {DeletePopup} from "../../Components/otNotes/DeletePopup";
+import {SavePopup} from "../../Components/OtNotes/SavePopup";
+import {DeletePopup} from "../../Components/OtNotes/DeletePopup";
 
 export function OtNotesDeletePopup(props) {
     return (
