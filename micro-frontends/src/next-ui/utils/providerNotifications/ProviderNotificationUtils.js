@@ -1,8 +1,10 @@
 import axios from "axios";
 import { EMERGENCY_MEDICATIONS_BASE_URL, GET_DRUG_ACKNOWLEDGEMENT_URL, GET_PROVIDER_UUID_URL } from "../../constants";
+import { parseDateArray } from "../utils";
 
-export const getPatientDashboardUrl = (patientUuid) =>
-    `/bahmni/clinical/#/default/patient/${patientUuid}/dashboard?currentTab=DASHBOARD_TAB_GENERAL_KEY`;
+export const getPatientIPDDashboardUrl = (patientUuid, visitUuid) =>
+    `/bahmni/clinical/index.html#/default/patient/${patientUuid}/dashboard/visit/ipd/${visitUuid}/`;
+
 export const getEmergencyDrugAcknowledgements = async (locationUuid, property, providerUuid) => {
     const apiURL = GET_DRUG_ACKNOWLEDGEMENT_URL.replace("{location_uuid}", locationUuid).replace("{property}", property).replace("{provider_uuid}",providerUuid);
 
@@ -16,6 +18,16 @@ export const getEmergencyDrugAcknowledgements = async (locationUuid, property, p
         console.error(error);
     }
 }
+
+export const sortMedicationList = (medicationList) => {
+    medicationList.forEach(group => {
+        group.sort((a, b) => parseDateArray(a.administered_date_time).diff(parseDateArray(b.administered_date_time)));
+    });
+
+    medicationList.sort((a, b) => parseDateArray(a[0].administered_date_time).diff(parseDateArray(b[0].administered_date_time)));
+
+    return medicationList;
+};
 
 export const updateEmergencyMedication = async (emergencyMedication, medicationAdministrationUuid) => {
     try {
