@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loader Component matches snapshot 1`] = `
+<div
+  className="loader-container"
+>
+  <div
+    className="loader-content"
+  >
+    <div
+      className="lds-spinner"
+    >
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
+    <p
+      className="loader-text"
+    >
+      Loading... Please Wait
+    </p>
+  </div>
+</div>
+`;

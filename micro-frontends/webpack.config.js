@@ -14,6 +14,7 @@ module.exports = {
     },
   },
   entry: {
+    ipd: "./src/ipd/index.js",
     "next-ui": "./src/next-ui/index.js",
     shared: "./src/shared.js",
   },
@@ -33,7 +34,9 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "bahmni_mfe_host",
       filename: "remoteEntry.js",
-      remotes: {},
+      remotes: {
+        "@openmrs-mf/ipd": remoteProxiedAtHostDomain({ name: "bahmni_ipd", path: "ipd" }),
+      },
       exposes: {},
       shared: {
         "carbon-components-react": {
