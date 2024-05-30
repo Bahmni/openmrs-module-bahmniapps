@@ -56,11 +56,23 @@ describe("PatientListTitle Component", () => {
 
   it("should call openedWindow.location.href when handleOpenWindow is called with opened window", () => {
     const mockWindow = { location: { href: "" }, closed: false };
-    const { queryByText } = render(<PatientListTitle {...props} openedWindow={mockWindow} />);
+    const updatedProps = { ...props, openedWindow: mockWindow };
+    const { queryByText } = render(<PatientListTitle {...updatedProps} />);
     const mockUrl = "http://example.com";
     getPatientIPDDashboardUrl.mockReturnValueOnce(mockUrl);
     const patientIdLink = queryByText(`(${props.identifier})`);
     fireEvent.click(patientIdLink);
     expect(mockWindow.location.href).toBe(mockUrl);
+  });
+
+  it("should focus the opened window when it is already open", () => {
+    const mockWindow = { location: { href: "" }, closed: false, focus: jest.fn() };
+    const updatedProps = { ...props, openedWindow: mockWindow };
+    const { queryByText } = render(<PatientListTitle {...updatedProps} />);
+    const mockUrl = "http://example.com";
+    getPatientIPDDashboardUrl.mockReturnValueOnce(mockUrl);
+    const patientIdLink = queryByText(`(${props.identifier})`);
+    fireEvent.click(patientIdLink);
+    expect(mockWindow.focus).toHaveBeenCalled();
   });
 });
