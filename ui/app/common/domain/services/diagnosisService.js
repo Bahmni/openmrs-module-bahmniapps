@@ -67,4 +67,11 @@ angular.module('bahmni.common.domain')
                 return consultation;
             });
         };
+
+        this.getPatientDiagnosis = function (patientUuid) {
+            var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
+            return $http.get(url, {
+                params: { patientUuid: patientUuid }
+            });
+        };
     }]);
