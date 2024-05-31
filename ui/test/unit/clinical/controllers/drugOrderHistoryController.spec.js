@@ -4,7 +4,7 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
-        retrospectiveEntryService, appService, rootScope, visitHistory;
+        retrospectiveEntryService, appService, rootScope, visitHistory, allergyService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var treatmentConfig = {
         drugOrderHistoryConfig: {
@@ -50,6 +50,13 @@ describe("DrugOrderHistoryController", function () {
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         visitHistory = {};
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+                appService.getAppDescriptor.and.returnValue({
+                    getConfigValue: function (config) {
+                        return false;
+                    }
+                });
+        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
     }));
 
     var initController = function () {
@@ -64,7 +71,8 @@ describe("DrugOrderHistoryController", function () {
             spinner: spinner,
             visitHistory: visitHistory,
             treatmentConfig: treatmentConfig,
-            appService: appService
+            appService: appService,
+            allergyService: allergyService
         });
         rootScope.$apply();
     };
@@ -93,6 +101,26 @@ describe("DrugOrderHistoryController", function () {
         it("should get prescribed and active Drugorders with correct no of visits ", function () {
             expect(_treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined, undefined);
         });
+        it("should selectAllDrugs for print", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(3);
+            expect()
+        })
+        it("should not selectAllDrugs for print when auto select is not allowed", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+            
+            scope.autoSelectNotAllowed = true
+
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(0);
+            expect()
+        })
     });
 
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {

@@ -12,9 +12,10 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
-            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
+            $scope.autoSelectNotAllowed = $scope.printPrescriptionFeature && $scope.printPrescriptionFeature.autoSelectNotAllowed != null ? $scope.printPrescriptionFeature.autoSelectNotAllowed : false;
             $scope.selectedDrugs = {};
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
 
             if ($scope.enableIPDFeature) {
                 $scope.updateOrderType = function (drugOrder) {
@@ -96,6 +97,14 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            $scope.selectAllDrugs = function (drugOrderGroup, index) {
+                if (!$scope.autoSelectNotAllowed) {
+                    angular.forEach(drugOrderGroup.drugOrders, function (drugOrder) {
+                        $scope.selectedDrugs[index + "/" + drugOrder.uuid] = true;
+                    });
+                }
+            };
+
             $scope.printSelectedDrugs = function () {
                 var drugOrdersForPrint = [];
                 var promises = [];
@@ -134,12 +143,19 @@ angular.module('bahmni.clinical')
                         dispenserInfo = treatmentService.getOrderedProviderAttributesForPrint(dispenserAttributes, $scope.printPrescriptionFeature.providerAttributesForPrint);
                         angular.forEach(diagnoses, function (diagnosis) {
                             if (diagnosis.order === $scope.printPrescriptionFeature.printDiagnosis.order &&
-                                diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity &&
-                                diagnosis.codedAnswer !== null) {
+                                diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity) {
                                 if (diagnosesCodes.length > 0) {
                                     diagnosesCodes += ", ";
                                 }
-                                diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
+                                if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
+                                    diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                }
+                                else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
+                                    diagnosesCodes += diagnosis.codedAnswer.name;
+                                }
+                                else if (diagnosis.codedAnswer == null && diagnosis.freeTextAnswer !== null) {
+                                    diagnosesCodes += diagnosis.freeTextAnswer;
+                                }
                             }
                         });
                     });
@@ -157,7 +173,7 @@ angular.module('bahmni.clinical')
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
                     additionalInfo.currentDate = new Date();
                     additionalInfo.facilityLocation = $rootScope.facilityLocation;
-                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, $scope.allergies);
+                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, $scope.allergies, currentVisit.startDatetime);
                     $scope.selectedDrugs = {};
                 }).catch(function (error) {
                     console.error("Error fetching details for print: ", error);
