@@ -1,0 +1,22 @@
+.ot-notes-popup{
+  .bx--modal-close{
+    top: 0;
+    right: 0;
+    &:hover{
+      background-color: #e5e5e5 !important;
+    }
+  }
+  .date-range{
+    display: flex;
+    justify-content: space-between;
+  }
+  .bx--date-picker.bx--date-picker--single .bx--date-picker__input{
+    width: 230px;
+  }
+  .error-text{
+    color: #da1e28;
+  }
+  .bx--date-picker__input:disabled{
+    color: #8d8d8d;
+  }
+}

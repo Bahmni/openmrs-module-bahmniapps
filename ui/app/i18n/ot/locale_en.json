@@ -14,8 +14,6 @@
     "DATE": "Date",
     "DISCARD": "Discard",
     "SAVE": "Save",
-    "UPDATE": "Update",
-
     "ADD_SURGICAL_APPOINTMENT": "Add Surgery",
     "EDIT_SURGICAL_APPOINTMENT": "Edit Surgery",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
@@ -115,16 +113,5 @@
     "ACTUAL_TIME_ADDED_TO_KEY":"Actual time added to ",
     "OT_SURGICAL_BLOCK_ACROSS_MULTIPLE_DAYS_CONFIRMATION_MESSAGE": "Are you sure you want to create a surgical block across days?",
     "MOVING_KEY": "Moving",
-    "FROM_KEY": "from",
-    "EMPTY_NOTES_ERROR": "Note cannot be empty",
-    "NOTE_TITLE": "Note",
-    "FROM": "From",
-    "TO": "To",
-    "FROM_DATE_BEFORE_TO_DATE_ERROR": "From date should be before To date",
-    "DATE_OUT_OF_RANGE_ERROR": "Please select date within the valid range",
-    "DELETE_NOTE_TITLE": "Delete Note",
-    "YES_KEY": "Yes",
-    "NO_KEY": "No",
-    "DELETE_NOTE_MESSAGE": "Are you sure you want to delete this note?",
-    "NOTES_PLACEHOLDER": "Enter a maximum of 150 characters"
+    "FROM_KEY": "from"
 }
