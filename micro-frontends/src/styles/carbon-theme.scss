@@ -7,7 +7,11 @@ $css--default-type: false;
 $css--reset: false;
 $css--body: false;
 @import "~carbon-components/scss/globals/scss/styles.scss";
-[class*="bx--"]{
+.next-ui{
+  color: #393939;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+.next-ui > [class*="bx--"]{
   &:disabled{
     -webkit-text-fill-color: #8d8d8d;
     opacity: 1;
