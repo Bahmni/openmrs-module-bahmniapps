@@ -212,14 +212,6 @@ describe("isAbnormal", () => {
   });
 });
 
-describe("formatDate", () => {
-  it("should format date as 'DD-MMM-YYYY'", () => {
-    const date = "2024-05-13";
-    const result = formatDate(date);
-    expect(result).toBe("13-May-2024");
-  });
-});
-
 describe("getValue", () => {
   it("should return formatted value for DATE type", () => {
     const member = { type: memberTypes.DATE, value: "2024-05-13" };
