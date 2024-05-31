@@ -123,7 +123,7 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, diagnosisService;
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, calculateQuantityAndUnit, diagnosisService;
 
     stateParams = {
         tabConfigName: null
@@ -181,6 +181,7 @@ describe("AddTreatmentController", function () {
             orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
                 dose: 20, doseUnit: 'mg'
             }));
+            calculateQuantityAndUnit = jasmine.createSpy('calculateQuantityAndUnit');
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
             drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
@@ -1915,6 +1916,64 @@ describe("AddTreatmentController", function () {
 
             expect(orderSetDrugOrder.include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();
+        });
+    });
+
+    describe('isRuleMode', function() {
+        it('should return true if dosingRule is defined', function() {
+            var treatment = { dosingRule: 'someRule' };
+            expect(scope.isRuleMode(treatment)).toBe(true);
+        });
+    
+        it('should return false if dosingRule is not defined', function() {
+            var treatment = { dosingRule: null };
+            expect(scope.isRuleMode(treatment)).toBe(false);
+    
+            treatment = { dosingRule: undefined };
+            expect(scope.isRuleMode(treatment)).toBe(false);
+        });
+    });
+
+    describe('calculateDose', function() {
+        it('should call getCalculatedDose with correct parameters', function() {
+            var dosingRule = 'someRule';
+            var treatment = { dosingRule: dosingRule, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            scope.calculateDose(treatment);
+    
+            expect(orderSetService.getCalculatedDose).toHaveBeenCalledWith(
+                scope.patient.uuid,
+                treatment.drug.name,
+                treatment.uniformDosingType.dose,
+                treatment.uniformDosingType.doseUnits,
+                '',
+                dosingRule,
+                undefined
+            );
+        });
+    
+        it('should update dose and call calculateQuantityAndUnit', function() {
+            var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            var deferred = $q.defer();
+            var mockCalculatedDosage = { dose: 100 };
+    
+            spyOn(deferred.promise, 'then').and.callFake(function(callback) {
+                callback(mockCalculatedDosage);
+            });
+    
+            orderSetService.getCalculatedDose.and.returnValue(deferred.promise);
+    
+            scope.calculateDose(treatment);
+            rootScope.$digest();
+    
+            expect(treatment.uniformDosingType.dose).toEqual(mockCalculatedDosage.dose);
+            expect(treatment.calculateQuantityAndUnit).toHaveBeenCalled();
+        });
+
+        it('should not calculate dose if dosingRule is not defined', function() {
+            var treatment = { dosingRule: null, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' } };
+    
+            scope.calculateDose(treatment);
+            expect(orderSetService.getCalculatedDose).not.toHaveBeenCalled();
         });
     });
 
