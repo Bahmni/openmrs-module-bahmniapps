@@ -359,7 +359,8 @@ angular.module('bahmni.clinical')
             $scope.calculateDose = function (treatment) {
                 if (treatment.dosingRule != null || treatment.dosingRule != undefined) {
                     var visitUuid = treatmentConfig.orderSet.calculateDoseOnlyOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
-                    var calculatedDose = orderSetService.getCalculatedDose($scope.patient.uuid, treatment.drug.name, treatment.uniformDosingType.dose, "mg", '', treatment.dosingRule, visitUuid);
+                    var calculatedDose = orderSetService.getCalculatedDose($scope.patient.uuid, treatment.drug.name, treatment.uniformDosingType.dose, treatment.uniformDosingType.doseUnits, '', treatment.dosingRule, visitUuid);
+                    treatment.dosingRule = undefined;
                     calculatedDose.then(function (calculatedDosage) {
                         treatment.uniformDosingType.dose = calculatedDosage.dose;
                         treatment.calculateQuantityAndUnit();
