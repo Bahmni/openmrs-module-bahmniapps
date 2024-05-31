@@ -2148,7 +2148,8 @@ describe("AddTreatmentController", function () {
 
     describe('calculateDose', function() {
         it('should call getCalculatedDose with correct parameters', function() {
-            var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            var dosingRule = 'someRule';
+            var treatment = { dosingRule: dosingRule, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
             scope.calculateDose(treatment);
     
             expect(orderSetService.getCalculatedDose).toHaveBeenCalledWith(
@@ -2157,7 +2158,7 @@ describe("AddTreatmentController", function () {
                 treatment.uniformDosingType.dose,
                 treatment.uniformDosingType.doseUnits,
                 '',
-                treatment.dosingRule,
+                dosingRule,
                 undefined
             );
         });
