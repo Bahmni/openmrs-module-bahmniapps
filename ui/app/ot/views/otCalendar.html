@@ -23,13 +23,13 @@
 
     <div class="table-block">
         <!-- Please dont remove or alter the below class name -->
-        <div class="calendar-time-container">
+        <div class="calendar-time-container" style="top: 110px">
             <div ng-repeat="row in ::rows" class="calendar-time">
                 {{::row.date | bahmniTime}}
             </div>
         </div>
         <div class="ot-block-container">
-            <div class="ot-block-wrapper" on-horizontal-scroll="provider-location-name">
+            <div class="ot-block-wrapper" on-horizontal-scroll="provider-location-name" style="top: 110px">
             <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocks">
                 <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>

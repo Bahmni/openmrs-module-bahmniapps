@@ -8,7 +8,7 @@
         <p ng-if="attributes.estTimeHours || attributes.estTimeMinutes"> {{ 'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME'| translate}} - {{attributes.estTimeHours || 0 }} hrs(s): {{attributes.estTimeMinutes || 0}} min(s) </p>
         <p ng-if="surgicalAppointment.primaryDiagnosis"> {{ 'OT_SURGICAL_APPOINTMENT_PRIMARY_DIAGNOSIS' | translate}}  - {{surgicalAppointment.primaryDiagnosis}} </p>
         <p ng-if="attributes.procedure"> {{ 'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}} - {{attributes.procedure}} </p>
-        <p ng-if="attributes.anesthesic"> {{ 'OT_SURGICAL_APPOINTMENT_ANAESTHETIST'| translate}} - {{attributes.anesthesic}} </p>
+        <p ng-if="attributes.anaesthetist"> {{ 'OT_SURGICAL_APPOINTMENT_ANAESTHETIST'| translate}} - {{attributes.anaesthetist}} </p>
         <p ng-if="attributes.notes"> {{ 'OT_SURGICAL_APPOINTMENT_NOTES'| translate}} - {{attributes.notes}} </p>
         <p ng-if="surgicalAppointment.actualStartDatetime"><br> {{'OT_SURGICAL_APPOINTMENT_ACTUAL_TIME' | translate}} - {{surgicalAppointment.actualStartDatetime | bahmniTime}} - {{surgicalAppointment.actualEndDatetime | bahmniTime}}</p>
     </div>
