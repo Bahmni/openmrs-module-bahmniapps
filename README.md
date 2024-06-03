@@ -32,7 +32,7 @@ These steps need to performed ONLY the FIRST TIME you set up this code.
 4. Install Compass:
    - Compass compiles SASS/SCSS into CSS.
    - Requires ruby (It's recommended to install ruby also using rvm. See install [rvm with ruby](https://stackify.com/rvm-how-to-get-started-and-manage-your-ruby-installations/)).
-   - Ruby version: 2.6.6 
+   - Ruby version: 3.1
    - Once ruby is installed, you can install compass using: `gem install compass`
 
 ### Build commands

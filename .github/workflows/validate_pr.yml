@@ -1,7 +1,7 @@
 name: Validate PR
 
 on:
- pull_request:
+  pull_request:
     branches: [ master ]
 
 jobs:
@@ -13,10 +13,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: Use Ruby 2.5
+      - name: Use Ruby 3.1
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.5
+          ruby-version: 3.1
       - run: npm install -g bower 
       - run: npm install -g grunt-cli 
       - run: gem install compass  
