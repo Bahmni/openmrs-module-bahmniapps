@@ -22,7 +22,9 @@ angular.module('bahmni.clinical')
             $scope.showIPDDashboard = enableIPDFeature && $scope.isActiveIpdVisit;
             $scope.ipdDashboard = {
                 hostData: {
-                    patient: {uuid: $scope.patientUuid}
+                    patient: {uuid: $scope.patientUuid},
+                    forDate: new Date().toUTCString(),
+                    provider: $rootScope.currentProvider
                 }
             };
             var tab = $stateParams.tab;
