@@ -101,6 +101,16 @@ angular.module('bahmni.common.domain')
             return config ? config.showProgramStateInTimeline : false;
         };
 
+        var getDefaultProgram = function () {
+            var defaultProgram = appService.getAppDescriptor().getConfigValue('defaultProgram') || null;
+            return defaultProgram;
+        };
+
+        var getProgramRedirectionConfig = function () {
+            var config = appService.getAppDescriptor().getConfigValue('programRedirection');
+            return config ? config : null;
+        };
+
         var getEnrollmentInfoFor = function (patientUuid, representation) {
             var params = {
                 patient: patientUuid,
@@ -109,6 +119,10 @@ angular.module('bahmni.common.domain')
             return $http.get(Bahmni.Common.Constants.programEnrollPatientUrl, { params: params }).then(function (response) {
                 return response.data.results;
             });
+        };
+
+        var disableProgramOutcomeEditOption = function () {
+            return appService.getAppDescriptor().getConfigValue('disableProgramOutcomeEditOption') || false;
         };
 
         return {
@@ -120,6 +134,9 @@ angular.module('bahmni.common.domain')
             deletePatientState: deletePatientState,
             getProgramAttributeTypes: getProgramAttributeTypes,
             getProgramStateConfig: getProgramStateConfig,
-            getEnrollmentInfoFor: getEnrollmentInfoFor
+            getEnrollmentInfoFor: getEnrollmentInfoFor,
+            getDefaultProgram: getDefaultProgram,
+            getProgramRedirectionConfig: getProgramRedirectionConfig,
+            disableProgramOutcomeEditOption: disableProgramOutcomeEditOption
         };
     }]);

@@ -22,7 +22,8 @@ module.exports = function (grunt) {
         'components/ng-tags-input/ng-tags-input.min.css',
         'components/jquery-ui/themes/smoothness/jquery-ui.min.css',
         'micro-frontends-dist/shared.min.css',
-        'micro-frontends-dist/ipd.min.css'
+        'micro-frontends-dist/ipd.min.css',
+        'micro-frontends-dist/next-ui.min.css'
     ];
 
     var libraryJSFiles = [

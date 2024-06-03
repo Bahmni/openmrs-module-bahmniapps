@@ -12,9 +12,10 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
-            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
+            $scope.autoSelectNotAllowed = $scope.printPrescriptionFeature && $scope.printPrescriptionFeature.autoSelectNotAllowed != null ? $scope.printPrescriptionFeature.autoSelectNotAllowed : false;
             $scope.selectedDrugs = {};
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
 
             if ($scope.enableIPDFeature) {
                 $scope.updateOrderType = function (drugOrder) {
@@ -35,6 +36,13 @@ angular.module('bahmni.clinical')
                         })) ||
                         !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed ||
                         $scope.consultation.encounterUuid !== drugOrder.encounterUuid;
+                };
+
+                $scope.disableEditButton = function (drugOrder) {
+                    return ($scope.medicationSchedules &&
+                        $scope.medicationSchedules.some(function (schedule) {
+                            return schedule.order.uuid === drugOrder.uuid;
+                        }));
                 };
             }
 
@@ -89,6 +97,14 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            $scope.selectAllDrugs = function (drugOrderGroup, index) {
+                if (!$scope.autoSelectNotAllowed) {
+                    angular.forEach(drugOrderGroup.drugOrders, function (drugOrder) {
+                        $scope.selectedDrugs[index + "/" + drugOrder.uuid] = true;
+                    });
+                }
+            };
+
             $scope.printSelectedDrugs = function () {
                 var drugOrdersForPrint = [];
                 var promises = [];
@@ -127,37 +143,37 @@ angular.module('bahmni.clinical')
                         dispenserInfo = treatmentService.getOrderedProviderAttributesForPrint(dispenserAttributes, $scope.printPrescriptionFeature.providerAttributesForPrint);
                         angular.forEach(diagnoses, function (diagnosis) {
                             if (diagnosis.order === $scope.printPrescriptionFeature.printDiagnosis.order &&
-                                diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity &&
-                                diagnosis.codedAnswer !== null) {
+                                diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity) {
                                 if (diagnosesCodes.length > 0) {
                                     diagnosesCodes += ", ";
                                 }
-                                diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
+                                    diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                }
+                                else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
+                                    diagnosesCodes += diagnosis.codedAnswer.name;
+                                }
+                                else if (diagnosis.codedAnswer == null && diagnosis.freeTextAnswer !== null) {
+                                    diagnosesCodes += diagnosis.freeTextAnswer;
+                                }
                             }
                         });
                     });
                     promises.push(promise);
                 }
+
                 $scope.allergies = "";
-                var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
-                    var allergies = response.data;
-                    var allergiesList = [];
-                    if (response.status === 200 && allergies.length > 0) {
-                        allergies.entry.forEach(function (allergy) {
-                            if (allergy.resource.code.coding) {
-                                allergiesList.push(allergy.resource.code.coding[0].display);
-                            }
-                        });
-                    }
-                    $scope.allergies = allergiesList.join(", ");
+                var allergyPromise = allergyService.fetchAndProcessAllergies($scope.patient.uuid).then(function (allergies) {
+                    $scope.allergies = allergies;
                 });
                 promises.push(allergyPromise);
+
                 Promise.all(promises).then(function () {
                     var additionalInfo = {};
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
                     additionalInfo.currentDate = new Date();
                     additionalInfo.facilityLocation = $rootScope.facilityLocation;
-                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, $scope.allergies);
+                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, $scope.allergies, currentVisit.startDatetime);
                     $scope.selectedDrugs = {};
                 }).catch(function (error) {
                     console.error("Error fetching details for print: ", error);

@@ -5,12 +5,16 @@ angular.module('bahmni.registration')
         'messagingService', '$translate', '$filter',
         function ($rootScope, $scope, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
             $scope.results = [];
-            $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
-                return !identifierType.primary;
-            });
             var searching = false;
             var maxAttributesFromConfig = 5;
-            var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
+            const allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
+            const patientSearchResultOptions = allSearchConfigs.patientSearchResultOptions != null ? allSearchConfigs.patientSearchResultOptions : {};
+            const ignoredIdentifiers = new Set(patientSearchResultOptions.ignorePatientIdentifiers || []);
+            $scope.showAge = patientSearchResultOptions.showAge != null ? patientSearchResultOptions.showAge : true;
+            $scope.showDOB = patientSearchResultOptions.showDOB != null ? patientSearchResultOptions.showDOB : false;
+            $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
+                return !identifierType.primary && !ignoredIdentifiers.has(identifierType.name);
+            });
             var patientSearchResultConfigs = appService.getAppDescriptor().getConfigValue("patientSearchResults") || {};
             maxAttributesFromConfig = !_.isEmpty(allSearchConfigs.programAttributes) ? maxAttributesFromConfig - 1 : maxAttributesFromConfig;
 

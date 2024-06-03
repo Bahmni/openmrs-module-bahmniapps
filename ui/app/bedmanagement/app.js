@@ -32,8 +32,12 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 views: {
                     'content': {
                         templateUrl: 'views/home.html',
-                        controller: function ($scope, appService) {
+                        controller: function ($scope, appService, $state) {
+                            $scope.goToCareView = function () {
+                                $state.go('careViewDashboard');
+                            };
                             $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
+                            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                         }
                     },
                     'additional-header': {
@@ -125,6 +129,17 @@ angular.module('ipd').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                             return bedInitialization(undefined, $stateParams.patientUuid);
                         });
                     }
+                }
+            }).state('careViewDashboard', {
+                url: '/home/careViewDashboard',
+                views: {
+                    'content': {
+                        template: '<mfe-ipd-care-view-dashboard style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>',
+                        controller: 'CareViewController'
+                    }
+                },
+                resolve: {
+                    initialization: 'initialization'
                 }
             });
 

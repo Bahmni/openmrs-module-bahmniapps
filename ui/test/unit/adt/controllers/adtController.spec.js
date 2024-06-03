@@ -440,4 +440,12 @@ describe("AdtController", function () {
             expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParams, 'MODULE_LABEL_INPATIENT_KEY');
         });
     });
+
+    describe('getDisplayForContinuingVisit', function () {
+        it('should return Admit', function () {
+            createController();
+            ;
+            expect(scope.getDisplayForContinuingVisit()).toBe("Admit");
+        });
+    });
 });
