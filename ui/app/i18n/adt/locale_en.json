@@ -67,5 +67,6 @@
     "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Discharge Patient",
     "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Transfer Patient",
     "IPD_WARD_LIST_SEARCH_KEY": "Search...",
-    "CARE_VIEW_LABEL": "Change to Care View"
+    "CARE_VIEW_LABEL": "Change to Care View",
+    "LOGOUT_TRANSLATION_KEY": "Logout"
 }

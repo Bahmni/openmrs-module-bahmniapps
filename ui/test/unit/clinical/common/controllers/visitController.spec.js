@@ -1,16 +1,9 @@
 'use strict';
 
 describe('VisitController', function () {
-    var scope;
-    var $controller;
-    var success;
-    var encounterService;
-    var patient;
-    var dateUtil;
-    var $timeout;
-    var getEncounterPromise;
-    var locationService;
-    var appService;
+    var scope, $controller, success, encounterService, patient, dateUtil, $timeout, getEncounterPromise;
+    var locationService, appService, $location, auditLogService, sessionService;
+    var q, state, rootScope, controller, allergyService;
     var configurations = {
         encounterConfig: function () {
         }
@@ -19,11 +12,6 @@ describe('VisitController', function () {
         getVisitConfig: function () {
         }
     };
-    var q;
-    var state;
-    var rootScope;
-    var controller;
-    var allergyService;
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -66,8 +54,18 @@ describe('VisitController', function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         getEncounterPromise = specUtil.createServicePromise('getEncountersForEncounterType');
         allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
+        $location = jasmine.createSpyObj('$location', ['search']);
+        auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+        sessionService = jasmine.createSpyObj('sessionService', ['destroy']);
         allergyService.getAllergyForPatient.and.returnValue(Promise.resolve(allergiesMock));
         encounterService.getEncountersForEncounterType.and.returnValue(getEncounterPromise);
+        $location.search.and.returnValue({source: "clinical"});
+        auditLogService.log.and.returnValue({
+            then: function(callback) { return callback(); }
+        });
+        sessionService.destroy.and.returnValue({
+            then: function() { }
+        });
         spyOn(clinicalAppConfigService, 'getVisitConfig').and.returnValue([]);
         spyOn(configurations, 'encounterConfig').and.returnValue({
             getPatientDocumentEncounterTypeUuid: function () {
@@ -104,6 +102,9 @@ describe('VisitController', function () {
                 locationService: locationService,
                 appService: appService,
                 allergyService: allergyService,
+                auditLogService: auditLogService,
+                sessionService: sessionService,
+                $location: $location
             });
     }]));
 
@@ -156,13 +157,17 @@ describe('VisitController', function () {
             expect(scope.testResultClass(inputLine)).toEqual(expectedStyle);
         });
 
-        //TODO: Enable the test after Print Prescription & Discharge Summary Print PRs are merged
+        it('should handle on print event', function () {
+            scope.visitTabConfig.currentTab.printing = {templateUrl: 'common/views/visitTabPrint.html', observationsConcepts: ["WEIGHT"]}
+            scope.$broadcast("event:printVisitTab", {});
+            expect(allergyService.getAllergyForPatient).toHaveBeenCalled();
+        });
 
-        // it('should handle on print event', function () {
-        //     scope.visitTabConfig.currentTab.printing = {templateUrl: 'common/views/visitTabPrint.html', observationsConcepts: ["WEIGHT"]}
-        //     scope.$broadcast("event:printVisitTab", {});
-        //     expect(allergyService.getAllergyForPatient).toHaveBeenCalled();
-        // })
+        it('should call auditLogService.log and sessionService.destroy on logout', function (){
+            scope.ipdDashboard.hostApi.onLogOut();
+            expect(auditLogService.log).toHaveBeenCalled();
+            expect(sessionService.destroy).toHaveBeenCalled();
+        });
     });
 
 });
