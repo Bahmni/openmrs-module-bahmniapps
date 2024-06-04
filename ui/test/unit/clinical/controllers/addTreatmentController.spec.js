@@ -258,7 +258,7 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appDescriptor, appService, appConfig, defaultDrugsPromise, 
+        encounterDateTime, appDescriptor, appService, appConfig, defaultDrugsPromise,
         orderSetService, locationService, $state, cdssService, calculateQuantityAndUnit, diagnosisService;
 
     stateParams = {
@@ -312,7 +312,6 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getTreatmentActionLink']);
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
@@ -2136,11 +2135,11 @@ describe("AddTreatmentController", function () {
             var treatment = { dosingRule: 'someRule' };
             expect(scope.isRuleMode(treatment)).toBe(true);
         });
-    
+
         it('should return false if dosingRule is not defined', function() {
             var treatment = { dosingRule: null };
             expect(scope.isRuleMode(treatment)).toBe(false);
-    
+
             treatment = { dosingRule: undefined };
             expect(scope.isRuleMode(treatment)).toBe(false);
         });
@@ -2151,7 +2150,7 @@ describe("AddTreatmentController", function () {
             var dosingRule = 'someRule';
             var treatment = { dosingRule: dosingRule, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
             scope.calculateDose(treatment);
-    
+
             expect(orderSetService.getCalculatedDose).toHaveBeenCalledWith(
                 scope.patient.uuid,
                 treatment.drug.name,
@@ -2162,28 +2161,28 @@ describe("AddTreatmentController", function () {
                 undefined
             );
         });
-    
+
         it('should update dose and call calculateQuantityAndUnit', function() {
             var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
             var deferred = $q.defer();
             var mockCalculatedDosage = { dose: 100 };
-    
+
             spyOn(deferred.promise, 'then').and.callFake(function(callback) {
                 callback(mockCalculatedDosage);
             });
-    
+
             orderSetService.getCalculatedDose.and.returnValue(deferred.promise);
-    
+
             scope.calculateDose(treatment);
             rootScope.$digest();
-    
+
             expect(treatment.uniformDosingType.dose).toEqual(mockCalculatedDosage.dose);
             expect(treatment.calculateQuantityAndUnit).toHaveBeenCalled();
         });
 
         it('should not calculate dose if dosingRule is not defined', function() {
             var treatment = { dosingRule: null, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' } };
-    
+
             scope.calculateDose(treatment);
             expect(orderSetService.getCalculatedDose).not.toHaveBeenCalled();
         });
@@ -2195,7 +2194,7 @@ describe("AddTreatmentController", function () {
             var doseUnits = scope.getFinalDosingUnits(treatment);
             expect(doseUnits).toEqual(treatmentConfig.getDoseUnits());
         });
-    
+
         it('should return dose units based on ruleUnitList if in rule mode', function() {
             var treatment = { dosingRule: 'someRule' };
             scope.ruleUnitsMap = {
@@ -2203,9 +2202,9 @@ describe("AddTreatmentController", function () {
             };
             spyOn(scope, 'isRuleMode').and.returnValue(true);
             spyOn(treatmentConfig, 'getDoseUnits').and.returnValue([{ name: 'mg' }, { name: 'ml' }]);
-            
+
             var doseUnits = scope.getFinalDosingUnits(treatment);
-            
+
             expect(doseUnits).toEqual([
                 { name: 'mg' },
                 { name: 'ml' }
