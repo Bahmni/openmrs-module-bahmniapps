@@ -10,6 +10,7 @@ angular.module('bahmni.clinical')
             $scope.visitTabConfig = visitConfig;
             $scope.showMobileMenu = false;
             $scope.visitPage = true;
+
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.patientDocumentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);

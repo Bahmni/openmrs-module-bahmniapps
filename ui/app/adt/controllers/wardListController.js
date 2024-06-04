@@ -8,9 +8,9 @@ angular.module('bahmni.adt')
                 var options = $.extend({}, $stateParams);
                 $.extend(options, {patientUuid: patientUuid, visitUuid: visitUuid || null});
                 if (enableIPDFeature) {
-                    $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.mfeIpdDashboard, options, true);
+                    $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.mfeIpdDashboardUrl, options, true);
                 } else {
-                    $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.ipdDashboard, options, true);
+                    $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.ipdDashboardUrl, options, true);
                 }
             };
             $scope.searchText = '';
