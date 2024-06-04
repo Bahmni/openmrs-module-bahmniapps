@@ -19,6 +19,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             const programRedirectionConfig = programService.getProgramRedirectionConfig();
             const observationFormsConfig = programService.getObservationFormsConfig() || {};
 
+            $scope.showFormsDisplayControl = function () {
+                return !_.isEmpty(observationFormsConfig);
+            };
+
             $scope.observationFormData = {
                 patientUuid: $scope.patient.uuid,
                 showEditForActiveEncounter: observationFormsConfig.showEditForActiveEncounter || true,
