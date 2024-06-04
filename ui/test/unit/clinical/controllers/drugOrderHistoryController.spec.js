@@ -23,9 +23,12 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(inject(function (_$controller_, $rootScope, _$q_) {
         $q = _$q_;
         $controller = _$controller_;
-        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders']);
+        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders', 'getMedicationSchedulesForOrders']);
         _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
             return specUtil.respondWithPromise($q, prescribedDrugOrders);
+        });
+        _treatmentService.getMedicationSchedulesForOrders.and.callFake(function () {
+            return specUtil.respondWithPromise($q, []);
         });
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue({
