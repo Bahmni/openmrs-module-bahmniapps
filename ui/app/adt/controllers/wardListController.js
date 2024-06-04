@@ -3,10 +3,15 @@
 angular.module('bahmni.adt')
     .controller('WardListController', ['$scope', 'queryService', 'spinner', '$q', '$window', '$stateParams', 'appService', '$rootScope',
         function ($scope, queryService, spinner, $q, $window, $stateParams, appService, $rootScope) {
+            const enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
             $scope.gotoPatientDashboard = function (patientUuid, visitUuid) {
                 var options = $.extend({}, $stateParams);
                 $.extend(options, {patientUuid: patientUuid, visitUuid: visitUuid || null});
-                $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.ipdDashboard, options, true);
+                if (enableIPDFeature) {
+                    $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.mfeIpdDashboard, options, true);
+                } else {
+                    $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.ipdDashboard, options, true);
+                }
             };
             $scope.searchText = '';
             $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};

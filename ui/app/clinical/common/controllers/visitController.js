@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService',
-        function ($scope, $state, $rootScope, $q, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService) {
+    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', '$window', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService',
+        function ($scope, $state, $rootScope, $q, encounterService, $window, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -11,7 +11,6 @@ angular.module('bahmni.clinical')
                 $state.current.views['print-content'].templateUrl;
             var showProviderInfo = appService.getAppDescriptor().getConfigValue('showProviderInfoinVisits');
             $scope.showProviderInfo = showProviderInfo !== false ? true : showProviderInfo;
-            var enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
             $scope.visitTabConfig = visitConfig;
@@ -19,12 +18,19 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
             $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null;
-            $scope.showIPDDashboard = enableIPDFeature && $scope.isActiveIpdVisit;
             $scope.ipdDashboard = {
                 hostData: {
                     patient: {uuid: $scope.patientUuid},
                     forDate: new Date().toUTCString(),
                     provider: $rootScope.currentProvider
+                },
+                hostApi: {
+                    navigation: {
+                        dischargeSummary: function () {
+                            const dischargeSummaryUrl = $state.href('patient.dashboard.visit', {visitUuid: $scope.visitUuid});
+                            $window.open(dischargeSummaryUrl, '_blank');
+                        }
+                    }
                 }
             };
             var tab = $stateParams.tab;
