@@ -25,29 +25,7 @@ angular
       '<mfe-ipd-dashboard host-data="hostData" host-api="hostApi"></mfe-ipd-dashboard>'
   });
 
-
 /** MFE component 2: DrugChartDashboard
- *================================================= */
-
-// angular
-//     .module("bahmni.mfe.ipd")
-//     .component("mfeDrugChartDashboard", react2angular(DrugChartDashboard), {
-//         template:
-//             '<mfe-drug-chart-dashboard host-data="hostData" host-api="hostApi"></mfe-drug-chart-dashboard>'
-//     });
-
-
-/** MFE component 3: CareViewDashboard
- *================================================= */
-
-angular
-.module("bahmni.mfe.ipd")
-.component("mfeIpdCareViewDashboard", react2angular(CareViewDashboard), {
-    template:
-        '<mfe-ipd-care-view-dashboard host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>'
-});
-
-/** MFE component 4: DrugChartDashboard
  *================================================= */
 
 angular
