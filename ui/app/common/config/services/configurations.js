@@ -86,4 +86,8 @@ angular.module('bahmni.common.config')
         this.prescriptionEmailToggle = function () {
             return this.configs.prescriptionEmailToggle;
         };
+
+        this.quickLogoutComboKey = function () {
+            return this.configs.quickLogoutComboKey;
+        };
     }]);

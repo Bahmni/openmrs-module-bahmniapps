@@ -22,7 +22,7 @@ describe("CareViewController", function () {
 
         controller('CareViewController', {
             $scope: scope,
-            $rootScope: {currentProvider: mockProvider, quickLogoutComboKey: 'Escape', cookieExpiryTime:30},
+            $rootScope: {currentProvider: mockProvider, quickLogoutComboKey: 'Escape'},
             $state: state,
             auditLogService: auditLogService,
             sessionService: sessionService,
