@@ -168,7 +168,7 @@ describe('VisitController', function () {
 
         it('should call auditLogService.log and sessionService.destroy on logout', function (){
             scope.ipdDashboard.hostApi.onLogOut();
-            expect(auditLogService.log).toHaveBeenCalled();
+            expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
             expect(sessionService.destroy).toHaveBeenCalled();
         });
 
@@ -176,6 +176,11 @@ describe('VisitController', function () {
             spyOn(scope.ipdDashboard.hostApi, 'onLogOut');
             window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': true, 'ctrlKey': false}));
             expect(scope.ipdDashboard.hostApi.onLogOut).toHaveBeenCalled();
+        });
+        it('should remove event listener on scope destroy', function () {
+            spyOn(window, 'removeEventListener');
+            scope.$destroy();
+            expect(window.removeEventListener).toHaveBeenCalledWith('keydown', jasmine.any(Function));
         });
     });
 

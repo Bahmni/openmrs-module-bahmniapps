@@ -35,14 +35,12 @@ describe("CareViewController", function () {
         expect(scope.hostData).toEqual({provider: mockProvider});
         expect(scope.hostApi).not.toBeNull();
     });
-
     it('should call onHome when hostApi.onHome is called', function () {
         createController();
         scope.hostApi.onHome();
         expect(state.go).toHaveBeenCalledWith('home');
     });
-
-    it('should call auditLogService.log and sessionService.destroy on logout', function () {
+    it('should call auditLogService.log and sessionService.destroy on logout', function (){
         createController();
         scope.hostApi.onLogOut();
         expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
