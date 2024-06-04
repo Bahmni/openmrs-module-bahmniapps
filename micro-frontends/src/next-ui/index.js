@@ -1,6 +1,7 @@
 import { React2AngularBridgeBuilder } from "../utils/bridge-builder";
 import { PatientAlergiesControl } from "./Containers/patientAlergies/PatientAlergiesControl";
 import { FormDisplayControl } from "./Containers/formDisplayControl/FormDisplayControl";
+import { OtNotesSavePopup, OtNotesDeletePopup } from "./Containers/otNotes/OtNotes";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -20,3 +21,13 @@ builder.createComponentWithTranslationForwarding(
   "FormDisplayControl",
   FormDisplayControl
 );
+
+builder.createComponentWithTranslationForwarding(
+    "OtNotesSavePopup",
+    OtNotesSavePopup
+)
+
+builder.createComponentWithTranslationForwarding(
+    "OtNotesDeletePopup",
+    OtNotesDeletePopup
+)

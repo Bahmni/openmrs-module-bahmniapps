@@ -4,7 +4,7 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
-        retrospectiveEntryService, appService, rootScope, visitHistory;
+        retrospectiveEntryService, appService, rootScope, visitHistory, allergyService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var treatmentConfig = {
         drugOrderHistoryConfig: {
@@ -50,6 +50,13 @@ describe("DrugOrderHistoryController", function () {
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         visitHistory = {};
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+                appService.getAppDescriptor.and.returnValue({
+                    getConfigValue: function (config) {
+                        return false;
+                    }
+                });
+        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
     }));
 
     var initController = function () {
@@ -64,7 +71,8 @@ describe("DrugOrderHistoryController", function () {
             spinner: spinner,
             visitHistory: visitHistory,
             treatmentConfig: treatmentConfig,
-            appService: appService
+            appService: appService,
+            allergyService: allergyService
         });
         rootScope.$apply();
     };
@@ -93,6 +101,26 @@ describe("DrugOrderHistoryController", function () {
         it("should get prescribed and active Drugorders with correct no of visits ", function () {
             expect(_treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined, undefined);
         });
+        it("should selectAllDrugs for print", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(3);
+            expect()
+        })
+        it("should not selectAllDrugs for print when auto select is not allowed", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+            
+            scope.autoSelectNotAllowed = true
+
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(0);
+            expect()
+        })
     });
 
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {
@@ -357,5 +385,233 @@ describe("DrugOrderHistoryController", function () {
                 "shortName": "Methylprednisolone 2ml"
             },
             "provider": {name: "superman"}
+        }];
+});
+
+describe("DrugOrderHistoryControllerIPD", function () {
+
+    beforeEach(module('bahmni.clinical'));
+
+    var scope, prescribedDrugOrders, activeDrugOrder, updateDrugOrder, _treatmentService,
+        retrospectiveEntryService, appService, rootScope, visitHistory, allergyService;
+    var DateUtil = Bahmni.Common.Util.DateUtil;
+    var treatmentConfig = {
+        drugOrderHistoryConfig: {
+            numberOfVisits: 4
+        }
+    };
+
+    var translate;
+    beforeEach(module(function ($provide) {
+        translate = jasmine.createSpyObj('$translate', ['instant']);
+        $provide.value('$translate', translate);
+        $provide.value('appService', appService);
+    }));
+
+    var $q, $controller, spinner;
+    beforeEach(inject(function (_$controller_, $rootScope, _$q_) {
+        $q = _$q_;
+        $controller = _$controller_;
+        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders', 'getMedicationSchedulesForOrders']);
+        _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
+            return specUtil.respondWithPromise($q, prescribedDrugOrders);
+        });
+        _treatmentService.getMedicationSchedulesForOrders.and.callFake(function () {
+            return specUtil.respondWithPromise($q, []);
+        });
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (config) {
+                return true;
+            }
+        });
+        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
+
+        rootScope = $rootScope;
+        spyOn($rootScope, '$broadcast');
+        $rootScope.visit = { startDate: 1410322624000 };
+        scope = $rootScope.$new();
+        scope.consultation = {
+            preSaveHandler: new Bahmni.Clinical.Notifier(), discontinuedDrugs: [],
+            activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)]
+        };
+        scope.currentBoard = { extensionParams: {} };
+
+        var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
+        retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+        retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
+        spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        visitHistory = {};
+    }));
+
+    var initController = function () {
+        $controller('DrugOrderHistoryController', {
+            $scope: scope,
+            $translate: translate,
+            activeDrugOrders: [activeDrugOrder],
+            treatmentService: _treatmentService,
+            retrospectiveEntryService: retrospectiveEntryService,
+            $stateParams: { patientUuid: "patientUuid" },
+            visitContext: {},
+            spinner: spinner,
+            visitHistory: visitHistory,
+            treatmentConfig: treatmentConfig,
+            appService: appService,
+            allergyService: allergyService
+        });
+        rootScope.$apply();
+    };
+
+    beforeEach(initController);
+
+    describe("DrugOrderTypeUpdate", function () {
+        it("should update drug order type", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            scope.updateOrderType(drugOrder);
+            expect(rootScope.$broadcast).toHaveBeenCalled();
+        });
+    });
+
+    activeDrugOrder = {
+        "uuid": "scheduledOrderUuid",
+        "action": "NEW",
+        "careSetting": "outPatient",
+        "orderType": "Drug Order",
+        "orderNumber": "ORD-2345",
+        "autoExpireDate": null,
+        "scheduledDate": null,
+        "dateStopped": null,
+        "instructions": null,
+        "visit": {
+            "startDateTime": 1397028261000,
+            "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+        },
+        "drug": {
+            "form": "Injection",
+            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": null,
+            "name": "Methylprednisolone 200ml"
+        },
+        "dosingInstructions": {
+            "quantity": 100,
+            "route": "Intramuscular",
+            "frequency": "Twice a day",
+            "doseUnits": "Tablespoon",
+            "asNeeded": false,
+            "quantityUnits": "Tablet",
+            "dose": 5,
+            "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+            "numberOfRefills": null
+        },
+        "durationUnits": "Days",
+        "dateActivated": DateUtil.addDays(new Date(), 2).valueOf(),
+        "commentToFulfiller": null,
+        "effectiveStartDate": DateUtil.addDays(new Date(), 2).valueOf(),
+        "effectiveStopDate": null,
+        "orderReasonConcept": null,
+        "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+        "previousOrderUuid": null,
+        "orderReasonText": null,
+        "duration": 10,
+        "concept": {
+            "shortName": "Methylprednisolone 200ml"
+        },
+        "provider": { name: "superman" }
+    };
+
+    updateDrugOrder = {
+        "uuid": "scheduledOrderUuid",
+        "action": "NEW",
+        "careSetting": "inPatient",
+        "orderType": "Drug Order",
+        "orderNumber": "ORD-2345",
+        "autoExpireDate": null,
+        "scheduledDate": null,
+        "dateStopped": null,
+        "instructions": null,
+        "visit": {
+            "startDateTime": 1397028261000,
+            "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+        },
+        "drug": {
+            "form": "Injection",
+            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": null,
+            "name": "Methylprednisolone 200ml"
+        },
+        "dosingInstructions": {
+            "quantity": 100,
+            "route": "Intramuscular",
+            "frequency": "Twice a day",
+            "doseUnits": "Tablespoon",
+            "asNeeded": false,
+            "quantityUnits": "Tablet",
+            "dose": 5,
+            "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+            "numberOfRefills": null
+        },
+        "durationUnits": "Days",
+        "dateActivated": DateUtil.addDays(new Date(), 2).valueOf(),
+        "commentToFulfiller": null,
+        "effectiveStartDate": DateUtil.addDays(new Date(), 2).valueOf(),
+        "effectiveStopDate": null,
+        "orderReasonConcept": null,
+        "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+        "previousOrderUuid": null,
+        "orderReasonText": null,
+        "duration": 10,
+        "concept": {
+            "shortName": "Methylprednisolone 200ml"
+        },
+        "provider": { name: "superman" }
+    };
+
+    prescribedDrugOrders = [
+        activeDrugOrder,
+        {
+            "uuid": "drugOrder2Uuid",
+            "action": "NEW",
+            "careSetting": "Outpatient",
+            "orderType": "Drug Order",
+            "orderNumber": "ORD-3456",
+            "autoExpireDate": 1397892379000,
+            "scheduledDate": null,
+            "dateStopped": null,
+            "instructions": null,
+            "visit": {
+                "startDateTime": 1410349317000,
+                "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+            },
+            "drug": {
+                "form": "Tablet",
+                "uuid": "42878383-488c-4f9a-8818-e82ce9f64006",
+                "strength": null,
+                "name": "Calcium + Vit D 500mg"
+            },
+            "dosingInstructions": {
+                "doseUnits": "Tablet",
+                "dose": 1,
+                "quantity": null,
+                "route": null,
+                "frequency": null,
+                "asNeeded": null,
+                "quantityUnits": null,
+                "administrationInstructions": null,
+                "numberOfRefills": null
+            },
+            "durationUnits": null,
+            "dateActivated": 1397028379000,
+            "commentToFulfiller": null,
+            "effectiveStartDate": 1410322624001,
+            "effectiveStopDate": 1397892379000,
+            "orderReasonConcept": null,
+            "dosingInstructionType": "org.openmrs.FreeTextDosingInstructions",
+            "previousOrderUuid": null,
+            "orderReasonText": null,
+            "duration": 10,
+            "concept": {
+                "shortName": "Methylprednisolone 2ml"
+            },
+            "provider": { name: "superman" }
         }];
 });

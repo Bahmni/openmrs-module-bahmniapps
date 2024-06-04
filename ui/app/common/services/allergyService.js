@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.util')
     .factory('allergyService', ['$http', 'appService', function ($http, appService) {
         var getAllergyForPatient = function (patientUuid) {
             var patientAllergyURL = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.patientAllergiesURL, {'patientUuid': patientUuid});
@@ -10,17 +10,20 @@ angular.module('bahmni.clinical')
                 cache: false
             });
         };
+
         var fetchAndProcessAllergies = function (patientUuid) {
-            var allergies = getAllergyForPatient(patientUuid);
-            var allergiesList = [];
-            if (allergies.status === 200 && allergies.data.entry.length > 0) {
-                allergies.data.entry.forEach(function (allergy) {
-                    if (allergy.resource.code.coding) {
-                        allergiesList.push(allergy.resource.code.coding[0].display);
-                    }
-                });
-            }
-            return allergiesList.join(", ");
+            return getAllergyForPatient(patientUuid).then(function (response) {
+                var allergies = response.data;
+                var allergiesList = [];
+                if (response.status === 200 && allergies.entry && allergies.entry.length > 0) {
+                    allergies.entry.forEach(function (allergy) {
+                        if (allergy.resource.code.coding) {
+                            allergiesList.push(allergy.resource.code.coding[0].display);
+                        }
+                    });
+                }
+                return allergiesList.join(", ");
+            });
         };
 
         return {
