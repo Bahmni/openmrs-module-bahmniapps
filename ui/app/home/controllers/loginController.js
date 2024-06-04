@@ -51,6 +51,7 @@ angular.module('bahmni.home')
                 $scope.headerText = response.data.loginPage.showHeaderText;
                 $scope.titleText = response.data.loginPage.showTitleText;
                 $scope.helpLink = response.data.helpLink.url;
+                $rootScope.cookieExpirationTime = response.data.loggedInUrlCookieExpirationTimeInMinutes;
             });
 
             localeService.getLocalesLangs().then(function (response) {
@@ -167,11 +168,18 @@ angular.module('bahmni.home')
                                     function () { deferrable.resolve(); },
                                     function (error) { deferrable.reject(error); }
                                 );
-                            logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
-                        }, function (error) {
-                            $scope.errorMessageTranslateKey = error;
-                            deferrable.reject(error);
-                            logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
+                                logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
+                                if (data) {
+                                    const providerUuid = data.currentProvider.uuid;
+                                    if ($bahmniCookieStore.get(providerUuid) !== null) {
+                                        $window.location = $bahmniCookieStore.get(providerUuid);
+                                    }
+                                }
+                            }, function (error) {
+                                $scope.errorMessageTranslateKey = error;
+                                deferrable.reject(error);
+                                logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
+                            });
                         });
                     },
                     function (error) {
