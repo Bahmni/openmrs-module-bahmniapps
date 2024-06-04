@@ -27,9 +27,9 @@ angular.module('bahmni.clinical')
             $scope.ipdDashboard = {
                 hostData: {
                     patient: {uuid: $scope.patientUuid},
+                    visitSummary: $scope.visitSummary,
                     forDate: new Date().toUTCString(),
                     provider: $rootScope.currentProvider,
-                    visitSummary: $scope.visitSummary,
                     visitUuid: $scope.visitUuid,
                     isReadMode: $scope.isIpdReadMode
                 },
