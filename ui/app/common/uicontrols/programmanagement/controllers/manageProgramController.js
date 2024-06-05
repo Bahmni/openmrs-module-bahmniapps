@@ -25,7 +25,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.observationFormData = {
                 patientUuid: $scope.patient.uuid,
-                showEditForActiveEncounter: observationFormsConfig.showEditForActiveEncounter || true,
+                showEditForActiveEncounter: true,
                 numberOfVisits: observationFormsConfig.numberOfVisits || 10,
                 hasNoHierarchy: $scope.hasNoHierarchy
             };
