@@ -72,7 +72,4 @@ angular.module('bahmni.clinical')
         this.getVisitTypeForRetrospectiveEntries = function () {
             return appService.getAppDescriptor().getConfigValue("visitTypeForRetrospectiveEntries");
         };
-        this.getIsIPDFeatureEnabled = function () {
-            return appService.getAppDescriptor().getConfigValue("enableIPDFeature");
-        };
     }]);

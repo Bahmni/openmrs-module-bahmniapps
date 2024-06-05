@@ -121,7 +121,7 @@ angular.module('bahmni.clinical')
                             return drugOrder.uuid == selectedDrugOrder[1];
                         });
                         if (drugOrder) {
-                            if ($scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0) {
+                            if ($scope.printPrescriptionFeature && $scope.printPrescriptionFeature !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint && $scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint !== null && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0) {
                                 drugOrder.provider.attributes = {};
                                 var promise = providerService.getAttributesForProvider(drugOrder.provider.uuid);
                                 promises.push(promise);
@@ -137,7 +137,7 @@ angular.module('bahmni.clinical')
                     }
                 });
 
-                if ($scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0 && $scope.printPrescriptionFeature.observationsConcepts !== undefined) {
+                if ($scope.printPrescriptionFeature && $scope.printPrescriptionFeature !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint && $scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint !== null && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0) {
                     var promise = $q.all([diagnosisService.getPatientDiagnosis($stateParams.patientUuid), providerService.getAttributesForProvider($rootScope.currentProvider.uuid), observationsService.fetch($stateParams.patientUuid, $scope.printPrescriptionFeature.observationsConcepts, "latest", null, null, null, null, null)]).then(function (response) {
                         const diagnoses = response[0].data;
                         const dispenserAttributes = response[1].data.results;
