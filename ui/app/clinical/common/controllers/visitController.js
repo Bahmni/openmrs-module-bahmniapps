@@ -21,8 +21,6 @@ angular.module('bahmni.clinical')
             $scope.isIpdReadMode = true;
             if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null) {
                 $scope.isIpdReadMode = false;
-            } else if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime !== null) {
-                $scope.isIpdReadMode = true;
             }
             $scope.ipdDashboard = {
                 hostData: {

@@ -347,7 +347,7 @@ angular.module('consultation')
                 }
             })
             .state('patient.dashboard.ipdVisit', {
-                url: '/dashboard/visit/ipd/:visitUuid/:tab',
+                url: '/dashboard/visit/ipd/:visitUuid?source',
                 data: {
                     backLinks: [patientSearchBackLink]
                 },
