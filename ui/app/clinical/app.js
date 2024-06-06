@@ -325,6 +325,23 @@ angular.module('consultation')
                     }
                 }
             })
+            .state('patient.dashboard.ipdVisit', {
+                url: '/dashboard/visit/ipd/:visitUuid?source',
+                data: {
+                    backLinks: [patientSearchBackLink]
+                },
+                views: {
+                    'dashboard-content': {
+                        templateUrl: 'common/views/visitIpd.html',
+                        controller: 'VisitController'
+                    }
+                },
+                resolve: {
+                    visitSummary: function (visitSummaryInitialization, $stateParams) {
+                        return visitSummaryInitialization($stateParams.visitUuid);
+                    }
+                }
+            })
             .state('patient.dashboard.visit', {
                 url: '/dashboard/visit/:visitUuid/:tab',
                 data: {
@@ -337,23 +354,6 @@ angular.module('consultation')
                     },
                     'dashboard-content': {
                         templateUrl: 'common/views/visit.html',
-                        controller: 'VisitController'
-                    }
-                },
-                resolve: {
-                    visitSummary: function (visitSummaryInitialization, $stateParams) {
-                        return visitSummaryInitialization($stateParams.visitUuid);
-                    }
-                }
-            })
-            .state('patient.dashboard.ipdVisit', {
-                url: '/dashboard/visit/ipd/:visitUuid?source',
-                data: {
-                    backLinks: [patientSearchBackLink]
-                },
-                views: {
-                    'dashboard-content': {
-                        templateUrl: 'common/views/visitIpd.html',
                         controller: 'VisitController'
                     }
                 },

@@ -8,7 +8,7 @@ Bahmni.ADT.Constants = (function () {
         patientsListUrl: "/patient/search",
         ipdDashboardUrl: "#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
         admissionLocationUrl: "/openmrs/ws/rest/v1/admissionLocation/",
-        mfeIpdDashboardUrl: Bahmni.Common.Constants.hostURL + '/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard/visit/ipd/{{visitUuid}}/'
+        mfeIpdDashboardUrl: Bahmni.Common.Constants.hostURL + '/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard/visit/ipd/{{visitUuid}}?source=adt'
     };
 })();
 
