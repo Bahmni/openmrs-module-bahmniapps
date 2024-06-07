@@ -14,7 +14,7 @@ describe("Visits Table display control", function () {
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (config) {
                 if (config == 'enableIPDFeature') {
-                    return false;
+                    return true;
                 }
             }
         });

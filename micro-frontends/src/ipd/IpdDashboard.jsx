@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Suspense, lazy } from "react";
+import Loader from "../next-ui/Components/Loader/Loader";
 
 export function IpdDashboard(props) {
   const LazyApp = lazy(() => import("@openmrs-mf/ipd/IpdDashboard"));

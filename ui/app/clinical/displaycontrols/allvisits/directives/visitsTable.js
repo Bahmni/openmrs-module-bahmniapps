@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$translate',
-        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $translate) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$translate', 'appService',
+        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $translate, appService) {
             var controller = function ($scope) {
+                const enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                 var emitNoDataPresentEvent = function () {
                     $scope.$emit("no-data-present-event");
                 };
@@ -11,7 +12,11 @@ angular.module('bahmni.clinical')
                     if ($scope.$parent.closeThisDialog) {
                         $scope.$parent.closeThisDialog("closing modal");
                     }
-                    $state.go('patient.dashboard.visit', {visitUuid: visit.uuid});
+                    if (visit.visitType.display === "IPD" && enableIPDFeature) {
+                        $state.go('patient.dashboard.ipdVisit', {visitUuid: visit.uuid, source: 'clinical'});
+                    } else {
+                        $state.go('patient.dashboard.visit', {visitUuid: visit.uuid});
+                    }
                 };
 
                 $scope.hasVisits = function () {
