@@ -48,4 +48,3 @@ export const parseDateArray = (dateArray) => {
   const dateString = dateArray.join('-');
   return moment(dateString, 'YYYY-MM-DD-HH-mm-ss');
 };
-

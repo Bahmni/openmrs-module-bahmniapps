@@ -3,7 +3,7 @@
 describe("DrugOrderHistoryController", function () {
     beforeEach(module('bahmni.clinical'));
 
-    var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
+    var scope, prescribedDrugOrders, activeDrugOrder, scheduledOrder, _treatmentService,
         retrospectiveEntryService, appService, rootScope, visitHistory, allergyService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var treatmentConfig = {
@@ -23,9 +23,12 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(inject(function (_$controller_, $rootScope, _$q_) {
         $q = _$q_;
         $controller = _$controller_;
-        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders']);
+        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders', 'getMedicationSchedulesForOrders']);
         _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
             return specUtil.respondWithPromise($q, prescribedDrugOrders);
+        });
+        _treatmentService.getMedicationSchedulesForOrders.and.callFake(function () {
+            return specUtil.respondWithPromise($q, []);
         });
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue({
@@ -41,7 +44,10 @@ describe("DrugOrderHistoryController", function () {
         scope.consultation = {
             preSaveHandler: new Bahmni.Clinical.Notifier(),
             discontinuedDrugs: [],
-            activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder), Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)]
+            activeAndScheduledDrugOrders: [
+                Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder),
+                Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)
+            ]
         };
         scope.currentBoard = {extensionParams: {}};
 
@@ -50,12 +56,6 @@ describe("DrugOrderHistoryController", function () {
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         visitHistory = {};
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-                appService.getAppDescriptor.and.returnValue({
-                    getConfigValue: function (config) {
-                        return false;
-                    }
-                });
         allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
     }));
 
@@ -121,18 +121,100 @@ describe("DrugOrderHistoryController", function () {
             expect(Object.keys(scope.selectedDrugs).length).toBe(0);
             expect()
         })
+
+        it("should get prescribed and active Drugorders with correct number of visits", function () {
+            expect(_treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined, undefined);
+        });
+
+        it("should select all drugs for print", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(3);
+        });
+
+        it("should not select all drugs for print when auto select is not allowed", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+
+            scope.autoSelectNotAllowed = true;
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(0);
+        });
+    });
+
+    it('should broadcast undoDiscontinueDrugOrder event on undoDiscontinue', function () {
+        var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        scope.undoDiscontinue(drugOrder);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:undoDiscontinueDrugOrder', drugOrder);
+    });
+
+    describe('shouldBeDisabled', function () {
+        it('should return true if drugOrder is being edited', function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            drugOrder.isBeingEdited = true;
+            expect(scope.shouldBeDisabled(drugOrder, {})).toBe(true);
+        });
+
+        it('should return true if drugOrder is not active', function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            spyOn(drugOrder, 'isActive').and.returnValue(false);
+            expect(scope.shouldBeDisabled(drugOrder, {})).toBe(true);
+        });
+
+        it('should return true if orderAttribute has an obsUuid', function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            expect(scope.shouldBeDisabled(drugOrder, {obsUuid: 'some-uuid'})).toBe('some-uuid');
+        });
+    });
+
+    describe('updateOrderAttribute', function () {
+        it('should update the order attribute if it is not disabled', function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            var orderAttribute = {};
+            spyOn(scope, 'shouldBeDisabled').and.returnValue(false);
+            spyOn(scope, 'toggleDrugOrderAttribute');
+            scope.consultation.drugOrdersWithUpdatedOrderAttributes = {};
+            scope.updateOrderAttribute(drugOrder, orderAttribute, true);
+            expect(scope.toggleDrugOrderAttribute).toHaveBeenCalledWith(orderAttribute, true);
+            expect(scope.consultation.drugOrdersWithUpdatedOrderAttributes[drugOrder.uuid]).toBe(drugOrder);
+        });
+
+        it('should not update the order attribute if it is disabled', function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            var orderAttribute = {};
+            spyOn(scope, 'shouldBeDisabled').and.returnValue(true);
+            spyOn(scope, 'toggleDrugOrderAttribute');
+            scope.consultation.drugOrdersWithUpdatedOrderAttributes = {};
+            scope.updateOrderAttribute(drugOrder, orderAttribute, true);
+            expect(scope.toggleDrugOrderAttribute).not.toHaveBeenCalled();
+            expect(scope.consultation.drugOrdersWithUpdatedOrderAttributes[drugOrder.uuid]).toBeUndefined();
+        });
+    });
+
+    describe('toggleDrugOrderAttribute', function () {
+        it('should toggle the value of the order attribute if valueToSet is not provided', function () {
+            var orderAttribute = {value: true};
+            scope.toggleDrugOrderAttribute(orderAttribute);
+            expect(orderAttribute.value).toBe(false);
+        });
+
+        it('should set the value of the order attribute to valueToSet if it is provided', function () {
+            var orderAttribute = {value: true};
+            scope.toggleDrugOrderAttribute(orderAttribute, false);
+            expect(orderAttribute.value).toBe(false);
+        });
+    });
+
+    it('should return order attributes from treatmentConfig', function () {
+        treatmentConfig.orderAttributes = ['attr1', 'attr2'];
+        expect(scope.getOrderAttributes()).toEqual(['attr1', 'attr2']);
     });
 
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {
-        it("should enable reason text for all concepts when nothing is configured", function () {
-            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
-
-            drugOrder.orderReasonConcept = {name: {name: "Other"}};
-            scope.discontinue(drugOrder);
-
-            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
-        });
-
         it("should enable reason text only for configured reason concepts", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
             Bahmni.ConceptSet.FormConditions.rules = {
@@ -167,6 +249,75 @@ describe("DrugOrderHistoryController", function () {
             scope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(false);
         });
+
+        it("should enable reason text for all concepts when nothing is configured", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+
+            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
+            scope.discontinue(drugOrder);
+
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+        });
+
+        it("should enable reason text only for configured reason concepts", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            Bahmni.ConceptSet.FormConditions.rules = {
+                "Medication Stop Reason": function (drugOrder, conceptName) {
+                    if (conceptName == "Adverse event") {
+                        drugOrder.orderReasonNotesEnabled = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            };
+            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
+            scope.discontinue(drugOrder);
+
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+        });
+
+        it("should disable reason text only for unconfigured reason concepts", function () {
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+            Bahmni.ConceptSet.FormConditions.rules = {
+                "Medication Stop Reason": function (drugOrder, conceptName) {
+                    if (conceptName == "Adverse event") {
+                        drugOrder.orderReasonNotesEnabled = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            };
+            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
+            scope.updateFormConditions(drugOrder);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(true);
+
+            drugOrder.orderReasonConcept = {name: {name: "other event"}};
+            scope.updateFormConditions(drugOrder);
+            expect(drugOrder.orderReasonNotesEnabled).toBe(false);
+        });
+    });
+
+    it('should broadcast refillDrugOrder event on refill', function () {
+        var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        scope.refill(drugOrder);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:refillDrugOrder', drugOrder);
+    });
+
+    it('should broadcast reviseDrugOrder event on revise', function () {
+        var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        scope.consultation.drugOrdersWithUpdatedOrderAttributes = {};
+        scope.revise(drugOrder, prescribedDrugOrders);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:reviseDrugOrder', drugOrder, prescribedDrugOrders);
+    });
+
+    it('should broadcast discontinueDrugOrder event on discontinue and update form conditions', function () {
+        var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
+        spyOn(scope, 'updateFormConditions');
+        scope.discontinue(drugOrder);
+        expect(rootScope.$broadcast).toHaveBeenCalledWith('event:discontinueDrugOrder', drugOrder);
+        expect(scope.updateFormConditions).toHaveBeenCalled();
     });
 
     it('should broadcast refillDrugOrder event on refill', function () {
@@ -422,7 +573,7 @@ describe("DrugOrderHistoryControllerIPD", function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (config) {
-                return true;
+                return false;
             }
         });
         allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);

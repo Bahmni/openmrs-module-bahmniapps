@@ -69,18 +69,21 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'header': {
                     templateUrl: 'views/headerAdt.html',
-                    controller: function ($scope) {
+                    controller: function ($scope, appService) {
                         $scope.showClinicalDashboardLink = true;
+                        $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                     }
                 },
                 'content': {
                     template: '<ui-view/>'
                 },
                 'additional-header': {
-                    templateUrl: '../common/patient/header/views/header.html'
+                    templateUrl: '../common/patient/header/views/header.html',
+                    controller: function ($scope, appService) {
+                        $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
+                    }
                 }
             },
-
             resolve: {
                 patientResolution: function ($stateParams, patientInitialization) {
                     return patientInitialization($stateParams.patientUuid);

@@ -101,6 +101,7 @@
     "VISIT_ON_TRANSLATION_KEY": "Visit On",
     "ADD_TO_DRUG_CHART_KEY": "Add to Drug Chart",
     "IPD_BUTTON": "IPD",
+    "OPD_BUTTON": "OPD",
     "ENTERING_DATA_FOR_TRANSLATION_KEY": "Entering data for",
     "EDITITNG_DATA_FOR_ENCOUNTER_TRANSLATION_KEY": "Editing data for encounter",
     "ON_BEHALF_OF_TRANSLATION_KEY": "On behalf of",
@@ -168,7 +169,6 @@
     "ENTER_PATIENT_WEIGHT_ERROR": "Patient weight has not been captured recently. Prescription cannot be created.",
     "ENTER_DIAGNOSIS_ERROR": "Primary diagnosis has not been captured. Prescription cannot be created",
     "PATIENT_WEIGHT_AND_DIAGNOSIS_ERROR": "Patient weight has not been captured recently & no primary diagnosis is found. Prescription cannot be created",
-
     "DRUG_DETAILS_DRUG_NAME": "Drug",
     "DRUG_DETAILS_DOSE_INFO": "Dose",
     "DRUG_DETAILS_ROUTE": "Route",

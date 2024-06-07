@@ -32,4 +32,5 @@ export const GET_DRUG_ACKNOWLEDGEMENT_URL = RESTWS_V1 + "/bahmnicore/sql?q={prop
 export const EMERGENCY_MEDICATIONS_BASE_URL = RESTWS_V1 + "/ipd/adhocMedicationAdministrations/{medication_administration_uuid}";
 export const GET_PROVIDER_UUID_URL = RESTWS_V1 + "/session";
 export const SAVE_ALLERGIES_URL =  RESTWS_V1 + "/patient/{patientId}/allergy";
+export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
 

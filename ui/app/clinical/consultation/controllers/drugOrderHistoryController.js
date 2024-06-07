@@ -12,12 +12,13 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
+            var allMedicinesConfig = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD");
+            $scope.allMedicinesInPrescriptionAvailableForIPD = allMedicinesConfig !== null ? allMedicinesConfig : true;
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.autoSelectNotAllowed = $scope.printPrescriptionFeature && $scope.printPrescriptionFeature.autoSelectNotAllowed != null ? $scope.printPrescriptionFeature.autoSelectNotAllowed : false;
             $scope.selectedDrugs = {};
-            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
 
-            if ($scope.enableIPDFeature) {
+            if (!$scope.allMedicinesInPrescriptionAvailableForIPD) {
                 $scope.updateOrderType = function (drugOrder) {
                     var updatedDrugOrder = angular.copy(drugOrder);
                     updatedDrugOrder.careSetting = updatedDrugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.outPatient ? Bahmni.Clinical.Constants.careSetting.inPatient : Bahmni.Clinical.Constants.careSetting.outPatient;
@@ -73,6 +74,7 @@ angular.module('bahmni.clinical')
                 var refillableDrugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(orderSetOrdersAndDrugOrders.drugOrders, getPreviousVisitDrugOrders(), showOnlyActive);
                 return _(orderSetOrdersAndDrugOrders.orderSetOrders)
                     .concat(refillableDrugOrders)
+                    .filter(_.identity)
                     .uniqBy('uuid')
                     .value();
             };
@@ -119,7 +121,7 @@ angular.module('bahmni.clinical')
                             return drugOrder.uuid == selectedDrugOrder[1];
                         });
                         if (drugOrder) {
-                            if ($scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0) {
+                            if ($scope.printPrescriptionFeature && $scope.printPrescriptionFeature !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint && $scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint !== null && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0) {
                                 drugOrder.provider.attributes = {};
                                 var promise = providerService.getAttributesForProvider(drugOrder.provider.uuid);
                                 promises.push(promise);
@@ -135,7 +137,7 @@ angular.module('bahmni.clinical')
                     }
                 });
 
-                if ($scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0 && $scope.printPrescriptionFeature.observationsConcepts !== undefined) {
+                if ($scope.printPrescriptionFeature && $scope.printPrescriptionFeature !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint && $scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint !== null && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0) {
                     var promise = $q.all([diagnosisService.getPatientDiagnosis($stateParams.patientUuid), providerService.getAttributesForProvider($rootScope.currentProvider.uuid), observationsService.fetch($stateParams.patientUuid, $scope.printPrescriptionFeature.observationsConcepts, "latest", null, null, null, null, null)]).then(function (response) {
                         const diagnoses = response[0].data;
                         const dispenserAttributes = response[1].data.results;
@@ -221,7 +223,7 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.enableIPDFeature && spinner.forPromise(treatmentService.getMedicationSchedulesForOrders($stateParams.patientUuid, getActiveAndPrescribedDrugOrdersUuids()).then(function (response) {
+            !$scope.allMedicinesInPrescriptionAvailableForIPD && spinner.forPromise(treatmentService.getMedicationSchedulesForOrders($stateParams.patientUuid, getActiveAndPrescribedDrugOrdersUuids()).then(function (response) {
                 $scope.medicationSchedules = response.data;
             }));
 
