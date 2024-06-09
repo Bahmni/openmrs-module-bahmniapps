@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PatientListContent Component renders the component without crashing 1`] = `
+<div>
+  <div
+    class="patient-list-content"
+  >
+    <span>
+      9/6/2022
+    </span>
+    <div
+      class="content-info"
+    >
+      <span>
+        Drug A
+      </span>
+      <div
+        class="notes"
+      >
+        <div
+          class="bx--form-item"
+        >
+          <div
+            class="bx--text-area__label-wrapper"
+          >
+            <label
+              class="bx--label"
+            >
+              <div
+                class="titleText"
+              >
+                <span>
+                  Note 
+                </span>
+                <span
+                  class="required"
+                >
+                  *
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="bx--text-area__wrapper"
+          >
+            <textarea
+              class="bx--text-area patient-list-text-area"
+              cols="50"
+              placeholder="Enter Notes"
+              required=""
+              rows="1"
+            />
+          </div>
+        </div>
+        <button
+          class="patient-list-button bx--btn bx--btn--primary bx--btn--disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          Acknowledge
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

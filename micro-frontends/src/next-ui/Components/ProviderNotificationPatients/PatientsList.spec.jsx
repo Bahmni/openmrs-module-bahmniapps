@@ -1,53 +1,68 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import PatientsList from './PatientsList';
-import { mockData, mockSortedData } from "./PatientListMockData";
 
-const mockGetEmergencyDrugAcknowledgements = jest.fn();
-const mockSortMedicationList = jest.fn();
+describe('PatientsList Component', () => {
+  const patientListWithMedications = [
+    [{
+      administered_date_time: '2022-06-09',
+      administered_drug_name: 'Drug A',
+      administered_dose: '10mg',
+      administered_dose_units: 'mg',
+      administered_route: 'Oral',
+      date_of_birth: '1990-01-01',
+      gender: 'M',
+      identifier: 'PID123',
+      name: 'John Doe',
+      patient_uuid: 'patient123',
+      visit_uuid: 'visit123',
+      medication_administration_performer_uuid: 'performer123',
+      medication_administration_uuid: 'medication123'
+    }]
+  ];
 
-jest.mock('../../utils/providerNotifications/ProviderNotificationUtils', () => ({
-  getEmergencyDrugAcknowledgements: () => mockGetEmergencyDrugAcknowledgements(),
-  getProvider: jest.fn().mockResolvedValue({currentProvider: {uuid: 'mock-provider-uuid'}}),
-  sortMedicationList: () => mockSortMedicationList,
-}));
+  const handleOnClickMock = jest.fn();
 
-jest.mock('./PatientListContent', () => 'PatientListContent');
-
-jest.mock('../../utils/utils', () => ({
-  calculateAgeFromEpochDOB: jest.fn().mockReturnValue(30),
-  formatArrayDateToDefaultDateFormat: jest.fn().mockReturnValue(1 / 1 / 2000),
-  formatGender: jest.fn().mockReturnValue("Male")
-}));
-
-jest.mock("../../utils/cookieHandler/cookieHandler", () => {
-  const originalModule = jest.requireActual("../../utils/cookieHandler/cookieHandler");
-  return {
-    ...originalModule,
-    getCookies: jest.fn().mockReturnValue({
-      "bahmni.user.location": '{"uuid":"0fbbeaf4-f3ea-11ed-a05b-0242ac120002"}',
-    }),
-  };
-});
-
-describe('PatientsList', () => {
-  beforeEach(() => {
-    mockSortMedicationList.mockReturnValue(mockSortedData)
-    jest.clearAllMocks();
-  });
-  it('should render without crashing', () => {
-    const {container} = render(<PatientsList/>);
+  it('renders the component without crashing', () => {
+    const {container} = render(
+      <PatientsList
+        patientListWithMedications={patientListWithMedications}
+        handleOnClick={handleOnClickMock}
+      />
+    );
     expect(container).toMatchSnapshot();
-  })
+  });
 
-  it('should render PatientListWithMedications correctly with mocked data', async () => {
-    mockGetEmergencyDrugAcknowledgements.mockImplementation(() => (mockData));
-    const {queryByText, debug} = render(<PatientsList/>);
+  it('renders AccordionItem components for each patient', () => {
+    const { getAllByRole } = render(
+      <PatientsList
+        patientListWithMedications={patientListWithMedications}
+        handleOnClick={handleOnClickMock}
+      />
+    );
+    const accordionItems = getAllByRole('button', { name: /John Doe - Male, 34 years 5 months 8 days/i });
+    expect(accordionItems).toHaveLength(patientListWithMedications.length);
+  });
 
-    debug();
-    await waitFor(() => {
-      expect(queryByText('Aby K - Male, 30')).toBeTruthy();
-      expect(queryByText('Hanif Oreo - Male, 30')).toBeTruthy();
-    })
+  it('renders PatientListTitle with correct props', () => {
+    const { getByText } = render(
+      <PatientsList
+        patientListWithMedications={patientListWithMedications}
+        handleOnClick={handleOnClickMock}
+      />
+    );
+    const patientName = getByText('John Doe - Male, 34 years 5 months 8 days');
+    expect(patientName).toBeTruthy();
+  });
+
+  it('renders PatientListContent with correct props', () => {
+    const { getByText } = render(
+      <PatientsList
+        patientListWithMedications={patientListWithMedications}
+        handleOnClick={handleOnClickMock}
+      />
+    );
+    const drugName = getByText('Drug A');
+    expect(drugName).toBeTruthy();
   });
 });

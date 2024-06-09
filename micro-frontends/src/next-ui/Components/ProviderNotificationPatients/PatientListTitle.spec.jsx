@@ -1,6 +1,7 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import PatientListTitle from "./PatientListTitle";
+import { formatGender } from "../../utils/utils";
 import { getPatientIPDDashboardUrl } from "../../utils/providerNotifications/ProviderNotificationUtils";
 
 const mockWindowOpen = jest.fn();
@@ -20,7 +21,7 @@ describe("PatientListTitle Component", () => {
     noOfDrugs: 3,
     identifier: "PID123",
     name: "John Doe",
-    age: 30,
+    age: "30",
     gender: "M",
     patientUuid: "patient123",
     visitUuid: "visit123",
@@ -28,51 +29,38 @@ describe("PatientListTitle Component", () => {
     setOpenedWindow: jest.fn(),
   };
 
-  it("should render correctly", () => {
-    const { queryByText } = render(<PatientListTitle {...props} />);
-    expect(queryByText(`(${props.identifier})`)).toBeTruthy();
-    expect(queryByText(`${props.name} - Male, ${props.age}`)).toBeTruthy();
+  it('should render without crashing', () => {
+    const {container} = render(<PatientListTitle {...props} />);
+    expect(container).toMatchSnapshot();
+  })
+
+  it('renders the correct number of drugs', () => {
+    const { getByText } = render(<PatientListTitle {...props} />);
+    expect(getByText(`${props.noOfDrugs}`)).toBeTruthy();
   });
 
-  it("should render the warning icon and number of drugs", () => {
-    const { queryByText } = render(<PatientListTitle {...props} />);
-    expect(queryByText(props.noOfDrugs.toString())).toBeTruthy();
+  it('renders the patient identifier within a Link', () => {
+    const expectedUrl = 'http://example.com/dashboard';
+    getPatientIPDDashboardUrl.mockReturnValue(expectedUrl);
+    const { getByText } = render(<PatientListTitle {...props} />);
+    const link = getByText(`(${props.identifier})`);
+    expect(link.href).toBe(expectedUrl);
+    expect(link.textContent).toBe(`(${props.identifier})`);
   });
 
-  it("should call handleOpenWindow on patient ID click", () => {
-    const { queryByText } = render(<PatientListTitle {...props} />);
-    const patientIdLink = queryByText(`(${props.identifier})`);
-    fireEvent.click(patientIdLink);
-    expect(props.setOpenedWindow).toHaveBeenCalled();
+  it('renders the patient name, gender, and age', () => {
+    const { getByText } = render(<PatientListTitle {...props} />);
+    const expectedText = `${props.name} - ${formatGender(props.gender)}, ${props.age}`;
+    expect(getByText(expectedText)).toBeTruthy();
   });
 
-  it("should call window.open with correct URL when handleOpenWindow is called", () => {
-    getPatientIPDDashboardUrl.mockReturnValueOnce("http://example.com");
-    const { queryByText } = render(<PatientListTitle {...props} />);
-    const patientIdLink = queryByText(`(${props.identifier})`);
-    fireEvent.click(patientIdLink);
-    expect(mockWindowOpen).toHaveBeenCalledWith("http://example.com", "_blank");
-  });
-
-  it("should call openedWindow.location.href when handleOpenWindow is called with opened window", () => {
-    const mockWindow = { location: { href: "" }, closed: false };
-    const updatedProps = { ...props, openedWindow: mockWindow };
-    const { queryByText } = render(<PatientListTitle {...updatedProps} />);
-    const mockUrl = "http://example.com";
-    getPatientIPDDashboardUrl.mockReturnValueOnce(mockUrl);
-    const patientIdLink = queryByText(`(${props.identifier})`);
-    fireEvent.click(patientIdLink);
-    expect(mockWindow.location.href).toBe(mockUrl);
-  });
-
-  it("should focus the opened window when it is already open", () => {
-    const mockWindow = { location: { href: "" }, closed: false, focus: jest.fn() };
-    const updatedProps = { ...props, openedWindow: mockWindow };
-    const { queryByText } = render(<PatientListTitle {...updatedProps} />);
-    const mockUrl = "http://example.com";
-    getPatientIPDDashboardUrl.mockReturnValueOnce(mockUrl);
-    const patientIdLink = queryByText(`(${props.identifier})`);
-    fireEvent.click(patientIdLink);
-    expect(mockWindow.focus).toHaveBeenCalled();
+  it('passes prop types correctly', () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const invalidProps = {
+      noOfDrugs: '3',
+    };
+    render(<PatientListTitle {...invalidProps} />);
+    expect(consoleError).toHaveBeenCalled();
+    consoleError.mockRestore();
   });
 });
