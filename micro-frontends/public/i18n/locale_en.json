@@ -30,5 +30,8 @@
   "UPDATE_NOTE_TITLE": "Update Note",
   "ADD_NOTE_TITLE": "Add Note",
   "LOADING": "Loading...",
-  "UPDATE": "Update"
+  "UPDATE": "Update",
+  "AKNOWLEDGE_BUTTON": "Acknowledge",
+  "AKNOWLEDGEMENT_REQUIRED_TEXT": "Acknowledgement required",
+  "NO_DRUGS_TO_BE_AKNOWLEDGED_TEXT": "You have no new drugs to be acknowledged"
 }

@@ -5,6 +5,7 @@ Bahmni.Common.PatientSearch = Bahmni.Common.PatientSearch || {};
 Bahmni.Common.PatientSearch.Constants = {
     searchExtensionTileViewType: "tile",
     searchExtensionTabularViewType: "tabular",
+    searchExtensionCustomViewType: "custom",
     nameHeading: ["NAME", "Name", "name"],
     patientTileHeight: 100,
     patientTileWidth: 100,

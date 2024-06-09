@@ -1,0 +1,31 @@
+.patient-list-tile-content {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    .patient-info {
+        display: flex;
+        flex-flow: row;
+        justify-content: start;
+        align-items: center;
+        margin-left: 15px;
+        font-size: .875rem;
+    }
+
+    a.bx--link.patient-id {
+        color: #2b95ff;
+        font-size: .875rem;
+        margin-right: 10px;
+    }
+}
+
+.warning {
+    display: flex;
+    color: red;
+    align-items: center;
+}
+
+
+.drug-count {
+    padding-left: 5px;
+}
