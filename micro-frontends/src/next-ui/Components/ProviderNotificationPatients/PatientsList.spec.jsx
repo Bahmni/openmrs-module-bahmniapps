@@ -23,6 +23,10 @@ describe('PatientsList Component', () => {
 
   const handleOnClickMock = jest.fn();
 
+  beforeAll(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2024-06-09'));
+  });
+
   it('renders the component without crashing', () => {
     const {container} = render(
       <PatientsList

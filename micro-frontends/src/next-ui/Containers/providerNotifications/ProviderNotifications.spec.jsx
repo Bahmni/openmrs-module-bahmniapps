@@ -45,6 +45,7 @@ describe('ProviderNotifications Component', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        jest.useFakeTimers().setSystemTime(new Date('2024-06-09'));
         getCookies.mockReturnValue(cookiesMock);
         getProvider.mockResolvedValue(providerMock);
         getEmergencyDrugAcknowledgements.mockResolvedValue(emergencyDrugAcknowledgementResponseMock);
@@ -167,6 +168,7 @@ describe('ProviderNotifications Component', () => {
         });
         expect(notesInput.value).toBe('Some notes');
         const acknowledgeButton = screen.getByText("Acknowledge", { exact: true });
+        jest.useRealTimers();
         act(() => {
             fireEvent.click(acknowledgeButton);
         });
