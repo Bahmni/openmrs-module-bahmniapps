@@ -156,9 +156,9 @@ exports[`ProviderNotifications Component renders the component without crashing 
         </div>
       </li>
     </ul>
+    <div
+      class="alertContainer"
+    />
   </div>
-  <div
-    class="alertContainer"
-  />
 </div>
 `;

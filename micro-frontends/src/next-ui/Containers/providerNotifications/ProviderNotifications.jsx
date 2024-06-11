@@ -68,27 +68,33 @@ export function ProviderNotifications() {
         fetchProviderAndMedications();
     }, []);
 
-    if (patientListWithMedications.length === 0) {
-        return (
-            <I18nProvider>
-                <div className='provider-notifications-next-ui'>
+    const notificationComponent = (
+        <NotificationCarbon 
+            messageDuration={3000} 
+            onClose={hideNotification} 
+            showMessage={showNotification} 
+            kind={notificationType} 
+            title={notificationTitle}
+        />
+    );
+
+    return (
+        <I18nProvider>
+            <div className='provider-notifications-next-ui'>
+                {patientListWithMedications.length === 0 ? (
                     <div className='provider-notification-headers'>{noDrugsToBeAcknowledgedText}</div>
-                </div>
-            </I18nProvider>
-        );
-    } else {
-        return (
-            <I18nProvider>
-                <div className='provider-notifications-next-ui'>
-                    <div className='provider-notification-headers'>
-                        <span>{acknowledgementRequiredText}: </span>
-                    </div>
-                    <PatientsList patientListWithMedications={patientListWithMedications} handleOnClick={handleOnClick}/>
-                </div>
-                <NotificationCarbon messageDuration={3000} onClose={hideNotification} showMessage={showNotification} kind={notificationType} title={notificationTitle}/>
-            </I18nProvider>
-        );
-    }
+                ) : (
+                    <>
+                        <div className='provider-notification-headers'>
+                            <span>{acknowledgementRequiredText}: </span>
+                        </div>
+                        <PatientsList patientListWithMedications={patientListWithMedications} handleOnClick={handleOnClick} />
+                    </>
+                )}
+                {notificationComponent}
+            </div>
+        </I18nProvider>
+    );
 }
 
 ProviderNotifications.propTypes = {
