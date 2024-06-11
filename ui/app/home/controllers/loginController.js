@@ -168,18 +168,17 @@ angular.module('bahmni.home')
                                     function () { deferrable.resolve(); },
                                     function (error) { deferrable.reject(error); }
                                 );
-                                logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
-                                if (data) {
-                                    const providerUuid = data.currentProvider.uuid;
-                                    if ($bahmniCookieStore.get(providerUuid) !== null) {
-                                        $window.location = $bahmniCookieStore.get(providerUuid);
-                                    }
+                            logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
+                            if (data) {
+                                const providerUuid = data.currentProvider.uuid;
+                                if ($bahmniCookieStore.get(providerUuid) !== null) {
+                                    $window.location = $bahmniCookieStore.get(providerUuid);
                                 }
-                            }, function (error) {
-                                $scope.errorMessageTranslateKey = error;
-                                deferrable.reject(error);
-                                logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
-                            });
+                            }
+                        }, function (error) {
+                            $scope.errorMessageTranslateKey = error;
+                            deferrable.reject(error);
+                            logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
                         });
                     },
                     function (error) {

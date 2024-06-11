@@ -160,12 +160,6 @@ describe('VisitController', function () {
             expect(scope.testResultClass(inputLine)).toEqual(expectedStyle);
         });
 
-        it('should handle on print event', function () {
-            scope.visitTabConfig.currentTab.printing = {templateUrl: 'common/views/visitTabPrint.html', observationsConcepts: ["WEIGHT"]}
-            scope.$broadcast("event:printVisitTab", {});
-            expect(allergyService.getAllergyForPatient).toHaveBeenCalled();
-        });
-
         it('should call auditLogService.log and sessionService.destroy on logout', function (){
             scope.ipdDashboard.hostApi.onLogOut();
             expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');

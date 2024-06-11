@@ -93,11 +93,7 @@ angular.module('bahmni.ipd')
                     return $q.when({id: 1, status: "Returned from service.", promiseComplete: true});
                 };
                 if ($scope.patient) {
-                    return visitService.search({
-                        patient: $scope.patient.uuid,
-                        v: customVisitParams,
-                        includeInactive: false
-                    }).then(function (visitsResponse) {
+                    return visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitsResponse) {
                         var visitUuid = getPatientSpecificActiveVisits(visitsResponse);
                         if (visitUuid) {
                             return visitService.getVisitSummary(visitUuid).then(function (response) {
@@ -341,11 +337,7 @@ angular.module('bahmni.ipd')
                 if (!$rootScope.bedDetails.bedNumber) {
                     messagingService.showMessage("error", "SELECT_BED_TO_DISCHARGE_MESSAGE");
                 } else {
-                    visitService.search({
-                        patient: $scope.patient.uuid,
-                        v: customVisitParams,
-                        includeInactive: false
-                    }).then(function (visitResponse) {
+                    visitService.search({patient: $scope.patient.uuid, v: customVisitParams, includeInactive: false}).then(function (visitResponse) {
                         var visitUuid = getPatientSpecificActiveVisits(visitResponse);
                         if (!visitUuid) {
                             messagingService.showMessage("error", "NO_ACTIVE_VISIT_MESSAGE");

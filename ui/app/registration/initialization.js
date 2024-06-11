@@ -14,15 +14,15 @@ angular.module('bahmni.registration').factory('initialization',
                     configurations.identifierTypesConfig(), appService.getAppDescriptor().getConfigValue("patientInformation"));
                     $rootScope.regEncounterConfiguration.loginLocationToVisitTypeMap = configurations.loginLocationToVisitTypeMapping();
 
-                        $rootScope.addressLevels = configurations.addressLevels();
-                        $rootScope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
-                        $rootScope.genderMap = configurations.genderMap();
-                        $rootScope.helpDeskNumber = configurations.helpDeskNumber();
-                        Bahmni.Common.Util.GenderUtil.translateGender($rootScope.genderMap, $translate);
-                        $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
-                        $rootScope.relationshipTypes = configurations.relationshipTypes();
-                        $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
-                    });
+                    $rootScope.addressLevels = configurations.addressLevels();
+                    $rootScope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
+                    $rootScope.genderMap = configurations.genderMap();
+                    $rootScope.helpDeskNumber = configurations.helpDeskNumber();
+                    Bahmni.Common.Util.GenderUtil.translateGender($rootScope.genderMap, $translate);
+                    $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
+                    $rootScope.relationshipTypes = configurations.relationshipTypes();
+                    $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                });
             };
 
             var loadValidators = function (baseUrl, contextPath) {
