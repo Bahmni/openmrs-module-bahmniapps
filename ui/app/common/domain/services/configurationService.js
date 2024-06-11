@@ -195,6 +195,30 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.quickLogoutComboKey = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: {
+                    property: 'bahmni.quickLogoutComboKey'
+                },
+                withCredentials: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            });
+        };
+
+        configurationFunctions.contextCookieExpirationTimeInMinutes = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: {
+                    property: 'bahmni.contextCookieExpirationTimeInMinutes'
+                },
+                withCredentials: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            });
+        };
+
         var existingPromises = {};
         var configurations = {};
 

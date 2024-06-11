@@ -5,7 +5,7 @@ angular.module('bahmni.orders')
     function ($rootScope, $q, appService, spinner, configurations, orderTypeService, locationService) {
         var getConfigs = function () {
             var config = $q.defer();
-            var configNames = ['encounterConfig', 'patientConfig', 'genderMap', 'relationshipTypeMap'];
+            var configNames = ['encounterConfig', 'patientConfig', 'genderMap', 'relationshipTypeMap', 'quickLogoutComboKey'];
             configurations.load(configNames).then(function () {
                 var conceptConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI");
                 var customLocationTags = _.get(conceptConfig, 'facilityLocationTags');
@@ -17,6 +17,7 @@ angular.module('bahmni.orders')
                 $rootScope.patientConfig = configurations.patientConfig();
                 $rootScope.genderMap = configurations.genderMap();
                 $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
+                $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
                 config.resolve();
             });
             return config.promise;

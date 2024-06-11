@@ -31,6 +31,9 @@ angular
                     'content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
                         controller: 'PatientsListController'
+                    },
+                    'additional-header': {
+                        templateUrl: 'views/additionalHeader.html'
                     }
                 },
                 resolve: { initialization: 'initialization' }
