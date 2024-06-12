@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.bootstrap.min.css"/>
     <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
     <link rel="stylesheet" href="../styles/clinical.css"/>
+    <link rel="stylesheet" href="../micro-frontends-dist/shared.min.css"/>
+    <link rel="stylesheet" href="../micro-frontends-dist/ipd.min.css"/>
+    <link rel="stylesheet" href="../micro-frontends-dist/next-ui.min.css"/>
     <!-- endbuild -->
     <title>IPD</title>
 </head>
@@ -54,7 +57,15 @@
 <script src="../components/ngDialog/js/ngDialog.min.js"></script>
 <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
 <script src="../lib/angular-workers/dist/angular-workers.js"></script>
+<script src="../components/react/react.production.min.js"></script>
+<script src="../components/react-dom/react-dom.production.min.js"></script>
 
+<!-- polyfill to add angular feature which will allow easy loading of mfe into angular component -->
+<script src="../micro-frontends-dist/shared.min.js"></script>
+
+<!-- load the ipd mfe as angular components -->
+<script src="../micro-frontends-dist/ipd.min.js"></script>
+<script src="../micro-frontends-dist/next-ui.min.js"></script>
 
 <!-- build:js bedmanagement.min.js -->
 
@@ -90,6 +101,7 @@
 <script src="../common/models/init.js"></script>
 <script src="../common/models/visitControl.js"></script>
 <script src="../common/models/visitSummary.js"></script>
+<script src="../common/models/auditLogEventDetails.js"></script>
 
 <script src="../common/patient/init.js"></script>
 
@@ -223,6 +235,10 @@
 <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
 <script src="../common/ui-helper/directives/singleClick.js"></script>
 <script src="../common/services/formService.js"></script>
+<script src="../common/services/formPrintService.js"></script>
+<script src="../common/services/allergyService.js"></script>
+<script src="../common/logging/services/auditLogService.js"></script>
+<script src="../clinical/consultation/mappers/consultationMapper.js"></script>
 
 <script src="init.js"></script>
 <script src="constants.js"></script>
@@ -233,6 +249,7 @@
 <script src="controllers/bedManagementController.js"></script>
 <script src="controllers/headerController.js"></script>
 <script src="controllers/adtController.js"></script>
+<script src="controllers/careViewController.js"></script>
 <script src="controllers/wardController.js"></script>
 <script src="controllers/roomController.js"></script>
 <script src="controllers/editTagsController.js"></script>

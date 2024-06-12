@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        'formRecordTreeBuildService', '$translate', 'providerInfoService', 'conceptGroupFormatService',
+        'formRecordTreeBuildService', '$translate', 'providerInfoService', 'conceptGroupFormatService', 'formPrintService',
         function (encounterService, observationsService, appService, $q, spinner, $rootScope,
-                  formRecordTreeBuildService, $translate, providerInfoService, conceptGroupFormatService) {
+                  formRecordTreeBuildService, $translate, providerInfoService, conceptGroupFormatService, formPrintService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -129,6 +129,20 @@ angular.module('bahmni.common.displaycontrol.observation')
                     "patient": $scope.patient,
                     "section": $scope.section
                 };
+
+                $scope.$on("event:printForm", function (event, dashboardConfig) {
+                    var printData = {};
+                    printData.bahmniObservations = $scope.bahmniObservations;
+                    $scope.bahmniObservations.forEach(function (obs) {
+                        printData.title = obs.value[0].concept.name;
+                    });
+                    printData.patient = $scope.patient;
+                    printData.printConfig = dashboardConfig ? dashboardConfig.printing : {};
+                    printData.printConfig.header = printData.title;
+                    if ($scope.bahmniObservations && $scope.config.encounterUuid && $scope.patient) {
+                        formPrintService.printForm(printData, $scope.config.encounterUuid, $rootScope.facilityLocation);
+                    }
+                });
             };
 
             var link = function ($scope, element) {

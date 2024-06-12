@@ -4,10 +4,11 @@ describe("ManageProgramController", function () {
 
     var scope, messageService, i = 0, programService, _provide, deferred, q, _spinner,
         retrospectiveEntryService, listOfPatientPrograms, programAttributeTypes, allPrograms,
-        controller, rootScope, confirmBox;
+        controller, rootScope, confirmBox, state;
 
     var setUp = function () {
         return controller('ManageProgramController', {
+            $state: state,
             $scope: scope,
             $rootScope: rootScope,
             q: q,
@@ -20,7 +21,14 @@ describe("ManageProgramController", function () {
     beforeEach(module(function ($provide) {
         _provide = $provide;
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
-            'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram']);
+            'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram',
+            'getDefaultProgram', 'getProgramRedirectionConfig', 'disableProgramOutcomeEditOption', 'getObservationFormsConfig']);
+
+        programService.getDefaultProgram.and.callFake(function () {
+            deferred = q.defer();
+            deferred.resolve(null);
+            return deferred.promise;
+        });
 
         programService.getPatientPrograms.and.callFake(function () {
             deferred = q.defer();
@@ -283,7 +291,7 @@ describe("ManageProgramController", function () {
         expect(scope.activePrograms.length).toBe(1);
         expect(scope.endedPrograms.length).toBe(1);
         expect(scope.programAttributeTypes.length).toEqual(2);
-        expect(scope.programSelected).toEqual(null);
+        expect(scope.programSelected).toEqual('');
         expect(scope.patientProgramAttributes).toEqual({});
     });
 
@@ -382,7 +390,7 @@ describe("ManageProgramController", function () {
             scope.$apply(setUp);
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
             var newStateUuid = '8917ab09-52b4-4573-aefa-7f6e7bdf6d61';
-            patientProgramToBeUpdated.selectedState = {uuid: newStateUuid};
+            patientProgramToBeUpdated.selectedState = { uuid: newStateUuid };
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-12';
             });
@@ -539,20 +547,20 @@ describe("ManageProgramController", function () {
     });
 
     describe('attributeTypes', function () {
-       it('should hide attributeType for selected program if it is excluded in the config', function () {
-           scope.$apply(setUp);
-           var attribute = {
-               name: "ID_Number",
-               uuid: "uuid1",
-               excludeFrom: ['TB Program']
-           };
+        it('should hide attributeType for selected program if it is excluded in the config', function () {
+            scope.$apply(setUp);
+            var attribute = {
+                name: "ID_Number",
+                uuid: "uuid1",
+                excludeFrom: ['TB Program']
+            };
 
-           scope.programSelected = {
-               name: 'TB Program',
-               uuid: 'someUuid'
-           };
-           expect(scope.isIncluded(attribute)).toBeFalsy()
-       });
+            scope.programSelected = {
+                name: 'TB Program',
+                uuid: 'someUuid'
+            };
+            expect(scope.isIncluded(attribute)).toBeFalsy()
+        });
 
         it('should show attributeType for selected program if it is not excluded in the config', function () {
             scope.$apply(setUp);

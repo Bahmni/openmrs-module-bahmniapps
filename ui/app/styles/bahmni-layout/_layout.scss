@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+@import "../common/_commons.scss";
 .container {
     @include clearfix;
     max-width: $max-page-width;
@@ -118,72 +118,7 @@
         }
 
         .btn-user-info {
-            background: lighten($bahmniPrimaryColor, 10%);
-            padding: 15px;
-            border: none;
-            border-radius: 0;
-            margin: 0;
-            position: absolute;
-            top: 0;
-            right: 0;
-
-            @media screen and (max-width: 959px) {
-                margin: 0;
-                padding: 15px;
-            }
-
-            &:focus {
-                outline: 0;
-            }
-
-            i.mini {
-                font-size: .9em;
-            }
-
-            &+ul {
-                display: none;
-
-                &.active {
-                    background: lighten($bahmniPrimaryColor, 10%);
-                    display: block;
-                    position: absolute;
-                    right: 0;
-                    top: 50px;
-                    z-index: 10000;
-
-                    @media screen and (max-width: 959px) {
-                        top: 49px;
-                        right: 0;
-                    }
-                }
-
-                li {
-                    float: left;
-                    clear: both;
-                    text-align: left;
-                    border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
-                    margin: 0;
-
-                    a {
-                        padding: 10px 5px;
-                        display: inline-block;
-                        min-width: 190px;
-
-                        &:hover {
-                            text-decoration: none;
-                            background: lighten($bahmniPrimaryColor, 10%);
-                        }
-                    }
-
-                    a.disabled {
-                        color: $lightGray;
-
-                        .fa-user {
-                            color: $lightGray;
-                        }
-                    }
-                }
-            }
+            @extend .user-actions;
         }
     }
 

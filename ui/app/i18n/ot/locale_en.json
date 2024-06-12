@@ -14,8 +14,6 @@
     "DATE": "Date",
     "DISCARD": "Discard",
     "SAVE": "Save",
-    "UPDATE": "Update",
-
     "ADD_SURGICAL_APPOINTMENT": "Add Surgery",
     "EDIT_SURGICAL_APPOINTMENT": "Edit Surgery",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
@@ -126,5 +124,6 @@
     "YES_KEY": "Yes",
     "NO_KEY": "No",
     "DELETE_NOTE_MESSAGE": "Are you sure you want to delete this note?",
-    "NOTES_PLACEHOLDER": "Enter a maximum of 150 characters"
+    "NOTES_PLACEHOLDER": "Enter a maximum of 150 characters",
+    "LOGOUT_TRANSLATION_KEY": "Logout"
 }

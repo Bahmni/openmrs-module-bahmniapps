@@ -115,13 +115,19 @@ angular.module('bahmni.common.displaycontrol.forms')
                         },
                         section: {
                             title: data.concept.displayString
-                        }
+                        },
+                        showPrintOption: $scope.section.dashboardConfig.printing ? true : false,
+                        printForm: $scope.printForm
                     };
                 };
 
                 $scope.dialogData = {
                     "patient": $scope.patient,
                     "section": $scope.section
+                };
+
+                $scope.printForm = function () {
+                    $rootScope.$broadcast("event:printForm", $scope.section.dashboardConfig);
                 };
             };
 

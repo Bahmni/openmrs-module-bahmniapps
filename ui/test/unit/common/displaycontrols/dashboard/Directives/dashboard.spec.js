@@ -16,6 +16,7 @@ describe('Dashboard', function () {
         mockBahmniCookieStore = jasmine.createSpyObj('bahmniCookieStore', ["get"]);
         appDescriptor.getConfigValue.and.returnValue({showDetailsWithinDateRange: false});
         appService.getAppDescriptor.and.returnValue(appDescriptor);
+        var formPrintService = jasmine.createSpyObj('formPrintService', ['printForm']);
         $provide.value('appService',appService);
         $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
         $provide.value('$stateParams', {tabConfigName: 'default'});
@@ -25,6 +26,7 @@ describe('Dashboard', function () {
         $provide.value('messagingService', {});
         $provide.value('$state', {});
         $provide.value('$translate', {});
+        $provide.value('formPrintService',formPrintService);
         $provide.value('configurations', {
             dosageFrequencyConfig: function () {
                 return {

@@ -20,7 +20,7 @@
     </div>
     <div class="tab-content" ng-if="::search.searchTypes.length">
         <div class="patient-list-spinner"></div>
-        <span ng-if="search.isCurrentSearchLookUp()">
+        <span ng-if="search.isCurrentSearchLookUp() && !search.isCustomView()">
             <form name="filterPatients" ng-submit="filterPatientsAndSubmit()">
                 <div class="search-wrapper">
                     <input type="text" id="patientIdentifier" ng-model="::search.searchParameter"
@@ -29,7 +29,7 @@
                 </div>
             </form>
         </span>
-        <span ng-if="search.searchType && !search.isCurrentSearchLookUp()">
+        <span ng-if="search.searchType && !search.isCurrentSearchLookUp() && !search.isCustomView()">
             <form name="searchPatientForm" ng-submit="searchPatients()" class="overflow-hidden">
                 <div class="search-patient-id left">
                     <input type="text" id="patientIdentifier" ng-model="::search.searchParameter"
@@ -100,6 +100,9 @@
                 </li>
             </ul>
         </resize>
+        <div ng-if="search.isCustomView()">
+            <div ng-include="search.searchType.templateUrl"></div>
+        </div>
         <div class="note-container" ng-if="search.noResultsMessage">
             <div class="note warning">
                 <div class="text">

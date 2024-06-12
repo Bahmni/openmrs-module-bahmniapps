@@ -1,7 +1,7 @@
 import axios from "axios";
-import moment from "moment";
 import { ENCOUNTER_BASE_URL } from "../../constants";
 import { build } from "../FormDisplayControl/BuildFormView";
+import { formatDate } from "../../utils/utils";
 
 export const findByEncounterUuid = async (encounterUuid) => {
   const apiURL = ENCOUNTER_BASE_URL.replace("{encounterUuid}", encounterUuid);
@@ -66,11 +66,6 @@ export const memberTypes = {
   COMPLEX: "Complex",
   BOOLEAN: "Boolean",
 };
-
-export const formatDate = (value, format = "DD-MMM-YYYY") => {
-  return value ? moment(value).format(format) : value;
-};
-
 export const getValue = (member) => {
   const { value = "", type, complexData = {}, valueAsString } = member;
   let finalValue = value?.shortName || value;

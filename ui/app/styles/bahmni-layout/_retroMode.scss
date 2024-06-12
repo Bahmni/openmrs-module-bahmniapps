@@ -70,6 +70,8 @@ $retroModeColor:  #0E74AF;
 	.retro-date-widget-wrapper{
       float: right;
       width: auto;
+      display: flex;
+      gap: 6px;
     .retro-date-widget-header {
       margin-top: 6px;
       //margin-left:10px;

@@ -1,8 +1,18 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService',
-        function ($scope, $state, $rootScope, $q, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService) {
+    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', '$window', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService', 'auditLogService', 'sessionService', '$location',
+        function ($scope, $state, $rootScope, $q, encounterService, $window, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService, auditLogService, sessionService, $location) {
+            function handleLogoutShortcut (event) {
+                if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+                    $scope.ipdDashboard.hostApi.onLogOut();
+                }
+            }
+            function cleanup () {
+                $window.removeEventListener('keydown', handleLogoutShortcut);
+            }
+            $window.addEventListener('keydown', handleLogoutShortcut);
+            $scope.$on('$destroy', cleanup);
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -17,6 +27,38 @@ angular.module('bahmni.clinical')
             $scope.showTrends = true;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
+            $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD";
+            $scope.isIpdReadMode = true;
+            if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null) {
+                $scope.isIpdReadMode = false;
+            }
+            $scope.ipdDashboard = {
+                hostData: {
+                    patient: {uuid: $scope.patientUuid},
+                    visitSummary: $scope.visitSummary,
+                    forDate: new Date().toUTCString(),
+                    provider: $rootScope.currentProvider,
+                    visitUuid: $scope.visitUuid,
+                    isReadMode: $scope.isIpdReadMode,
+                    source: $location.search().source
+                },
+                hostApi: {
+                    navigation: {
+                        visitSummary: function () {
+                            const visitSummaryUrl = $state.href('patient.dashboard.visit', {visitUuid: $scope.visitUuid});
+                            $window.open(visitSummaryUrl, '_blank');
+                        }
+                    },
+                    onLogOut: function () {
+                        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
+                            sessionService.destroy().then(
+                                function () {
+                                    $window.location = "../home/index.html#/login";
+                                });
+                        });
+                    }
+                }
+            };
             var tab = $stateParams.tab;
             var encounterTypes = visitConfig.currentTab.encounterContext ? visitConfig.currentTab.encounterContext.filterEncounterTypes : null;
             visitService.getVisit($scope.visitUuid, 'custom:(uuid,visitType,startDatetime,stopDatetime,encounters:(uuid,encounterDatetime,provider:(display),encounterType:(display)))').then(function (response) {
@@ -100,6 +142,12 @@ angular.module('bahmni.clinical')
                         });
                         promises.push(promise);
                     }
+
+                    $scope.allergies = "";
+                    var allergyPromise = allergyService.fetchAndProcessAllergies($scope.patient.uuid).then(function (allergies) {
+                        $scope.allergies = allergies;
+                    });
+                    promises.push(allergyPromise);
 
                     Promise.all(promises).then(function () {
                         $scope.additionalInfo = {};

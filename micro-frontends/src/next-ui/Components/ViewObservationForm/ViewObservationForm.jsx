@@ -119,6 +119,6 @@ ViewObservationForm.propTypes = {
   formData: propTypes.array,
   isViewFormLoading: propTypes.bool,
   showPrintOption: propTypes.bool,
-  printForm: propTypes.func,
+  printForm: propTypes.func
 };
 export default ViewObservationForm;

@@ -184,12 +184,13 @@ export function FormDisplayControl(props) {
       action
     );
   };
+
   const printForm = () => {
-    formData.map(function (obs) {
+    formData.map(function(obs) {
       if (obs?.groupMembers?.length > 0) {
         obs.encounterDateTime = obs?.groupMembers[0].encounterDateTime;
       }
-    });
+    })
     props?.hostApi?.printForm(formData);
   };
 
@@ -349,5 +350,5 @@ export function FormDisplayControl(props) {
 
 FormDisplayControl.propTypes = {
   hostData: PropTypes.object.isRequired,
-  hostApi: PropTypes.object.isRequired,
+  hostApi: PropTypes.object.isRequired
 };

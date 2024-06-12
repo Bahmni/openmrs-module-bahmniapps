@@ -4,13 +4,15 @@ angular.module('bahmni.adt').factory('initialization', ['$rootScope', '$q', 'app
     function ($rootScope, $q, appService, configurations, authenticator, spinner) {
         var getConfigs = function () {
             var config = $q.defer();
-            var configNames = ['encounterConfig', 'patientConfig', 'genderMap', 'relationshipTypeMap'];
+            var configNames = ['encounterConfig', 'patientConfig', 'genderMap', 'relationshipTypeMap', 'quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes'];
             configurations.load(configNames).then(function () {
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
                 $rootScope.patientConfig = configurations.patientConfig();
                 $rootScope.genderMap = configurations.genderMap();
                 $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                 $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
+                $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
                 config.resolve();
             });
             return config.promise;

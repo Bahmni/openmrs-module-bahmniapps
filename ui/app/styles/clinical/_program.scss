@@ -101,6 +101,14 @@
       padding: 2px 4px !important;
     }
   }
+
+  .observation-forms-container {
+    margin: 30px 0;
+    border: 1px solid #699;
+    border-radius: 5px 5px 0 0;
+    width: 66.5%;
+  }
+  
 }
 
 .select-program-container{
@@ -111,14 +119,27 @@
   border-radius: 5px;
   padding: 10px 15px;
   box-sizing: border-box;
+  .section-title {
+    font-family: OpenSans,Arial,sans-serif;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #fff;
+    font-size: 16px;
+    clear: both;
+    background: #699;
+    position: relative;
+    border-radius: 2px 2px 0 0;
+  }
   a{
-    color: $black;
+    color: #ffffff;
     font-size: 16px;
     display: block;
     font-family: openSansSemiBold;
   }
   .select-program-option {
-    padding: 10px 0px;
+    padding: 10px 10px;
+    border: 1px solid #669999;
     &.form-field{
       .field-attribute label{
         width: auto;

@@ -21,6 +21,7 @@ angular.module('bahmni.ipd')
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             $scope.editMode = false;
             $scope.buttonClicked = false;
+            $scope.enableAutoConvertToIPDVisit = appService.getAppDescriptor().getConfigValue('enableAutoConvertToIPDVisit') || false;
 
             var getVisitTypeUuid = function (visitTypeName) {
                 var visitType = _.find(visitTypes, {name: visitTypeName});
@@ -205,12 +206,17 @@ angular.module('bahmni.ipd')
                     messagingService.showMessage("error", "SELECT_BED_TO_ADMIT_PATIENT_DEFAULT_MESSAGE");
                     unsetButtonClicked();
                 } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName && !hideStartNewVisitPopUp) {
-                    ngDialog.openConfirm({
-                        template: 'views/visitChangeConfirmation.html',
-                        scope: $scope,
-                        closeByEscape: true,
-                        preCloseCallback: unsetButtonClicked
-                    });
+                    if ($scope.enableAutoConvertToIPDVisit) {
+                        messagingService.showMessage("info", $translate.instant("MESSAGE_AUTO_CONVERT_TO_IPD_VISIT", {visitType: $scope.defaultVisitTypeName}));
+                        $scope.closeCurrentVisitAndStartNewVisit();
+                    } else {
+                        ngDialog.openConfirm({
+                            template: 'views/visitChangeConfirmation.html',
+                            scope: $scope,
+                            closeByEscape: true,
+                            preCloseCallback: unsetButtonClicked
+                        });
+                    }
                 } else {
                     ngDialog.openConfirm({
                         template: 'views/admitConfirmation.html',

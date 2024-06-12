@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="../styles/clinicalPrint.css" media="print"/>
+<div class="print-wrapper">
+    <div class="print-logo-plus-text">
+        <img class="print-logo" width="125px" ng-if="printConfig.logo" ng-src="{{printConfig.logo}}" alt="logo"/>
+        <h1 class="print-logo-text">{{printConfig.title}}</h1>
+        <div class="print-right"></div>
+    </div>
+    <div class="clinic-info">
+        <span> {{printConfig.header}}</span>
+    </div>
+    <ng-include src="patientInfoPrint.html"></ng-include>
+    <div class="sections-group">
+    <div class="section">
+        <section class="block observation dashboard-section" id="observationSection">
+            <ul bm-gallery access-impression="true">
+                <section class="block " ng-class="::{'hidden-print': noObsMessage}">
+                    <h2 class="tableMargin"
+                        ng-class="::{'section-title': !isFulfilmentDisplayControl, 'form-field': isFulfilmentDisplayControl}">{{::title |
+                        translate}}</h2>
+                    <div class="concept-set-container-view">
+                        <section class="block hierarchy">
+                            <ul class="form-field" ng-if="bahmniObservations.length > 0">
+                                <li class="tableMargin" ng-repeat="obsGroup in ::bahmniObservations">
+                                    <span class="tree-list-item row-click toggle-container" toggle="obsGroup.isOpen">
+                                        <span class="obs-date" ng-if="obsGroup.value.length > 0">
+                                            {{::obsGroup.date | bahmniDateTime}}
+                                        </span>
+                                    </span>
+                                    <ul class="print-observations visible-print">
+                                        <li class="tableBorder" ng-repeat="observation in ::obsGroup.value track by $index">
+                                            <ul>
+                                                <show-observation show-details-button="::config.showDetailsButton" patient="::patient"
+                                                    observation="::observation"
+                                                    level="2">
+                                                </show-observation>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div ng-if="::noObsMessage">
+                                <div class="placeholder-text" ng-if="::!message"><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY"
+                                                                                translate-values="::{displayControl : '{{title | translate}}'}"></p>
+                                </div>
+                                <div class="placeholder-text" ng-if="::message">{{::message|translate}}</div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </ul>
+        </section>
+    </div>
+</div>

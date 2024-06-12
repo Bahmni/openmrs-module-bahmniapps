@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
-        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox',
+        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', '$state',
         function ($scope, retrospectiveEntryService, $window, programService,
-                  spinner, messagingService, $stateParams, $q, confirmBox) {
+            spinner, messagingService, $stateParams, $q, confirmBox, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -15,6 +15,20 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.configName = $stateParams.configName;
             $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
             var id = "#programEnrollmentContainer";
+            const defaultProgram = programService.getDefaultProgram();
+            const programRedirectionConfig = programService.getProgramRedirectionConfig();
+            const observationFormsConfig = programService.getObservationFormsConfig() || {};
+
+            $scope.showFormsDisplayControl = function () {
+                return !_.isEmpty(observationFormsConfig);
+            };
+
+            $scope.observationFormData = {
+                patientUuid: $scope.patient.uuid,
+                showEditForActiveEncounter: true,
+                numberOfVisits: observationFormsConfig.numberOfVisits || 10,
+                hasNoHierarchy: $scope.hasNoHierarchy
+            };
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
@@ -56,23 +70,26 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 spinner.forPromise(programService.getAllPrograms().then(function (programs) {
                     $scope.allPrograms = programs;
                     $scope.allPrograms.showProgramSection = true;
+                    setDefaultProgram();
+                    $scope.programSelected = defaultProgram !== null ? $scope.initialProgram : null;
+                    $scope.workflowStateSelected = defaultProgram !== null ? $scope.initialProgramWorkflowState : null;
                 }), id);
                 spinner.forPromise(programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
                     $scope.programAttributeTypes = programAttributeTypes;
                 }), id);
-                $scope.programSelected = null;
                 $scope.patientProgramAttributes = {};
-                $scope.programEnrollmentDate = null;
-
+                $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
+                $scope.disableProgramOutcomeEditOption = programService.disableProgramOutcomeEditOption();
                 updateActiveProgramsList();
             };
 
             var successCallback = function () {
                 messagingService.showMessage("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
-                $scope.programSelected = null;
-                $scope.workflowStateSelected = null;
+                $scope.programSelected = defaultProgram !== null ? $scope.initialProgram : null;
+                $scope.programSelected != null && $scope.setWorkflowStates($scope.programSelected);
+                $scope.workflowStateSelected = defaultProgram !== null ? $scope.initialProgramWorkflowState : null;
                 $scope.patientProgramAttributes = {};
-                $scope.programEnrollmentDate = null;
+                $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
                 updateActiveProgramsList();
                 if ($scope.patientProgram) {
                     $scope.patientProgram.editing = false;
@@ -238,6 +255,24 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programWorkflowStates = $scope.getStates(program);
             };
 
+            var setDefaultProgram = function () {
+                if (defaultProgram !== null) {
+                    const initialProgram = $scope.allPrograms.filter(function (program) {
+                        if (program.name === defaultProgram.programName) {
+                            return program;
+                        }
+                    });
+                    $scope.initialProgram = initialProgram.length > 0 ? initialProgram[0] : "";
+                    $scope.setWorkflowStates($scope.initialProgram);
+                    const initialProgramWorkflowState = $scope.programWorkflowStates.filter(function (state) {
+                        if (state.concept.display === defaultProgram.stateName) {
+                            return state;
+                        }
+                    });
+                    $scope.initialProgramWorkflowState = initialProgramWorkflowState.length > 0 ? initialProgramWorkflowState[0] : "";
+                }
+            };
+
             $scope.getStates = function (program) {
                 var states = [];
                 if (program && program.allWorkflows && program.allWorkflows.length && program.allWorkflows[0].states.length) {
@@ -248,6 +283,19 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.canRemovePatientState = function (state) {
                 return state.endDate == null;
+            };
+
+            $scope.openPatientObservations = function () {
+                const redirectionPoint = programRedirectionConfig ? programRedirectionConfig.redirectionPoint : "patient.dashboard.show";
+                const url = $state.href(redirectionPoint, {
+                    patientUuid: $scope.patient.uuid,
+                    programUuid: $scope.patientProgram && $scope.patientProgram.program && $scope.patientProgram.program.uuid,
+                    conceptSetGroupName: 'observations',
+                    dateEnrolled: $scope.patientProgram && $scope.patientProgram.fromDate,
+                    dateCompleted: $scope.patientProgram && $scope.patientProgram.toDate,
+                    enrollment: $scope.patientProgram && $scope.patientProgram.uuid
+                });
+                programRedirectionConfig && programRedirectionConfig.newTab ? $window.open(url, '_blank') : $window.open(url, '_self');
             };
 
             $scope.removePatientState = function (patientProgram) {

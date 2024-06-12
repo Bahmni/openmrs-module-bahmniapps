@@ -130,7 +130,7 @@ describe("PatientsListController", function () {
                 scope.$apply(setUp);
 
                 expect(scope.search.searchType).toEqual({ name : 'All active patients', display : 'All active patients', handler : 'emrapi.sqlSearch.activePatients', forwardUrl : "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/", targetedTab : "In Patient", id : 'bahmni.clinical.patients.allPatients', params : undefined, refreshTime : '10', view : 'tile',
-                    showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, patientCount : '...', linkColumn : undefined, links : undefined});
+                    showPrint : false, printHtmlLocation : null, searchColumns : undefined, additionalParams : undefined, translationKey : undefined, patientCount : '...', linkColumn : undefined, links : undefined, templateUrl: null});
                 expect(_patientService.findPatients).toHaveBeenCalled();
 
                 findPatientsPromise.callThenCallBack({data: patients});

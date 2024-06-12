@@ -1,0 +1,37 @@
+.patient-list-content {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: start;
+    padding: 10px;
+
+    .content-info {
+        margin-left: 20px;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: start;
+        align-items: start;
+
+        .notes {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: start;
+            align-items: end;
+
+            .patient-list-text-area {
+                flex: 1;
+                min-height: 48px;
+            }
+
+            .patient-list-button {
+                width: 116px;
+                height: 48px;
+                margin-left: 10px;
+
+                @media screen and (max-width: 640px) {
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}

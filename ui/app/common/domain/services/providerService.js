@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .factory('providerService', ['$http', function ($http) {
+    .factory('providerService', ['$http', 'appService', function ($http, appService) {
         var search = function (fieldValue) {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
@@ -28,9 +28,19 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var getAttributesForProvider = function (providerUuid) {
+            var providerAttributeUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.providerAttributeUrl, {'providerUuid': providerUuid});
+            return $http.get(providerAttributeUrl, {
+                method: "GET",
+                withCredentials: true,
+                cache: false
+            });
+        };
+
         return {
             search: search,
             searchByUuid: searchByUuid,
-            list: list
+            list: list,
+            getAttributesForProvider: getAttributesForProvider
         };
     }]);

@@ -18,12 +18,16 @@ angular.module('bahmni.clinical').factory('initialization',
                         'genderMap',
                         'relationshipTypeMap',
                         'defaultEncounterType',
-                        'prescriptionEmailToggle'
+                        'prescriptionEmailToggle',
+                        'quickLogoutComboKey',
+                        'contextCookieExpirationTimeInMinutes'
                     ]).then(function () {
                         $rootScope.genderMap = configurations.genderMap();
                         $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                         $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
                         $rootScope.prescriptionEmailToggle = configurations.prescriptionEmailToggle();
+                        $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                        $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
                     });
                 };
 

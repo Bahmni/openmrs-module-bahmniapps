@@ -43,7 +43,6 @@ angular.module('bahmni.common.displaycontrol.forms')
 
             var init = function () {
                 $scope.formsNotFound = false;
-                var privileges = [];
                 return $q.all([formService.getAllPatientForms($scope.patient.uuid, $scope.section.dashboardConfig.maximumNoOfVisits, $state.params.enrollment), latestPublishedForms()]).then(function (results) {
                     if (!(results[0] && results[0].data.length)) {
                         $scope.formsNotFound = true;
@@ -146,8 +145,14 @@ angular.module('bahmni.common.displaycontrol.forms')
                         observationUuid: data.uuid,
                         formType: $scope.section.type,
                         formDisplayName: $scope.getDisplayName(data)
-                    }
+                    },
+                    showPrintOption: $scope.section.dashboardConfig.printing ? true : false,
+                    printForm: $scope.printForm
                 };
+            };
+
+            $scope.printForm = function () {
+                $rootScope.$broadcast("event:printForm", $scope.section.dashboardConfig);
             };
 
             $scope.getEditObsData = function (observation) {

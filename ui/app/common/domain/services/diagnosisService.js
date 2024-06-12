@@ -5,7 +5,7 @@ angular.module('bahmni.common.domain')
         var self = this;
         this.getAllFor = function (searchTerm, locale) {
             var url = Bahmni.Common.Constants.bahmniapiConceptUrl;
-            var parameters = {term: searchTerm, limit: Bahmni.Common.Constants.emrapiDiagnosisLimit};
+            var parameters = { term: searchTerm, limit: Bahmni.Common.Constants.emrapiDiagnosisLimit };
             if (locale) {
                 parameters.locale = locale;
             }
@@ -17,18 +17,21 @@ angular.module('bahmni.common.domain')
         this.getDiagnoses = function (patientUuid, visitUuid) {
             var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
             return $http.get(url, {
-                params: { patientUuid: patientUuid, visitUuid: visitUuid}
+                params: { patientUuid: patientUuid, visitUuid: visitUuid }
+            });
+        };
+
+        this.getPatientDiagnosis = function (patientUuid) {
+            var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
+            return $http.get(url, {
+                params: { patientUuid: patientUuid }
             });
         };
 
         this.deleteDiagnosis = function (obsUuid) {
             var url = Bahmni.Common.Constants.bahmniDeleteDiagnosisUrl;
             return $http.get(url, {
-                params: {obsUuid: obsUuid}
-            }, function (response) {
-                return response;
-            }, function (error) {
-                return error;
+                params: { obsUuid: obsUuid }
             });
         };
 
@@ -62,6 +65,13 @@ angular.module('bahmni.common.domain')
                 consultation.pastDiagnoses = diagnosis.pastDiagnoses;
                 consultation.savedDiagnosesFromCurrentEncounter = diagnosis.savedDiagnosesFromCurrentEncounter;
                 return consultation;
+            });
+        };
+
+        this.getPatientDiagnosis = function (patientUuid) {
+            var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
+            return $http.get(url, {
+                params: { patientUuid: patientUuid }
             });
         };
     }]);

@@ -24,23 +24,23 @@ angular.module('bahmni.common.config')
         };
 
         this.allTestsAndPanelsConcept = function () {
-            return this.configs.allTestsAndPanelsConcept.results[0] || [];
+            return this.configs.allTestsAndPanelsConcept && this.configs.allTestsAndPanelsConcept.results && this.configs.allTestsAndPanelsConcept.results[0] ? this.configs.allTestsAndPanelsConcept.results[0] : [];
         };
 
         this.impressionConcept = function () {
-            return this.configs.radiologyImpressionConfig.results[0] || [];
+            return this.configs.radiologyImpressionConfig && this.configs.radiologyImpressionConfig.results && this.configs.radiologyImpressionConfig.results[0] ? this.configs.radiologyImpressionConfig.results[0] : [];
         };
 
         this.labOrderNotesConcept = function () {
-            return this.configs.labOrderNotesConfig.results[0] || [];
+            return this.configs.labOrderNotesConfig && this.configs.labOrderNotesConfig.results && this.configs.labOrderNotesConfig.results[0] ? this.configs.labOrderNotesConfig.results[0] : [];
         };
 
         this.consultationNoteConcept = function () {
-            return this.configs.consultationNoteConfig.results[0] || [];
+            return this.configs.consultationNoteConfig && this.configs.consultationNoteConfig.results && this.configs.consultationNoteConfig.results[0] ? this.configs.consultationNoteConfig.results[0] : [];
         };
 
         this.patientConfig = function () {
-            return this.configs.patientConfig || {};
+            return this.configs.patientConfig ? this.configs.patientConfig : {};
         };
 
         this.encounterConfig = function () {
@@ -64,11 +64,11 @@ angular.module('bahmni.common.config')
         };
 
         this.relationshipTypes = function () {
-            return this.configs.relationshipTypeConfig.results || [];
+            return this.configs.relationshipTypeConfig && this.configs.relationshipTypeConfig.results ? this.configs.relationshipTypeConfig.results : [];
         };
 
         this.relationshipTypeMap = function () {
-            return this.configs.relationshipTypeMap || {};
+            return this.configs.relationshipTypeMap ? this.configs.relationshipTypeMap : {};
         };
 
         this.loginLocationToVisitTypeMapping = function () {
@@ -85,5 +85,13 @@ angular.module('bahmni.common.config')
 
         this.prescriptionEmailToggle = function () {
             return this.configs.prescriptionEmailToggle;
+        };
+
+        this.quickLogoutComboKey = function () {
+            return this.configs.quickLogoutComboKey;
+        };
+
+        this.contextCookieExpirationTimeInMinutes = function () {
+            return this.configs.contextCookieExpirationTimeInMinutes;
         };
     }]);

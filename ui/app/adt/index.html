@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, minimal-ui" />
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
         <!-- build:css adt.min.css -->
@@ -11,8 +12,11 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
 
         <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/shared.min.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/ipd.min.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/next-ui.min.css"/>
         <!-- endbuild -->
-        <title>ADT</title>
+        <title>IPD</title>
     </head>
     <body>
         <div ng-app="adt">
@@ -53,6 +57,16 @@
         <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
+        <!-- Adding react since micro-frontends will be used -->
+        <script src="../components/react/react.production.min.js"></script>
+        <script src="../components/react-dom/react-dom.production.min.js"></script>
+
+        <!-- polyfill to add angular feature which will allow easy loading of mfe into angular component -->
+        <script src="../micro-frontends-dist/shared.min.js"></script>
+
+        <!-- load the ipd mfe as angular components -->
+        <script src="../micro-frontends-dist/ipd.min.js"></script>
+        <script src="../micro-frontends-dist/next-ui.min.js"></script>
 
         <!-- build:js adt.min.js -->
         <script src="../common/route-errorhandler/init.js"></script>
@@ -193,6 +207,8 @@
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
         <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
         <script src="../common/services/formService.js"></script>
+        <script src="../common/services/formPrintService.js"></script>
+        <script src="../common/services/allergyService.js"></script>
 
 
         <script src="../common/displaycontrols/disposition/init.js"></script>
@@ -222,6 +238,7 @@
         <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
         <script src="../common/ui-helper/directives/singleClick.js"></script>
         <script src="../common/util/translationUtil.js"></script>
+        <script src="../clinical/consultation/mappers/consultationMapper.js"></script>
 
         <script src="init.js"></script> 
         <script src="constants.js"></script>
@@ -236,6 +253,7 @@
         <script src="controllers/wardController.js"></script>
         <script src="controllers/wardListController.js"></script>
         <script src="controllers/wardLayoutController.js"></script>
+        <script src="controllers/careViewController.js"></script>
         <script src="models/wardDetails.js"></script>
         <script src="directives/wardList.js"></script>
         <script src="directives/adtPatientSearch.js"></script>

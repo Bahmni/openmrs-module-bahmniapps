@@ -2,7 +2,7 @@ export const defaultDateFormat = "DD MMM YYYY";
 export const defaultDateTimeFormat = "DD MMM YYYY hh:mm a";
 
 export const LS_LANG_KEY = "NG_TRANSLATE_LANG_KEY";
-export const SQL_PROPERTY = "emrapi.sqlSearch.emergencyMedicationToAcknowledge";
+export const MEDICATION_ACKNOWLEDGE_SQL_PROPERTY = "emrapi.sqlSearch.emergencyMedicationToAcknowledge";
 export const BASE_URL =
   typeof __webpack_public_path__ !== "undefined"
     ? __webpack_public_path__
@@ -32,4 +32,5 @@ export const GET_DRUG_ACKNOWLEDGEMENT_URL = RESTWS_V1 + "/bahmnicore/sql?q={prop
 export const EMERGENCY_MEDICATIONS_BASE_URL = RESTWS_V1 + "/ipd/adhocMedicationAdministrations/{medication_administration_uuid}";
 export const GET_PROVIDER_UUID_URL = RESTWS_V1 + "/session";
 export const SAVE_ALLERGIES_URL =  RESTWS_V1 + "/patient/{patientId}/allergy";
+export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
 

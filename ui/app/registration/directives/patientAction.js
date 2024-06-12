@@ -17,6 +17,7 @@ angular.module('bahmni.registration')
                 defaultVisitType = defaultVisitType || appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
                 var forwardUrlsForVisitTypes = appService.getAppDescriptor().getConfigValue("forwardUrlsForVisitTypes");
+                var showSuccessMessage = appService.getAppDescriptor().getConfigValue("showSuccessMessage");
                 showStartVisitButton = (_.isUndefined(showStartVisitButton) || _.isNull(showStartVisitButton)) ? true : showStartVisitButton;
                 var visitLocationUuid = $rootScope.visitLocation;
                 var forwardUrls = forwardUrlsForVisitTypes || false;
@@ -163,6 +164,9 @@ angular.module('bahmni.registration')
                             if (forwardUrl) {
                                 var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, { 'patientUuid': patientProfileData.patient.uuid });
                                 $window.location.href = updatedForwardUrl;
+                                if (showSuccessMessage) {
+                                    messagingService.showMessage("info", "REGISTRATION_LABEL_SAVE_REDIRECTION");
+                                }
                             } else {
                                 goToVisitPage(patientProfileData);
                             }

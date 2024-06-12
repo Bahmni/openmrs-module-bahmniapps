@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Visits Table display control", function () {
-    var element, scope, $compile, mockBackend, conceptSetService, visitFormService,patientVisitHistoryService, $translate;
+    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, patientVisitHistoryService, $translate, appService;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.clinical'));
@@ -10,6 +10,14 @@ describe("Visits Table display control", function () {
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
         $translate = jasmine.createSpyObj('$translate', ['instant']);
         patientVisitHistoryService= jasmine.createSpyObj('patientVisitHistoryService', ['getVisitHistory']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (config) {
+                if (config == 'enableIPDFeature') {
+                    return true;
+                }
+            }
+        });
         $provide.value('$state', {});
         $provide.value('$bahmniCookieStore', {});
         $provide.value('clinicalAppConfigService', {getObsIgnoreList: function(){return []}});
@@ -18,6 +26,7 @@ describe("Visits Table display control", function () {
         $provide.value('visitFormService', visitFormService);
         $provide.value('patientVisitHistoryService', patientVisitHistoryService);
         $provide.value('$translate', $translate);
+        $provide.value('appService', appService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {

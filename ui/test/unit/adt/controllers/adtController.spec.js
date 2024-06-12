@@ -26,7 +26,10 @@ describe("AdtController", function () {
         window = {};
 
         appService.getAppDescriptor.and.returnValue({
-            getConfigValue: function () {
+            getConfigValue: function (config) {
+                if(config === "enableAutoConvertToIPDVisit"){
+                    return false;
+                }
                 return "IPD";
             }, getExtensions: function (a, b) {
                 return {
@@ -85,7 +88,7 @@ describe("AdtController", function () {
         });
     };
 
-    it("Should show confirmation dialog if patient's visit type is not defaultVisitType", function () {
+    it("Should show confirmation dialog if patient's visit type is not defaultVisitType & enableAutoConvertToIPDVisit is set to false", function () {
         scope.visitSummary = {"visitType": "OPD"};
         createController();
 
@@ -96,6 +99,37 @@ describe("AdtController", function () {
 
     it("Should not show confirmation dialog if patient's visit type is defaultVisitType", function () {
         scope.visitSummary = {"visitType": "IPD"};
+        scope.patient = {uuid: '123'};
+        encounterService.create.and.callFake(function () {
+            return {
+                success: function (callback) {
+                    return callback({});
+                }
+            };
+        });
+        createController();
+
+        scope.admit();
+
+        expect(ngDialog.openConfirm).not.toHaveBeenCalled();
+    });
+    it("Should not show confirmation dialog if patient's visit type is not defaultVisitType & enableAutoConvertToIPDVisit is set to true", function () {
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (config){
+                if(config === "enableAutoConvertToIPDVisit"){
+                    return true;
+                } return "IPD";
+            }, getExtensions: function (a, b) {
+                return {
+                    maxPatientsPerBed: 2
+                };
+            },
+            getConfig: function () {
+            }
+        })
+        var encounterResponse = {patientUuid: '123', encounterUuid: 'uuid', encounterType: 'ADMISSION'};
+        visitService.endVisitAndCreateEncounter.and.returnValue(specUtil.createFakePromise(encounterResponse));
+        scope.visitSummary = {"visitType": "OPD"};
         scope.patient = {uuid: '123'};
         encounterService.create.and.callFake(function () {
             return {
@@ -438,6 +472,14 @@ describe("AdtController", function () {
             scope.discharge();
             var messageParams = {encounterUuid: encounterResponse.encounterUuid, encounterType: encounterResponse.encounterType};
             expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParams, 'MODULE_LABEL_INPATIENT_KEY');
+        });
+    });
+
+    describe('getDisplayForContinuingVisit', function () {
+        it('should return Admit', function () {
+            createController();
+            ;
+            expect(scope.getDisplayForContinuingVisit()).toBe("Admit");
         });
     });
 });
