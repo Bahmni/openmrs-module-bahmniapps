@@ -12,7 +12,7 @@ import {
 import "./viewObservationForm.scss";
 
 export const ViewObservationForm = (props) => {
-  const { formName, formNameTranslations, closeViewObservationForm, formData, isViewFormLoading} =
+  const { formName, formNameTranslations, closeViewObservationForm, formData, isViewFormLoading, showPrintOption, printForm } =
     props;
 
   return (
@@ -23,6 +23,7 @@ export const ViewObservationForm = (props) => {
         className="view-observation-form-modal"
         onRequestClose={closeViewObservationForm}
       >
+        {showPrintOption && <button className="confirm print-button" onClick={printForm}>Print</button> }
         <section className="content-body">
           <h2 className="section-title">{formNameTranslations}</h2>
           {isViewFormLoading ? (
@@ -97,5 +98,7 @@ ViewObservationForm.propTypes = {
   closeViewObservationForm: propTypes.func,
   formData: propTypes.array,
   isViewFormLoading: propTypes.bool,
+  showPrintOption: propTypes.bool,
+  printForm: propTypes.func
 };
 export default ViewObservationForm;

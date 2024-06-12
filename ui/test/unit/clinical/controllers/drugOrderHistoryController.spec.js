@@ -36,6 +36,7 @@ describe("DrugOrderHistoryController", function () {
                 return false;
             }
         });
+        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
 
         rootScope = $rootScope;
         spyOn($rootScope, '$broadcast');

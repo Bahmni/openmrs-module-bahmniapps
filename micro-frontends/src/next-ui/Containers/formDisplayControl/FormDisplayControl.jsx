@@ -155,6 +155,15 @@ export function FormDisplayControl(props) {
     setEditObservationForm(false);
   }
 
+  const printForm = () => {
+    formData.map(function(obs) {
+      if (obs?.groupMembers?.length > 0) {
+        obs.encounterDateTime = obs?.groupMembers[0].encounterDateTime;
+      }
+    })
+    props?.hostApi?.printForm(formData);
+  }
+
   useEffect(() => {
     buildResponseData();
   }, []);
@@ -258,6 +267,8 @@ export function FormDisplayControl(props) {
                   formNameTranslations={formNameTranslations}
                   closeViewObservationForm={closeViewObservationForm}
                   formData={formData}
+                  showPrintOption={props?.hostData?.showPrintOption}
+                  printForm={printForm}
                 />
               ) : null}
               {showEditObservationForm ? (

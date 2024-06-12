@@ -22,13 +22,14 @@
                             <span ng-hide="::showFormsDate">{{data.obsDatetime || data.encounterDateTime | bahmniDateTime}}</span>
                             <span ng-show="::showFormsDate">{{
                                 data.obsDatetime || data.encounterDateTime | bahmniDate}}</span>
-                            <span ng-show="doesUserHaveAccessToTheForm(data ,'view')"class="has-link fl formDataEdit"
+                            <span ng-show="doesUserHaveAccessToTheForm(data, 'view')" class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-view"
-                                  ng-dialog-data="{{getConfigToFetchDataAndShow(data)}}">
+                                  ng-dialog-data="{{getConfigToFetchDataAndShow(data)}}"
+                                  ng-dialog-scope="this">
                                 <i class="fa fa-eye"></i>
                             </span>
-                            <span ng-show="doesUserHaveAccessToTheForm(data ,'edit')"class="has-link fl formDataEdit"
+                            <span ng-show="doesUserHaveAccessToTheForm(data, 'edit')" class="has-link fl formDataEdit"
                                   ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                   ng-dialog-data="{{getEditObsData(data)}}"
