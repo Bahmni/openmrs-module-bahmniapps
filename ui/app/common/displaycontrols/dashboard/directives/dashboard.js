@@ -9,7 +9,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             };
 
             if ($scope.patient !== undefined && $state.current.name.includes('patient.dashboard.show')) {
-                var dashboardConfig = $scope.config.sections && $scope.config.sections['forms-v2-react'] ?$scope.config.sections['forms-v2-react'].dashboardConfig : null;
+                var dashboardConfig = $scope.config.sections && $scope.config.sections['forms-v2-react'] ? $scope.config.sections['forms-v2-react'].dashboardConfig : null;
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,

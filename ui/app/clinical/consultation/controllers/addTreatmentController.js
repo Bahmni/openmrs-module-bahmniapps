@@ -823,7 +823,7 @@ angular.module('bahmni.clinical')
             var showRulesInMedication = function (medicationConfig) {
                 $scope.showRulesInMedication = false;
                 if (medicationConfig && medicationConfig.tabConfig && medicationConfig.tabConfig.allMedicationTabConfig
-                    && medicationConfig.tabConfig.allMedicationTabConfig.orderSet ) {
+                    && medicationConfig.tabConfig.allMedicationTabConfig.orderSet) {
                     if (medicationConfig.tabConfig.allMedicationTabConfig.orderSet.showRulesInMedication) {
                         $scope.showRulesInMedication = true;
                     }
