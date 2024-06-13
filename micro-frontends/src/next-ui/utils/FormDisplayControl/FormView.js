@@ -85,3 +85,60 @@ export const getValue = (member) => {
   }
   return finalValue;
 };
+
+export const isValidFileFormat = (item) => {
+  const fileFormats = [
+    "video/mp4",
+    "image/png",
+    "image/jpeg",
+    "application/pdf",
+  ];
+  const mimeType = item?.complexData?.mimeType;
+  if (fileFormats.includes(mimeType)) return true;
+  return false;
+};
+
+export const getThumbnail = (src, extension = undefined) => {
+  if (extension) {
+    return (
+      (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail." + extension)) || null
+    );
+  }
+  return (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail.$2")) || null;
+};
+
+export const doesUserHaveAccessToTheForm = (privileges, data, action) => {
+  if (
+    typeof data.privileges != "undefined" &&
+    data.privileges != null &&
+    data.privileges.length > 0
+  ) {
+    var editable = [];
+    var viewable = [];
+    data.privileges.forEach((formPrivilege) => {
+      const matchedPrivilege = privileges.find((privilege) => {
+        return privilege.name === formPrivilege.privilegeName;
+      });
+      if (matchedPrivilege) {
+        if (action === "edit") {
+          editable.push(formPrivilege.editable);
+        } else {
+          viewable.push(formPrivilege.viewable);
+        }
+      }
+    });
+    if (action === "edit") {
+      if (editable.includes(true)) {
+        return true;
+      }
+    } else {
+      if (viewable.includes(true)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  } else {
+    return true;
+  }
+};

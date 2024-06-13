@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import { getLocale } from "../i18n/utils";
-import { getFormByFormName ,getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
+import { getFormByFormName, getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
 import { getLatestPublishedForms } from '../../utils/FormDisplayControl/FormUtils';
 import { Modal, Loading } from 'carbon-components-react';
@@ -47,6 +47,7 @@ const EditObservationForm = (props) => {
             return;
         }
         encounter.observations = editedObservations.observations;
+        encounter.orders = [];
         handleEditSave(encounter);
     };
 
