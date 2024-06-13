@@ -25,9 +25,13 @@
       box-sizing: border-box;
       text-align: center;
       float: left;
-      padding: 10px 0;
+      padding: 12px 0;
       border-bottom: 1px solid #ddd;
-      font-family: OpenSansSemiBold;
+      border-top: 1px solid #ddd;
+      font-family: OpenSansSemiBold, serif;
+    }
+    hr{
+      margin-bottom: 0;
     }
   }
   .day-heading{
@@ -57,6 +61,13 @@
     &:hover{
       background-color: #EDF5FF;
     }
+  }
+  .provider-location-name{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    margin-top: 15px;
+    overflow-x: scroll;
   }
   .notes-text{
     background-color: #FCF4D6;
@@ -101,7 +112,8 @@
         position: absolute;
         display: flex;
         left: 80px;
-        overflow: auto;
+        overflow-x: scroll;
+        overflow-y: auto;
         padding-bottom: 5px;
         top: 95px;
         width: calc(100% - 90px);
@@ -120,7 +132,6 @@
         float: left;
         position: relative;
         padding-bottom: 20px;
-        overflow: hidden;
         border-right: 0.5px solid lightgrey;
         .surgical-block {
           width: calc(100% - 10px);
@@ -289,14 +300,17 @@
     }
     .surgicalblock-patientname {
       font-weight: 600;
-      color: #000;
+      color: #5394fc;
       font-size: 14px;
       padding: 0 10px 3px 1px;
+      cursor: pointer;
     }
-    p {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .ot-day-text{
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 2px 0;
+      }
     }
   }
   .surgicalblock-surgeon-name {

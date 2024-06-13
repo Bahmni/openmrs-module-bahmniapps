@@ -55,6 +55,14 @@
                     <label class="surgeon-block surgeon-text">{{defaultAttributeTranslations.get(attributeTypeName) | translate}}</label>
                     <textarea class="text-section" placeholder="{{'OT_ENTER_YOUR_NOTES' | translate}}" id="notesID" ng-model="attributes.notes.value" msd-elastic></textarea>
                 </p>
+                <p ng-switch-when="patientWeight">
+                    <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_PATIENT_WEIGHT' | translate}}</label>
+                    <input type="text" id="{{attribute.surgicalAppointmentAttributeType.patientWeight}}" ng-model="attribute.value">
+                </p>
+                <p ng-switch-when="anaesthetist">
+                    <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</label>
+                    <input type="text" id="{{attribute.surgicalAppointmentAttributeType.anaesthetist}}" ng-model="attribute.value">
+                </p>
                 <p ng-switch-default ng-if="attributeTypeName != 'estTimeMinutes'">
                     <label class="surgeon-block surgeon-text">{{(defaultAttributeTranslations.get(attributeTypeName) | translate) || attribute.surgicalAppointmentAttributeType.name}}</label>
                     <input type="text" id="{{attribute.surgicalAppointmentAttributeType.name}}" ng-model="attribute.value">

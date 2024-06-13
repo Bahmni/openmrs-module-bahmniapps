@@ -2,15 +2,17 @@
      ng-style="{ height: height + 'px', background : backgroundColor.color, borderColor : backgroundColor.borderColor }"
      tabindex="1" ng-click="selectSurgicalAppointment($event)" class="surgical-block-appointment"
      title=" {{'OT_PATIENT' | translate}}: {{patient}}<br/> {{'OT_SURGICAL_BLOCK_DIALOG_LOCATION' | translate}}: {{operationTheatre}}<br/> {{'OT_SURGICAL_BLOCK_DIALOG_SURGEON' | translate}}: {{$parent.surgicalBlock.provider.person.display}}">
-    <div ng-if="weekOrDay === 'day'" class="collapse">
-        <p class="surgicalblock-patientname"> {{patient}}  <i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i> </p>
-        <p ng-if="surgicalAppointment.derivedAttributes.expectedStartDatetime"> Est Time: {{surgicalAppointment.derivedAttributes.expectedStartDatetime | bahmniTime}} - {{surgicalAppointment.derivedAttributes.expectedEndDatetime | bahmniTime}}</p>
-        <p ng-if="attributes.procedure"> Procedure - {{attributes.procedure}} </p>
-        <p ng-if="attributes.anaesthetist"> Anaesthetist - {{attributes.anaesthetist}} </p>
-        <p ng-if="attributes.notes"> Notes - {{attributes.notes}} </p>
-        <p ng-if="surgicalAppointment.actualStartDatetime"><br> Actual Time: {{surgicalAppointment.actualStartDatetime | bahmniTime}} - {{surgicalAppointment.actualEndDatetime | bahmniTime}}</p>
+    <div ng-if="weekOrDay === 'day'" class="collapse ot-day-text">
+        <p class="surgicalblock-patientname" ng-click="goToForwardUrl($event)"> {{patient}}  <i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i> </p>
+        <p ng-if="attributes.patientWeight"> {{'OT_SURGICAL_APPOINTMENT_PATIENT_WEIGHT' | translate}} - {{attributes.patientWeight}}</p>
+        <p ng-if="attributes.estTimeHours || attributes.estTimeMinutes"> {{ 'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME'| translate}} - {{attributes.estTimeHours || 0 }} hrs(s): {{attributes.estTimeMinutes || 0}} min(s) </p>
+        <p ng-if="surgicalAppointment.primaryDiagnosis"> {{ 'OT_SURGICAL_APPOINTMENT_PRIMARY_DIAGNOSIS' | translate}}  - {{surgicalAppointment.primaryDiagnosis}} </p>
+        <p ng-if="attributes.procedure"> {{ 'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}} - {{attributes.procedure}} </p>
+        <p ng-if="attributes.anaesthetist"> {{ 'OT_SURGICAL_APPOINTMENT_ANAESTHETIST'| translate}} - {{attributes.anaesthetist}} </p>
+        <p ng-if="attributes.notes"> {{ 'OT_SURGICAL_APPOINTMENT_NOTES'| translate}} - {{attributes.notes}} </p>
+        <p ng-if="surgicalAppointment.actualStartDatetime"><br> {{'OT_SURGICAL_APPOINTMENT_ACTUAL_TIME' | translate}} - {{surgicalAppointment.actualStartDatetime | bahmniTime}} - {{surgicalAppointment.actualEndDatetime | bahmniTime}}</p>
     </div>
-    <div ng-if="weekOrDay === 'week'" class="collapse">
+    <div ng-if="weekOrDay === 'week'" class="collapse ot-text">
         <p><i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i></p>
         <p class="surgicalblock-patientname"> {{patient}}</p>
         <p class="surgicalblock-ot"> {{operationTheatre}}</p>

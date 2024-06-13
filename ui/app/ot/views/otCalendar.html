@@ -11,8 +11,7 @@
             </div>
             <span ng-click="openDeletePopup()"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
         </div>
-        <hr/>
-        <div style="display: flex;">
+        <div class="provider-location-name" on-horizontal-scroll="ot-block-wrapper">
             <p ng-switch-default bindonce="locations" class="heading-cell" ng-repeat="location in locations">
                 {{location.name}}
             </p>
@@ -24,13 +23,13 @@
 
     <div class="table-block">
         <!-- Please dont remove or alter the below class name -->
-        <div class="calendar-time-container">
+        <div class="calendar-time-container" style="top: 110px">
             <div ng-repeat="row in ::rows" class="calendar-time">
                 {{::row.date | bahmniTime}}
             </div>
         </div>
         <div class="ot-block-container">
-            <div class="ot-block-wrapper">
+            <div class="ot-block-wrapper" on-horizontal-scroll="provider-location-name" style="top: 110px">
             <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocks">
                 <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>
