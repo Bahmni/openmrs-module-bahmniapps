@@ -1,0 +1,24 @@
+<div class="opd-header-wrapper">
+    <div class="opd-header-top">
+        <header>
+            <bm-back-links></bm-back-links>
+            <a id="clinicalHomeBackLink" show-if-privilege="app:clinical" class="back-btn"
+                ng-if="showClinicalDashboardLink" ng-href="../clinical/#/default/patient/{{patient.uuid}}/dashboard"
+                title="Go to Clinical Dashboard">
+                <i class="fa fa-stethoscope fa-white"></i>
+            </a>
+            <button class="btn-user-info">
+                <i class="fa fa-user-md fa-white small"></i>
+                <i class="fa fa-caret-down fa-white mini"></i>
+            </button>
+            <ul>
+                <li>
+                    <a log-out>
+                        <i class="fa fa-power-off fa-white small"></i>
+                        <span class="nav-link">{{::'LOGOUT_TRANSLATION_KEY' | translate}}</span>
+                    </a>
+                </li>
+            </ul>
+        </header>
+    </div>
+</div>

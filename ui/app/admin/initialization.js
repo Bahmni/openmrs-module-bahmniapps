@@ -1,8 +1,16 @@
 'use strict';
 
 angular.module('bahmni.admin')
-.factory('initialization', ['$rootScope', '$q', 'appService', 'spinner',
-    function ($rootScope, $q, appService, spinner) {
+.factory('initialization', ['$rootScope', '$q', 'appService', 'spinner', 'configurations',
+    function ($rootScope, $q, appService, spinner, configurations) {
+        var loadConfigPromise = function () {
+            var configNames = ['quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes'];
+            return configurations.load(configNames).then(function () {
+                $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
+            });
+        };
+
         var initApp = function () {
             return appService.initApp('admin');
         };
@@ -11,6 +19,6 @@ angular.module('bahmni.admin')
             return appService.checkPrivilege("app:admin");
         };
 
-        return spinner.forPromise(initApp().then(checkPrivilege));
+        return spinner.forPromise(initApp().then(checkPrivilege).then(loadConfigPromise));
     }
 ]);
