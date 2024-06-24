@@ -27,7 +27,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                     controller: 'PatientsListController'
                 },
                 'additional-header': {
-                    templateUrl: '../common/ui-helper/header.html'
+                    templateUrl: 'views/patientHeader.html'
                 }
             },
             resolve: {

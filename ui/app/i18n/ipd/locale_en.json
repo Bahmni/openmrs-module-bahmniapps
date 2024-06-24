@@ -76,5 +76,6 @@
     "IS_SUCCESSFULLY_ASSIGNED_MESSAGE": "is assigned successfully",
     "BED": "Bed",
     "CARE_VIEW_LABEL": "Change to Care View",
-    "MESSAGE_AUTO_CONVERT_TO_IPD_VISIT": "{{visitType}} Visit Started Successfully"
+    "MESSAGE_AUTO_CONVERT_TO_IPD_VISIT": "{{visitType}} Visit Started Successfully",
+    "LOGOUT_TRANSLATION_KEY": "Logout"
 }

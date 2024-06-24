@@ -8,9 +8,11 @@ angular.module('opd.documentupload').factory('initialization',
             $rootScope.appConfig = url.param();
 
             var getConfigs = function () {
-                var configNames = ['genderMap'];
+                var configNames = ['genderMap', 'quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes'];
                 return configurations.load(configNames).then(function () {
                     $rootScope.genderMap = configurations.genderMap();
+                    $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                    $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
                 });
             };
 

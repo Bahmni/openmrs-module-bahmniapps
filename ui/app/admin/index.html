@@ -14,7 +14,7 @@
         <!-- endbuild -->
     </head>
     <body ng-app="admin" class="admin-app">
-        <div ng-include src="'../common/ui-helper/header.html'"></div>
+        <div ng-include src="'views/header.html'"></div>
         <div ng-include src="'../common/ui-helper/messages.html'"></div>
         <div class="opd-wrapper">
             <div ui-view id="view-content" class="opd-content-wrapper"></div>
@@ -71,6 +71,7 @@
         <script src="../common/ui-helper/directives.js"></script>
         <script src="../common/config/init.js"></script>
         <script src="../common/config/directives/showIfPrivilege.js"></script>
+        <script src="../common/config/services/configurations.js"></script>
         <script src="../common/ui-helper/services/backlinkService.js"></script>
         <script src="../common/ui-helper/directives/backLinks.js"></script>
         <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
@@ -86,6 +87,7 @@
         <script src="../common/logging/exceptionHandler.js"></script>
         <script src="../common/logging/services/loggingService.js"></script>
         <script src="../common/logging/services/auditLogService.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
 
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>

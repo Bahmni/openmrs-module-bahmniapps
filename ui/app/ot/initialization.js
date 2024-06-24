@@ -1,7 +1,14 @@
 'use strict';
 
-angular.module('bahmni.ot').factory('initialization', ['$rootScope', '$q', 'surgicalAppointmentHelper', 'appService', 'surgicalAppointmentService', 'authenticator', 'spinner',
-    function ($rootScope, $q, surgicalAppointmentHelper, appService, surgicalAppointmentService, authenticator, spinner) {
+angular.module('bahmni.ot').factory('initialization', ['$rootScope', '$q', 'surgicalAppointmentHelper', 'appService', 'surgicalAppointmentService', 'authenticator', 'spinner', 'configurations',
+    function ($rootScope, $q, surgicalAppointmentHelper, appService, surgicalAppointmentService, authenticator, spinner, configurations) {
+        var loadConfigPromise = function () {
+            var configNames = ['quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes'];
+            return configurations.load(configNames).then(function () {
+                $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
+            });
+        };
         var initApp = function () {
             return appService.initApp('ot', {'app': true, 'extension': true}).then(function (data) {
                 var providerNames = data.getConfigValue("primarySurgeonsForOT");
@@ -13,6 +20,6 @@ angular.module('bahmni.ot').factory('initialization', ['$rootScope', '$q', 'surg
                 });
             });
         };
-        return spinner.forPromise(authenticator.authenticateUser().then(initApp));
+        return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(loadConfigPromise));
     }
 ]);
