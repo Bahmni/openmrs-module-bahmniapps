@@ -68,6 +68,6 @@ CVE-2024-21490 #angular: Inefficient Regular Expression Complexity https://avd.a
 CVE-2024-29180 #webpack-dev-middleware https://avd.aquasec.com/nvd/cve-2024-29180
 CVE-2022-37620 #html-minifier latest version 4.0.0 does not have a fix for the vulnerability kangax html-minifier REDoS vulnerability https://avd.aquasec.com/nvd/cve-2022-37620
 CVE-2024-29415 #node-ip: Incomplete fix for CVE-2023-42282 https://avd.aquasec.com/nvd/cve-2024-29415
-CVE-2024-38355 #Installed version 2.1.1 Fixed Version 2.5.1, 4.6.2 socket.io: Unhandled 'error' event https://avd.aquasec.com/nvd/cve-2024-38355 
+CVE-2024-38355 #Installed version 2.1.1 Fixed Version 2.5.1, 4.6.2 socket.io: Unhandled 'error' event https://avd.aquasec.com/nvd/cve-2024-38355
 CVE-2024-45590 #body-parser: Denial of Service Vulnerability in body-parser https://avd.aquasec.com/nvd/cve-2024-45590
 CVE-2024-45296 path-to-regexp: Backtracking regular expressions cause ReDoS https://avd.aquasec.com/nvd/cve-2024-45296
