@@ -74,7 +74,7 @@ angular.module('bahmni.registration').factory('initialization',
                 }
                 $rootScope.relationshipTypes.forEach(function (relationshipType) {
                     relationshipType.searchType = (relationshipTypeMap.provider.indexOf(relationshipType.aIsToB) > -1) ? "provider" :
-                        (relationshipTypeMap.person.indexOf(relationshipType.aIsToB) > -1) ? "person" : "patient";
+                        (relationshipTypeMap.person && (relationshipTypeMap.person.indexOf(relationshipType.aIsToB)) > -1) ? "person" : "patient";
                 });
             };
 
