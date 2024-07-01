@@ -54,6 +54,16 @@ angular.module('bahmni.ipd')
             };
 
             var getRoomsForWard = function (bedLayouts) {
+                bedLayouts.forEach(function (bed) {
+                    if (!bed.bedTagMaps) {
+                        bed.bedTagMaps = [];
+                    }
+                    if (!bed.patient) {
+                        if (bed.patients && bed.patients.length > 0) {
+                            bed.patient = bed.patients[0];
+                        }
+                    }
+                });
                 var rooms = mapRoomInfo(_.groupBy(bedLayouts, 'location'));
                 _.each(rooms, function (room) {
                     room.beds = bedManagementService.createLayoutGrid(room.beds);
