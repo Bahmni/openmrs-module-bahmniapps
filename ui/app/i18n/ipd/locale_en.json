@@ -77,5 +77,7 @@
     "BED": "Bed",
     "CARE_VIEW_LABEL": "Change to Care View",
     "MESSAGE_AUTO_CONVERT_TO_IPD_VISIT": "{{visitType}} Visit Started Successfully",
-    "LOGOUT_TRANSLATION_KEY": "Logout"
+    "LOGOUT_TRANSLATION_KEY": "Logout",
+    "DAYS_ADMITTED_MESSAGE": "Days in hospital",
+    "DISCHARGE_DATE_LABEL": "Discharge Date"
 }
