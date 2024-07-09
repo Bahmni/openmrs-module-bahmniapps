@@ -40,6 +40,6 @@ angular.module('bahmni.orders')
             return appService.initApp('orders', {'app': true, 'extension': true });
         };
 
-        return spinner.forPromise(initApp().then(checkPrivilege).then(getConfigs()).then(orderTypeService.loadAll()));
+        return spinner.forPromise(initApp().then(checkPrivilege).then(getConfigs).then(orderTypeService.loadAll()));
     }
 ]);
