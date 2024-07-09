@@ -105,7 +105,6 @@
     "**/**/uglify-js": "^2.4.24",
     "follow-redirects": "^1.15.4",
     "braces": "^3.0.3",
-    "socket.io": "^4.6.2",
     "ws": "^5.2.4"
   },
   "scripts": {
