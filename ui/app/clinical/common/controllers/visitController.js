@@ -73,7 +73,7 @@ angular.module('bahmni.clinical')
                         return a.encounterDatetime.localeCompare(b.encounterDatetime);
                     });
                     if (encounters && encounters.length > 0) {
-                        $scope.providerNames = encounters[0].provider.display;
+                        $scope.providerNames = encounters[0].provider && encounters[0].provider.display ? encounters[0].provider.display : null;
                     }
                 }
             });
