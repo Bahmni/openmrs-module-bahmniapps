@@ -56,6 +56,9 @@ angular.module('bahmni.clinical')
                                     $window.location = "../home/index.html#/login";
                                 });
                         });
+                    },
+                    handleAuditEvent: function (patientUuid, eventType, messageParams, module) {
+                        return auditLogService.log(patientUuid, eventType, messageParams, module);
                     }
                 }
             };
