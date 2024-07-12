@@ -41,7 +41,7 @@ angular.module('bahmni.common.conceptSet')
                 var obsValueList = [];
                 sortedGroupMembers.forEach(function (obs) {
                     if (obs.concept.conceptClass !== "Abnormal") {
-                        if (obs.value && obs.value.name && obs.concept.conceptClass != "Abnormal") {
+                        if (obs.value && obs.value.name) {
                             obsValueList.push(obs.value.name);
                         }
                         else {
