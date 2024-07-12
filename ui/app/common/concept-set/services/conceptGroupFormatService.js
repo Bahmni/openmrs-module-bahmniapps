@@ -21,7 +21,7 @@ angular.module('bahmni.common.conceptSet')
         };
 
         var groupObs = function (observation) {
-            if (conceptGroupFormatConfig !== {}) {
+            if (conceptGroupFormatConfig != {}) {
                 if (isConceptDefinedInConfig(observation)) {
                     var group = conceptGroupFormatConfig[observation.concept.name];
                     var interpolateParams = {};
@@ -40,11 +40,13 @@ angular.module('bahmni.common.conceptSet')
                 });
                 var obsValueList = [];
                 sortedGroupMembers.forEach(function (obs) {
-                    if (obs.value && obs.value.name) {
-                        obsValueList.push(obs.value.name);
-                    }
-                    else {
-                        obsValueList.push(obs.value);
+                    if (obs.concept.conceptClass !== "Abnormal") {
+                        if (obs.value && obs.value.name) {
+                            obsValueList.push(obs.value.name);
+                        }
+                        else {
+                            obsValueList.push(obs.value);
+                        }
                     }
                 });
                 return obsValueList.join(", ");

@@ -211,7 +211,7 @@ describe("conceptGroupFormatService", function () {
             var conceptGroupFormatService = injectConceptGroupFormatService();
             var groupedObs = conceptGroupFormatService.groupObs(allObservations[0]);
 
-            expect(groupedObs).toEqual("72, false");
+            expect(groupedObs).toEqual("72");
         });
 
         it("when obs group is defined in config, should correctly format observation group by applying configured translation", function () {
