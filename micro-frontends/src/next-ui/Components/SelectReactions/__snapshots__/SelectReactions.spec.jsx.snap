@@ -59,6 +59,7 @@ exports[`Select reactions should render SelectReactions 1`] = `
           placeholder="Type to search Reactions"
           role="searchbox"
           type="text"
+          value=""
         />
         <button
           aria-label="Clear search input"
