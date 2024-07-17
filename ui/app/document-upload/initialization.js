@@ -12,7 +12,7 @@ angular.module('opd.documentupload').factory('initialization',
                 return configurations.load(configNames).then(function () {
                     $rootScope.genderMap = configurations.genderMap();
                     $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
-                    $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
+                    $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 0;
                 });
             };
 

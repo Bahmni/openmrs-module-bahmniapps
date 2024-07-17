@@ -75,9 +75,9 @@ angular.module('authentication')
         var self = this;
 
         var destroySessionFromServer = function () {
-            var currentTime = new Date();
-            var expiryTime = new Date(currentTime.getTime() + $rootScope.cookieExpiryTime * 60000);
-            if ($window.location.hash.includes("careViewDashboard") || $window.location.hash.includes("ipd")) {
+            if ($rootScope.cookieExpiryTime && $rootScope.cookieExpiryTime > 0) {
+                var currentTime = new Date();
+                var expiryTime = new Date(currentTime.getTime() + $rootScope.cookieExpiryTime * 60000);
                 $bahmniCookieStore.put($rootScope.currentProvider.uuid, $window.location.pathname + $window.location.hash, {path: '/', expires: expiryTime});
             }
             return $http.delete(sessionResourcePath);
@@ -139,8 +139,7 @@ angular.module('authentication')
                 userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
                     if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
                         $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
-                        $rootScope.currentUser.provider = providers.results[0];
-                        $rootScope.currentUser.currentLocation = null;
+                        $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
                         $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
                         deferrable.resolve(data.results[0]);
                     } else {

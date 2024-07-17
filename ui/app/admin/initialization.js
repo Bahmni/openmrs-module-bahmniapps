@@ -7,7 +7,7 @@ angular.module('bahmni.admin')
             var configNames = ['quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes'];
             return configurations.load(configNames).then(function () {
                 $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
-                $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
+                $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 0;
             });
         };
 
