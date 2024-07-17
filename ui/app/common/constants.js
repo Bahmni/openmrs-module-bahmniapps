@@ -278,6 +278,7 @@ Bahmni.Common = Bahmni.Common || {};
         defaultPossibleRelativeSearchLimit: 10,
         formBuilderDisplayControlType: "formsV2",
         formBuilderType: "v2",
+        formsV2ReactDisplayControlType: "formsV2React",
         formBuilderTranslationApi: IE_APPS_API + '/form/translate',
         disposition: "DISPOSITION",
         registration: "REGISTRATION",

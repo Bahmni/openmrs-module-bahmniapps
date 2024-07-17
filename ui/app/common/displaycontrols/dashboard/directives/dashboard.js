@@ -8,8 +8,20 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             };
             $scope.tabConfigName = $stateParams.tabConfigName || 'default';
 
+            var findFormV2ReactConfig = function (sections) {
+                if (!sections || sections.length === 0) {
+                    return null;
+                }
+                var section = Object.keys(sections).map(function (key) {
+                    return sections[key];
+                }).find(function (section) {
+                    return section.type === Bahmni.Common.Constants.formsV2ReactDisplayControlType;
+                });
+                return section.dashboardConfig || null;
+            };
+
             if ($scope.patient !== undefined) {
-                var dashboardConfig = $scope.config.sections['formsV2react'] ? $scope.config.sections['formsV2React'].dashboardConfig : null;
+                var dashboardConfig = findFormV2ReactConfig($scope.config.sections);
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
