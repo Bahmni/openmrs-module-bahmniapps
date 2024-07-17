@@ -9,7 +9,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             $scope.tabConfigName = $stateParams.tabConfigName || 'default';
 
             if ($scope.patient !== undefined) {
-                var dashboardConfig = $scope.config.sections['formsV2react'] ? $scope.config.sections['formsV2React'].dashboardConfig : null;
+                var dashboardConfig = findFormV2ReactSection($scope.sectionGroups);
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
@@ -72,6 +72,15 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             var isDisplayTypeWrong = function (sections) {
                 var allDisplayTypes = ['Full-Page', 'LAYOUT_75_25', 'LAYOUT_25_75', 'Half-Page'];
                 return (allDisplayTypes.indexOf(sections[0]['displayType']) <= -1);
+            };
+
+            const findFormV2ReactSection = sections => {
+                for (const section of sections) {
+                    if (section.type === 'formsV2React') {
+                        return section;
+                    }
+                }
+                return null;
             };
 
             $scope.isFullPageSection = function (sections) {
