@@ -225,6 +225,7 @@ module.exports = function (grunt) {
         usemin: {
             html: [
                 '<%= yeoman.dist %>/**/index.html',
+                '<%= yeoman.dist %>/clinical/common/views/formPrint.html',
                 '<%= yeoman.dist %>/clinical/common/views/visitTabPrint.html',
                 '<%= yeoman.dist %>/clinical/dashboard/views/dashboardPrint.html',
                 '<%= yeoman.dist %>/common/displaycontrols/prescription/views/prescription.html'
