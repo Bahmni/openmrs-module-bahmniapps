@@ -8,8 +8,20 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             };
             $scope.tabConfigName = $stateParams.tabConfigName || 'default';
 
+            var findFormV2ReactConfig = function (sections) {
+                if (!sections || sections.length === 0) {
+                    return null;
+                }
+                var section = Object.keys(sections).map(function (key) {
+                    return sections[key];
+                }).find(function (section) {
+                    return section.type === Bahmni.Common.Constants.formsV2ReactDisplayControlType;
+                });
+                return section.dashboardConfig || null;
+            };
+
             if ($scope.patient !== undefined) {
-                var dashboardConfig = findFormV2ReactSection($scope.sectionGroups);
+                var dashboardConfig = findFormV2ReactConfig($scope.config.sections);
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
@@ -72,15 +84,6 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             var isDisplayTypeWrong = function (sections) {
                 var allDisplayTypes = ['Full-Page', 'LAYOUT_75_25', 'LAYOUT_25_75', 'Half-Page'];
                 return (allDisplayTypes.indexOf(sections[0]['displayType']) <= -1);
-            };
-
-            const findFormV2ReactSection = sections => {
-                for (const section of sections) {
-                    if (section.type === 'formsV2React') {
-                        return section;
-                    }
-                }
-                return null;
             };
 
             $scope.isFullPageSection = function (sections) {
