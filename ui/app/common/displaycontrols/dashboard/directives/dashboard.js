@@ -17,7 +17,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 }).find(function (section) {
                     return section.type === Bahmni.Common.Constants.formsV2ReactDisplayControlType;
                 });
-                return section.dashboardConfig || null;
+                return (section && section.dashboardConfig !== undefined && section.dashboardConfig !== null) ? section.dashboardConfig : null;
             };
 
             if ($scope.patient !== undefined) {
