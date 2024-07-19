@@ -78,7 +78,8 @@ angular.module('authentication')
             if ($rootScope.cookieExpiryTime && $rootScope.cookieExpiryTime > 0) {
                 var currentTime = new Date();
                 var expiryTime = new Date(currentTime.getTime() + $rootScope.cookieExpiryTime * 60000);
-                $bahmniCookieStore.put($rootScope.currentProvider.uuid, $window.location.pathname + $window.location.hash, {path: '/', expires: expiryTime});
+                var params = (decodeURIComponent($window.location.search.substring(1)));
+                $bahmniCookieStore.put($rootScope.currentProvider.uuid, $window.location.pathname + (params ? '?' + params : '') + $window.location.hash, {path: '/', expires: expiryTime});
             }
             return $http.delete(sessionResourcePath);
         };
