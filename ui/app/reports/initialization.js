@@ -8,7 +8,7 @@ angular.module('bahmni.reports').factory('initialization',
                     var configNames = ['quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes'];
                     return configurations.load(configNames).then(function () {
                         $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
-                        $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
+                        $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 0;
                     });
                 };
                 var initApp = function () {

@@ -4,7 +4,7 @@ angular.module('bahmni.registration').factory('initialization',
     ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'preferences', 'locationService', 'mergeService', '$translate',
         function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, mergeService, $translate) {
             var getConfigs = function () {
-                var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping', 'helpDeskNumber', 'quickLogoutComboKey'];
+                var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping', 'helpDeskNumber', 'quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes'];
                 return configurations.load(configNames).then(function () {
                     var mandatoryPersonAttributes = appService.getAppDescriptor().getConfigValue("mandatoryPersonAttributes");
                     var patientAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(configurations.patientAttributesConfig(), mandatoryPersonAttributes, {}, $rootScope.currentUser.userProperties.defaultLocale);
@@ -22,6 +22,7 @@ angular.module('bahmni.registration').factory('initialization',
                     $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                     $rootScope.relationshipTypes = configurations.relationshipTypes();
                     $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                    $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 0;
                 });
             };
 

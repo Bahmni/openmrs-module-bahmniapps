@@ -27,7 +27,7 @@ angular.module('bahmni.clinical').factory('initialization',
                         $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
                         $rootScope.prescriptionEmailToggle = configurations.prescriptionEmailToggle();
                         $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
-                        $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
+                        $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 0;
                     });
                 };
 

@@ -4,8 +4,9 @@ angular.module('bahmni.home')
     .factory('initialization', ['$rootScope', 'appService', 'spinner', 'configurationService',
         function ($rootScope, appService, spinner, configurationService) {
             var getConfigs = function () {
-                configurationService.getConfigurations(['quickLogoutComboKey']).then(function (response) {
+                configurationService.getConfigurations(['quickLogoutComboKey', 'contextCookieExpirationTimeInMinutes']).then(function (response) {
                     $rootScope.quickLogoutComboKey = response.quickLogoutComboKey || 'Escape';
+                    $rootScope.cookieExpiryTime = response.contextCookieExpirationTimeInMinutes || 0;
                 });
             };
             var initApp = function () {

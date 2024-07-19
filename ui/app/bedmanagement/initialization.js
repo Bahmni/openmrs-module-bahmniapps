@@ -12,7 +12,7 @@ angular.module('bahmni.ipd').factory('initialization', ['$rootScope', '$q', '$ba
                 $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                 $rootScope.diagnosisStatus = ((appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value) || "RULED OUT");
                 $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
-                $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 30;
+                $rootScope.cookieExpiryTime = configurations.contextCookieExpirationTimeInMinutes() || 0;
                 config.resolve();
             });
             return config.promise;
