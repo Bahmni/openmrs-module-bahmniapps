@@ -150,7 +150,9 @@ angular.module('bahmni.clinical')
                 $scope.activeTab.leftCategory = leftCategory;
                 $scope.activeTab.leftCategory.klass = "active";
 
-                $scope.activeTab.leftCategory.groups = $scope.getConceptClassesInSet(leftCategory);
+                var conceptClasses = $scope.getConceptClassesInSet(leftCategory);
+                var conceptClassesFilteredForOrderType = $scope.filterConceptClassesForOrderType(conceptClasses, $scope.activeTab.name);
+                $scope.activeTab.leftCategory.groups = conceptClassesFilteredForOrderType;
             };
 
             $scope.getConceptClassesInSet = function (conceptSet) {
@@ -162,6 +164,18 @@ angular.module('bahmni.clinical')
                 conceptClasses = _.sortBy(conceptClasses, 'name');
                 return conceptClasses;
             };
+
+            $scope.filterConceptClassesForOrderType = function (conceptClasses,orderTypeName) {
+                var orderTypeClassMapConfig = appService.getAppDescriptor().getConfig("orderTypeClassMap");
+                var orderTypeClassMap = orderTypeClassMapConfig ? orderTypeClassMapConfig.value : {};
+                if (!_.isEmpty(orderTypeClassMap[orderTypeName])) {
+                    return _.filter(conceptClasses, function (conceptClass) {
+                        return _.includes(orderTypeClassMap[orderTypeName], conceptClass.name);
+                    });
+                }
+                return conceptClasses;
+                
+            }
 
             $scope.$watchCollection('consultation.orders', $scope.updateSelectedOrdersForActiveTab);
 
