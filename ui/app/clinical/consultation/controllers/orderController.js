@@ -165,7 +165,7 @@ angular.module('bahmni.clinical')
                 return conceptClasses;
             };
 
-            $scope.filterConceptClassesForOrderType = function (conceptClasses,orderTypeName) {
+            $scope.filterConceptClassesForOrderType = function (conceptClasses, orderTypeName) {
                 var orderTypeClassMapConfig = appService.getAppDescriptor().getConfig("orderTypeClassMap");
                 var orderTypeClassMap = orderTypeClassMapConfig ? orderTypeClassMapConfig.value : {};
                 if (!_.isEmpty(orderTypeClassMap[orderTypeName])) {
@@ -174,8 +174,7 @@ angular.module('bahmni.clinical')
                     });
                 }
                 return conceptClasses;
-                
-            }
+            };
 
             $scope.$watchCollection('consultation.orders', $scope.updateSelectedOrdersForActiveTab);
 
