@@ -154,7 +154,7 @@ angular.module('bahmni.clinical')
 
                 if (orderTypeClassMap[orderTypeName]) {
                     const orderClasses = orderTypeClassMap[orderTypeName];
-                    let filteredOrderTemplate = angular.copy(orderTemplate);
+                    var filteredOrderTemplate = angular.copy(orderTemplate);
 
                     filteredOrderTemplate.setMembers = filteredOrderTemplate.setMembers
                         .map(category => {
