@@ -72,6 +72,10 @@ angular.module('bahmni.home')
                 });
             });
 
+            localeService.defaultLocale().then(function (response) {
+                localStorage.setItem("openmrsDefaultLocale", response.data || "en");
+            });
+
             $scope.isSupportedBrowser = function () {
                 var userAgent = $window.navigator.userAgent;
                 if (userAgent.indexOf("Chrome") !== -1 || userAgent.indexOf("Firefox") !== -1) {
