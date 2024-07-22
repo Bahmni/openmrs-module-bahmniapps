@@ -148,20 +148,24 @@ angular.module('bahmni.clinical')
             };
 
             $scope.filterOrderTemplateByClassMap = function (orderTemplate) {
-                const orderTypeClassMapConfig = appService.getAppDescriptor().getConfig("orderTypeClassMap");
-                const orderTypeClassMap = orderTypeClassMapConfig ? orderTypeClassMapConfig.value : {};
-                const orderTypeName = $scope.getNameInDefaultLocale(orderTemplate);
+                var orderTypeClassMapConfig = appService.getAppDescriptor().getConfig("orderTypeClassMap");
+                var orderTypeClassMap = orderTypeClassMapConfig ? orderTypeClassMapConfig.value : {};
+                var orderTypeName = $scope.getNameInDefaultLocale(orderTemplate);
 
                 if (orderTypeClassMap[orderTypeName]) {
-                    const orderClasses = orderTypeClassMap[orderTypeName];
+                    var orderClasses = orderTypeClassMap[orderTypeName];
                     var filteredOrderTemplate = angular.copy(orderTemplate);
 
                     filteredOrderTemplate.setMembers = filteredOrderTemplate.setMembers
-                        .map(category => {
-                            category.setMembers = category.setMembers.filter(test => orderClasses.includes(test.conceptClass.name));
+                        .map(function (category) {
+                            category.setMembers = category.setMembers.filter(function (test) {
+                                return orderClasses.includes(test.conceptClass.name);
+                            });
                             return category;
                         })
-                        .filter(category => category.setMembers.length > 0);
+                        .filter(function (category) {
+                            return category.setMembers.length > 0;
+                        });
 
                     return filteredOrderTemplate;
                 }
