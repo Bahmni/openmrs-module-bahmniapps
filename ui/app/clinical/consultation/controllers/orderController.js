@@ -94,6 +94,8 @@ angular.module('bahmni.clinical')
                 $scope.tabs = [];
                 _.forEach($scope.allOrdersTemplates, function (item) {
                     var conceptName = $scope.getName(item);
+                    var key = '\'' + conceptName + '\'';
+                    $scope.allOrdersTemplates[key] = $scope.filterOrderTemplateByClassMap(item);
                     $scope.tabs.push({name: conceptName ? conceptName : item.name.name, topLevelConcept: item.name.name});
                 });
                 if ($scope.tabs) {
@@ -145,14 +147,33 @@ angular.module('bahmni.clinical')
                 return $scope.allOrdersTemplates[key];
             };
 
+            $scope.filterOrderTemplateByClassMap = function (orderTemplate) {
+                const orderTypeClassMapConfig = appService.getAppDescriptor().getConfig("orderTypeClassMap");
+                const orderTypeClassMap = orderTypeClassMapConfig ? orderTypeClassMapConfig.value : {};
+                const orderTypeName = $scope.getNameInDefaultLocale(orderTemplate);
+
+                if (orderTypeClassMap[orderTypeName]) {
+                    const orderClasses = orderTypeClassMap[orderTypeName];
+                    let filteredOrderTemplate = angular.copy(orderTemplate);
+
+                    filteredOrderTemplate.setMembers = filteredOrderTemplate.setMembers
+                        .map(category => {
+                            category.setMembers = category.setMembers.filter(test => orderClasses.includes(test.conceptClass.name));
+                            return category;
+                        })
+                        .filter(category => category.setMembers.length > 0);
+
+                    return filteredOrderTemplate;
+                }
+
+                return orderTemplate;
+            };
+
             $scope.showLeftCategoryTests = function (leftCategory) {
                 collapseExistingActiveSection($scope.activeTab.leftCategory);
                 $scope.activeTab.leftCategory = leftCategory;
                 $scope.activeTab.leftCategory.klass = "active";
-
-                var conceptClasses = $scope.getConceptClassesInSet(leftCategory);
-                var conceptClassesFilteredForOrderType = $scope.filterConceptClassesForOrderType(conceptClasses, $scope.activeTab.name);
-                $scope.activeTab.leftCategory.groups = conceptClassesFilteredForOrderType;
+                $scope.activeTab.leftCategory.groups = $scope.getConceptClassesInSet(leftCategory);
             };
 
             $scope.getConceptClassesInSet = function (conceptSet) {
@@ -162,17 +183,6 @@ angular.module('bahmni.clinical')
                     conceptClasses.push({name: concept.conceptClass.name, description: concept.conceptClass.description});
                 });
                 conceptClasses = _.sortBy(conceptClasses, 'name');
-                return conceptClasses;
-            };
-
-            $scope.filterConceptClassesForOrderType = function (conceptClasses, orderTypeName) {
-                var orderTypeClassMapConfig = appService.getAppDescriptor().getConfig("orderTypeClassMap");
-                var orderTypeClassMap = orderTypeClassMapConfig ? orderTypeClassMapConfig.value : {};
-                if (!_.isEmpty(orderTypeClassMap[orderTypeName])) {
-                    return _.filter(conceptClasses, function (conceptClass) {
-                        return _.includes(orderTypeClassMap[orderTypeName], conceptClass.name);
-                    });
-                }
                 return conceptClasses;
             };
 
@@ -285,6 +295,11 @@ angular.module('bahmni.clinical')
 
             $scope.getName = function (sample) {
                 var name = _.find(sample.names, {conceptNameType: "SHORT"}) || _.find(sample.names, {conceptNameType: "FULLY_SPECIFIED"});
+                return name && name.name;
+            };
+
+            $scope.getNameInDefaultLocale = function (sample) {
+                var name = _.find(sample.names, { conceptNameType: "FULLY_SPECIFIED", locale: localStorage.getItem("openmrsDefaultLocale") || "en" });
                 return name && name.name;
             };
 
