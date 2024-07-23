@@ -94,7 +94,7 @@ angular.module('bahmni.clinical')
                 $scope.tabs = [];
                 _.forEach($scope.allOrdersTemplates, function (item) {
                     var conceptName = $scope.getName(item);
-                    var tabName = conceptName ? conceptName : item.name.name
+                    var tabName = conceptName ? conceptName : item.name.name;
                     var key = '\'' + tabName + '\'';
                     $scope.allOrdersTemplates[key] = $scope.filterOrderTemplateByClassMap(item);
                     $scope.tabs.push({name: tabName, topLevelConcept: item.name.name});
