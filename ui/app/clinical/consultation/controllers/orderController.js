@@ -163,9 +163,6 @@ angular.module('bahmni.clinical')
                                 return orderClasses.includes(test.conceptClass.name);
                             });
                             return category;
-                        })
-                        .filter(function (category) {
-                            return category.setMembers.length > 0;
                         });
 
                     return filteredOrderTemplate;
