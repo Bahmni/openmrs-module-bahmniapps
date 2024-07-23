@@ -24,6 +24,7 @@ describe('loginController', function () {
         localeService.getLocalesLangs.and.returnValue(specUtil.createFakePromise(
             {locales: [{code: "en", nativeName: "English"}, {code: "es", nativeName: "Español"}]
             }));
+        localeService.defaultLocale.and.returnValue(specUtil.simplePromise({data: "en"}));
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
         $bahmniCookieStore.get.and.callFake(function () { return {}; });
         $window = jasmine.createSpyObj('$window', ['location']);
