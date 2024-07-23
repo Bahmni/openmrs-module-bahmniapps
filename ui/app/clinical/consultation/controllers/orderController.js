@@ -94,9 +94,10 @@ angular.module('bahmni.clinical')
                 $scope.tabs = [];
                 _.forEach($scope.allOrdersTemplates, function (item) {
                     var conceptName = $scope.getName(item);
-                    var key = '\'' + conceptName + '\'';
+                    var tabName = conceptName ? conceptName : item.name.name
+                    var key = '\'' + tabName + '\'';
                     $scope.allOrdersTemplates[key] = $scope.filterOrderTemplateByClassMap(item);
-                    $scope.tabs.push({name: conceptName ? conceptName : item.name.name, topLevelConcept: item.name.name});
+                    $scope.tabs.push({name: tabName, topLevelConcept: item.name.name});
                 });
                 if ($scope.tabs) {
                     $scope.activateTab($scope.tabs[0]);
@@ -304,7 +305,7 @@ angular.module('bahmni.clinical')
 
             $scope.getNameInDefaultLocale = function (sample) {
                 var name = _.find(sample.names, { conceptNameType: "FULLY_SPECIFIED", locale: localStorage.getItem("openmrsDefaultLocale") || "en" });
-                return name && name.name;
+                return name ? name.name : sample.name.name;
             };
 
             init();
