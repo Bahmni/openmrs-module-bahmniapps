@@ -54,6 +54,7 @@ describe("OrderController", function () {
 
     it("should fetch ordersConfig and set in tabs", function () {
         scope.$digest();
+        console.log(scope.tabs);
         expect(scope.tabs.length).toBe(2);
         expect(scope.tabs[0].name).toBe("Lab Samples");
         expect(scope.tabs[0].topLevelConcept).toBe("Lab Samples");
