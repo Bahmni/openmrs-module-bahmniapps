@@ -29,9 +29,10 @@ describe("bedService",function () {
             results:[{
                 physicalLocation:{
                     name:'Physical Location Name',
+                    uuid: 'Labour Ward uuid',
+                    display:'Labour Ward',
                     parentLocation:{
-                        display:'Labour Ward',
-                        uuid:'Labour Ward uuid'
+                        uuid:'Parent Location Uuid'
                     }
                 },
                 bedNumber:'314-a',
@@ -63,9 +64,10 @@ describe("bedService",function () {
             results:[{
                 physicalLocation:{
                     name:'Physical Location Name',
+                    uuid: 'Labour Ward uuid',
+                    display:'Labour Ward',
                     parentLocation:{
-                        display:'Labour Ward',
-                        uuid:'Labour Ward uuid'
+                        uuid:'Parent Location Uuid'
                     }
                 },
                 bedNumber:'314-a',

@@ -34,13 +34,16 @@ describe('BedManagementController', function () {
                     uuid: "some uuid",
                     rooms: [
                         {beds: [], name: "ROOM1", totalBeds: 2, availableBeds: 1}
-                    ]
+                    ],
+                    childLocations: []
                 }
             },
             {
                 occupiedBeds: 0,
                 totalBeds: 10,
-                ward: {}
+                ward: {
+                    childLocations: []
+                }
             }
         ]
     };
