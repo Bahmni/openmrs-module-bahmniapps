@@ -7,8 +7,8 @@ angular.module('bahmni.common.domain')
             if (!_.isEmpty(results)) {
                 var bed = _.first(results);
                 return {
-                    'wardName': bed.physicalLocation.parentLocation.display,
-                    'wardUuid': bed.physicalLocation.parentLocation.uuid,
+                    'wardName': bed.physicalLocation.display,
+                    'wardUuid': bed.physicalLocation.uuid,
                     'physicalLocationName': bed.physicalLocation.name,
                     'bedNumber': bed.bedNumber,
                     'bedId': bed.bedId

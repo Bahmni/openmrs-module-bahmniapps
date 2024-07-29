@@ -73,7 +73,13 @@ angular.module('bahmni.ipd')
 
             var getWardDetails = function (department) {
                 return _.filter($scope.wards, function (entry) {
-                    return entry.ward.uuid === department.uuid;
+                    if (entry.ward.uuid === department.uuid) {
+                        return true;
+                    }
+
+                    return entry.ward.childLocations.some(function (child) {
+                        return child.uuid === department.uuid;
+                    });
                 });
             };
 
