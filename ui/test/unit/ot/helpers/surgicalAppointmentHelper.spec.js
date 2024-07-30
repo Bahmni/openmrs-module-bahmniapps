@@ -34,6 +34,35 @@ describe('surgicalAppointmentHelper', function () {
         expect(filteredProviders[2]).toEqual({uuid: "uuid2", person: {display: "Provider2"}});
     });
 
+    it('should return all providers with a display name when an empty list of names is passed', function () {
+        var providerNames = [];
+        var providers = [{uuid: "uuid1", person: { display: "Provider1"}}, {uuid: "uuid2", person: { display: "Provider2"}}];
+        var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
+
+        expect(filteredProviders.length).toEqual(2);
+        expect(filteredProviders[0]).toEqual({uuid: "uuid1", person: {display: "Provider1"}});
+        expect(filteredProviders[1]).toEqual({uuid: "uuid2", person: {display: "Provider2"}});
+    });
+
+    it('should return all providers with a display name when the list of names is undefined', function () {
+        var providerNames = undefined;
+        var providers = [{ uuid: "uuid1", person: { display: "Provider1" } }, { uuid: "uuid2", person: { display: "Provider2" } }];
+        var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
+
+        expect(filteredProviders.length).toEqual(2);
+        expect(filteredProviders[0]).toEqual({ uuid: "uuid1", person: { display: "Provider1" } });
+        expect(filteredProviders[1]).toEqual({ uuid: "uuid2", person: { display: "Provider2" } });
+    });
+
+    it('should not return providers with an empty display name and when the an empty list of names is passed', function () {
+        var providerNames = [];
+        var providers = [{ uuid: "uuid1", person: { display: "Provider1" } }, { uuid: "uuid2", person: { display: "" } }];
+        var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
+
+        expect(filteredProviders.length).toEqual(1);
+        expect(filteredProviders[0]).toEqual({ uuid: "uuid1", person: { display: "Provider1" } });
+    });
+
     it('should get the duration in minutes', function () {
         var estTimInHours = "1";
         var estTimInMinutes = "15";
