@@ -5,7 +5,7 @@ angular.module('bahmni.ot')
         this.filterProvidersByName = function (providerNames, providers) {
             if (!providerNames || providerNames.length === 0) {
                 return _.filter(providers, function (provider) {
-                    return provider.person.display!="";
+                    return provider.person.display != "";
                 });
             }
             var validProviderNames = _.filter(providerNames, function (providerName) {
