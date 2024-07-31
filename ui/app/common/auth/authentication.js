@@ -140,6 +140,7 @@ angular.module('authentication')
                 userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
                     if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
                         $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
+                        $rootScope.currentUser.provider = providers.results[0];
                         var location = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
                         if (location) {
                             $rootScope.currentUser.currentLocation = location.name;
