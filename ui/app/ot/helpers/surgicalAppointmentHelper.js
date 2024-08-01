@@ -3,6 +3,11 @@
 angular.module('bahmni.ot')
     .service('surgicalAppointmentHelper', [function () {
         this.filterProvidersByName = function (providerNames, providers) {
+            if (!providerNames || providerNames.length === 0) {
+                return _.filter(providers, function (provider) {
+                    return provider.person.display != "";
+                });
+            }
             var validProviderNames = _.filter(providerNames, function (providerName) {
                 return _.find(providers, function (provider) {
                     return providerName === provider.person.display;
