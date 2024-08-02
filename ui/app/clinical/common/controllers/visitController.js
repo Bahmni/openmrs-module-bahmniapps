@@ -29,7 +29,7 @@ angular.module('bahmni.clinical')
             $scope.visitUuid = $stateParams.visitUuid;
             $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD";
             $scope.isIpdReadMode = true;
-            if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null) {
+            if ($scope.visitSummary.stopDateTime === null) {
                 $scope.isIpdReadMode = false;
             }
             $scope.ipdDashboard = {
