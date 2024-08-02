@@ -2,7 +2,7 @@
     "BAHMNI_PAGE_TITLE_KEY": "Accueil Bahmni",
     "LOGIN_LABEL_LOGIN_KEY": "S'identifier",
     "LOGIN_LABEL_SUBMIT_KEY": "Envoyer",
-    "LOGIN_LOCATION_SELECTION_LABEL_KEY": "Soumettre l'emplacement",
+    "LOGIN_LOCATION_SELECTION_LABEL_KEY": "Continuer",
     "LOGIN_LABEL_ENTER_OTP_KEY": "Entrez OTP",
     "LOGIN_LABEL_USERNAME_KEY": "nom d'utilisateur",
     "LOGIN_LABEL_PASSWORD_KEY": "Mot de passe",
