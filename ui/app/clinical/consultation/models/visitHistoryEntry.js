@@ -10,6 +10,10 @@ Bahmni.Clinical.VisitHistoryEntry = (function () {
             return this.stopDatetime === null;
         },
 
+        isActiveIPDVisit: function () {
+            return this.stopDatetime === null && (this.visitType.name || this.visitType.display) === "IPD";
+        },
+
         isFromCurrentLocation: function (currentVisitLocation) {
             var visitLocation = _.get(this.location, 'uuid');
             return visitLocation === currentVisitLocation;
