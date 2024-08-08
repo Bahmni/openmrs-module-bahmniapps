@@ -19,6 +19,7 @@ angular.module('bahmni.adt')
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             $scope.hostData = {
                 patient: $scope.patient,
+                currentUser: $rootScope.currentUser,
                 provider: $rootScope.currentProvider
             };
 

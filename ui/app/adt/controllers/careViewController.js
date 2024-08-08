@@ -13,6 +13,7 @@ angular.module('bahmni.adt')
     $window.addEventListener('keydown', handleLogoutShortcut);
     $scope.$on('$destroy', cleanup);
     $scope.hostData = {
+        currentUser: $rootScope.currentUser,
         provider: $rootScope.currentProvider
     };
     $scope.hostApi = {
