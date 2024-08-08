@@ -8,15 +8,19 @@ angular.module('bahmni.clinical')
                 var emitNoDataPresentEvent = function () {
                     $scope.$emit("no-data-present-event");
                 };
+
                 $scope.openVisit = function (visit) {
                     if ($scope.$parent.closeThisDialog) {
                         $scope.$parent.closeThisDialog("closing modal");
                     }
-                    if (visit.visitType.display === "IPD" && enableIPDFeature) {
-                        $state.go('patient.dashboard.ipdVisit', {visitUuid: visit.uuid, source: 'clinical'});
-                    } else {
-                        $state.go('patient.dashboard.visit', {visitUuid: visit.uuid});
+                    $state.go('patient.dashboard.visit', {visitUuid: visit.uuid});
+                };
+
+                $scope.openIPDDashboard = function (visit) {
+                    if ($scope.$parent.closeThisDialog) {
+                        $scope.$parent.closeThisDialog("closing modal");
                     }
+                    $state.go('patient.dashboard.ipdVisit', {visitUuid: visit.uuid, source: 'clinical'});
                 };
 
                 $scope.hasVisits = function () {

@@ -19,7 +19,14 @@
                            title="Current Visit"></i>
                     </a>
                 </td>
-                <td class="value" id="visitType">{{::translateVisitTypes(visit.getVisitType())}}</td>
+                <td class="value" id="visitType" ng-if="::visit.isActiveIPDVisit()">
+                    <a class="visit" ng-click="openIPDDashboard(visit)">
+                        {{::translateVisitTypes(visit.getVisitType())}}
+                    </a>
+                </td>
+                <td class="value" id="visitType" ng-if="::!visit.isActiveIPDVisit()">
+                    {{::translateVisitTypes(visit.getVisitType())}}
+                </td>
             </tr>
             </tbody>
         </table>
