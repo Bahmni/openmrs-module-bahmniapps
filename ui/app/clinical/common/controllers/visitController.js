@@ -38,6 +38,7 @@ angular.module('bahmni.clinical')
                     visitSummary: $scope.visitSummary,
                     forDate: new Date().toUTCString(),
                     provider: $rootScope.currentProvider,
+                    currentUser: $rootScope.currentUser,
                     visitUuid: $scope.visitUuid,
                     isReadMode: $scope.isIpdReadMode,
                     source: $location.search().source
