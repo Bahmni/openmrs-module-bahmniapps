@@ -20,7 +20,7 @@
                     </a>
                 </td>
                 <td class="value" id="visitType">{{::translateVisitTypes(visit.getVisitType())}}</td>
-                <td class="value" id="visitType" ng-if="::visit.isIPDVisit()">
+                <td class="value" id="visitType" ng-show="::enableIPDFeature" ng-if="::visit.isIPDVisit()">
                     <a class="visit" ng-click="openIPDDashboard(visit)">
                         {{::'VIEW_IPD_DASHBOARD'|translate}}
                         <i class="fa fa-external-link"></i>

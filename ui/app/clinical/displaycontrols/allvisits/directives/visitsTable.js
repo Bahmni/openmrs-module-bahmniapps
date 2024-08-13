@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$translate', 'appService',
         function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $translate, appService) {
             var controller = function ($scope) {
-                const enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
+                $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                 var emitNoDataPresentEvent = function () {
                     $scope.$emit("no-data-present-event");
                 };
