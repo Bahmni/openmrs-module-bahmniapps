@@ -45,12 +45,6 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                     "translationKey": "PATIENT_REGISTRATION_PAGE_KEY",
                     "url": "../registration/#/patient/{{patientUuid}}",
                     "title": "Registration"
-                },
-                {
-                    "name": "labEntry",
-                    "translationKey": "LAB_ENTRY_KEY",
-                    "url": "/lab/patient/{{patientUuid}}",
-                    "title": "Lab Entry"
                 }
             ];
 

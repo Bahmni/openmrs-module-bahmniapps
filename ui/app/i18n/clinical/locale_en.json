@@ -201,7 +201,7 @@
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "MESSAGE_DIALOG_OPTION_REVIEW": "Review",
     "MESSAGE_DIALOG_OPTION_DISCARD": "Discard",
-    "LAB_ENTRY_KEY": "Lab Entry",
+    "VIEW_IPD_DASHBOARD": "View IPD Dashboard",
     "OBS_BOOLEAN_YES_KEY": "Yes",
     "OBS_BOOLEAN_NO_KEY": "No",
     "CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE": "Please correct the duplicate diagnosis entered.",

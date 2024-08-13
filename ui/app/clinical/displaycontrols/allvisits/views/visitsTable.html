@@ -11,7 +11,7 @@
         <table class="visits dashboard-table" id="visitDisplayTable" ng-if="::hasVisits()">
             <tbody>
             <tr id="eachVisit" ng-repeat="visit in ::visits | limitTo: params.maximumNoOfVisits">
-                <td class="name" width="50%">
+                <td class="name" width="40%">
                     <a class="visit" ng-click="openVisit(visit)">
                         <span>{{::visit.startDatetime | bahmniDate}}</span>
                         <span ng-if="::!visit.isOneDayVisit()">- {{::visit.stopDatetime | bahmniDate }}</span>
@@ -19,13 +19,12 @@
                            title="Current Visit"></i>
                     </a>
                 </td>
-                <td class="value" id="visitType" ng-if="::visit.isActiveIPDVisit()">
+                <td class="value" id="visitType">{{::translateVisitTypes(visit.getVisitType())}}</td>
+                <td class="value" id="visitType" ng-if="::visit.isIPDVisit()">
                     <a class="visit" ng-click="openIPDDashboard(visit)">
-                        {{::translateVisitTypes(visit.getVisitType())}}
+                        {{::'VIEW_IPD_DASHBOARD'|translate}}
+                        <i class="fa fa-external-link"></i>
                     </a>
-                </td>
-                <td class="value" id="visitType" ng-if="::!visit.isActiveIPDVisit()">
-                    {{::translateVisitTypes(visit.getVisitType())}}
                 </td>
             </tr>
             </tbody>
