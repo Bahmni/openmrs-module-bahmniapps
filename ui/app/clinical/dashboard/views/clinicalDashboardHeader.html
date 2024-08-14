@@ -6,7 +6,7 @@
             <div class="hidden-mobile">
                 <bm-back-links></bm-back-links>
                 <recent-patients ng-if="enablePatientSearch()" triggred-by-button></recent-patients>
-                <a show-if-privilege="{{adtNavigationConfig.privilege}}" ng-click= "displayConfirmationDialog($event)" class="back-btn" ng-href="{{adtNavigationURL(consultation.uuid)}}"
+                <a show-if-privilege="{{adtNavigationConfig.privilege}}" ng-click= "displayConfirmationDialog($event)" class="back-btn" ng-href="{{adtNavigationURL(visitHistory.activeVisit.uuid)}}"
                 title="{{adtNavigationConfig.title}}">
                     <i class="fa fa-bed fa-white"></i>
                 </a>
