@@ -18,11 +18,12 @@ describe("CareViewController", function () {
         then: function() { }
     });
     let mockProvider = {name: "__test__provider"}
+    let mockUser = { name: "__test__user" }
     var createController = function () {
 
         controller('CareViewController', {
             $scope: scope,
-            $rootScope: {currentProvider: mockProvider, quickLogoutComboKey: 'Escape', cookieExpiryTime:30},
+            $rootScope: {currentProvider: mockProvider, quickLogoutComboKey: 'Escape', cookieExpiryTime:30, currentUser: mockUser},
             $state: state,
             auditLogService: auditLogService,
             sessionService: sessionService,
@@ -32,7 +33,7 @@ describe("CareViewController", function () {
 
     it('should create host data and host api', function (){
         createController();
-        expect(scope.hostData).toEqual({provider: mockProvider});
+        expect(scope.hostData).toEqual({provider: mockProvider, currentUser: mockUser});
         expect(scope.hostApi).not.toBeNull();
     });
 

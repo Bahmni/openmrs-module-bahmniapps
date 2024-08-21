@@ -13,7 +13,8 @@ angular.module('bahmni.ipd')
     $window.addEventListener('keydown', handleLogoutShortcut);
     $scope.$on('$destroy', cleanup);
     $scope.hostData = {
-        provider: $rootScope.currentProvider
+        provider: $rootScope.currentProvider,
+        currentUser: $rootScope.currentUser
     };
     $scope.hostApi = {
         onHome: function () {
