@@ -117,8 +117,16 @@ export function PatientAlergiesControl(props) {
       return {allergen, severity, reactions, note, provider, date, datetime};
     });
     allergiesData && allergiesData.sort((a, b) => b?.date - a?.date);
-    allergiesData ? setAllergiesAndReactions(allergiesData) : setAllergiesAndReactions([]);
-  }
+    const filterSeverity = (severity) =>
+      allergiesData.filter((allergy) => allergy.severity === severity);
+    allergiesData
+      ? setAllergiesAndReactions([
+          ...filterSeverity("severe"),
+          ...filterSeverity("moderate"),
+          ...filterSeverity("mild"),
+        ])
+      : setAllergiesAndReactions([]);
+  };
 
   const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
   const [isLoading, setLoading] = useState(false);
