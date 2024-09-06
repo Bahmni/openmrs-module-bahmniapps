@@ -1,6 +1,6 @@
 {
   "name": "bahmni.apps",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "description": "Bahmni Apps",
   "main": "app/app.js",
   "directories": {
@@ -99,7 +99,7 @@
     "react": "16.14.0",
     "react-dom": "16.14.0"
   },
-  "resolutions": { 
+  "resolutions": {
     "**/**/xmlhttprequest-ssl": "^1.6.1",
     "**/**/handlebars": "^4.7.7",
     "**/**/uglify-js": "^2.4.24"

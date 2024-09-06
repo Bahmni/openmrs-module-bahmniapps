@@ -1,6 +1,6 @@
 {
   "name": "openmrs-mfe-host",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "description": "Hosting microfrontends for openmrs",
   "main": "dist/index.js",
   "author": "bahmni@thoughtworks.com",
