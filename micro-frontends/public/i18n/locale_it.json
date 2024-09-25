@@ -1,0 +1,19 @@
+{
+  "NO_FORM": "Nessun modulo trovato per questo paziente....",
+  "DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY": "Moduli di osservazione",
+  "LOADING_MESSAGE": "Caricamento in corso... Attendere prego",
+  "NO_ALLERGIES": "Nessuna allergia registrata per questo paziente.",
+  "BACK_TO_ALLERGEN": "Torniamo alle allergie",
+  "ALLERGIES_HEADING": "Allergie e reazioni",
+  "ALLERGIES_DISPLAY_CONTROL_HEADING": "Allergie",
+  "SEVERITY": "Gravità",
+  "SAVE": "Salva",
+  "CANCEL": "Cancellare",
+  "NO_ALLERGENS_FOUND": "Nessun allergene trovato",
+  "SEARCH_ALLERGEN": "Cerca allergene",
+  "REACTIONS": "Reazione(i)",
+  "SEARCH_REACTION": "Cerca reazione",
+  "COMMON_REACTIONS": "Reazioni comuni",
+  "ALLERGEN": "Allergene",
+  "EDIT_FORM_ERROR_MESSAGE": "Inserisci un valore nei campi obbligatori o correggi il valore nei campi evidenziati per procedere"
+}
