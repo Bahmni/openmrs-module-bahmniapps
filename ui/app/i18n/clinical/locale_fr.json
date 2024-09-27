@@ -360,5 +360,7 @@
     "SHARE_PRESCRIPTION_MAIL_CONTENT": "Bonjour #nom du destinataire\nMerci d'avoir visité #Nom du lieu le #date de visite. Votre ordonnance est jointe à ce courriel. Nous vous souhaitons un prompt rétablissement.\nMerci.\n#Nom du lieu\n#Adresse du lieu",
     "CHIEF_COMPLAINT_CODED_KEY": "Plainte principale codifiée",
     "SIGN_SYMPTOM_DURATION_KEY": "Durée des signes/symptômes",
-    "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Durée de la plainte principale"
+    "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Durée de la plainte principale",
+    "IPD_BUTTON": "IPD",
+    "OPD_BUTTON": "OPD"
 }
