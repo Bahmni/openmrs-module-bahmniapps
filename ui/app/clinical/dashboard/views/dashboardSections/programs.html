@@ -1,7 +1,9 @@
 <div ng-controller="PatientDashboardProgramsController" class="dashboard-program-section">
+<ul show-if-privilege="{{::section.dashboardConfig.requiredPrivilege}}">
     <h2 ng-click="gotoDetailsPage()" class="section-title has-link">
         <span class="title-link">{{::section | titleTranslate}}</span>
         <i class="fa fa-external-link"></i>
     </h2>
     <programs patient="patient"></programs>
+</ul>	
 </div>
