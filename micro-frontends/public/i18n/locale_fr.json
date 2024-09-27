@@ -17,5 +17,6 @@
     "ALLERGEN": "Allergène",
     "EDIT_FORM_ERROR_MESSAGE": "Veuillez saisir une valeur dans les champs obligatoires ou corriger la valeur dans les champs en surbrillance pour continuer",
     "ACKNOWLEDGEMENT": "Reconnaître",
-    "ENTER_NOTES": "Saisir des notes"
+    "ENTER_NOTES": "Saisir des notes",
+    "NOTE": "Note"
 }
