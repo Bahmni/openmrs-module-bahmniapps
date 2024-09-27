@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import PatientsList from '../../Components/ProviderNotificationPatients/PatientsList';
 
-export function ProviderNotifications(props) {
-    const acknowledgementRequiredText = <FormattedMessage id="AKNOWLEDGEMENT_REQUIRED_TEXT" defaultMessage="Acknowledgement required" />;
+export function ProviderNotifications() {
+    const acknowledgementRequiredText = <FormattedMessage id="ACKNOWLEDGEMENT_REQUIRED_TEXT" defaultMessage="Acknowledgement required" />;
 
 
     return (

@@ -2,6 +2,7 @@ import React from 'react'
 import "./ErrorNotification.scss";
 import { I18nProvider } from '../i18n/I18nProvider';
 import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
 
 const ErrorNotification = ({setEditError, editErrorMessage}) => {
     const errorMessage = editErrorMessage ? editErrorMessage : <FormattedMessage
@@ -22,6 +23,11 @@ const ErrorNotification = ({setEditError, editErrorMessage}) => {
         </div>
     </I18nProvider>
   )
+}
+
+ErrorNotification.propTypes = {
+    setEditError: PropTypes.func,
+    editErrorMessage: PropTypes.string
 }
 
 export default ErrorNotification;

@@ -59,7 +59,7 @@ export function SearchAllergen(props) {
       <div>
         <Search
           id={"allergen-search"}
-          placeholder={"Type to search Allergen"}
+          placeholder={ <FormattedMessage id={"ALLERGEN_SEARCH_PLACEHOLDER"} defaultMessage="Type to search Allergen"/>}
           onChange={(e) => {
             search(e.target.value);
           }}

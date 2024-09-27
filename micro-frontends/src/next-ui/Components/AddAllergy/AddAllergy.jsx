@@ -121,7 +121,10 @@ export function AddAllergy(props) {
                   <span className={"red-text"}>&nbsp;*</span>
                 </div>
                 <RadioButtonGroup
-                  name={"severity"}
+                  name={<FormattedMessage
+                    id={"SEVERITY"}
+                    defaultMessage={"Severity"}
+                  />}
                   key={"Severity"}
                   onChange={(e) => {
                     setSeverity(e);
@@ -131,6 +134,7 @@ export function AddAllergy(props) {
                   {severityOptions.map((option) => {
                     return (
                       <RadioButton
+                        key={option.uuid}
                         labelText={option.name}
                         value={option.uuid}
                       ></RadioButton>
@@ -139,7 +143,11 @@ export function AddAllergy(props) {
                 </RadioButtonGroup>
                 <TextArea
                   labelText={""}
-                  placeholder={"Additional comments such as onset date etc."}
+                  placeholder={
+                    <FormattedMessage
+                    id={"SEVERITY"}
+                    defaultMessage={"Additional comments such as onset date etc."}
+                  />}
                   onBlur={(e) => {
                     setNotes(e.target.value);
                   }}
