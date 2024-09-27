@@ -65,5 +65,6 @@
     "EMPTY_WARD_MESSAGE": "Il n'y a pas de patients dans cette salle.",
     "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "Admission d'un patient",
     "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Décharge du patient",
-    "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Transfert du patient"
+    "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Transfert du patient",
+    "CARE_VIEW_LABEL": "Passer à la vue Soins"
 }
