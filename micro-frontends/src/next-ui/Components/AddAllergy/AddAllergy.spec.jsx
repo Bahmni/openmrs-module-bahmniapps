@@ -237,7 +237,7 @@ describe("AddAllergy", () => {
     selectAllergen();
 
     const textArea = container.querySelector(".bx--text-area");
-    expect(textArea.placeholder).toBe(
+    expect(textArea).toBe(
       "Additional comments such as onset date etc."
     );
   });

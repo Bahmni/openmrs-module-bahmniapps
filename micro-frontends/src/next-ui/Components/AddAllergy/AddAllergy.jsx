@@ -145,7 +145,7 @@ export function AddAllergy(props) {
                   labelText={""}
                   placeholder={
                     <FormattedMessage
-                    id={"SEVERITY"}
+                    id={"ADDITIONAL_COMMENT_ALLERGY"}
                     defaultMessage={"Additional comments such as onset date etc."}
                   />}
                   onBlur={(e) => {

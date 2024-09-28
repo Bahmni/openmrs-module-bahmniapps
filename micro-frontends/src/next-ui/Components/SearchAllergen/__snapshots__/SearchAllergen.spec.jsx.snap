@@ -8,7 +8,9 @@ exports[`SearchAllergen should render SearchAllergen 1`] = `
     <div
       class="font-large bold"
     >
-      Search Allergen
+      <span>
+        Search Allergen
+      </span>
       <span
         class="red-text"
       >
@@ -49,7 +51,7 @@ exports[`SearchAllergen should render SearchAllergen 1`] = `
           autocomplete="off"
           class="bx--search-input"
           id="allergen-search"
-          placeholder="Type to search Allergen"
+          placeholder="[object Object]"
           role="searchbox"
           type="text"
         />

@@ -1,6 +1,10 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { SearchAllergen } from "./SearchAllergen.jsx";
+
+jest.mock('react-intl', () => ({
+  FormattedMessage: ({ id, defaultMessage }) => <span>{defaultMessage}</span>
+}));
 
 describe("SearchAllergen", function () {
   const onChange = jest.fn();
@@ -14,11 +18,13 @@ describe("SearchAllergen", function () {
     { name: "Narcotic agent", kind: "Medication", uuid: "162307AAAAAA" },
   ];
 
-  it("should render SearchAllergen", function () {
+  it("should render SearchAllergen", async function () {
     const { container } = render(
       <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
     );
-    expect(container).toMatchSnapshot();
+    await waitFor(() => {
+      expect(container).toMatchSnapshot();
+    });
   });
 
   it("should render SearchAllergen with search bar", function () {
