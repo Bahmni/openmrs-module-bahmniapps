@@ -24,7 +24,7 @@
     "REPORT_DELETE_SUCCESSFUL": "Informe eliminado exitosamente",
     "REPORT_DELETE_ERROR": "Error al eliminar informe",
     "REPORT_DELETE_DIALOG": "¿Desea eliminar este informe?",
-    "REPORT_DOWNLOAD": "Descarga",
+    "REPORT_DOWNLOAD": "Descargar",
     "REPORT_ERROR": "Error",
     "REPORT_DELETE": "Eliminar",
     "REPORTS_HEADER_REPORTS": "Informes",
@@ -33,7 +33,7 @@
     "PRIVILEGE_REQUIRED": "El usuario inició sesión pero no posee el privilegio relevante",
     "NO_FULFILMENT_MESSAGE": "No se han captado observaciones para esta orden.",
     "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No hay enlaces de navegación disponibles.",
-    "CHOOSE_REPORT_FORMAT": "Escoja Format",
+    "CHOOSE_REPORT_FORMAT": "Escoja Formato",
     "ACCEPT": "Aceptar",
     "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Por favor seleccione un valor de la lista de autocompletar",
     "CONCEPT_NOT_FOUND_MESSAGE": "No se ha encontrado el concepto.",
@@ -43,5 +43,8 @@
     "YEARS_LABEL": "Años",
     "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Escoja una respuesta",
     "DELETE_LABEL": "Eliminar",
-    "EDIT_LABEL": "Editar"
+    "EDIT_LABEL": "Editar",
+    "REPORT_DATE_RANGE": "Seleccionar intervalo de fechas",
+    "START_DATE_CANNOT_LATER_THAN_STOP_DATE": "La fecha de inicio no debe ser mayor que la fecha de fin.",
+    "LOGOUT_TRANSLATION_KEY": "Cerrar Sesión"
 }

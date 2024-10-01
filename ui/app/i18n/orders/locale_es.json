@@ -7,7 +7,7 @@
     "clinical_key": "Clínico",
     "MESSAGE_DIALOG_OPTION_COPY": "Error de copia",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
-    "ORDERS_FORM_ERRORS_MESSAGE_KEY": "Por favor ingrese la información necesaria en los campos o corrija la informacion en aquellos resaltados",
+    "ORDERS_FORM_ERRORS_MESSAGE_KEY": "Por favor introduzca la información necesaria en los campos o corrija la información en aquellos resaltados para proceder",
     "DOB_LABEL": "Fecha de Nacimiento",
     "NO_RESULTS_FOUND": "No se han encontrado resultados",
     "PRIVILEGE_REQUIRED": "El usuario ha iniciado sesión pero no posee el privilegio relevante",
@@ -24,7 +24,17 @@
     "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Escoja respuesta",
     "DELETE_LABEL": "Eliminar",
     "EDIT_LABEL": "Editar",
+    "NEW_ORDER_LABEL": "Nuevo",
     "NO_ORDERS_PRESENT": "No hay orden de tipo {{orderType}} para este paciente",
     "DEFAULT_SERVER_ERROR_MESSAGE": "Ha ocurrido un error en el servidor. La información no se ha guardado.",
-    "VISIT_CLOSED_CREATE_NEW_ERROR_MESSAGE": "Visita ya cerrada, crea una nueva visita para completar la orden"
+    "VISIT_CLOSED_CREATE_NEW_ERROR_MESSAGE": "Visita ya cerrada, crea una nueva visita para completar la orden",
+    "ORDER_DATE": "Fecha de la Orden",
+    "ORDER_NAME": "Nombre de la Orden",
+    "CLINICAL_YEARS_TRANSLATION_KEY": "años",
+    "CLINICAL_MONTHS_TRANSLATION_KEY": "meses",
+    "CLINICAL_DAYS_TRANSLATION_KEY": "días",
+    "GENDER_KEY": "Género:",
+    "AGE_KEY": "Edad:",
+    "DATE_OF_BIRTH_LABEL": "Fecha de Nacimiento:",
+    "LOGOUT_TRANSLATION_KEY": "Cerrar sesión"
 }
