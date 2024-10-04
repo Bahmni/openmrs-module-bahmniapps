@@ -35,6 +35,12 @@ export function AddAllergy(props) {
       defaultMessage={"Allergies and Reactions"}
     />
   );
+  const additionalComments = (
+    <FormattedMessage
+    id={"ADDITIONAL_COMMENT_ALLERGY"}
+    defaultMessage={"Additional comments such as onset date etc."}
+    />
+  );
   const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
   const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
   const [error, setError] = React.useState(null);
@@ -143,11 +149,7 @@ export function AddAllergy(props) {
                 </RadioButtonGroup>
                 <TextArea
                   labelText={""}
-                  placeholder={
-                    <FormattedMessage
-                    id={"ADDITIONAL_COMMENT_ALLERGY"}
-                    defaultMessage={"Additional comments such as onset date etc."}
-                  />}
+                  placeholder={additionalComments}
                   onBlur={(e) => {
                     setNotes(e.target.value);
                   }}

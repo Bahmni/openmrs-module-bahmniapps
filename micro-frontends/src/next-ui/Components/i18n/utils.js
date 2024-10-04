@@ -3,7 +3,7 @@ import { LS_LANG_KEY, BASE_URL } from "../../constants";
 const translationsBaseUrl = "i18n";
 
 export function getLocale() {
-  return localStorage.getItem(LS_LANG_KEY) || "en";;
+  return localStorage.getItem(LS_LANG_KEY) || "en";
 }
 
 export const getTranslations = async (locale) => {
@@ -13,6 +13,12 @@ export const getTranslations = async (locale) => {
 
 async function fetchTranslations(fileName) {
   const url = `${BASE_URL}${translationsBaseUrl}/${fileName}`;
+  
   const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch translations for ${fileName}: ${response.statusText}`);
+  }
+
   return response.json();
 }

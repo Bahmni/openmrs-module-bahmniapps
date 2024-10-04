@@ -24,6 +24,10 @@ export function SearchAllergen(props) {
     <FormattedMessage id={"REACTIONS"} defaultMessage={"Reaction(s)"} />
   );
 
+  const searchAllergenPlaceholder = (
+    <FormattedMessage id={"ALLERGEN_SEARCH_PLACEHOLDER"} defaultMessage="Type to search Allergen"/>
+  );
+
   const clearSearch = () => {
     setIsSearchResultEmpty(false);
     setSearchResults([]);
@@ -59,7 +63,7 @@ export function SearchAllergen(props) {
       <div>
         <Search
           id={"allergen-search"}
-          placeholder={ <FormattedMessage id={"ALLERGEN_SEARCH_PLACEHOLDER"} defaultMessage="Type to search Allergen"/>}
+          placeholder={searchAllergenPlaceholder}
           onChange={(e) => {
             search(e.target.value);
           }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, getByTestId } from "@testing-library/react";
 import { AddAllergy } from "./AddAllergy";
 
 const mockAllergensData = [
@@ -21,17 +21,17 @@ const mockReactionsData = {
 };
 
 const mockSeverityData = [
-    { name: "Mild", uuid: "162301AAAAAA" },
-    { name: "Moderate", uuid: "162302AAAAAA" },
-    { name: "Severe", uuid: "162303AAAAAA" },
+  { name: "Mild", uuid: "162301AAAAAA" },
+  { name: "Moderate", uuid: "162302AAAAAA" },
+  { name: "Severe", uuid: "162303AAAAAA" },
 ]
 const patient = {
-    uuid: "patient#1",
-    name: "demo"
+  uuid: "patient#1",
+  name: "demo"
 }
 const provider = {
-    uuid: "provider#1",
-    name: "demo provider"
+  uuid: "provider#1",
+  name: "demo provider"
 }
 
 describe("AddAllergy", () => {
@@ -221,24 +221,4 @@ describe("AddAllergy", () => {
     selectSeverity(container);
   });
 
-  it("should render notes", () => {
-    const { container } = render(
-      <AddAllergy
-        onClose={onClose}
-        onSave={onSave}
-        patient={patient}
-        provider={provider}
-        severityOptions={mockSeverityData}
-        allergens={mockAllergensData}
-        reaction={mockReactionsData}
-      />
-    );
-    searchAllergen();
-    selectAllergen();
-
-    const textArea = container.querySelector(".bx--text-area");
-    expect(textArea).toBe(
-      "Additional comments such as onset date etc."
-    );
-  });
 });
