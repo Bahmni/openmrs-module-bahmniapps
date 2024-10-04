@@ -11,7 +11,7 @@ import {
   RadioButtonGroup,
   TextArea,
 } from "carbon-components-react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ArrowLeft } from "@carbon/icons-react/next";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
 import { bahmniEncounter, getEncounterType } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
@@ -23,6 +23,7 @@ export function AddAllergy(props) {
   const [reactions, setReactions] = React.useState([]);
   const [severity, setSeverity] = React.useState("");
   const [notes, setNotes] = React.useState("");
+  const intl = useIntl();
   const backToAllergenText = (
     <FormattedMessage
       id={"BACK_TO_ALLERGEN"}
@@ -36,10 +37,7 @@ export function AddAllergy(props) {
     />
   );
   const additionalComments = (
-    <FormattedMessage
-    id={"ADDITIONAL_COMMENT_ALLERGY"}
-    defaultMessage={"Additional comments such as onset date etc."}
-    />
+    intl.formatMessage({ id: "ADDITIONAL_COMMENT_ALLERGY", defaultMessage: "Additional comments such as onset date etc."})
   );
   const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
   const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
@@ -148,6 +146,7 @@ export function AddAllergy(props) {
                   })}
                 </RadioButtonGroup>
                 <TextArea
+                  data-testid={"additional-comments"}
                   labelText={""}
                   placeholder={additionalComments}
                   onBlur={(e) => {

@@ -1,10 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { SearchAllergen } from "./SearchAllergen.jsx";
-
-jest.mock('react-intl', () => ({
-  FormattedMessage: ({ id, defaultMessage }) => <span>{defaultMessage}</span>
-}));
+import { IntlProvider } from "react-intl";
 
 describe("SearchAllergen", function () {
   const onChange = jest.fn();
@@ -20,7 +17,9 @@ describe("SearchAllergen", function () {
 
   it("should render SearchAllergen", async function () {
     const { container } = render(
-      <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      <IntlProvider locale="en">
+        <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      </IntlProvider>
     );
     await waitFor(() => {
       expect(container).toMatchSnapshot();
@@ -29,13 +28,17 @@ describe("SearchAllergen", function () {
 
   it("should render SearchAllergen with search bar", function () {
     const { container } = render(
-      <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      <IntlProvider locale="en">
+        <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      </IntlProvider>
     );
     expect(container.querySelector(".bx--search--xl")).not.toBeNull();
   });
   it("should show allergens based on the key typed", function () {
     const { container } = render(
-      <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      <IntlProvider locale="en">
+        <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      </IntlProvider>
     );
     const searchInput = container.querySelector(".bx--search-input");
     fireEvent.change(searchInput, { target: { value: "pea" } });
@@ -47,7 +50,9 @@ describe("SearchAllergen", function () {
   });
   it("should show no allergens found when search result is empty", function () {
     const { container } = render(
-      <SearchAllergen onChange={onChange} allergens={[]} />
+      <IntlProvider locale="en">
+        <SearchAllergen onChange={onChange} allergens={[]} />
+      </IntlProvider>
     );
     const searchInput = container.querySelector(".bx--search-input");
     fireEvent.change(searchInput, { target: { value: "xyz" } });
@@ -55,7 +60,9 @@ describe("SearchAllergen", function () {
   });
   it("should not show No Allergen message when the search query is empty", function () {
     const { container } = render(
-      <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      <IntlProvider locale="en">
+        <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      </IntlProvider> 
     );
     const searchInput = container.querySelector(".bx--search-input");
     fireEvent.change(searchInput, { target: { value: "xyz" } });
@@ -67,7 +74,9 @@ describe("SearchAllergen", function () {
   });
   it("should not show No Allergen message when we clear the search query", function () {
     const { container } = render(
-      <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      <IntlProvider locale="en">
+        <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      </IntlProvider>
     );
     const searchInput = container.querySelector(".bx--search-input");
     fireEvent.change(searchInput, { target: { value: "xyz" } });

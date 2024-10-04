@@ -26,5 +26,6 @@
   "FEMALE": "Femme",
   "OTHER": "Autre",
   "ADDITIONAL_COMMENT_ALLERGY": "Commentaires supplémentaires tels que la date d'apparition, etc.",
-  "ALLERGEN_SEARCH_PLACEHOLDER": "Saisissez pour rechercher un allergène"
+  "ALLERGEN_SEARCH_PLACEHOLDER": "Saisissez pour rechercher un allergène",
+  "ADD_BUTTON_TEXT": "Ajouter +"
 }
