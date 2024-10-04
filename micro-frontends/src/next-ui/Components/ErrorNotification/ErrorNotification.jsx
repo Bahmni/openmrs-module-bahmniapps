@@ -17,7 +17,7 @@ const ErrorNotification = ({setEditError, editErrorMessage}) => {
                     {errorMessage}
                 </div>
                 <div class="button-wrapper">
-                    <button type="button" onClick={()=>{setEditError(false)}} class="show-btn">OK</button>
+                    <button type="button" onClick={()=>{setEditError(false)}} class="show-btn"><FormattedMessage id={"OK_KEY"} defaultMessage='OK'/></button>
                 </div>
             </div>
         </div>

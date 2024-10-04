@@ -26,5 +26,6 @@
   "FEMALE": "Female",
   "OTHER": "Other",
   "ADDITIONAL_COMMENT_ALLERGY": "Additional comments such as onset date etc.",
-  "ALLERGEN_SEARCH_PLACEHOLDER": "Type to search Allergen"
+  "ALLERGEN_SEARCH_PLACEHOLDER": "Type to search Allergen",
+  "OK_KEY": "OK"
 }
