@@ -779,7 +779,6 @@ angular.module('bahmni.clinical')
                 drugOrderViewModel.isNewOrderSet = true;
                 drugOrderViewModel.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 drugOrderViewModel.quantity = drugOrderViewModel.quantity || 0;
-                drugOrderViewModel.calculateDurationUnit();
                 drugOrderViewModel.calculateQuantityAndUnit();
                 drugOrderViewModel.calculateEffectiveStopDate();
                 drugOrderViewModel.setUniformDoseFraction();
