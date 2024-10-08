@@ -72,4 +72,22 @@ describe("SearchAllergen", function () {
     fireEvent.click(searchBarCloseIcon);
     expect(() => screen.getByText("No Allergen found")).toThrowError();
   });
+  it('should call onChange function when an allergen is clicked', function () {
+    const { container } = render(
+        <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+    );
+
+    const searchInput = container.querySelector('.bx--search-input');
+    fireEvent.change(searchInput, { target: { value: 'nu' } });
+
+    const allergen = screen.getByText('Peanuts');
+    fireEvent.click(allergen);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({
+        name: 'Peanuts',
+        kind: 'Food',
+        uuid: '162302AAAAAA'
+    });
+  });
 });

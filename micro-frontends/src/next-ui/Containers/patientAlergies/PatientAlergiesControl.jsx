@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
 import "../../../styles/common.scss";
@@ -13,8 +13,6 @@ import {
 import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import { NotificationCarbon } from "bahmni-carbon-ui";
-import moment from "moment";
-import { allergyError, getErrorKey } from "../../errorMessages";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -25,7 +23,6 @@ const AllergenKind = {
   DRUG: "Drug",
   FOOD: "Food",
   ENVIRONMENT: "Environment",
-  OTHER: "Other",
 };
 export function PatientAlergiesControl(props) {
   const { hostData, appService } = props;
@@ -71,8 +68,7 @@ export function PatientAlergiesControl(props) {
   const TransformAllergenData = (
     medicationAllergenData,
     foodAllergenData,
-    environmentAllergenData,
-    otherAllergenData,
+    environmentAllergenData
   ) => {
     const medicationAllergens = extractAllergenData(
       medicationAllergenData,
@@ -87,16 +83,10 @@ export function PatientAlergiesControl(props) {
       AllergenKind.FOOD
     );
 
-    const otherAllergens = extractAllergenData(
-      otherAllergenData,
-      AllergenKind.OTHER
-    );
-
     return [
       ...medicationAllergens,
       ...environmentalAllergens,
       ...foodAllergens,
-      ...otherAllergens,
     ];
   };
 
@@ -109,16 +99,23 @@ export function PatientAlergiesControl(props) {
       const severity = resource.reaction[0].severity;
       const note = resource.note && resource.note[0].text;
       const date = new Date(resource.recordedDate);
-      const datetime = moment(resource.recordedDate).format('DD MMM YYYY h:mm a');
       const provider = resource.recorder?.display;
       const reactions = resource.reaction[0]?.manifestation.map((reaction) => {
         return reaction.coding[0].display;
       });
-      return {allergen, severity, reactions, note, provider, date, datetime};
+      return {allergen, severity, reactions, note, provider, date};
     });
     allergiesData && allergiesData.sort((a, b) => b?.date - a?.date);
-    allergiesData ? setAllergiesAndReactions(allergiesData) : setAllergiesAndReactions([]);
-  }
+    const filterSeverity = (severity) =>
+      allergiesData.filter((allergy) => allergy.severity === severity);
+    allergiesData
+      ? setAllergiesAndReactions([
+          ...filterSeverity("severe"),
+          ...filterSeverity("moderate"),
+          ...filterSeverity("mild"),
+        ])
+      : setAllergiesAndReactions([]);
+  };
 
   const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -128,7 +125,6 @@ export function PatientAlergiesControl(props) {
   const [allergiesAndReactions, setAllergiesAndReactions] = useState([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
-  const [error, setError] = useState('');
 
   const noAllergiesText = (
     <FormattedMessage
@@ -154,7 +150,6 @@ export function PatientAlergiesControl(props) {
       allergyControlConceptIdMap.medicationAllergenUuid,
       allergyControlConceptIdMap.foodAllergenUuid,
       allergyControlConceptIdMap.environmentalAllergenUuid,
-      allergyControlConceptIdMap.otherAllergenUuid,
       allergyControlConceptIdMap.allergyReactionUuid,
       allergyControlConceptIdMap.allergySeverityUuid
     ];
@@ -165,15 +160,13 @@ export function PatientAlergiesControl(props) {
         medicationResponseData,
         foodResponseData,
         environmentalResponseData,
-        otherResponseData,
         reactionResponseData,
         severityResponseData
       ] = await Promise.all(urls.map((url) => fetchAllergensOrReactions(url)));
       const allergenData = TransformAllergenData(
         medicationResponseData,
         foodResponseData,
-        environmentalResponseData,
-        otherResponseData
+        environmentalResponseData
       );
       const reactionsData = TransformReactionData(reactionResponseData);
 
@@ -229,20 +222,19 @@ export function PatientAlergiesControl(props) {
               onClose={() => {
                 setShowAddAllergyPanel(false);
               }}
-              onSave={async (isSaveSuccess, error) => {
+              onSave={async (isSaveSuccess) => {
                 if(isSaveSuccess){
                   setShowSuccessPopup(true);
                   setShowAddAllergyPanel(false);
                 }
                 else if(isSaveSuccess === false){
-                  setError(getErrorKey(error));
                   setShowErrorPopup(true);
                 }
               }}
             />
           )}
           <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={allergyError[error?.trim()] ?? "Error saving allergy"} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
         </div>
       )}
       </I18nProvider>

@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, act } from "@testing-library/react";
 import { SelectReactions } from "./SelectReactions";
 
 describe("Select reactions", function () {
@@ -107,10 +107,26 @@ describe("Select reactions", function () {
       />
     );
     const searchInput = container.querySelector(".bx--search-input");
-    fireEvent.change(searchInput, { target: { value: "GI" } });
+    fireEvent.change(searchInput, { target: { value: "set" } });
     expect(screen.getByText("GI Upset")).toBeTruthy();
     expect(() => screen.getByText("Fever")).toThrowError();
   });
+
+  it("should set isSearchResultEmpty to true and reset searchResults when key is empty", () => {
+    const { container } = render(
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
+    );
+    const searchInput = container.querySelector(".bx--search-input");
+
+    fireEvent.change(searchInput, { target: { value: "vw" } });
+
+    const allCheckboxes = container.querySelectorAll(".bx--checkbox");
+    expect(allCheckboxes).toHaveLength(5); // Assuming mockReactions has 5 reactions
+});
 
   it("should show chiclets for selected reactions", function () {
     const { container, getAllByText } = render(
@@ -124,5 +140,44 @@ describe("Select reactions", function () {
     const tag = container.querySelector(".bx--tag");
     expect(tag).toBeTruthy();
     expect(getAllByText("GI Upset").length).toEqual(2);
+  });
+
+  it("should set searchKey correctly", () => {
+    const { container } = render(
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
+    );
+    const searchInput = container.querySelector(".bx--search-input");
+
+    fireEvent.change(searchInput, { target: { value: "GI" } });
+    expect(searchInput.value).toBe("GI");
+  });
+
+  it("should reset isSearchResultEmpty and searchResults when key is empty", () => {
+    const { container, rerender } = render(
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
+    );
+    const searchInput = container.querySelector(".bx--search-input");
+
+    fireEvent.change(searchInput, { target: { value: "GI" } });
+    expect(container.querySelectorAll(".bx--checkbox")).toHaveLength(1);
+
+    fireEvent.change(searchInput, { target: { value: "" } });
+    rerender(
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
+    );
+
+    expect(container.querySelectorAll(".bx--checkbox")).toHaveLength(5);
   });
 });
