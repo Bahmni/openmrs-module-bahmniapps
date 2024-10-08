@@ -22,7 +22,7 @@ export const ViewAllergiesAndReactions = (props) => {
                         <div>{allergy.reactions.join(", ")}</div>
                         <div className={"capitalize"}>{allergy.severity}</div>
                     </div>
-                    return (<Accordion>
+                    return (<Accordion key={index}>
                         <AccordionItem title={title}>
                             <div className={"allergies-accordion-item"}>
                                 <div>

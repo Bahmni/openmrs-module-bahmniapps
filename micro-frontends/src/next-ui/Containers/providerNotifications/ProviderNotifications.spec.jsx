@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { ProviderNotifications } from './ProviderNotifications';
 
 jest.mock('../../Components/ProviderNotificationPatients/PatientsList', () => {
@@ -12,15 +12,16 @@ jest.mock('react-intl', () => ({
 
 describe('ProviderNotifications', () => {
     it('should render acknowledgementRequiredText correctly', () => {
-        const { queryByText } = render(<ProviderNotifications />);
+        const {queryByText} = render(<ProviderNotifications />);
 
-        expect(queryByText('Acknowledgement required')).toBeTruthy();
+        waitFor (()=> {expect(queryByText('Acknowledgement required')).toBeTruthy();})
     });
 
     it('should render PatientsList component', () => {
         const { queryByTestId } = render(<ProviderNotifications />);
-        const patientsList = queryByTestId('patients-list');
-
-        expect(patientsList).toBeTruthy();
+        waitFor(() => {
+            const patientsList = queryByTestId('patients-list');
+            expect(patientsList).toBeTruthy();
+        });
     });
 });

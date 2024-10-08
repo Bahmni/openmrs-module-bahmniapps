@@ -11,7 +11,7 @@ import {
   RadioButtonGroup,
   TextArea,
 } from "carbon-components-react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ArrowLeft } from "@carbon/icons-react/next";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
 import { bahmniEncounter, getEncounterType } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
@@ -23,6 +23,7 @@ export function AddAllergy(props) {
   const [reactions, setReactions] = React.useState([]);
   const [severity, setSeverity] = React.useState("");
   const [notes, setNotes] = React.useState("");
+  const intl = useIntl();
   const backToAllergenText = (
     <FormattedMessage
       id={"BACK_TO_ALLERGEN"}
@@ -34,6 +35,9 @@ export function AddAllergy(props) {
       id={"ALLERGIES_HEADING"}
       defaultMessage={"Allergies and Reactions"}
     />
+  );
+  const additionalComments = (
+    intl.formatMessage({ id: "ADDITIONAL_COMMENT_ALLERGY", defaultMessage: "Additional comments such as onset date etc."})
   );
   const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
   const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
@@ -121,7 +125,10 @@ export function AddAllergy(props) {
                   <span className={"red-text"}>&nbsp;*</span>
                 </div>
                 <RadioButtonGroup
-                  name={"severity"}
+                  name={<FormattedMessage
+                    id={"SEVERITY"}
+                    defaultMessage={"Severity"}
+                  />}
                   key={"Severity"}
                   onChange={(e) => {
                     setSeverity(e);
@@ -131,6 +138,7 @@ export function AddAllergy(props) {
                   {severityOptions.map((option) => {
                     return (
                       <RadioButton
+                        key={option.uuid}
                         labelText={option.name}
                         value={option.uuid}
                       ></RadioButton>
@@ -138,8 +146,9 @@ export function AddAllergy(props) {
                   })}
                 </RadioButtonGroup>
                 <TextArea
+                  data-testid={"additional-comments"}
                   labelText={""}
-                  placeholder={"Additional comments such as onset date etc."}
+                  placeholder={additionalComments}
                   onBlur={(e) => {
                     setNotes(e.target.value);
                   }}

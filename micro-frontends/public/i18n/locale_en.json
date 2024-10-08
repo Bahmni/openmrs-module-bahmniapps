@@ -18,5 +18,14 @@
   "EDIT_FORM_ERROR_MESSAGE": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
   "ACKNOWLEDGEMENT":"Acknowledge",
   "ENTER_NOTES": "Enter Notes",
-  "NOTE": "Note"
+  "NOTE": "Note",
+  "ALLERGY_SAVED_SUCCESS":"Allergy saved successfully",
+  "ERROR_SAVING_ALLERGY":"Error saving allergy",
+  "ACKNOWLEDGEMENT_REQUIRED_TEXT": "Acknowledgement required",
+  "MALE":"Male",
+  "FEMALE": "Female",
+  "OTHER": "Other",
+  "ADDITIONAL_COMMENT_ALLERGY": "Additional comments such as onset date etc.",
+  "ALLERGEN_SEARCH_PLACEHOLDER": "Type to search Allergen",
+  "OK_KEY": "OK"
 }
