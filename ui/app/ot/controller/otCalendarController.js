@@ -150,7 +150,7 @@ angular.module('bahmni.ot')
                 if ($scope.weekOrDay === "week") {
                     note = $scope.notesForWeek[$scope.notesStartDate];
                 }
-                surgicalAppointmentService.updateNoteForADay(note ? note.noteId : $scope.noteId, $scope.otNotesField);
+                surgicalAppointmentService.updateNoteForADay(note ? note.noteId : $scope.noteId, $scope.otNotesField, $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null);
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
