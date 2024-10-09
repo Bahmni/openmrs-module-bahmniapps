@@ -135,7 +135,10 @@ EditObservationForm.propTypes = {
     encounterUuid: PropTypes.string.isRequired,
     consultationMapper: PropTypes.object.isRequired,
     handleSave: PropTypes.func.isRequired,
-    handleSaveError: PropTypes.func.isRequired
+    handleSaveError: PropTypes.func.isRequired,
+    handleEditSave: PropTypes.func.isRequired,
+    editErrorMessage: PropTypes.string.isRequired,
+    setEditFormLoading: PropTypes.func.isRequired
 };
 
 export default EditObservationForm;
