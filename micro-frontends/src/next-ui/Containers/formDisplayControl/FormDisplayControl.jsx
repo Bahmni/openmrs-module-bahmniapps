@@ -216,7 +216,7 @@ export function FormDisplayControl(props) {
                         <AccordionItem
                           title={value[0].formNameTranslations}
                           className={"form-accordion"}
-                          open
+                          open={props?.hostData?.closeAccordionsByDefault ? false : true}
                         >
                           {value.map((entry, index) => {
                             return (
