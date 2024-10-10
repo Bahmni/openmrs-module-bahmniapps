@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, getByTestId } from "@testing-library/react";
 import { AddAllergy } from "./AddAllergy";
 import {
   saveAllergiesAPICall
