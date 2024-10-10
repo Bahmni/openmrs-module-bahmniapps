@@ -51,7 +51,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
               dir="auto"
             >
               <div
-                class=" allergies-row allergies-red-text"
+                class=" allergies-row red-text"
               >
                 <div>
                   Bee
@@ -78,7 +78,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
               <div
                 class="allergy-provider"
               >
-                Dr. John Doe 23 Mar 2024 3:15 pm
+                Dr. John Doe
               </div>
             </div>
           </div>
@@ -166,7 +166,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
               <div
                 class="allergy-provider"
               >
-                Dr. Jane 01 Oct 2023 10:00 am
+                Dr. Jane
               </div>
             </div>
           </div>

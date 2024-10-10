@@ -1,6 +1,13 @@
 import React from "react";
-import { render, fireEvent, screen, getByTestId, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, getByTestId } from "@testing-library/react";
 import { AddAllergy } from "./AddAllergy";
+import {
+  saveAllergiesAPICall
+} from "../../utils/PatientAllergiesControl/AllergyControlUtils";
+
+jest.mock('../../utils/PatientAllergiesControl/AllergyControlUtils', () => ({
+  saveAllergiesAPICall: jest.fn(),
+}));
 import { IntlProvider } from "react-intl";
 
 const mockAllergensData = [
@@ -266,5 +273,75 @@ describe("AddAllergy", () => {
     expect(textArea.placeholder).toBe(
       "Additional comments such as onset date etc."
     );
+  });
+
+  it("should save allergies successfully and set isSaveSuccess to true", async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+      <AddAllergy
+        onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
+        allergens={mockAllergensData}
+        reaction={mockReactionsData}
+      />
+      </IntlProvider>
+    );
+    saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
+    searchAllergen();
+    selectAllergen();
+    selectReaction(container);
+    selectSeverity(container);
+    const textArea = screen.getByPlaceholderText("Additional comments such as onset date etc.");
+    expect(textArea).toBeTruthy();
+    fireEvent.change(textArea, { target: { value: "New notes" } });
+    fireEvent.blur(textArea);
+    fireEvent.click(screen.getByText("Save"));
+
+    expect(saveAllergiesAPICall).toHaveBeenCalledWith({
+      allergen: {
+        allergenType: "FOOD",
+        codedAllergen : {uuid: "162302AAAAAA"}
+      },
+      reactions: [{reaction: { uuid: "101AA"}}],
+      severity: { uuid: "162301AAAAAA"},
+      comment: "New notes",
+    }, "patient#1");
+  });
+
+  it("should set isSaveSuccess to false if saveAllergiesAPICall fails", async () => {
+    const { container } = render(
+      <IntlProvider locale="en">
+      <AddAllergy
+        onClose={onClose}
+        onSave={onSave}
+        patient={patient}
+        provider={provider}
+        severityOptions={mockSeverityData}
+        allergens={mockAllergensData}
+        reaction={mockReactionsData}
+      />
+      </IntlProvider> 
+    );
+    searchAllergen();
+    selectAllergen();
+    selectReaction(container);
+    selectSeverity(container);
+
+    saveAllergiesAPICall.mockResolvedValueOnce({ status: 400 });
+
+    fireEvent.click(screen.getByText("Save"));
+    expect(saveAllergiesAPICall).toHaveBeenCalledWith({
+      allergen: {
+        allergenType: "FOOD",
+        codedAllergen : {uuid: "162302AAAAAA"}
+      },
+      reactions: [{reaction: { uuid: "101AA"}}],
+      severity: { uuid: "162301AAAAAA"},
+      comment: "",
+    }, "patient#1");
+
   });
 });

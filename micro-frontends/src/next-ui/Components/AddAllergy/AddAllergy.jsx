@@ -1,10 +1,6 @@
-import React, {Fragment, useEffect} from "react";
-import propTypes from "prop-types";
 import { Close24 } from "@carbon/icons-react";
-import SaveAndCloseButtons from "../SaveAndCloseButtons/SaveAndCloseButtons.jsx";
 import "./AddAllergy.scss";
 import "../../../styles/common.scss";
-import { SearchAllergen } from "../SearchAllergen/SearchAllergen.jsx";
 import { isEmpty } from "lodash";
 import {
   RadioButton,
@@ -13,9 +9,16 @@ import {
 } from "carbon-components-react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ArrowLeft } from "@carbon/icons-react/next";
+import propTypes from "prop-types";
+import React, { Fragment, useEffect } from "react";
+import "../../../styles/common.scss";
+import {
+  saveAllergiesAPICall
+} from "../../utils/PatientAllergiesControl/AllergyControlUtils";
+import SaveAndCloseButtons from "../SaveAndCloseButtons/SaveAndCloseButtons.jsx";
+import { SearchAllergen } from "../SearchAllergen/SearchAllergen.jsx";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
-import { bahmniEncounter, getEncounterType } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
-import { getCookies } from "../../utils/cookieHandler/cookieHandler";
+import "./AddAllergy.scss";
 
 export function AddAllergy(props) {
   const { patient, provider, onClose, allergens, reaction, severityOptions, onSave } = props;
@@ -25,62 +28,46 @@ export function AddAllergy(props) {
   const [notes, setNotes] = React.useState("");
   const intl = useIntl();
   const backToAllergenText = (
-    <FormattedMessage
-      id={"BACK_TO_ALLERGEN"}
-      defaultMessage={"Back to Allergies"}
-    />
+    <FormattedMessage id={"BACK_TO_ALLERGEN"} defaultMessage={"Back to Allergies"} />
   );
   const allergiesHeading = (
-    <FormattedMessage
-      id={"ALLERGIES_HEADING"}
-      defaultMessage={"Allergies and Reactions"}
-    />
+    <FormattedMessage id={"ALLERGIES_HEADING"} defaultMessage={"Allergies and Reactions"} />
   );
   const additionalComments = (
     intl.formatMessage({ id: "ADDITIONAL_COMMENT_ALLERGY", defaultMessage: "Additional comments such as onset date etc."})
   );
   const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
   const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
-  const [error, setError] = React.useState(null);
   const clearForm = () => {
     setAllergen({});
     setReactions([]);
     setNotes("");
     setSeverity("");
-    setError(null);
   };
   const saveAllergies = async (allergen, reactions, severity, notes) => {
-    const {uuid: consultationUuid} = await getEncounterType('Consultation');
-    const cookies = getCookies();
-    const {uuid:locationUuid} = JSON.parse(cookies["bahmni.user.location"])
     const allergyReactions = reactions.map((reaction) => {
-        return {reaction: reaction}
+      return { reaction: { uuid: reaction } };
     });
     const payload = {
-      locationUuid,
-      patientUuid: patient.uuid,
-      providers: [{uuid: provider.uuid}],
-      encounterTypeUuid: consultationUuid,
-      allergy:{
-        allergen:{
-          allergenKind: allergen.kind.toUpperCase(),
-          codedAllergen: allergen.uuid
+      allergen: {
+        allergenType: allergen.kind.toUpperCase(),
+        codedAllergen: {
+          uuid: allergen.uuid,
         },
-        reactions: allergyReactions,
-        severity: severity,
-        comment: notes
-      }
-    }
-    const response = await bahmniEncounter(payload);
-    if(response.status === 200){
+      },
+      reactions: allergyReactions,
+      severity: { uuid: severity },
+      comment: notes,
+    };
+    const response = await saveAllergiesAPICall(payload, patient.uuid);
+    if (response.status === 201) {
       setIsSaveSuccess(true);
-    }else{
-      setError(response.response.data.error.message)
+    } else {
       setIsSaveSuccess(false);
     }
-  }
+  };
   useEffect(() => {
-    onSave(isSaveSuccess, error);
+    onSave(isSaveSuccess);
   }, [isSaveSuccess]);
   return (
     <div className={"next-ui"}>
@@ -118,10 +105,7 @@ export function AddAllergy(props) {
 
               <div className={"section-next-ui"}>
                 <div className={"font-large bold"}>
-                  <FormattedMessage
-                    id={"SEVERITY"}
-                    defaultMessage={"Severity"}
-                  />
+                  <FormattedMessage id={"SEVERITY"} defaultMessage={"Severity"} />
                   <span className={"red-text"}>&nbsp;*</span>
                 </div>
                 <RadioButtonGroup
@@ -134,6 +118,7 @@ export function AddAllergy(props) {
                     setSeverity(e);
                     setIsSaveEnabled(reactions && reactions.length > 0 && e);
                   }}
+                  className={"severity-options-group"}
                 >
                   {severityOptions.map((option) => {
                     return (
@@ -160,7 +145,7 @@ export function AddAllergy(props) {
         <div>
           <SaveAndCloseButtons
             onSave={async () => {
-              await saveAllergies( allergen, reactions, severity, notes);
+              await saveAllergies(allergen, reactions, severity, notes);
             }}
             onClose={onClose}
             isSaveDisabled={!isSaveEnabled}
@@ -178,5 +163,5 @@ AddAllergy.propTypes = {
   onSave: propTypes.func.isRequired,
   patient: propTypes.object.isRequired,
   provider: propTypes.object.isRequired,
-  severityOptions: propTypes.array.isRequired
+  severityOptions: propTypes.array.isRequired,
 };
