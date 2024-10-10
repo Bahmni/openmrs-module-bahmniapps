@@ -10,9 +10,8 @@ describe('TreatmentController', function () {
         $rootScope = _$rootScope_;
         $scope = $rootScope.$new();
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getVisitTypeForRetrospectiveEntries'])
-        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig', 'getConfigValue']);
-        mockAppDescriptor.getConfig.and.returnValue({value: true});
-        mockAppDescriptor.getConfigValue.and.returnValue(true);
+        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensionById']);
+        mockAppDescriptor.getExtensionById.and.returnValue({extensionParams: {sections: {allergies: {}}}});
 
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
