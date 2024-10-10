@@ -13,6 +13,7 @@ import {
 import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import { NotificationCarbon } from "bahmni-carbon-ui";
+import { allergyError, getErrorKey } from "../../errorMessages";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -125,6 +126,7 @@ export function PatientAlergiesControl(props) {
   const [allergiesAndReactions, setAllergiesAndReactions] = useState([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [error, setError] = useState('');
 
   const noAllergiesText = (
     <FormattedMessage
@@ -222,12 +224,13 @@ export function PatientAlergiesControl(props) {
               onClose={() => {
                 setShowAddAllergyPanel(false);
               }}
-              onSave={async (isSaveSuccess) => {
+              onSave={async (isSaveSuccess, error) => {
                 if(isSaveSuccess){
                   setShowSuccessPopup(true);
                   setShowAddAllergyPanel(false);
                 }
                 else if(isSaveSuccess === false){
+                  setError(getErrorKey(error));
                   setShowErrorPopup(true);
                 }
               }}

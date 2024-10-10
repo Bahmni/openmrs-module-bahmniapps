@@ -89,7 +89,9 @@ describe("SearchAllergen", function () {
   });
   it('should call onChange function when an allergen is clicked', function () {
     const { container } = render(
+      <IntlProvider locale="en">
         <SearchAllergen onChange={onChange} allergens={mockAllergensData} />
+      </IntlProvider>
     );
 
     const searchInput = container.querySelector('.bx--search-input');
