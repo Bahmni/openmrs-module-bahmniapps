@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ProgramAttributesController', ['$scope', function ($scope) {
+    .controller('ProgramAttributesController', ['$scope', '$translate', function ($scope, $translate) {
         var program = $scope.patientProgram.program;
         $scope.getProgramAttributesMap = function () {
             var programAttributesMap = {};
@@ -21,6 +21,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 }
             });
             return programAttributesMap;
+        };
+
+        $scope.getTranslatedAttributeTypes = function (attribute) {
+            var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute, Bahmni.Common.Constants.patientAttribute, $translate);
+            return translatedName;
         };
 
         $scope.getValueForAttributeType = function (attributeType) {
