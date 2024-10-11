@@ -362,5 +362,8 @@
     "SIGN_SYMPTOM_DURATION_KEY": "Durée des signes/symptômes",
     "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Durée de la plainte principale",
     "IPD_BUTTON": "IPD",
-    "OPD_BUTTON": "OPD"
+    "OPD_BUTTON": "OPD",
+    "PROGRAM_DELETE_POPUP_MESSAGE_KEY": "Êtes-vous sûr de vouloir supprimer {{ programName }} ?",
+    "PROGRAM_DELETE_POPUP_CANCEL_KEY": "Annuler",
+    "PROGRAM_DELETE_POPUP_DELETE_KEY": "Supprimer"
 }

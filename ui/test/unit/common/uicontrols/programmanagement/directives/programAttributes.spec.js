@@ -2,17 +2,18 @@
 
 describe("ensure that the directive program-attributes works properly", function () {
 
-    var scope,filter;
+    var scope, translate, filter;
 
     beforeEach(module('bahmni.common.uicontrols.programmanagment'));
 
-    beforeEach(inject(function ($controller, $rootScope,$filter) {
+    beforeEach(inject(function ($controller, $rootScope, $filter) {
         scope = $rootScope.$new();
         scope.patientProgram = patientProgram;
         scope.programAttributeTypes = attributeTypes;
         filter = $filter;
         $controller('ProgramAttributesController', {
-            $scope: scope
+            $scope: scope,
+            $translate: translate
         });
     }));
 
