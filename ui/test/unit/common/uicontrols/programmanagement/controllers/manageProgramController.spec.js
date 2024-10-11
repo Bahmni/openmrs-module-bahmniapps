@@ -1,7 +1,6 @@
 'use strict';
 
 describe("ManageProgramController", function () {
-
     var scope, messageService, i = 0, programService, _provide, deferred, q, _spinner,
         retrospectiveEntryService, listOfPatientPrograms, programAttributeTypes, allPrograms,
         controller, rootScope, confirmBox, state, translate;
@@ -289,7 +288,6 @@ describe("ManageProgramController", function () {
                 ]
             }
         ];
-
     });
 
     it("should update active programs list", function () {
@@ -316,7 +314,7 @@ describe("ManageProgramController", function () {
         it("Should return minimum start date of states", function () {
             scope.$apply(setUp);
             var maxDate = scope.getMaxAllowedDate(listOfPatientPrograms.activePrograms[0].states);
-            expect(maxDate).toEqual('2015-07-01')
+            expect(maxDate).toEqual('2015-07-01');
         });
 
         it("Should return current date when there are no states", function () {
@@ -327,7 +325,6 @@ describe("ManageProgramController", function () {
     });
 
     describe("Remove program states", function () {
-
         it("should remove latest program state", function () {
             scope.$apply(setUp);
             scope.removePatientState(listOfPatientPrograms.activePrograms[0]);
@@ -350,14 +347,13 @@ describe("ManageProgramController", function () {
 
             expect(programService.updatePatientProgram).toHaveBeenCalledWith(programToBeUpdated, scope.programAttributeTypes, null);
         });
-
     });
 
     describe("updatePatientProgram", function () {
         it("should assign the initial state successfully", function () {
             scope.$apply(setUp);
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
-            patientProgramToBeUpdated.states = []; //making sure there are no states assigned
+            patientProgramToBeUpdated.states = []; // making sure there are no states assigned
 
             var newStateUuid = '8917ab09-52b4-4573-aefa-7f6e7bdf6d61';
             patientProgramToBeUpdated.selectedState = { uuid: newStateUuid };
@@ -372,13 +368,12 @@ describe("ManageProgramController", function () {
             expect(patientProgramToBeUpdated.states[0].startDate).toBe(Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat("2015-07-19"));
             expect(patientProgramToBeUpdated.states[0].state.uuid).toBe(newStateUuid);
             expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
-
         });
 
         it("should update patient program without any state if not provided", function () {
             scope.$apply(setUp);
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
-            patientProgramToBeUpdated.states = []; //making sure there are no states assigned
+            patientProgramToBeUpdated.states = []; // making sure there are no states assigned
 
             patientProgramToBeUpdated.selectedState = undefined;
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
@@ -390,7 +385,6 @@ describe("ManageProgramController", function () {
             scope.$digest();
             expect(patientProgramToBeUpdated.states.length).toBe(0);
             expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
-
         });
 
         it("should validate if state to be transited is starting after the current running state", function () {
@@ -413,7 +407,6 @@ describe("ManageProgramController", function () {
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
-
             });
             var newStateUuid = '8417ab09-52b4-4573-aefa-7f6e7bdf6d61';
             expect(patientProgramToBeUpdated.states.length).toBe(2);
@@ -435,7 +428,6 @@ describe("ManageProgramController", function () {
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
-
             });
             var currentActiveStateUuid = '1317ab09-52b4-4573-aefa-7f6e7bdf6d61';
             expect(patientProgramToBeUpdated.states.length).toBe(2);
@@ -458,7 +450,6 @@ describe("ManageProgramController", function () {
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
-
             });
             programService.updatePatientProgram.and.callFake(function () {
                 deferred = q.defer();
@@ -471,12 +462,9 @@ describe("ManageProgramController", function () {
             scope.$digest();
             expect(messageService.showMessage).toHaveBeenCalledWith("error", "Failed to Save");
         });
-
-
     });
 
     describe("end program", function () {
-
         it("should validate if program is ending before the current running state", function () {
             scope.$apply(setUp);
             var programToBeUpdated = listOfPatientPrograms.activePrograms[0];
@@ -513,7 +501,7 @@ describe("ManageProgramController", function () {
 
             expect(scope.programWorkflowStates.length).toBe(2);
             expect(scope.patientProgramAttributes).toEqual({});
-        })
+        });
     });
 
     describe('get workflows', function () {
@@ -566,7 +554,7 @@ describe("ManageProgramController", function () {
                 name: 'TB Program',
                 uuid: 'someUuid'
             };
-            expect(scope.isIncluded(attribute)).toBeFalsy()
+            expect(scope.isIncluded(attribute)).toBeFalsy();
         });
 
         it('should show attributeType for selected program if it is not excluded in the config', function () {
@@ -581,7 +569,7 @@ describe("ManageProgramController", function () {
                 name: 'TB Program',
                 uuid: 'someUuid'
             };
-            expect(scope.isIncluded(attribute)).toBeTruthy()
+            expect(scope.isIncluded(attribute)).toBeTruthy();
         });
     });
 });
