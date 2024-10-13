@@ -66,5 +66,6 @@
     "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "Admission d'un patient",
     "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Décharge du patient",
     "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Transfert du patient",
-    "CARE_VIEW_LABEL": "Passer à la vue Soins"
+    "CARE_VIEW_LABEL": "Passer à la vue Soins",
+    "BED_ASSIGNED_SUCCESSFULLY": "Le lit {{bedNumber}} a été attribué avec succès"
 }

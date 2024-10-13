@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', 'spinner', 'wardService', 'bedManagementService', 'bedService', 'messagingService', 'appService', '$document', '$element',
-        function ($scope, $rootScope, $window, spinner, wardService, bedManagementService, bedService, messagingService, appService, $document, $element) {
+    .controller('WardLayoutController', ['$scope', '$rootScope', '$window', 'spinner', 'wardService', 'bedManagementService', 'bedService', 'messagingService', 'appService', '$document', '$element', '$translate',
+        function ($scope, $rootScope, $window, spinner, wardService, bedManagementService, bedService, messagingService, appService, $document, $element, $translate) {
             $scope.selectedBed = null;
             var maxPatientsConfig = appService.getAppDescriptor().getConfig("maxPatientsPerBed");
             var maxPatientsPerBed = maxPatientsConfig ? maxPatientsConfig.value : 3;
@@ -56,7 +56,7 @@ angular.module('bahmni.adt')
                 spinner.forPromise(bedService.assignBed(bed.bed.bedId, $scope.patientUuid, encUuid).success(function () {
                     $rootScope.bed = bed.bed;
                     bedService.setBedDetailsForPatientOnRootScope($scope.patientUuid);
-                    messagingService.showMessage('info', "Bed " + bed.bed.bedNumber + " is assigned successfully");
+                    messagingService.showMessage('info', $translate.instant("BED_ASSIGNED_SUCCESSFULLY", {bedNumber: bed.bed.bedNumber}));
                     $element.find('.bed-info').hide();
                 }));
             };
