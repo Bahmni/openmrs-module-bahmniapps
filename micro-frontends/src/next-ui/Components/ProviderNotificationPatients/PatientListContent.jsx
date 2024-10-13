@@ -8,10 +8,11 @@ import {
 } from "../../utils/providerNotifications/ProviderNotificationUtils";
 import { verifierFunction} from "../../constants";
 import PropTypes from "prop-types";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPatients}) => {
   const [notes, setNotes] = useState("");
+  const intl = useIntl();
   const { administered_date_time, administered_drug_name, medication_administration_performer_uuid, medication_administration_uuid } =
     patientMedicationDetails;
 
@@ -37,8 +38,10 @@ const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPa
         <div className="notes">
           <TextArea
             className="patient-list-text-area"
-            labelText={<Title text={<FormattedMessage id="NOTE" defaultMessage="Note" />} isRequired={true} />}
-            placeholder={<FormattedMessage id="ENTER_NOTES" defaultMessage="Enter Notes" />}
+            labelText={
+              <Title text={intl.formatMessage({id: "NOTE",defaultMessage: "Note"})} isRequired={true}/>
+            }
+            placeholder={intl.formatMessage({id: "ENTER_NOTES",defaultMessage: "Enter Notes"})}
             rows={1}
             required={true}
             value={notes}
