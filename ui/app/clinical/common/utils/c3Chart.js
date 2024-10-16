@@ -115,7 +115,9 @@ Bahmni.Graph.c3Chart = function () {
     };
 
     this.render = function (bindTo, graphWidth, config, data) {
-        var distinctUnits = _.uniq(_.map(data, 'units'));
+        var distinctUnits = _.uniq(_.filter(_.map(data, 'units'), function (unit) {
+            return unit !== undefined;
+        }));
         if (distinctUnits.length > 2) {
             throw new Error("Cannot display line graphs with concepts that have more than 2 units");
         }
