@@ -13,7 +13,7 @@ const hostUrl = localStorage.getItem("host")
   : "";
 
 export const verifierFunction = "Verifier";
-
+export const document_images_path = "../../document_images/";
 const RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
 
 export const FORM_BASE_URL = RESTWS_V1 + "/bahmnicore/patient/{patientUuid}/forms";
