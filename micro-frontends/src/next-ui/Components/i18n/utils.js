@@ -10,7 +10,7 @@ export const getTranslations = async (locale) => {
   const fileName = `locale_${locale}.json`;
   
   try {
-    return await fetchTranslations(`${NEXT_UI_CONFIG_PATH}${translationsBaseUrl}/micro-frontends-dist/${fileName}`);
+    return await fetchTranslations(`${NEXT_UI_CONFIG_PATH}${translationsBaseUrl}/micro-frontends-dist/next-ui/${fileName}`);
   } catch (error) {
     console.warn(`Primary translation file not found, falling back to secondary: ${error.message}`);
     return await fetchTranslations(`${BASE_URL}${translationsBaseUrl}/${fileName}`);
