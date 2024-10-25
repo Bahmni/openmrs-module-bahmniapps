@@ -6,7 +6,7 @@ import {
   formatGender
 } from './utils';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 describe('calculateAgeFromEpochDOB', () => {
 
   describe('formatDate', () => {
@@ -30,22 +30,23 @@ describe('calculateAgeFromEpochDOB', () => {
   });
 
   describe('formatGender function', () => {
+    const intl = useIntl();
     test('should return "Male" when gender is "M"', () => {
       const gender = "M";
-      const formattedGender = formatGender(gender);
-      expect(formattedGender).toEqual(<FormattedMessage defaultMessage="Male" id="MALE" values={{}} />);
+      const formattedGender = formatGender(gender, intl);
+      expect(formattedGender).toEqual("Male");
     });
 
     test('should return "Female" when gender is "F"', () => {
       const gender = "F";
-      const formattedGender = formatGender(gender);
-      expect(formattedGender).toEqual(<FormattedMessage defaultMessage="Female" id="FEMALE" values={{}} />);
+      const formattedGender = formatGender(gender, intl);
+      expect(formattedGender).toEqual("Female");
     });
 
     test('should return "Other" when gender is neither "M" nor "F"', () => {
       const gender = "X";
-      const formattedGender = formatGender(gender);
-      expect(formattedGender).toEqual(<FormattedMessage defaultMessage="Other" id="OTHER" values={{}} />);
+      const formattedGender = formatGender(gender, intl);
+      expect(formattedGender).toEqual("Other");
     });
   });
 

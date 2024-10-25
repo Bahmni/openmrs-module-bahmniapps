@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import PatientListTitle from "./PatientListTitle";
+import { IntlProvider } from "react-intl";
 
 const mockWindowOpen = jest.fn();
 global.window.open = mockWindowOpen;
@@ -28,12 +29,12 @@ describe("PatientListTitle Component", () => {
   };
 
   it("should render correctly", () => {
-    const { queryByText } = render(<PatientListTitle {...props} />);
+    const { queryByText } = render(<IntlProvider locale="en"><PatientListTitle {...props} /></IntlProvider>);
     expect(queryByText(`(${props.identifier})`)).toBeTruthy();
   });
 
   it("should render the warning icon and number of drugs", () => {
-    const { queryByText } = render(<PatientListTitle {...props} />);
+    const { queryByText } = render(<IntlProvider locale="en"><PatientListTitle {...props} /></IntlProvider>);
     expect(queryByText(props.noOfDrugs.toString())).toBeTruthy();
   });
 });
