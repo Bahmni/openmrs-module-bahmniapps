@@ -17,15 +17,15 @@ export const formatArrayDateToDefaultDateFormat = (dateTimeArray) => {
   return formattedDate;
 };
 
-export const formatGender = (gender, intl) => {
+export const formatGender = (gender) => {
   let formattedGender;
 
   if (gender === "M") {
-    formattedGender = intl.formatMessage({id: "MALE",defaultMessage: "Male"});
+    formattedGender = <FormattedMessage id={"MALE"} defaultMessage="Male"/>;
   } else if (gender === "F") {
-    formattedGender = intl.formatMessage({id: "FEMALE",defaultMessage: "Female"});
+    formattedGender = <FormattedMessage id={"FEMALE"} defaultMessage="Female"/>;
   } else {
-    formattedGender = intl.formatMessage({id: "OTHER",defaultMessage: "Other"});
+    formattedGender = <FormattedMessage id={"OTHER"} defaultMessage="Other"/>;
   }
 
   return formattedGender;
