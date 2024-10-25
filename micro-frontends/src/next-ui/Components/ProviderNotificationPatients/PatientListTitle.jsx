@@ -5,10 +5,12 @@ import "./PatientListTitle.scss";
 import { getPatientIPDDashboardUrl } from "../../utils/providerNotifications/ProviderNotificationUtils";
 import { formatGender } from "../../utils/utils";
 import PropTypes from "prop-types";
+import { useIntl } from "react-intl";
 
 const PatientListTitle = (props) => {
 
   const { noOfDrugs, identifier, name, age, gender, patientUuid, visitUuid } = props;
+  const intl = useIntl();
   return (
     <div className="patient-list-tile-content">
       <div className="warning">
@@ -23,7 +25,7 @@ const PatientListTitle = (props) => {
               }}>
             {`(${identifier})`}
         </Link>
-        <span>{`${name} - ${formatGender(gender)}, ${age}`}</span>
+        <span>{`${name} - ${formatGender(gender, intl)}, ${age}`}</span>
       </div>
     </div>
   );
