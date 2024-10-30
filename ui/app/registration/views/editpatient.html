@@ -12,6 +12,7 @@
                         <img class="patient-image" ng-src="{{patient.image}}" fallback-src="../images/blank-user.gif">
                  </div>
             </div>
+            <ng-include src="'views/patientTypeView.html'"></ng-include>
             <article class="form-field">
                 <div class="field-attribute">
                 <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>

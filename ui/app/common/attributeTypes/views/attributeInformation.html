@@ -19,9 +19,13 @@
         </span>
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.Concept">
-        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
+        <select id="{{::attribute.name}}"
+                ng-model="targetModel[attribute.name].conceptUuid"
                 ng-options="a.conceptId as a.description for a in ::attribute.answers"
-                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
+                ng-disabled="::isReadOnly(attribute.name)"
+                ng-required="{{::attribute.required}}"
+                ng-init="setDefaultOption(attribute, targetModel[attribute.name])"
+                ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
             <option value=""></option>
         </select>
     </div>

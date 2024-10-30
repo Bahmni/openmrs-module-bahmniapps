@@ -11,7 +11,8 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             getDataResults: '&',
             handleUpdate: '&',
             isReadOnly: '&',
-            isForm: '=?'
+            isForm: '=?',
+            defaultDescription: "="
         },
         templateUrl: '../common/attributeTypes/views/attributeInformation.html',
         restrict: 'E',
@@ -33,6 +34,29 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             $scope.getTranslatedAttributeTypes = function (attribute) {
                 var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute, Bahmni.Common.Constants.patientAttribute, $translate);
                 return translatedName;
+            };
+            /**
+             * Initialize default selection
+             */
+            $scope.setDefaultOption = function () {
+                if ($scope.defaultDescription) {
+                    var defaultOption = _.find($scope.attribute.answers, function (answer) {
+                        return answer.description === $scope.defaultDescription;
+                    });
+
+                    if (
+                        defaultOption &&
+                        $scope &&
+                        $scope.attribute &&
+                        $scope.attribute.name &&
+                        !$scope.targetModel[$scope.attribute.name] &&
+                        (!$scope.targetModel[$scope.attribute.name] || !$scope.targetModel[$scope.attribute.name].conceptUuid)) {
+                        $scope.targetModel[$scope.attribute.name] = {
+                            conceptUuid: defaultOption.conceptId,
+                            value: defaultOption.fullySpecifiedName
+                        };
+                    }
+                }
             };
         }
     };

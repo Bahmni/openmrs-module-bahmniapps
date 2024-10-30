@@ -1,0 +1,19 @@
+<div ng-controller="PatientCommonController">
+    <section class="form-field-inline clearfix"
+             ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
+        <article class="form-field" ng-repeat="attribute in ::attributeRow | filter:isTypeOfPatient"
+                 ng-class="::{'right-form-field' : $index%2 != 0}">
+            <attribute-types
+                    target-model="patient"
+                    attribute="::attribute"
+                    field-validation="::fieldValidation"
+                    is-auto-complete="isAutoComplete"
+                    get-auto-complete-list="getAutoCompleteList"
+                    get-data-results="getDataResults"
+                    is-read-only="isReadOnly"
+                    handle-update="handleUpdate"
+                    default-description="'Facility'"
+            ></attribute-types>
+        </article>
+    </section>
+</div>

@@ -20,6 +20,14 @@ angular.module('bahmni.registration')
             $scope.showSaveAndContinueButton = false;
             $scope.regExtPoints = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier", "link");
 
+            $scope.isNotTypeOfPatient = function (attribute) {
+                return attribute.name !== "typeofPatient";
+            };
+
+            $scope.isTypeOfPatient = function (attribute) {
+                return attribute.name === "typeofPatient";
+            };
+
             $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
