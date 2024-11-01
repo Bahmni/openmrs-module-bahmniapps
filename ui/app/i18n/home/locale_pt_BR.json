@@ -48,13 +48,13 @@
     "WARNING_SERVER_TIME_ZONE_MISMATCH": "O fuso horário do servidor ({{serverTime}}) é diferente do fuso horário do seu navegador ({{localeTimeZone}}). Isto pode causar erros em dados ou relatórios. Por favor, contato o administrador para suporte adicional.",
     "LOGIN_PAGE_HEADER_TEXT": "Login do Bahmni EMR",
     "LOGIN_PAGE_TITLE_TEXT": "Texto do título",
-    "LOGIN_UNSUPPORTED_BROWSER_KEY": "Bahmni is supported on Chrome/Firefox Browser",
-    "DOB_LABEL": "Date of Birth",
-    "NO_RESULTS_FOUND": "No results found",
-    "PRIVILEGE_REQUIRED": "User is logged in but doesn't have the relevant privilege",
-    "NO_FULFILMENT_MESSAGE": "No observations captured for this order.",
-    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
-    "ACCEPT": "Accept",
-    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete",
-    "LOGIN_LOCATION_PAGE_TITLE_TEXT": "Select login location br"
+    "LOGIN_LOCATION_PAGE_TITLE_TEXT": "Selecione o local de login",
+    "LOGIN_UNSUPPORTED_BROWSER_KEY": "Bahmni é suportado pelo navegador Chrome/Firefox",
+    "DOB_LABEL": "Data de Nascimento",
+    "NO_RESULTS_FOUND": "Nenhum resultado encontrado",
+    "PRIVILEGE_REQUIRED": "O usuário está logado mas não tem os privilégios necessários",
+    "NO_FULFILMENT_MESSAGE": "Nenhuma observação registrada para esta ordem médica.",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Nenhum link de navegação disponível.",
+    "ACCEPT": "Aceitar",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Por favor, selecione um valor da lista de preenchimento automático."
 }
