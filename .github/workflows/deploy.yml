@@ -1,0 +1,50 @@
+name: Deploy to VM
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+env:
+  SSH_PORT: 22
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Remote ssh to server and update docker-compose
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ env.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 10.24.1
+            export PATH="/home/patrick/.nvm/versions/node/v10.24.1/bin:$PATH"
+
+            export RBENV_ROOT="$HOME/.rbenv"
+            export PATH="$RBENV_ROOT/bin:$PATH"
+            eval "$(rbenv init -)"
+
+            # Ensure Ruby and gem commands are in the path
+            export PATH="$HOME/.rbenv/shims:$PATH"
+
+            cd /opt/bdsec-repos/Bdsec-openmrs-module-bahmniapps
+            sudo git pull origin main
+            cd ui
+            sudo rm -rf node_modules
+            yarn install
+            yarn build --force
+
+            cd /opt/bdsec-repos/bahmni-docker/bahmni-standard
+            sudo docker-compose down bahmni-web
+            sudo docker-compose up -d --no-deps --build bahmni-web
