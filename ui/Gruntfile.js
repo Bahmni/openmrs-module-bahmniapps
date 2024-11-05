@@ -59,8 +59,8 @@ module.exports = function (grunt) {
         'components/angular-elastic/elastic.js',
         'components/react/react.production.min.js',
         'components/react-dom/react-dom.production.min.js',
-        'components/bahmni-form-controls/helpers.js',
-        'components/bahmni-form-controls/bundle.js',
+        'components/bdsec-bahmni-form-controls/helpers.js',
+        'components/bdsec-bahmni-form-controls/bundle.js',
         'components/purl/purl.js',
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
@@ -317,8 +317,8 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         dot: true,
-                        cwd: '<%= yeoman.nodeModules %>/bahmni-form-controls/dist',
-                        dest: '<%= yeoman.app %>/components/bahmni-form-controls/',
+                        cwd: '<%= yeoman.nodeModules %>/bdsec-bahmni-form-controls/dist',
+                        dest: '<%= yeoman.app %>/components/bdsec-bahmni-form-controls/',
                         src: [
                             '*.*'
                         ]
@@ -326,8 +326,8 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         dot: true,
-                        cwd: '<%= yeoman.nodeModules %>/bahmni-clinical-components/dist',
-                        dest: '<%= yeoman.app %>/components/bahmni-clinical-components/',
+                        cwd: '<%= yeoman.nodeModules %>/bdsec-bahmni-clinical-components/dist',
+                        dest: '<%= yeoman.app %>/components/bdsec-bahmni-clinical-components/',
                         src: [
                             '*.*'
                         ]
