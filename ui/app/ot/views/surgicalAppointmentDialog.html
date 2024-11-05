@@ -23,6 +23,9 @@
         <button show-if-privilege="app:ot:write" ng-disabled="moveButtonDisabled" ng-mousedown="gotoMove()">
             {{'OT_MOVE_KEY' | translate}}
         </button>
+        <a class="create-appointment-link" href="/appointments/#/home/manage/appointments/calendar/new" show-if-privilege="app:ot:write" ng-disabled="moveButtonDisabled">
+            {{'OT_APPOINTMENT_KEY' | translate}}
+        </a>
         <button show-if-privilege="app:ot:write" ng-disabled="cancelDisabled"
                 ng-mousedown="cancelSurgicalBlockOrSurgicalAppointment()">{{'OT_SURGICAL_APPOINTMENT_CANCEL_APPOINTMENT' | translate}}
         </button>

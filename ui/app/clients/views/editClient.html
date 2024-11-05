@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div>
+        <h2>Edit Client</h2>
+        <form ng-submit="updateClient()">
+            <label>Name: </label>
+            <input type="text" ng-model="client.name"  required />
+
+            <label>Date of birth: </label>
+            <input type="date" ng-model="client.birthdate"  required />
+
+            <label>Gender</label>
+            <select ng-model="client.gender">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+            </select>
+
+            <button type="submit">Save</button>
+
+        </form>
+    </div>
+
+</body>
+</html>

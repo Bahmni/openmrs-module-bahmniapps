@@ -1,0 +1,12 @@
+[
+  {
+    "id": "bahmni.clients",
+    "extensionPointId": "org.bahmni.home",
+    "type": "link",
+    "translationKey": "CLIENTS_TITLE_KEY",
+    "url": "../apps/clients/index.html",
+    "icon": "fa fa-users",
+    "order": 5,
+    "label": "Clients"
+  }
+]

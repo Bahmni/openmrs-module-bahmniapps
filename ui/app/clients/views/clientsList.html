@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <h2>Clients list</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="client in clients">
+            <td>{{client.name}}</td>
+            <td>{{client.birthdate | date: 'yyyy-MM-dd'}}</td>
+            <td>{{client.gender }}</td>
+            <td>
+                <a href="#/clients/edit/{{client.id}}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
