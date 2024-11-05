@@ -435,6 +435,16 @@ div[ng-app="ot"] {
   }
 }
 
+.create-appointment-link{
+  @extend button;
+  color: #363463;
+  text-decoration: none;
+  &:visited{
+    color: #363463;
+    text-decoration: none;
+  }
+}
+
 .ngdialog.ngdialog-theme-default.popup {
   .ngdialog-content {
     width: 600px;

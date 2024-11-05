@@ -1,0 +1,307 @@
+.form-builder-column {
+    .form-field-content-wrap {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+  
+      > div:first-child {
+        margin-bottom: 3px;
+      }
+      .obs-control-field {
+        width: 100%;
+      }
+    }
+  
+    .eye-container-class {
+      padding: 5px;
+      border: 1px solid #c6c5c5;
+      border-radius: 5px;
+      width: fit-content !important;
+      position: relative;
+    }
+  
+    .eye-class {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin-bottom: 40px;
+    }
+  
+    .drawing-area-class {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  
+    .clear-btn-class {
+      margin-right: 5px;
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+    }
+  }
+  
+  .obs-control-select-wrapper,
+  .obs-control-field > div {
+    width: 50%;
+  
+    .Select-control {
+      width: 100% !important;
+      height: 32px !important;
+  
+      .Select-placeholder {
+        line-height: 32px !important;
+      }
+    }
+  }
+  
+  .obs-control-field > .fl {
+    input {
+      height: 32px !important;
+      width: 96% !important;
+    }
+  }
+  
+  .table-controls {
+    .header {
+      background: white !important;
+    }
+  
+    .form-builder-column-wrapper,
+    .control-wrapper-content {
+      border: none !important;
+    }
+  
+    .obs-control-select-wrapper,
+    .obs-control-field > div {
+      width: 70% !important;
+  
+      .Select-control {
+        width: 100% !important;
+        height: 32px !important;
+      }
+    }
+  }
+  
+  .table-header.test-table-label {
+    width: 100% !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+    display: flex !important;
+    padding: 15px 0px !important;
+    text-transform: uppercase !important;
+  }
+  
+  // Motility Test
+  /* Shared styles for both tests */
+  .motility-test-container,
+  .gonioscopy-test-container {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    .motility-test-container,
+    .gonioscopy-test-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .eye-diagram,
+  .gonioscopy-diagram {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .diagram-field,
+  .gonioscopy-field {
+    position: absolute;
+    width: 120px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  
+  .diagram-field .obs-control-select-wrapper,
+  .gonioscopy-field .obs-control-select-wrapper {
+    width: 100% !important;
+  }
+  
+  .diagram-field select,
+  .gonioscopy-field select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+  }
+  
+  .diagram-field select:focus,
+  .gonioscopy-field select:focus {
+    outline: none;
+    border-color: #284251;
+    box-shadow: 0 0 0 2px rgba(58, 110, 165, 0.2);
+  }
+  
+  .eye-diagram::before,
+  .gonioscopy-diagram::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #284251;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .left-eye::after,
+  .right-eye::after {
+    content: attr(class);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: bold;
+    color: #284251;
+  }
+  
+  /* Motility test specific styles */
+  .diagram-line {
+    position: absolute;
+    height: 2px;
+    background-color: #284251;
+    transform-origin: left center;
+  }
+  
+  /* Gonioscopy test specific styles */
+  .gonioscopy-cross {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .gonioscopy-cross::before,
+  .gonioscopy-cross::after {
+    content: "";
+    position: absolute;
+    background-color: #284251;
+  }
+  
+  .gonioscopy-cross::before {
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+  
+  .gonioscopy-cross::after {
+    top: 50%;
+    height: 2px;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+  
+  /* Ensure dropdown menus appear above other elements */
+  .Select-menu-outer {
+    z-index: 1000 !important;
+  }
+  
+  .gonioscopy-diagram {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .gonioscopy-cross {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: rotate(45deg);
+  }
+  
+  .gonioscopy-cross::before,
+  .gonioscopy-cross::after {
+    content: "";
+    position: absolute;
+    background-color: #284251;
+  }
+  
+  .gonioscopy-cross::before {
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+  
+  .gonioscopy-cross::after {
+    top: 50%;
+    height: 2px;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+  
+  .gonioscopy-field {
+    position: absolute;
+    width: 80px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    > div {
+      width: 100% !important;
+      label {
+        text-align: center !important;
+      }
+      div,
+      textarea {
+        width: 100% !important;
+      }
+      .label-wrap {
+        text-align: center !important;
+      }
+    }
+  }
+  
+  /* Adjust field positions for X layout */
+  .gonioscopy-field[data-position$="Top"] {
+    top: 10%;
+    left: 50%;
+  }
+  
+  .gonioscopy-field[data-position$="Right"] {
+    top: 50%;
+    right: 10%;
+    left: auto;
+  }
+  
+  .gonioscopy-field[data-position$="Bottom"] {
+    bottom: 10%;
+    top: auto;
+    left: 50%;
+  }
+  
+  .gonioscopy-field[data-position$="Left"] {
+    top: 50%;
+    left: 10%;
+  }
+  
