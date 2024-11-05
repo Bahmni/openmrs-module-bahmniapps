@@ -47,7 +47,7 @@ export function PatientAlergiesControl(props) {
     reactionData?.setMembers
       ?.filter((reaction) => reaction.display !== "Other non-coded")
       .map((reaction) => {
-        return { name: reaction.names[0].display, uuid: reaction.uuid };
+        return { name: reaction.name.display, uuid: reaction.uuid };
       });
 
   const TransformReactionData = (reactionData) => {
