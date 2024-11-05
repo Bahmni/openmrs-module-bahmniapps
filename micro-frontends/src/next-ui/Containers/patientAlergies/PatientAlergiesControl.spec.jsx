@@ -11,32 +11,29 @@ const mockMedicationResponseData = {
     {
       uuid: "100341AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       display: "Allergic to bee stings",
-      names: [
+      name:
         {
           uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           display: "Bee sting",
-        },
-      ],
+        }
     },
     {
       uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       display: "Allergic to cats",
-      names: [
+      name:
         {
           uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           display: "Cat",
-        },
-      ],
+        }
     },
     {
       uuid: "100343AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       display: "Allergic to dust",
-      names: [
+      name:
         {
           uuid: "100343AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           display: "Dust",
-        },
-      ],
+        }
     },
   ],
 };
@@ -166,7 +163,7 @@ describe("PatientAlergiesControl", () => {
       <IntlProvider locale="en">
         <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>;
       </IntlProvider>
-    );  
+    );
     await waitFor(() => {
       expect(screen.getByText("Allergies")).not.toBeNull();
     });
