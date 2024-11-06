@@ -64,6 +64,10 @@ module.exports = function (grunt) {
         'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
         'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
+        'components/html2pdf/dist/html2pdf.bundle.min.js',
+        'components/pdfmake/build/pdfmake.min.js',
+        'components/pdfmake/build/vfs_fonts.js',
+        'components/html2canvas/build/html2canvas.min.js',
         'micro-frontends-dist/*.min.js'
     ];
 
