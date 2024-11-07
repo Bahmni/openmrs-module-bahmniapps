@@ -9,13 +9,14 @@ angular.module('bahmni.common.displaycontrol.observation')
                 obs.value = self.preProcessMultiSelectObs(obs.value);
             });
 
-            formService.getAllForms().then(function (response) {
-                var formBuildForms = response.data;
-                var obs = self.createObsGroupForForm(bahmniObservations, formBuildForms);
-                if (!hasNoHierarchy) {
-                    updateObservationsWithFormDefinition(obs, formBuildForms);
-                }
-            });
+            if (!hasNoHierarchy) {
+                formService.getAllForms().then(function (response) {
+                    var formBuildFroms = response.data;
+                    // This block builds hierarchy for the passed bahmniObservations
+                    var obs = self.createObsGroupForForm(bahmniObservations, formBuildFroms);
+                    updateObservationsWithFormDefinition(obs, formBuildFroms);
+                });
+            }
         };
 
         self.createMultiSelectObservation = function (observations) {
