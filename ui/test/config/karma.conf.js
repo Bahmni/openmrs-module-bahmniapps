@@ -50,6 +50,7 @@ module.exports = function (config) {
             'app/components/hustle/hustle.js',
             'app/lib/modernizr.custom.80690.js',
             'app/lib/jitsi-meet/external_api.js',
+            'app/lib/html2pdf/html2pdf.bundle.min.js',
             'app/lib/angular-workers/dist/angular-workers.js',
             'app/common/constants.js',
             'app/common/util/init.js',
