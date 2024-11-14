@@ -32,6 +32,7 @@
     "@bower_components/fastclick": "ftlabs/fastclick#1.0.2",
     "@bower_components/fullcalendar": "fullcalendar/fullcalendar#~2.7.1",
     "@bower_components/fullcalendar-scheduler": "fullcalendar/fullcalendar-scheduler#1.3.2",
+
     "@bower_components/jquery": "jquery/jquery-dist#1.9.1",
     "@bower_components/jquery-ui": "components/jqueryui#1.10.2",
     "@bower_components/jquery.cookie": "carhartl/jquery-cookie#1.4.0",
@@ -50,7 +51,9 @@
     "@bower_components/purl": "allmarkedup/purl#2.3.1",
     "@bower_components/select2": "ivaynberg/select2#~3.4",
     "@bower_components/stacktrace-js": "stacktracejs/stacktrace.js#0.6.4",
-    "@bower_components/zeroclipboard": "zeroclipboard/zeroclipboard#~2.1.0"
+    "@bower_components/zeroclipboard": "zeroclipboard/zeroclipboard#~2.1.0",
+    "@bower_components/pdfmake": "bpampuch/pdfmake#~0.1.41",
+    "@bower_components/html2canvas": "niklasvh/html2canvas#~0.4.1"
   },
   "devDependencies": {
     "@bower_components/Cortana": "Yago31/Cortana#~1.2.6",
