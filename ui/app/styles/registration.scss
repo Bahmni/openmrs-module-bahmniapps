@@ -39,8 +39,11 @@
 
 //@import "common/noTouch";
 
-.abnormal-button{
-  margin-left: 40px;
+@media (min-width: 768px) {
+  .abnormal-button{
+    margin-left: 40px;
+  }
 }
+
 
 
