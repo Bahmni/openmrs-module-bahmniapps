@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .service('formRecordTreeBuildService', ['formService', '$window', function (formService, $window) {
+    .service('formRecordTreeBuildService', ['formService', '$window', 'appService', function (formService, $window, appService) {
         var self = this;
         self.formBuildForms = [];
         self.build = function (bahmniObservations, hasNoHierarchy) {
             _.forEach(bahmniObservations, function (obs) {
                 obs.value = self.preProcessMultiSelectObs(obs.value);
             });
-
-            if (!hasNoHierarchy) {
+            if (!appService.getAppDescriptor().getConfigValue('hideFormNumber')) {
                 formService.getAllForms().then(function (response) {
-                    var formBuildFroms = response.data;
-                    // This block builds hierarchy for the passed bahmniObservations
-                    var obs = self.createObsGroupForForm(bahmniObservations, formBuildFroms);
-                    updateObservationsWithFormDefinition(obs, formBuildFroms);
+                    var formBuildForms = response.data;
+                    var obs = self.createObsGroupForForm(bahmniObservations, formBuildForms);
+                    if (!hasNoHierarchy) {
+                        updateObservationsWithFormDefinition(obs, formBuildForms);
+                    }
                 });
             }
         };
