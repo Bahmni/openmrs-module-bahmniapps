@@ -1,4 +1,5 @@
 <section id="dispositionSection" class="block disposition" ng-class="::{'hidden-print':noDispositionsMessage}">
+	<ul show-if-privilege="{{::params.dashboardConfig.requiredPrivilege}}">
     <h2 class="section-title">{{::params | titleTranslate}}</h2>
     <div>
         <table class="dashboard-table history-diagnosis">
@@ -34,4 +35,5 @@
             <div class="placeholder-text">{{::'NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY' | translate}}</div>
         </div>
     </div>
+	</ul>
 </section>
