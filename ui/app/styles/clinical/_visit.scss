@@ -14,15 +14,15 @@
     }
 
     .hierarchy ul li ul li.has-child {
-        font-family: OpenSansSemiBold;
+        font-family: PoppinsSemiBold;
         background: $lightestGray;
 
         ul li {
-            font-family: OpenSans;
+            font-family: Poppins;
             background: #fff;
 
             &.has-child {
-                font-family: OpenSans;
+                font-family: Poppins;
                 background: #fff;
             }
 
@@ -507,7 +507,7 @@ span.labPanel {
         }
 
         th.notes.inline-notes {
-            font-family: "OpenSans", Arial, sans-serif;
+            font-family: "Poppins", Arial, sans-serif;
         }
 
         tr.header td {
@@ -517,7 +517,7 @@ span.labPanel {
         }
 
         tr.header.pending-result td {
-            font-family: "OpenSans", Arial, sans-serif;
+            font-family: "Poppins", Arial, sans-serif;
             color: $darkGray;
         }
 
