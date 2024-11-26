@@ -189,7 +189,7 @@ Below listed fonts are used in the whole Bahmni application.
 $max-page-width: 1300px;
 
 /*  _colors - bahmniTheme:  */
-$bahmniPrimaryColor: #284252;
+$bahmniPrimaryColor: #2e414f;
 $bdsecExtraDarkColor: #1D2F3B;
 $bahmniSecondaryColor: #284251;
 $bahmniTertiaryColor: #457FAC;
@@ -249,9 +249,9 @@ $lighterGrey: #f3f3f3;
 
 //openMrs colors
 $highlight: darken(#009384, 15%);
-$text: darken(#5B57A6, 20%);
-$subtleText: darken($darkerGrey, 25%);
-$subtlerText: $darkerGrey;
+$text: $bahmniPrimaryColor;
+$subtleText: $bahmniPrimaryColor;
+$subtlerText: $bahmniPrimaryColor;
 
 $link: #007FFF;
 $focus: #FFFDF7;
