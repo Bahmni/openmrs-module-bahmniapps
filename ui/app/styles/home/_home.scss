@@ -160,7 +160,7 @@ body {
   width: 100%;
   max-width: 100%;
   font-size: 14px;
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif !important;
 }
 
 .reg-header {
@@ -352,7 +352,7 @@ body {
       select {
         background-color: #FFF;
         border: 1px solid $lighterGray;
-        color: #363463;
+        color: #2e414f;
         height: 25px;
         padding: 0px 10px;
         margin: 0;

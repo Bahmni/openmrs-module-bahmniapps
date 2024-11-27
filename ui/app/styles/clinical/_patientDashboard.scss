@@ -284,7 +284,7 @@ category:  Layout - sections
         }
 
         .disease-date {
-            font-family: OpenSansSemiBold;
+            font-family: PoppinsSemiBold;
             text-decoration: underline;
         }
 
@@ -1038,7 +1038,7 @@ table.pivot-table {
     }
 
     thead th {
-        font-family: OpenSans, Arial, sans-serif;
+        font-family: Poppins, Arial, sans-serif;
         font-weight: normal;
         border-right: 0;
     }
@@ -1080,7 +1080,7 @@ table.pivot-table {
                     display: inline-block;
                     margin-top: 3px;
                     font-weight: normal;
-                    font-family: OpenSans, Arial, sans-serif;
+                    font-family: Poppins, Arial, sans-serif;
                 }
             }
 
@@ -1266,7 +1266,7 @@ table.pivot-table {
 
     .tabular-obs table.tableAsColumn tr:first-child td {
         background: $lightestGray !important;
-        font-family: OpenSansSemiBold;
+        font-family: PoppinsSemiBold;
         color: $darkGray;
     }
 
@@ -1478,7 +1478,7 @@ table.treatments-details-table {
 
             .gender-age {
                 font-weight: 300;
-                font-family: 'OpenSans';
+                font-family: 'Poppins';
             }
         }
     }

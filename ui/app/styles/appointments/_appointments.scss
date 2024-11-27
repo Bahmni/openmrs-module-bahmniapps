@@ -4,7 +4,7 @@
   border-radius: 3px;
   &.active {
     background: rgba(0,0,0,0.5);
-    font-family: OpenSans;
+    font-family: Poppins;
   }
 }
 /*------ page style-------*/
@@ -29,7 +29,7 @@
   height: calc(100vh - 78px);
   background: #fff;
   .service-title {
-    font-family: OpenSans, Arial, sans-serif;
+    font-family: Poppins, Arial, sans-serif;
     padding: 10px;
     margin: 0 0 10px;
     font-size: 16px;
@@ -68,7 +68,7 @@
   z-index: 10;
   right: 175px;
   input {
-    color: #363463;
+    color: #2e414f;
     padding: 2px 25px 2px 10px;
     margin: 0 0 0 5px;
     background-color: #FFF;
