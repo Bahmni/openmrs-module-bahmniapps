@@ -8,7 +8,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             _.forEach(bahmniObservations, function (obs) {
                 obs.value = self.preProcessMultiSelectObs(obs.value);
             });
-            if (!appService.getAppDescriptor().getConfigValue('hideFormNumber')) {
+            if (!appService.getAppDescriptor().getConfigValue('hideFormName')) {
                 formService.getAllForms().then(function (response) {
                     var formBuildForms = response.data;
                     var obs = self.createObsGroupForForm(bahmniObservations, formBuildForms);
