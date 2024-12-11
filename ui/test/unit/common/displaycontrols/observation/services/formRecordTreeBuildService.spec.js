@@ -11,9 +11,29 @@ describe("FormRecordTreeBuildService", function () {
     var allFormsDeferred;
     var formTranslateDeferred;
     var formTranslationsDetails;
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+
+    var mockAppDescriptor = jasmine.createSpyObj('appService', ['getConfigValue']);
+    mockAppDescriptor.getConfigValue.and.returnValue(undefined);
+
+    var mockAppService = jasmine.createSpyObj('appDescriptor', ['getAppDescriptor']);
+    mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
     beforeEach(module("bahmni.common.displaycontrol.observation"));
-    beforeEach(inject(function (_formRecordTreeBuildService_, _$q_, _$rootScope_, _formService_) {
+    beforeEach(function () {
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (key) {
+                if (key === 'hideFormName') {
+                    return false;
+                }
+            }
+        });
+
+        module(function ($provide) {
+            $provide.value('appService', appService);
+        });
+
+        inject(function (_formRecordTreeBuildService_, _$q_, _$rootScope_, _formService_) {
         formRecordTreeBuildService = _formRecordTreeBuildService_;
         formService = _formService_;
         $q = _$q_;
@@ -105,7 +125,8 @@ describe("FormRecordTreeBuildService", function () {
         formDetailDeferred = $q.defer();
         allFormsDeferred = $q.defer();
         formTranslateDeferred = $q.defer();
-    }));
+        });
+    });
 
     it("should construct obs group for single observation from form", function () {
         var obsOne = {
@@ -3238,11 +3259,12 @@ describe("FormRecordTreeBuildService", function () {
 
         let multiSelectObservation = observations[0].value[0];
 
-        expect(multiSelectObservation.concept.shortName).toBe("MD, Medical History");
-        expect(multiSelectObservation.groupMembers.length).toBe(2);
-        expect(multiSelectObservation.type).toBe("multiSelect");
-        expect(multiSelectObservation.groupMembers[0].valueAsString).toBe("Susceptible");
-        expect(multiSelectObservation.groupMembers[1].valueAsString).toBe("Resistant");
+        expect(multiSelectObservation.concept.shortName).toBe("CodedForm");
+        expect(multiSelectObservation.groupMembers.length).toBe(1);
+        expect(multiSelectObservation.groupMembers[0].groupMembers.length).toBe(2);
+        expect(multiSelectObservation.groupMembers[0].type).toBe("multiSelect");
+        expect(multiSelectObservation.groupMembers[0].groupMembers[0].valueAsString).toBe("Susceptible");
+        expect(multiSelectObservation.groupMembers[0].groupMembers[1].valueAsString).toBe("Resistant");
     });
 
     it('should return observations with out hierarchy when hasNoHierarchy is true', function () {
@@ -3356,10 +3378,9 @@ describe("FormRecordTreeBuildService", function () {
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        expect(observations[0].value.length).toBe(2);
-
-        const observationOne = observations[0].value[0];
-        const observationTwo = observations[0].value[1];
+        expect(observations[0].value[0].groupMembers.length, 2);
+        const observationOne = observations[0].value[0].groupMembers[0];
+        const observationTwo = observations[0].value[0].groupMembers[1];
 
         expect(observationOne.concept.shortName).toBe("MD, Medical History");
         expect(observationOne.formFieldPath).toBe("CodedForm.1/5-0");
