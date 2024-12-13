@@ -2,7 +2,7 @@ name: Build and Publish
 on:
   push:
     branches:
-      - UG-Bahmni-Web-885
+      - Bahmni-IPD-master
     paths-ignore:
       - "**.md"
   workflow_dispatch:
