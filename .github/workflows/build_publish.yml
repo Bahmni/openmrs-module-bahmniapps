@@ -2,7 +2,7 @@ name: Build and Publish
 on:
   push:
     branches:
-      - bahmni-web-ipd-840
+    
     paths-ignore:
       - "**.md"
   workflow_dispatch:
