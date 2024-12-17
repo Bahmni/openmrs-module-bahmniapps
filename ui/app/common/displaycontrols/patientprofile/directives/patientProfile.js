@@ -34,12 +34,14 @@
             'configurations', '$q', 'visitService', 'appService',
             function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService, appService) {
                 var controller = function ($scope) {
+                    $scope.navigationLink = appService.getAppDescriptor().getConfigValue('navigationLink');
                     $scope.isProviderRelationship = function (relationship) {
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
                     };
+
+                    $scope.configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
                     $scope.openPatientDashboard = function (patientUuid) {
-                        var configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
-                        $window.open("../clinical/#/" + configName + "/patient/" + patientUuid + "/dashboard");
+                        $window.open("../clinical/#/" + $scope.configName + "/patient/" + patientUuid + "/dashboard");
                     };
                     $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
                     var assignPatientDetails = function () {
