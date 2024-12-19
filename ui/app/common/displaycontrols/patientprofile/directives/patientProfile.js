@@ -38,9 +38,11 @@
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
                     };
                     $scope.configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
+                    $scope.navigationLink = appService.getAppDescriptor().getConfigValue('navigationLink');
                     $scope.getNavigationURL = function() {
-                        $scope.navigationLink = appService.getAppDescriptor().getConfigValue('navigationLink');
-                        return appService.getAppDescriptor().formatUrl($scope.navigationLink, $scope.patient.uuid);
+                        console.log(" patinet UUID : ",$scope.patientUuid);
+                        console.log(" Print : ",appService.getAppDescriptor().formatUrl($scope.navigationLink,{'patientUuid':$scope.patientUuid}));
+                        return appService.getAppDescriptor().formatUrl($scope.navigationLink, {'patientUuid':$scope.patientUuid});
                     }
                     $scope.openPatientDashboard = function (patientUuid) {
                         $window.open("../clinical/#/" + $scope.configName + "/patient/" + patientUuid + "/dashboard");
