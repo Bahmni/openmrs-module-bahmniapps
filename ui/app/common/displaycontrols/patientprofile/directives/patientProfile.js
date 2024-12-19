@@ -40,7 +40,7 @@
                     $scope.configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
                     $scope.navigationLink = appService.getAppDescriptor().getConfigValue('navigationLink');
                     $scope.getNavigationURL = function () {
-                        return appService.getAppDescriptor().formatUrl($scope.navigationLink, { 'patientUuid' : $scope.patientUuid });
+                        return appService.getAppDescriptor().formatUrl($scope.navigationLink, { 'patientUuid': $scope.patientUuid });
                     };
 
                     $scope.openPatientDashboard = function (patientUuid) {
