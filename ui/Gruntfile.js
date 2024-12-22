@@ -13,6 +13,7 @@ module.exports = function (grunt) {
         nodeModules: 'node_modules'
     };
 
+
     var libraryCSSFiles = [
         'components/select2/select2.css',
         'components/ngDialog/css/ngDialog.min.css',
