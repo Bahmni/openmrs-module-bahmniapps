@@ -1,4 +1,3 @@
-
 /*doc
 ---
 title: Colors
@@ -331,4 +330,32 @@ $primaryItalicFont: "OpenSansItalic";
     left: 2px;
     color: $text;
   }
+}
+
+// Grid system mixins
+@mixin column($x, $columns: 12) {
+  display: inline;
+  float: left;
+  width: $total-width * ((($gutter-width + $column-width) * $x - $gutter-width) / ($gutter-width + $column-width * $columns));
+  margin: 0 $total-width * ($gutter-width * 0.5) / ($gutter-width + $column-width * $columns);
+}
+
+// Additional utility mixins
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+}
+
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
 }
