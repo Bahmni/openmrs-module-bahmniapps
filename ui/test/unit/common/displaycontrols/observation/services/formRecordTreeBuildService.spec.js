@@ -11,9 +11,29 @@ describe("FormRecordTreeBuildService", function () {
     var allFormsDeferred;
     var formTranslateDeferred;
     var formTranslationsDetails;
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+
+    var mockAppDescriptor = jasmine.createSpyObj('appService', ['getConfigValue']);
+    mockAppDescriptor.getConfigValue.and.returnValue(undefined);
+
+    var mockAppService = jasmine.createSpyObj('appDescriptor', ['getAppDescriptor']);
+    mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
     beforeEach(module("bahmni.common.displaycontrol.observation"));
-    beforeEach(inject(function (_formRecordTreeBuildService_, _$q_, _$rootScope_, _formService_) {
+    beforeEach(function () {
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (key) {
+                if (key === 'hideFormName') {
+                    return false;
+                }
+            }
+        });
+
+        module(function ($provide) {
+            $provide.value('appService', appService);
+        });
+
+        inject(function (_formRecordTreeBuildService_, _$q_, _$rootScope_, _formService_) {
         formRecordTreeBuildService = _formRecordTreeBuildService_;
         formService = _formService_;
         $q = _$q_;
@@ -105,7 +125,8 @@ describe("FormRecordTreeBuildService", function () {
         formDetailDeferred = $q.defer();
         allFormsDeferred = $q.defer();
         formTranslateDeferred = $q.defer();
-    }));
+        });
+    });
 
     it("should construct obs group for single observation from form", function () {
         var obsOne = {
