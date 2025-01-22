@@ -1,3 +1,5 @@
 <div ng-controller="PatientDashboardRadiologyController" class="dashboard-radiology-section">
+<ul show-if-privilege="{{::config.dashboardConfig.requiredPrivilege}}">
     <bm-documents patient="patient" config="config" encounter-type="'RADIOLOGY'"></bm-documents>
+</ul>	
 </div>
