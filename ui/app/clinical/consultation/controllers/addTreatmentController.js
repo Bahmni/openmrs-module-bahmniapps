@@ -823,8 +823,8 @@ angular.module('bahmni.clinical')
 
             var showRulesInMedication = function (medicationConfig) {
                 $scope.showRulesInMedication = false;
-                if (medicationConfig !== 'undefined' && medicationConfig.tabConfig !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig
-                    !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig.orderSet !== 'undefined') {
+                if (medicationConfig && medicationConfig.tabConfig && medicationConfig.tabConfig.allMedicationTabConfig
+                    && medicationConfig.tabConfig.allMedicationTabConfig.orderSet) {
                     if (medicationConfig.tabConfig.allMedicationTabConfig.orderSet.showRulesInMedication) {
                         $scope.showRulesInMedication = true;
                     }
