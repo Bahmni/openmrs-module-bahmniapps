@@ -1,5 +1,5 @@
 angular.module('bahmni.clients', ['ngRoute', 'ngResource'])
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when('/clients', {
                 templateUrl: 'clientsList.html',
@@ -7,5 +7,5 @@ angular.module('bahmni.clients', ['ngRoute', 'ngResource'])
             })
             .otherwise({
                 redirectTo: '/clients'
-            })
-    }])
+            });
+    }]);
