@@ -126,7 +126,7 @@ angular.module('bahmni.common.conceptSet')
                 const headers = document.querySelectorAll('.table-header');
 
                 targetTexts.forEach(targetText => {
-                    const headerWithText = Array.from(headers).find(header => header.textContent.includes(targetText));
+                    const headerWithText = Array.from(headers).find(header => header.textContent.toLowerCase().includes(targetText.toLowerCase()));
                     if (headerWithText) {
                         const parentDiv = headerWithText.parentElement;
                         parentDiv.style.position = 'relative';
