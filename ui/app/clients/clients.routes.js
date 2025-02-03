@@ -1,5 +1,5 @@
 angular.module('bahmni.clients')
-    .config(['$stateProvider'], function($stateProvider){
+    .config(['$stateProvider'], function ($stateProvider) {
         $stateProvider
             .state('clientsList', {
                 url: '/clients',
@@ -10,5 +10,5 @@ angular.module('bahmni.clients')
                 url: '/clients/edit/:clientId',
                 templateUrl: 'clients/views/editClient.html',
                 controller: 'EditClientController'
-            })
-    })
+            });
+    });
