@@ -13,6 +13,7 @@ module.exports = function (grunt) {
         nodeModules: 'node_modules'
     };
 
+
     var libraryCSSFiles = [
         'components/select2/select2.css',
         'components/ngDialog/css/ngDialog.min.css',
@@ -80,9 +81,9 @@ module.exports = function (grunt) {
     grunt.initConfig({
         yeoman: yeomanConfig,
         watch: {
-            compass: {
+            sass: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
-                tasks: ['compass:debug']
+                tasks: ['sass:debug']
             }
         },
         clean: {
@@ -162,21 +163,38 @@ module.exports = function (grunt) {
                 root: '.'
             }
         },
-        compass: {
+        sass: {
             options: {
-                sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '<%= yeoman.app %>/styles/',
-                imagesDir: '<%= yeoman.app %>/images',
-                javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: '<%= yeoman.app %>/components',
-                relativeAssets: true
+                implementation: require('sass'),
+                sourceMap: true,
+                includePaths: [
+                    '<%= yeoman.app %>/components',
+                    '<%= yeoman.app %>/styles'
+                ]
             },
-            dist: {},
+            dist: {
+                options: {
+                    outputStyle: 'compressed'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles',
+                    src: ['**/*.{scss,sass}'],
+                    dest: '<%= yeoman.app %>/styles/',
+                    ext: '.css'
+                }]
+            },
             debug: {
                 options: {
-                    debugInfo: true
-                }
+                    outputStyle: 'expanded'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles',
+                    src: ['**/*.{scss,sass}'],
+                    dest: '<%= yeoman.app %>/styles/',
+                    ext: '.css'
+                }]
             }
         },
         // Renames files for browser caching purposes
@@ -534,7 +552,7 @@ module.exports = function (grunt) {
         'eslint',
         'copy:nodeModules',
         'clean:dist',
-        'compass:dist',
+        'sass:dist',
         'useminPrepare',
         'ngAnnotate',
         'concat',

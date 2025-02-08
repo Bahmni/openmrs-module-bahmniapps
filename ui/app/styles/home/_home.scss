@@ -21,7 +21,7 @@ $gutter-width: 0;
 $columns: 12;
 $total-width: 100%;
 
-@import "compass";
+@import "bahmni-helper/variables";
 
 /*** grid form elements css start ***/
 .form-field-inline {
