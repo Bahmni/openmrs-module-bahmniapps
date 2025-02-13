@@ -105,4 +105,22 @@ angular.module('bahmni.ot')
                 return attributes;
             }, {});
         };
+
+        this.getFormattedAge = function (birthdate) {
+            if (!birthdate) return "";
+        
+            var birthDate = moment(birthdate);
+            var today = moment();
+        
+            var years = today.diff(birthDate, 'years');
+            birthDate.add(years, 'years');
+        
+            var months = today.diff(birthDate, 'months');
+            birthDate.add(months, 'months');
+        
+            var days = today.diff(birthDate, 'days');
+        
+            return days + "D " + months + "M " + years + "Y";
+        };
+
     }]);

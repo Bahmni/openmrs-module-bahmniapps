@@ -70,6 +70,7 @@ angular.module('bahmni.ot')
                         mappedAppointment.derivedAttributes.expectedStartDate = moment(blockStartDatetime).startOf('day').toDate();
                         mappedAppointment.derivedAttributes.patientIdentifier = mappedAppointment.patient.display.split(' - ')[0];
                         mappedAppointment.derivedAttributes.patientAge = mappedAppointment.patient.person.age;
+                        mappedAppointment.derivedAttributes.patientAgeFormatted = surgicalAppointmentHelper.getFormattedAge(mappedAppointment.patient.person.birthdate);
                         mappedAppointment.derivedAttributes.patientName = mappedAppointment.patient.display.split(' - ')[1];
                         if (mappedAppointment.status === Bahmni.OT.Constants.completed || mappedAppointment.status === Bahmni.OT.Constants.scheduled) {
                             mappedAppointment.derivedAttributes.expectedStartTime = blockStartDatetime;
