@@ -6,7 +6,7 @@ angular.module('bahmni.adt')
             const enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
             $scope.gotoPatientDashboard = function (patientUuid, visitUuid) {
                 var options = $.extend({}, $stateParams);
-                $.extend(options, {patientUuid: patientUuid, visitUuid: visitUuid || null});
+                $.extend(options, { patientUuid: patientUuid, visitUuid: visitUuid || null });
                 if (enableIPDFeature) {
                     $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.mfeIpdDashboard, options, true);
                 } else {
@@ -39,17 +39,17 @@ angular.module('bahmni.adt')
                     v: "full",
                     location_name: $scope.ward.ward.name
                 };
-            
+
                 return queryService.getResponseFromQuery(params).then(function (response) {
                     // Process response data
                     $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus, $scope.iconAttributeConfig.attrName);
                     console.log("Response Data:", response.data); // Debugging
-                    
+
                     // Initialize tableHeadings if undefined
-                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]).filter(function (name) { 
-                        return name !== $scope.iconAttributeConfig.attrName; 
+                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]).filter(function (name) {
+                        return name !== $scope.iconAttributeConfig.attrName;
                     }) : [];
-                
+
                     // Calculate Age and Add "Age" to Table
                     $scope.tableDetails.forEach(function (row) {
                         if (row.Birthdate) {
@@ -58,29 +58,28 @@ angular.module('bahmni.adt')
                             row.Age = "Unknown"; // Handle missing birthdates
                         }
                     });
-                
+
                     // Ensure "Age" column appears in the table
                     if (!$scope.tableHeadings.includes("Age")) {
                         $scope.tableHeadings.push("Age");
                     }
                 });
-                
             };
 
-            function calculateAge(birthdate) {
+            function calculateAge (birthdate) {
                 if (!birthdate) return "Unknown";
-            
+
                 var birth = moment(birthdate, "YYYY-MM-DD");
                 var now = moment();
-            
+
                 var years = now.diff(birth, 'years');
                 birth.add(years, 'years');
-            
+
                 var months = now.diff(birth, 'months');
                 birth.add(months, 'months');
-            
+
                 var days = now.diff(birth, 'days');
-            
+
                 if (years > 0) {
                     return `${years} Y ${months} M`;
                 } else if (months > 0) {
@@ -89,7 +88,5 @@ angular.module('bahmni.adt')
                     return `${days} D`;
                 }
             }
-            
-
             spinner.forPromise(getTableDetails());
         }]);
