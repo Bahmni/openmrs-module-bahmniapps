@@ -1,18 +1,17 @@
 'use strict';
 
-angular.module('bahmni.common.patient').directive('patientSummary', function ($translate) {
+angular.module('bahmni.common.patient')
+    .directive('patientSummary', function ($translate) {
     var link = function ($scope) {
         $scope.showPatientDetails = false;
         $scope.togglePatientDetails = function () {
             $scope.showPatientDetails = !$scope.showPatientDetails;
         };
-
         $scope.onImageClick = function () {
             if ($scope.onImageClickHandler) {
                 $scope.onImageClickHandler();
             }
         };
-
         function calculateAge(birthDate) {
             if (!birthDate) return "";
 
@@ -35,7 +34,7 @@ angular.module('bahmni.common.patient').directive('patientSummary', function ($t
 
         function computeAgeDisplay() {
             if (!$scope.patient || !$scope.patient.birthdate) return;
-            $scope.displayAge = calculateAge($scope.patient.birthdate);
+            $scope.displayAge = calculateAge ($scope.patient.birthdate);
         }
 
         $scope.$watch('patient', computeAgeDisplay);
