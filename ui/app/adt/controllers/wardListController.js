@@ -39,10 +39,57 @@ angular.module('bahmni.adt')
                     v: "full",
                     location_name: $scope.ward.ward.name
                 };
+            
                 return queryService.getResponseFromQuery(params).then(function (response) {
+                    // Process response data
                     $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus, $scope.iconAttributeConfig.attrName);
-                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]).filter(function (name) { return name !== $scope.iconAttributeConfig.attrName; }) : [];
+                    console.log("Response Data:", response.data); // Debugging
+                    
+                    // Initialize tableHeadings if undefined
+                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]).filter(function (name) { 
+                        return name !== $scope.iconAttributeConfig.attrName; 
+                    }) : [];
+                
+                    // Calculate Age and Add "Age" to Table
+                    $scope.tableDetails.forEach(function (row) {
+                        if (row.Birthdate) {
+                            row.Age = calculateAge(row.Birthdate);
+                        } else {
+                            row.Age = "Unknown"; // Handle missing birthdates
+                        }
+                    });
+                
+                    // Ensure "Age" column appears in the table
+                    if (!$scope.tableHeadings.includes("Age")) {
+                        $scope.tableHeadings.push("Age");
+                    }
                 });
+                
             };
+
+            function calculateAge(birthdate) {
+                if (!birthdate) return "Unknown";
+            
+                var birth = moment(birthdate, "YYYY-MM-DD");
+                var now = moment();
+            
+                var years = now.diff(birth, 'years');
+                birth.add(years, 'years');
+            
+                var months = now.diff(birth, 'months');
+                birth.add(months, 'months');
+            
+                var days = now.diff(birth, 'days');
+            
+                if (years > 0) {
+                    return `${years} Y ${months} M`;
+                } else if (months > 0) {
+                    return `${months} M ${days} D`;
+                } else {
+                    return `${days} D`;
+                }
+            }
+            
+
             spinner.forPromise(getTableDetails());
         }]);
