@@ -6,6 +6,270 @@ angular.module('bahmni.common.conceptSet')
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
 
+            function createPrescriptionTable () {
+                var columns = document.querySelectorAll('.form-builder-column');
+                var prescriptionSection = '';
+                var presecriptionElement = '';
+
+                // Find prescription section
+                for (var i = 0; i < columns.length; i++) {
+                    var strongElements = columns[i].getElementsByClassName('test-section-label');
+                    for (var j = 0; j < strongElements.length; j++) {
+                        if (strongElements[j].textContent.trim() === "Prescription") {
+                            prescriptionSection = columns[i];
+                            presecriptionElement = columns[i];
+                        }
+                    }
+                }
+
+                if (prescriptionSection) {
+                    // Create table elements
+                    var table = document.createElement('table');
+                    table.className = 'prescription-table';
+                    var headerRow = document.createElement('tr');
+
+                    // Create header cells
+                    var headers = ['#', 'Right Eye', 'Left Eye'];
+                    headers.forEach(function (headerText) {
+                        var th = document.createElement('th');
+                        th.textContent = headerText;
+                        if (headerText !== '#') {
+                            th.colSpan = '3';
+                        }
+                        headerRow.appendChild(th);
+                    });
+
+                    // Create subheader row
+                    var subHeaderRow = document.createElement('tr');
+                    var rxCell = document.createElement('th');
+                    rxCell.textContent = 'RX';
+                    subHeaderRow.appendChild(rxCell);
+
+                    // Add subheaders for both eyes
+                    ['Right Eye', 'Left Eye'].forEach(function () {
+                        ['SPH', 'CYL', 'Axis'].forEach(function (text) {
+                            var th = document.createElement('th');
+                            th.textContent = text;
+                            subHeaderRow.appendChild(th);
+                        });
+                    });
+
+                    // Create rows with mapped cells for inputs
+                    var rowLabels = ['Distance', 'Near', 'Visual Acuity'];
+                    var rows = rowLabels.map(function (label) {
+                        var tr = document.createElement('tr');
+                        var labelCell = document.createElement('td');
+                        labelCell.textContent = label;
+                        labelCell.className = 'row-label';
+                        tr.appendChild(labelCell);
+
+                        // Add cells for both eyes
+                        ['Right Eye', 'Left Eye'].forEach(function (eye) {
+                            ['SPH', 'CYL', 'Axis'].forEach(function (type) {
+                                var td = document.createElement('td');
+                                td.className = 'input-cell';
+                                td.setAttribute('data-eye', eye);
+                                td.setAttribute('data-type', type);
+                                td.setAttribute('data-row', label);
+                                tr.appendChild(td);
+                            });
+                        });
+
+                        return tr;
+                    });
+
+                    // Assemble table
+                    table.appendChild(headerRow);
+                    table.appendChild(subHeaderRow);
+                    rows.forEach(function (row) {
+                        table.appendChild(row);
+                    });
+
+                    // Create wrapper
+                    var tableWrapper = document.createElement('div');
+                    tableWrapper.className = 'prescription-table-wrapper';
+                    tableWrapper.appendChild(table);
+
+                    // Insert table
+                    if (prescriptionSection.nextSibling) {
+                        prescriptionSection.parentNode.insertBefore(tableWrapper, prescriptionSection.nextSibling);
+                    } else {
+                        prescriptionSection.parentNode.appendChild(tableWrapper);
+                    }
+
+                    presecriptionElement.style.display = 'none';
+
+                    // Move inputs to table cells
+                    var inputWrappers = prescriptionSection.getElementsByClassName('form-builder-row');
+                    Array.prototype.forEach.call(inputWrappers, function (wrapper) {
+                        var label = wrapper.querySelector('label');
+                        if (label) {
+                            var labelText = label.textContent.trim();
+                            var parts = labelText.split(',').map(function (part) { return part.trim(); });
+
+                            if (parts.length === 2) {
+                                var fieldInfo = parts[0].split(' ');
+                                var eye = parts[1];
+                                var row = fieldInfo[0];
+                                if (fieldInfo.length === 3) {
+                                    row = `${fieldInfo[0]} ${fieldInfo[1]}`;
+                                }
+                                if (fieldInfo.length > 1) {
+                                    var type = fieldInfo[fieldInfo.length - 1];
+                                    // Find matching cell
+                                    var cell = table.querySelector(`td[data-eye="${eye}"][data-type="${type}"][data-row="${row}"]`);
+                                    if (cell) {
+                                        // Move the textarea container
+                                        var textareaContainer = wrapper.querySelector('.obs-control-field');
+                                        if (textareaContainer) {
+                                            cell.appendChild(textareaContainer);
+                                            wrapper.style.display = 'none'; // Hide original wrapper
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            function createPGTable () {
+                var columns = document.querySelectorAll('.form-builder-column');
+                var refractionSection = '';
+                var pgObsGroup = '';
+
+                // Find refraction record section
+                for (var i = 0; i < columns.length; i++) {
+                    var strongElements = columns[i].getElementsByClassName('test-section-label');
+                    for (var j = 0; j < strongElements.length; j++) {
+                        if (strongElements[j].textContent.trim() === "REFRACTION RECORD") {
+                            refractionSection = columns[i];
+                            pgObsGroup = columns[i].getElementsByClassName('obsGroup-controls')[0];
+                            break;
+                        }
+                    }
+                    if (refractionSection) break;
+                }
+
+                if (refractionSection) {
+                    // Create table elements
+                    var table = document.createElement('table');
+                    table.className = 'pg-table';
+
+                    // Create header row
+                    var headerRow = document.createElement('tr');
+                    var headers = ['PG Power:', 'Spherical', 'Cylinder', 'Axis', 'V/A with PG'];
+                    headers.forEach(function (headerText, index) {
+                        var th = document.createElement('th');
+                        th.textContent = headerText;
+                        if (index === 0) {
+                            th.className = 'header-cell';
+                            th.colSpan = 2;
+                        }
+                        headerRow.appendChild(th);
+                    });
+
+                    // Create DV (Distance Vision) rows
+                    var dvRow1 = createRow('DV', 'RE:', 'Right Eye PG DV');
+                    var dvRow2 = createSubRow('LE:', 'Left Eye PG DV');
+
+                    // Create NV (Near Vision) rows
+                    var nvRow1 = createRow('NV', 'RE:Add', 'Right Eye PG NV');
+                    var nvRow2 = createSubRow('LE:Add', 'Left Eye PG NV');
+
+                    // Assemble table
+                    var tableWrapper = document.createElement('div');
+                    tableWrapper.className = 'pg-table-wrapper';
+                    table.appendChild(headerRow);
+                    table.appendChild(dvRow1);
+                    table.appendChild(dvRow2);
+                    table.appendChild(nvRow1);
+                    table.appendChild(nvRow2);
+                    tableWrapper.appendChild(table);
+
+                    // Add table to the refraction section
+                    pgObsGroup.appendChild(tableWrapper);
+
+                    // Move inputs to corresponding cells
+                    moveInputsToCells(pgObsGroup, table);
+                }
+            }
+
+            function createRow (mainLabel, subLabel, eyeIdentifier) {
+                var tr = document.createElement('tr');
+
+                // Create main label cell
+                var mainLabelCell = document.createElement('td');
+                mainLabelCell.textContent = mainLabel;
+                mainLabelCell.rowSpan = 2;
+                mainLabelCell.className = 'main-label';
+                tr.appendChild(mainLabelCell);
+
+                // Create sub label cell
+                var subLabelCell = document.createElement('td');
+                subLabelCell.textContent = subLabel;
+                subLabelCell.className = 'sub-label';
+                tr.appendChild(subLabelCell);
+
+                // Create data cells
+                ['Spherical', 'Cylinder', 'Axis', 'V/A with PG'].forEach(function (type) {
+                    var td = document.createElement('td');
+                    td.className = 'input-cell';
+                    td.setAttribute('data-eye', eyeIdentifier);
+                    td.setAttribute('data-type', type);
+                    tr.appendChild(td);
+                });
+
+                return tr;
+            }
+
+            function createSubRow (subLabel, eyeIdentifier) {
+                var tr = document.createElement('tr');
+
+                // Create sub label cell
+                var subLabelCell = document.createElement('td');
+                subLabelCell.textContent = subLabel;
+                subLabelCell.className = 'sub-label';
+                tr.appendChild(subLabelCell);
+
+                // Create data cells
+                ['Spherical', 'Cylinder', 'Axis', 'V/A with PG'].forEach(function (type) {
+                    var td = document.createElement('td');
+                    td.className = 'input-cell';
+                    td.setAttribute('data-eye', eyeIdentifier);
+                    td.setAttribute('data-type', type);
+                    tr.appendChild(td);
+                });
+
+                return tr;
+            }
+
+            function moveInputsToCells (section, table) {
+                var inputWrappers = section.getElementsByClassName('form-builder-row');
+                Array.prototype.forEach.call(inputWrappers, function (wrapper) {
+                    var label = wrapper.querySelector('label');
+                    if (label) {
+                        var labelText = label.textContent.trim();
+                        var matches = labelText.match(/^(.*?),\s*(.*?)\s*PG\s*(DV|NV)$/);
+
+                        if (matches) {
+                            var type = matches[1].trim();
+                            var eye = matches[2].trim() + ' PG ' + matches[3];
+
+                            // Find matching cell
+                            var cell = table.querySelector(`td[data-eye="${eye}"][data-type="${type}"]`);
+                            if (cell) {
+                                var textareaContainer = wrapper.querySelector('.obs-control-field');
+                                if (textareaContainer) {
+                                    cell.appendChild(textareaContainer);
+                                    wrapper.style.display = 'none';
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
             function createEyeDiagram (eyeSide, inputs) {
                 var diagram = document.createElement('div');
                 diagram.className = 'eye-diagram ' + eyeSide + '-eye';
@@ -215,6 +479,8 @@ angular.module('bahmni.common.conceptSet')
                     if (newValue) {
                         $timeout(function () {
                             findItemWithText();
+                            createPrescriptionTable();
+                            createPGTable();
                         }, 0);
                     }
                 });
