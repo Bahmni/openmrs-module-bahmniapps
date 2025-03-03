@@ -6,7 +6,7 @@ angular.module('bahmni.adt')
             const enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
             $scope.gotoPatientDashboard = function (patientUuid, visitUuid) {
                 var options = $.extend({}, $stateParams);
-                $.extend(options, {patientUuid: patientUuid, visitUuid: visitUuid || null});
+                $.extend(options, { patientUuid: patientUuid, visitUuid: visitUuid || null });
                 if (enableIPDFeature) {
                     $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.mfeIpdDashboard, options, true);
                 } else {
