@@ -9,14 +9,13 @@ angular.module('bahmni.common.conceptSet')
             function createPrescriptionTable () {
                 var columns = document.querySelectorAll('.form-builder-column');
                 var prescriptionSection = '';
-                var presecriptionElement = '';
 
                 // Find prescription section
                 for (var i = 0; i < columns.length; i++) {
                     var strongElements = columns[i].getElementsByClassName('test-section-label');
                     for (var j = 0; j < strongElements.length; j++) {
-                        if (strongElements[j].textContent.trim() === "Prescription") {
-                            prescriptionSection = columns[i];
+                        if (strongElements[j].textContent.trim().indexOf("Eye Glass Treatment") !== -1) {
+                            prescriptionSection = columns[i].getElementsByClassName('obsGroup-controls')[0];
                             presecriptionElement = columns[i];
                         }
                     }
@@ -34,7 +33,7 @@ angular.module('bahmni.common.conceptSet')
                         var th = document.createElement('th');
                         th.textContent = headerText;
                         if (headerText !== '#') {
-                            th.colSpan = '3';
+                            th.colSpan = '4';
                         }
                         headerRow.appendChild(th);
                     });
@@ -47,7 +46,7 @@ angular.module('bahmni.common.conceptSet')
 
                     // Add subheaders for both eyes
                     ['Right Eye', 'Left Eye'].forEach(function () {
-                        ['SPH', 'CYL', 'Axis'].forEach(function (text) {
+                        ['SPH', 'CYL', 'Axis', 'V/A'].forEach(function (text) {
                             var th = document.createElement('th');
                             th.textContent = text;
                             subHeaderRow.appendChild(th);
@@ -55,7 +54,7 @@ angular.module('bahmni.common.conceptSet')
                     });
 
                     // Create rows with mapped cells for inputs
-                    var rowLabels = ['Distance', 'Near', 'Visual Acuity'];
+                    var rowLabels = ['Distance', 'Near'];
                     var rows = rowLabels.map(function (label) {
                         var tr = document.createElement('tr');
                         var labelCell = document.createElement('td');
@@ -65,7 +64,7 @@ angular.module('bahmni.common.conceptSet')
 
                         // Add cells for both eyes
                         ['Right Eye', 'Left Eye'].forEach(function (eye) {
-                            ['SPH', 'CYL', 'Axis'].forEach(function (type) {
+                            ['SPH', 'CYL', 'Axis', 'V/A'].forEach(function (type) {
                                 var td = document.createElement('td');
                                 td.className = 'input-cell';
                                 td.setAttribute('data-eye', eye);
@@ -91,45 +90,8 @@ angular.module('bahmni.common.conceptSet')
                     tableWrapper.appendChild(table);
 
                     // Insert table
-                    if (prescriptionSection.nextSibling) {
-                        prescriptionSection.parentNode.insertBefore(tableWrapper, prescriptionSection.nextSibling);
-                    } else {
-                        prescriptionSection.parentNode.appendChild(tableWrapper);
-                    }
 
-                    presecriptionElement.style.display = 'none';
-
-                    // Move inputs to table cells
-                    var inputWrappers = prescriptionSection.getElementsByClassName('form-builder-row');
-                    Array.prototype.forEach.call(inputWrappers, function (wrapper) {
-                        var label = wrapper.querySelector('label');
-                        if (label) {
-                            var labelText = label.textContent.trim();
-                            var parts = labelText.split(',').map(function (part) { return part.trim(); });
-
-                            if (parts.length === 2) {
-                                var fieldInfo = parts[0].split(' ');
-                                var eye = parts[1];
-                                var row = fieldInfo[0];
-                                if (fieldInfo.length === 3) {
-                                    row = `${fieldInfo[0]} ${fieldInfo[1]}`;
-                                }
-                                if (fieldInfo.length > 1) {
-                                    var type = fieldInfo[fieldInfo.length - 1];
-                                    // Find matching cell
-                                    var cell = table.querySelector(`td[data-eye="${eye}"][data-type="${type}"][data-row="${row}"]`);
-                                    if (cell) {
-                                        // Move the textarea container
-                                        var textareaContainer = wrapper.querySelector('.obs-control-field');
-                                        if (textareaContainer) {
-                                            cell.appendChild(textareaContainer);
-                                            wrapper.style.display = 'none'; // Hide original wrapper
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
+                    prescriptionSection.prepend(tableWrapper);
                 }
             }
 
@@ -246,6 +208,7 @@ angular.module('bahmni.common.conceptSet')
 
             function moveInputsToCells (section, table) {
                 var inputWrappers = section.getElementsByClassName('form-builder-row');
+
                 Array.prototype.forEach.call(inputWrappers, function (wrapper) {
                     var label = wrapper.querySelector('label');
                     if (label) {
@@ -261,8 +224,41 @@ angular.module('bahmni.common.conceptSet')
                             if (cell) {
                                 var textareaContainer = wrapper.querySelector('.obs-control-field');
                                 if (textareaContainer) {
+                                    var dataEye = cell.getAttribute('data-eye');
+                                    var dataType = cell.getAttribute('data-type');
                                     cell.appendChild(textareaContainer);
                                     wrapper.style.display = 'none';
+                                    var textarea = textareaContainer.querySelector('textarea');
+                                    if (textarea) {
+                                        textarea.addEventListener('change', function () {
+                                            var mappings = {
+                                                'Right Eye PG DV,Spherical': 'Right Eye,SPH,Distance',
+                                                'Right Eye PG DV,Cylinder': 'Right Eye,CYL,Distance',
+                                                'Right Eye PG DV,Axis': 'Right Eye,Axis,Distance',
+                                                'Right Eye PG DV,V/A with PG': 'Right Eye,V/A,Distance',
+                                                'Left Eye PG DV,Spherical': 'Left Eye,SPH,Distance',
+                                                'Left Eye PG DV,Cylinder': 'Left Eye,CYL,Distance',
+                                                'Left Eye PG DV,Axis': 'Left Eye,Axis,Distance',
+                                                'Left Eye PG DV,V/A with PG': 'Left Eye,V/A,Distance',
+                                                'Right Eye PG NV,Spherical': 'Right Eye,SPH,Near',
+                                                'Right Eye PG NV,Cylinder': 'Right Eye,CYL,Near',
+                                                'Right Eye PG NV,Axis': 'Right Eye,Axis,Near',
+                                                'Right Eye PG NV,V/A with PG': 'Right Eye,V/A,Near',
+                                                'Left Eye PG NV,Spherical': 'Left Eye,SPH,Near',
+                                                'Left Eye PG NV,Cylinder': 'Left Eye,CYL,Near',
+                                                'Left Eye PG NV,Axis': 'Left Eye,Axis,Near',
+                                                'Left Eye PG NV,V/A with PG': 'Left Eye,V/A,Near'
+                                            };
+
+                                            var key = `${dataEye},${dataType}`;
+                                            var targetCell = mappings[key];
+                                            var [eyeParam, typeParam, rowParam] = targetCell.split(',');
+                                            var targetElement = document.querySelector(`td[data-eye="${eyeParam}"][data-type="${typeParam}"][data-row="${rowParam}"]`);
+                                            if (targetElement) {
+                                                targetElement.innerText = textarea.value;
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
