@@ -16,7 +16,7 @@ angular.module('bahmni.common.conceptSet')
                     for (var j = 0; j < strongElements.length; j++) {
                         if (strongElements[j].textContent.trim().indexOf("Eye Glass Treatment") !== -1) {
                             prescriptionSection = columns[i].getElementsByClassName('obsGroup-controls')[0];
-                            presecriptionElement = columns[i];
+                            // presecriptionElement = columns[i];
                         }
                     }
                 }
@@ -228,28 +228,30 @@ angular.module('bahmni.common.conceptSet')
                                     var dataType = cell.getAttribute('data-type');
                                     cell.appendChild(textareaContainer);
                                     wrapper.style.display = 'none';
+
+                                    var mappings = {
+                                        'Right Eye PG DV,Spherical': 'Right Eye,SPH,Distance',
+                                        'Right Eye PG DV,Cylinder': 'Right Eye,CYL,Distance',
+                                        'Right Eye PG DV,Axis': 'Right Eye,Axis,Distance',
+                                        'Right Eye PG DV,V/A with PG': 'Right Eye,V/A,Distance',
+                                        'Left Eye PG DV,Spherical': 'Left Eye,SPH,Distance',
+                                        'Left Eye PG DV,Cylinder': 'Left Eye,CYL,Distance',
+                                        'Left Eye PG DV,Axis': 'Left Eye,Axis,Distance',
+                                        'Left Eye PG DV,V/A with PG': 'Left Eye,V/A,Distance',
+                                        'Right Eye PG NV,Spherical': 'Right Eye,SPH,Near',
+                                        'Right Eye PG NV,Cylinder': 'Right Eye,CYL,Near',
+                                        'Right Eye PG NV,Axis': 'Right Eye,Axis,Near',
+                                        'Right Eye PG NV,V/A with PG': 'Right Eye,V/A,Near',
+                                        'Left Eye PG NV,Spherical': 'Left Eye,SPH,Near',
+                                        'Left Eye PG NV,Cylinder': 'Left Eye,CYL,Near',
+                                        'Left Eye PG NV,Axis': 'Left Eye,Axis,Near',
+                                        'Left Eye PG NV,V/A with PG': 'Left Eye,V/A,Near'
+                                    };
                                     var textarea = textareaContainer.querySelector('textarea');
+                                    var select = textareaContainer.querySelector('.Select-control');
+
                                     if (textarea) {
                                         textarea.addEventListener('change', function () {
-                                            var mappings = {
-                                                'Right Eye PG DV,Spherical': 'Right Eye,SPH,Distance',
-                                                'Right Eye PG DV,Cylinder': 'Right Eye,CYL,Distance',
-                                                'Right Eye PG DV,Axis': 'Right Eye,Axis,Distance',
-                                                'Right Eye PG DV,V/A with PG': 'Right Eye,V/A,Distance',
-                                                'Left Eye PG DV,Spherical': 'Left Eye,SPH,Distance',
-                                                'Left Eye PG DV,Cylinder': 'Left Eye,CYL,Distance',
-                                                'Left Eye PG DV,Axis': 'Left Eye,Axis,Distance',
-                                                'Left Eye PG DV,V/A with PG': 'Left Eye,V/A,Distance',
-                                                'Right Eye PG NV,Spherical': 'Right Eye,SPH,Near',
-                                                'Right Eye PG NV,Cylinder': 'Right Eye,CYL,Near',
-                                                'Right Eye PG NV,Axis': 'Right Eye,Axis,Near',
-                                                'Right Eye PG NV,V/A with PG': 'Right Eye,V/A,Near',
-                                                'Left Eye PG NV,Spherical': 'Left Eye,SPH,Near',
-                                                'Left Eye PG NV,Cylinder': 'Left Eye,CYL,Near',
-                                                'Left Eye PG NV,Axis': 'Left Eye,Axis,Near',
-                                                'Left Eye PG NV,V/A with PG': 'Left Eye,V/A,Near'
-                                            };
-
                                             var key = `${dataEye},${dataType}`;
                                             var targetCell = mappings[key];
                                             var [eyeParam, typeParam, rowParam] = targetCell.split(',');
@@ -257,6 +259,30 @@ angular.module('bahmni.common.conceptSet')
                                             if (targetElement) {
                                                 targetElement.innerText = textarea.value;
                                             }
+                                        });
+                                    }
+                                    if (select) {
+                                        var childField = textareaContainer.querySelector('.obs-control-select-wrapper');
+                                        if (childField) {
+                                            childField.classList.add('w-full');
+                                        }
+                                        var observer = new MutationObserver(function (mutations) {
+                                            mutations.forEach(function (mutation) {
+                                                if (mutation.type === 'childList') {
+                                                    var valueField = select.querySelector('.Select-value-label');
+                                                    var key = `${dataEye},${dataType}`;
+                                                    var targetCell = mappings[key];
+                                                    var [eyeParam, typeParam, rowParam] = targetCell.split(',');
+                                                    var targetElement = document.querySelector(`td[data-eye="${eyeParam}"][data-type="${typeParam}"][data-row="${rowParam}"]`);
+                                                    if (targetElement) {
+                                                        targetElement.innerText = valueField.innerText;
+                                                    }
+                                                }
+                                            });
+                                        });
+
+                                        observer.observe(select, {
+                                            childList: true
                                         });
                                     }
                                 }
