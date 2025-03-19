@@ -23,6 +23,7 @@ export const GET_FORMS_BASE_URL = RESTWS_V1 + "/form/{formUuid}";
 export const GET_FORM_TRANSLATE_URL = RESTWS_V1 + "/bahmniie/form/translate";
 export const FETCH_CONCEPT_URL = RESTWS_V1 + "/concept/{conceptUuid}?v=full&locale={locale}";
 export const BAHMNI_ENCOUNTER_URL = RESTWS_V1 + "/bahmnicore/bahmniencounter";
+export const ODOO_CONNECTOR_URL = RESTWS_V1 + "/odooconnector";
 export const ENCOUNTER_TYPE_URL = RESTWS_V1 + "/encountertype/{encounterType}";
 export const GET_ALLERGIES_URL = "/openmrs/ws/fhir2/R4/AllergyIntolerance?patient={patientId}&_summary=data"
 export const FORM_TRANSLATIONS_URL =  RESTWS_V1 + "/bahmniie/form/translations";

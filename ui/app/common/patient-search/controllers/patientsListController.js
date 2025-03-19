@@ -220,6 +220,8 @@ angular.module('bahmni.common.patientSearch')
         $scope.forwardPatient = function (patient, heading) {
             var options = $.extend({}, $stateParams);
             $rootScope.patientAdmitLocationStatus = patient.Status;
+            $rootScope.selectedPatient = patient;
+
             $.extend(options, {
                 patientUuid: patient.uuid,
                 visitUuid: patient.activeVisitUuid || null,

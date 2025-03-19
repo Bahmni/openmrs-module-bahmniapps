@@ -102,6 +102,7 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniCommonsSearchUrl: BAHMNI_COMMONS + "/search",
         bahmniLabOrderResultsUrl: BAHMNI_CORE + "/labOrderResults",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
+        odooConnectorUrl: RESTWS_V1 + "/odooconnector",
         conceptUrl: RESTWS_V1 + "/concept",
         bahmniConceptAnswerUrl: RESTWS_V1 + "/bahmniconceptanswer",
         conceptSearchByFullNameUrl: RESTWS_V1 + "/concept?s=byFullySpecifiedName",

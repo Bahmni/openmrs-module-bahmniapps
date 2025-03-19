@@ -29,8 +29,8 @@ angular.module('bahmni.common.domain')
 
             var getBacteriologyGroupMembers = function (encounter) {
                 var addBacteriologyMember = function (bacteriologyGroupMembers, member) {
-                    bacteriologyGroupMembers = member.groupMembers.length ? bacteriologyGroupMembers.concat(member.groupMembers) :
-                        bacteriologyGroupMembers.concat(member);
+                    bacteriologyGroupMembers = member.groupMembers.length ? bacteriologyGroupMembers.concat(member.groupMembers)
+                        : bacteriologyGroupMembers.concat(member);
                     return bacteriologyGroupMembers;
                 };
                 return encounter.extensions && encounter.extensions.mdrtbSpecimen ? encounter.extensions.mdrtbSpecimen.map(function (observation) {
@@ -97,15 +97,30 @@ angular.module('bahmni.common.domain')
                 }
             };
 
+            this.sendToOdoo = function (encounterData) {
+                var obs = encounterData.observations;
+                if (obs && obs.length > 0) {
+                    var form = obs[0].formFieldPath.split('.')[0].toLowerCase();
+                    if (form === 'optometrist assessment') {
+                        encounterData.patientId = $rootScope.selectedPatient.extraIdentifierVal;
+                        return $http.post(Bahmni.Common.Constants.odooConnectorUrl, encounterData, {
+                            withCredentials: true
+                        });
+                    }
+                }
+            };
+
             this.create = function (encounter) {
                 encounter = this.buildEncounter(encounter);
 
+                this.sendToOdoo(encounter);
                 return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, encounter, {
                     withCredentials: true
                 });
             };
 
             this.delete = function (encounterUuid, reason) {
+                this.sendToOdoo({encounterUuid: encounterUuid, reason: reason});
                 return $http.delete(Bahmni.Common.Constants.bahmniEncounterUrl + "/" + encounterUuid, {
                     params: {reason: reason}
                 });
@@ -116,8 +131,8 @@ angular.module('bahmni.common.domain')
             }
 
             var deleteIfImageOrVideoObsIsVoided = function (obs) {
-                if (obs.voided && obs.groupMembers && !obs.groupMembers.length && obs.value
-                    && isObsConceptClassVideoOrImage(obs)) {
+                if (obs.voided && obs.groupMembers && !obs.groupMembers.length && obs.value &&
+                    isObsConceptClassVideoOrImage(obs)) {
                     var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + obs.value;
                     $http.delete(url, {withCredentials: true});
                 }
