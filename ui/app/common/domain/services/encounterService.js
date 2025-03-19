@@ -99,10 +99,10 @@ angular.module('bahmni.common.domain')
 
             this.sendToOdoo = function (encounterData) {
                 var obs = encounterData.observations;
-
                 if (obs && obs.length > 0) {
                     var form = obs[0].formFieldPath.split('.')[0].toLowerCase();
                     if (form === 'optometrist assessment') {
+                        encounterData.patientId = $rootScope.selectedPatient.extraIdentifierVal;
                         return $http.post(Bahmni.Common.Constants.odooConnectorUrl, encounterData, {
                             withCredentials: true
                         });
