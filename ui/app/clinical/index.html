@@ -44,8 +44,6 @@
         </div>
         <link rel="stylesheet" href="../components/offline/themes/{{getLocaleCSS()}}.css">
 
-        <script src='https://meet.jit.si/external_api.js'></script>
-
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="../lib/modernizr.custom.80690.js"></script>
@@ -572,12 +570,15 @@
         <script src="/bahmni_config/openmrs/apps/clinical/common/diagnosisServiceConfig.js"></script>
 
         <!-- HTML to PDF -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.41/pdfmake.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+        <script src="../components/html2pdf.js/html2pdf.bundle.min.js"></script>
+        <script src="../components/pdfmake/pdfmake.min.js"></script>
+        <script src="../components/pdfmake/vfs_fonts.js"></script>
+        <script src="../components/html2canvas/html2canvas.min.js"></script>
 
+        <!-- Jitsi -->
+        <script src="../components/lib-jitsi-meet/external_api.min.js"></script>
+        
         <!-- Marked -->
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="../components/marked/marked.min.js"></script>
     </body>
 </html>

@@ -349,6 +349,52 @@ module.exports = function (grunt) {
                         src: [
                             '*.*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/html2canvas/dist/',
+                        dest: '<%= yeoman.app %>/components/html2canvas/',
+                        src: [
+                            'html2canvas.min.js'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/html2pdf.js/dist/',
+                        dest: '<%= yeoman.app %>/components/html2pdf.js/',
+                        src: [
+                            'html2pdf.bundle.min.js'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/pdfmake/build/',
+                        dest: '<%= yeoman.app %>/components/pdfmake/',
+                        src: [
+                            'pdfmake.min.js',
+                            'vfs_fonts.js'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/marked/',
+                        dest: '<%= yeoman.app %>/components/marked/',
+                        src: [
+                            'marked.min.js'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/lib-jitsi-meet-dist/dist/',
+                        dest: '<%= yeoman.app %>/components/lib-jitsi-meet/',
+                        src: [
+                            'external_api.min.js'
+                        ]
                     }
                 ]
             }
