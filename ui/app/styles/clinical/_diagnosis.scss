@@ -69,7 +69,7 @@
         box-sizing: border-box;
         border-bottom: none;
 
-        @media screen and(min-width: 992px) {
+        @media screen and (min-width: 992px) {
             border-bottom: 1px solid $lightGray;
         }
     }
@@ -442,7 +442,7 @@
             right: 20px;
             bottom: 20px;
 
-            @media screen and(min-width: 992px) {
+            @media screen and (min-width: 992px) {
                 top: 20px;
                 bottom: auto;
                 right: 215px;
@@ -747,7 +747,7 @@
         .col2.notes-subscriber {
             display: none;
 
-            @media screen and(min-width: 768px) {
+            @media screen and (min-width: 768px) {
                 display: block;
             }
         }
