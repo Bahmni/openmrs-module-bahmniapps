@@ -1,4 +1,5 @@
 <div ng-class="{'template-container':hideTitle}">
+	<ul show-if-privilege="{{::params.dashboardConfig.requiredPrivilege}}">
     <div class="conditions-display-contorl-overflow">
         <div class="block hierarchy dashboard-section">
             <h2 ng-click="openSummaryDialog()"
@@ -51,4 +52,5 @@
             </div>
         </div>
     </div>
+	</ul>
 </div>
