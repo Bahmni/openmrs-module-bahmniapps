@@ -67,6 +67,13 @@ module.exports = function (grunt) {
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
         'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
 
+        'components/html2pdf.js/html2pdf.bundle.min.js',
+        'components/pdfmake/pdfmake.min.js',
+        'components/pdfmake/vfs_fonts.js',
+        'components/html2canvas/html2canvas.min.js',
+        'components/marked/marked.min.js',
+        'components/lib-jitsi-meet/external_api.min.js',
+
         'micro-frontends-dist/shared.min.js',
         'micro-frontends-dist/ipd.min.js',
         'micro-frontends-dist/next-ui.min.js'
@@ -538,7 +545,7 @@ module.exports = function (grunt) {
             files: {
                 expand: true,
                 cwd: '<%= yeoman.dist %>',
-                src: ['**/*.min.*.js', '!micro-frontends-dist/**/*.js'],
+                src: ['**/*.min.*.js', '!micro-frontends-dist/**/*.js', '!**/html2pdf.bundle.min.*.js'],
                 dest: '<%= yeoman.dist %>'
             }
         },
