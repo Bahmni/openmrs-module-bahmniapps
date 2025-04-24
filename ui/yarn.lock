@@ -693,10 +693,10 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-bdsec-bahmni-form-controls@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/bdsec-bahmni-form-controls/-/bdsec-bahmni-form-controls-0.0.4.tgz#c586d20322669f928727c8739e1d29dab5df6be5"
-  integrity sha512-9AZwX6AOSU/oQ8l7S4N+5Qrbf5EQu2zQiJGvbkVNivYjkkE4vXsTlhV81fYy1VFFh1l/N1by0GVEdvDRMrWoqA==
+bdsec-form-controls@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/bdsec-form-controls/-/bdsec-form-controls-0.0.6.tgz#b7de86b9c8af540f0b7ebd4b6475bf29ba90ed33"
+  integrity sha512-yiU/Un+RIiREyT9d2v30iRzBqed+DYteR46emYbmWUvueI0NvnRRidYck+emx69W204XdxTiHnbh1AjalR1MSQ==
   dependencies:
     base64-inline-loader "^1.1.0"
     classnames "^2.2.5"
