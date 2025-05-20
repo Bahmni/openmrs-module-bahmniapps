@@ -106,12 +106,51 @@ angular.module("bahmni.common.domain").service("encounterService", [
             }
         };
 
+        var getDiagnosis = function (response, counsellingForm) {
+            var ICD11Obs = [];
+            var counsellingIDs = counsellingForm.map(function (form) {
+                return form.formFieldPath;
+            });
+
+            if (response.observations) {
+                ICD11Obs = response.observations.filter(function (item) {
+                    return (
+                  item.concept &&
+                  item.concept.name.indexOf("ICD 11 Diagnosis") !== -1 &&
+                  item.formFieldPath.indexOf("Counselling Form") === -1
+                    );
+                }).map(function (item) {
+                    return Object.assign({}, item, {
+                        formFieldPath: counsellingForm.find(function (form) {
+                            return form.name === item.concept.name;
+                        }).formFieldPath
+                    });
+                });
+            }
+
+            var removedCounselling = [];
+
+            if (response.observations) {
+                removedCounselling = response.observations.filter(function (item) {
+                    return counsellingIDs.indexOf(item.formFieldPath) === -1;
+                });
+            }
+            if (ICD11Obs.length > 0) {
+                var payload = Object.assign({}, response, {
+                    encounterDateTime: Date.now(),
+                    observations: removedCounselling.concat(ICD11Obs)
+                });
+                return payload;
+            }
+            return response;
+        };
+
         this.sendToOdoo = function (encounterData) {
             var obs = encounterData.observations;
             if (obs && obs.length > 0) {
                 var form = obs[0].formFieldPath.split(".")[0].toLowerCase();
                 if (form === "optometrist assessment") {
-                    encounterData.patientId = $rootScope.selectedPatient.extraIdentifierVal;
+                    encounterData.patientId = $rootScope.patientIdentifier;
                     return $http.post(Bahmni.Common.Constants.odooConnectorUrl, encounterData, {
                         withCredentials: true
                     });
@@ -121,20 +160,119 @@ angular.module("bahmni.common.domain").service("encounterService", [
 
         this.create = function (encounter) {
             encounter = this.buildEncounter(encounter);
-
-            return $http
-        .post(Bahmni.Common.Constants.bahmniEncounterUrl, encounter, {
-            withCredentials: true
-        })
+            return getCounsellingForm().then(function (res) {
+                var counsellingObs = getDiagnosis(encounter, res);
+                return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, counsellingObs, {
+                    withCredentials: true
+                });
+            })
         .then(
           function (response) {
               encounter.encounterUuid = response.data.encounterUuid;
               encounter.encounterDateTime = response.data.encounterDateTime;
+              encounter.observations = getGlassObs(response.data);
               this.sendToOdoo(encounter);
               return response;
           }.bind(this)
         );
         };
+
+        var parseForm = function (form) {
+            var formName = form.name;
+            var formVersion = form.version;
+            var data = JSON.parse(form.resources[0].value);
+
+            var control = null;
+            for (var i = 0; i < data.controls.length; i++) {
+                var group = data.controls[i];
+                for (var j = 0; j < group.controls.length; j++) {
+                    if (group.controls[j].concept.name.indexOf("ICD 11 Diagnosis") !== -1) {
+                        control = group;
+                        break;
+                    }
+                }
+                if (control) break;
+            }
+
+            if (control) {
+                var controlIndex = -1;
+                for (var k = 0; k < data.controls.length; k++) {
+                    if (data.controls[k].id === control.id) {
+                        controlIndex = k;
+                        break;
+                    }
+                }
+
+                var fields = [];
+                for (var m = 0; m < control.controls.length; m++) {
+                    var item = control.controls[m];
+                    if (item.concept.name.indexOf("ICD 11 Diagnosis") !== -1) {
+                        fields.push({
+                            name: item.concept.name,
+                            formFieldPath: formName + "." + formVersion + "/" + item.label.id + "-" + controlIndex
+                        });
+                    }
+                }
+                return fields;
+            }
+
+            return [];
+        };
+
+        function getCounsellingForm () {
+            return $http.get(Bahmni.Common.Constants.latestPublishedForms, {
+                params: {
+                    formType: "v2"
+                }
+            }).then(function (response) {
+                var counsellingForm = response.data.find(function (form) {
+                    return form.name === "Counselling Form";
+                });
+                if (counsellingForm) {
+                    return $http.get(Bahmni.Common.Constants.formUrl + "/" + counsellingForm.uuid, {
+                        params: {
+                            v: "custom:(id,uuid,name,version,published,auditInfo,resources:(value,dataType,uuid))"
+                        }
+                    }).then(function (res) {
+                        return parseForm(res.data);
+                    });
+                }
+            });
+        }
+
+        var GLASS_CONCEPT_NAMES = [
+            "Spherical, Right Eye PG DV",
+            "Spherical, Left Eye PG DV",
+            "Cylinder, Right Eye PG DV",
+            "Cylinder, Left Eye PG DV",
+            "Axis, Right Eye PG DV",
+            "Axis, Left Eye PG DV",
+            "V/A with PG, Right Eye PG DV",
+            "V/A with PG, Left Eye PG DV",
+            "Spherical, Right Eye PG NV",
+            "Spherical, Left Eye PG NV",
+            "Cylinder, Right Eye PG NV",
+            "Cylinder, Left Eye PG NV",
+            "Axis, Right Eye PG NV",
+            "Axis, Left Eye PG NV",
+            "V/A with PG, Right Eye PG NV",
+            "V/A with PG, Left Eye PG NV",
+            "Type of glass prescribed"
+        ];
+
+        function getGlassObs (response) {
+            var glassObs = [];
+
+            if (response.observations) {
+                response.observations.forEach((obs) => {
+                    if (obs.concept && GLASS_CONCEPT_NAMES.includes(obs.concept.name)) {
+                        glassObs.push(obs);
+                    }
+                });
+            }
+
+            return glassObs;
+        }
 
         this.delete = function (encounterUuid, reason) {
             this.sendToOdoo({ encounterUuid: encounterUuid, reason: reason });

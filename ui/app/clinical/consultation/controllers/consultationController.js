@@ -16,6 +16,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
             $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
+            $rootScope.patientIdentifier = patientContext.patient.identifier;
             $scope.showDashboardMenu = false;
             $scope.showMobileMenu = false;
             $scope.stateChange = function () {
