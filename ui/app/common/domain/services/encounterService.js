@@ -257,7 +257,11 @@ angular.module("bahmni.common.domain").service("encounterService", [
             "Axis, Left Eye PG NV",
             "V/A with PG, Right Eye PG NV",
             "V/A with PG, Left Eye PG NV",
-            "Type of glass prescribed"
+            "Refractive Index",
+            "Lens Material",
+            "Lens Form",
+            "Bifocal Specifications",
+            "Tint Selection"
         ];
 
         function getGlassObs (response) {
