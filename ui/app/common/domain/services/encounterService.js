@@ -120,10 +120,11 @@ angular.module("bahmni.common.domain").service("encounterService", [
                   item.formFieldPath.indexOf("Counselling Form") === -1
                     );
                 }).map(function (item) {
+                    var getPaths = counsellingForm.find(function (form) {
+                        return form.name === item.concept.name;
+                    });
                     return Object.assign({}, item, {
-                        formFieldPath: counsellingForm.find(function (form) {
-                            return form.name === item.concept.name;
-                        }).formFieldPath
+                        formFieldPath: getPaths.formFieldPath
                     });
                 });
             }
@@ -261,6 +262,7 @@ angular.module("bahmni.common.domain").service("encounterService", [
             "Lens Material",
             "Lens Form",
             "Bifocal Specifications",
+            "Surface Treatment",
             "Tint Selection"
         ];
 

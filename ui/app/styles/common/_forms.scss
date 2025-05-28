@@ -411,7 +411,6 @@
 .pg-table-wrapper {
   margin: 20px 0;
   width: 100%;
-  overflow-x: auto;
 
   &.obs-comment-section-wrap,
   .obs-comment-section-wrap {
@@ -526,4 +525,8 @@
 
 .w-full {
   width: 100% !important;
+}
+
+.Select-menu-outer, .Select-menu, .Select-option {
+  z-index: 1000 !important;
 }
