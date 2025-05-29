@@ -530,3 +530,12 @@
 .Select-menu-outer, .Select-menu, .Select-option {
   z-index: 1000 !important;
 }
+
+.form-control-buttons:has(button) {
+  display: flex !important;
+  width: auto !important;
+  button {
+    width: 100% !important;
+    min-width: 5rem !important;
+  }
+}
