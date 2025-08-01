@@ -45,7 +45,7 @@
     "MEDICATIONS_ACTIONS_LABEL": "اجراءات",
     "MEDICATIONS_STOP_LABEL": "توقف",
     "MEDICATIONS_REFILL_LABEL": "اعادة ملء",
-    "MEDICATION_LABEL_START_DATE": "Start Date",
+    "MEDICATION_LABEL_START_DATE": "تاريخ البدء",
     "DRUG_DETAILS_STOP_DATE": "تاريخ التوقف",
     "TIME_OF_BIRTH_LABEL": "وقت الولادة",
     "PATIENT_PROFILE_RELATIONSHIPS_LABEL": "العلاقات العائلية",
@@ -63,7 +63,12 @@
     "ASSIGN_BED_LABEL": "خصص",
     "TRANSFER_BED_LABEL": "انقل",
     "EMPTY_WARD_MESSAGE": "لا يوجد مرضي بهذا الجناح",
-    "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "Admit Patient",
-    "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Discharge Patient",
-    "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Transfer Patient"
+    "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "قبول المريض",
+    "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "خروج المريض من المستشفى",
+    "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "تحويل المريض",
+    "IPD_WARD_LIST_SEARCH_KEY": "بحث...",
+    "CARE_VIEW_LABEL": "التغيير إلى عرض الرعاية",
+    "LOGOUT_TRANSLATION_KEY": "تسجيل خروج",
+    "MESSAGE_AUTO_CONVERT_TO_IPD_VISIT": "{{نوع الزيارة}} بدأت الزيارة بنجاح",
+    "DAYS_ADMITTED_MESSAGE": "أيام الإقامة في المستشفى"
 }
