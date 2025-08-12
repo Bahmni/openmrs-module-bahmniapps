@@ -536,7 +536,8 @@
   width: auto !important;
   flex-wrap: wrap !important;
   button {
-    width: 100% !important;
+    // width: 100% !important;
     min-width: 5rem !important;
+    width: fit-content !important;
   }
 }
