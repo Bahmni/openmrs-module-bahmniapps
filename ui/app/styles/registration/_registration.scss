@@ -536,7 +536,7 @@ body {
                     .form-control-buttons {
                         max-width: 100% !important;
                         margin-right: 0;
-    
+                        flex-wrap: wrap;
                         button {
                             width: 100%;
                         }
