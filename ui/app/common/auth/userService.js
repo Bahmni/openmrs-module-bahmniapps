@@ -7,7 +7,7 @@ angular.module('authentication')
                 method: "GET",
                 params: {
                     username: userName,
-                    v: "custom:(username,uuid,person:(uuid,),privileges:(name,retired),userProperties)"
+                    v: "custom:(username,uuid,person:(uuid),privileges:(name,retired),userProperties)"
                 },
                 cache: false
             });
