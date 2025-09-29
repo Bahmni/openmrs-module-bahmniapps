@@ -269,7 +269,7 @@ Bahmni.Common = Bahmni.Common || {};
         loginText: "/bahmni_config/openmrs/apps/home/whiteLabel.json",
         auditLogUrl: RESTWS_V1 + "/auditlog",
         appointmentServiceUrl: RESTWS_V1 + "/appointmentService",
-        conditionUrl: EMRAPI + '/condition',
+        conditionUrl: RESTWS_V1 + '/condition',
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",

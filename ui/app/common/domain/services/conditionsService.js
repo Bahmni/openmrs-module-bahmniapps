@@ -29,7 +29,8 @@ angular.module('bahmni.common.domain')
         };
         this.getConditionHistory = function (patientUuid) {
             var params = {
-                patientUuid: patientUuid
+                patientUuid: patientUuid,
+                v: "full"
             };
             return $http.get(Bahmni.Common.Constants.conditionHistoryUrl, {
                 params: params,
@@ -52,7 +53,7 @@ angular.module('bahmni.common.domain')
                 conceptUuid: latestCondition.concept.uuid,
                 conditionNonCoded: latestCondition.conditionNonCoded
             });
-            return Bahmni.Common.Domain.Conditions.getPreviousActiveCondition(latestCondition, conditionHistory.conditions);
+            return Bahmni.Common.Domain.Conditions.getPreviousActiveCondition(latestCondition, conditionHistory);
         };
         this.getConditions = function (patientUuid) {
             return this.getConditionHistory(patientUuid).then(function (response) {

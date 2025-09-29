@@ -7,19 +7,19 @@
         data = data || {};
         this.uuid = data.uuid;
         this.concept = {
-            uuid: _.get(data, 'concept.uuid'),
+            uuid: _.get(data, 'condition.coded.uuid'),
             shortName: _.get(data, 'concept.shortName'),
-            name: _.get(data, 'concept.name')
+            name: data.display
         };
-        this.status = data.status;
-        this.onSetDate = data.onSetDate;
+        this.status = data.clinicalStatus;
+        this.onSetDate = data.onsetDate;
         this.conditionNonCoded = data.conditionNonCoded;
         this.voided = data.voided;
         this.additionalDetail = data.additionalDetail;
         this.isNonCoded = data.isNonCoded;
-        this.creator = data.creator;
+        this.creator = data.auditInfo.creator.display;
         this.previousConditionUuid = data.previousConditionUuid;
-        this.activeSince = data.onSetDate;
+        this.activeSince = data.onsetDate;
     };
     Condition.prototype = {};
     Condition.prototype.toggleNonCoded = function () {
@@ -62,15 +62,16 @@
 
     Conditions.fromConditionHistories = function (conditionsHistories) {
         return _.map(conditionsHistories, function (conditionsHistory) {
-            var conditions = conditionsHistory.conditions;
-            return new Condition(_.last(_.sortBy(_.reject(conditions, function (condition) {
+            var conditions = conditionsHistory;
+            const response = new Condition(_.last(_.sortBy(_.reject(conditions, function (condition) {
                 return condition.voided === true;
-            }))), 'onSetDate');
+            }))), 'onsetDate');
+            return response;
         });
     };
 
     Conditions.getPreviousActiveCondition = function (condition, allConditions) {
-        if (condition.status == 'ACTIVE') {
+        if (condition.clinicalStatus == 'ACTIVE') {
             return condition;
         }
         var previousCondition = _.find(allConditions, {uuid: condition.previousConditionUuid});
