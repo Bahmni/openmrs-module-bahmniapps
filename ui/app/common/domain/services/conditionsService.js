@@ -24,13 +24,14 @@ angular.module('bahmni.common.domain')
 
             return $http.post(Bahmni.Common.Constants.conditionUrl, body, {
                 withCredentials: true,
-                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                headers: { "Accept": "application/json", "Content-Type": "application/json" }
             });
         };
         this.getConditionHistory = function (patientUuid) {
             var params = {
                 patientUuid: patientUuid,
-                v: "full"
+                v: "full",
+                includeInactive: true
             };
             return $http.get(Bahmni.Common.Constants.conditionHistoryUrl, {
                 params: params,
@@ -49,15 +50,22 @@ angular.module('bahmni.common.domain')
             });
         };
         var getLatestActiveCondition = function (conditionHistories, latestCondition) {
-            var conditionHistory = _.find(conditionHistories, {
-                conceptUuid: latestCondition.concept.uuid,
-                conditionNonCoded: latestCondition.conditionNonCoded
+            var matchingConditions = _.filter(conditionHistories, function (condition) {
+                var conceptUuid = _.get(condition, 'condition.coded.uuid');
+                var nonCoded = _.get(condition, 'condition.nonCoded');
+                return (conceptUuid && conceptUuid === latestCondition.concept.uuid) ||
+                       (nonCoded && nonCoded === latestCondition.conditionNonCoded);
             });
-            return Bahmni.Common.Domain.Conditions.getPreviousActiveCondition(latestCondition, conditionHistory);
+            
+            var activeCondition = _.find(matchingConditions, function (condition) {
+                return condition.clinicalStatus === 'ACTIVE';
+            });
+            
+            return activeCondition ? new Bahmni.Common.Domain.Condition(activeCondition) : latestCondition;
         };
         this.getConditions = function (patientUuid) {
             return this.getConditionHistory(patientUuid).then(function (response) {
-                var conditionHistories = response.data;
+                var conditionHistories = response.data.results;
                 var conditions = Bahmni.Common.Domain.Conditions.fromConditionHistories(conditionHistories);
                 _.forEach(conditions, function (condition) {
                     condition.activeSince = getLatestActiveCondition(conditionHistories, condition).onSetDate;

@@ -8,17 +8,17 @@
         this.uuid = data.uuid;
         this.concept = {
             uuid: _.get(data, 'condition.coded.uuid'),
-            shortName: _.get(data, 'concept.shortName'),
-            name: data.display
+            shortName: _.get(data, 'condition.coded.name.name') || _.get(data, 'concept.shortName'),
+            name: _.get(data, 'condition.coded.display') || data.display
         };
         this.status = data.clinicalStatus;
         this.onSetDate = data.onsetDate;
-        this.conditionNonCoded = data.conditionNonCoded;
+        this.conditionNonCoded = _.get(data, 'condition.nonCoded') || data.conditionNonCoded;
         this.voided = data.voided;
         this.additionalDetail = data.additionalDetail;
-        this.isNonCoded = data.isNonCoded;
-        this.creator = data.auditInfo.creator.display;
-        this.previousConditionUuid = data.previousConditionUuid;
+        this.isNonCoded = !!_.get(data, 'condition.nonCoded') || data.isNonCoded;
+        this.creator = _.get(data, 'auditInfo.creator.display');
+        this.previousConditionUuid = _.get(data, 'previousVersion.uuid') || data.previousConditionUuid;
         this.activeSince = data.onsetDate;
     };
     Condition.prototype = {};
@@ -32,17 +32,17 @@
         return !(this.concept.name && !this.concept.uuid && !this.isNonCoded);
     };
     Condition.prototype.isValid = function () {
-        return this.status && ((this.concept.name && this.isNonCoded) || this.concept.uuid);
+        return this.clinicalStatus && ((this.concept.name && this.isNonCoded) || this.concept.uuid);
     };
     Condition.prototype.isActive = function () {
-        return this.status == 'ACTIVE';
+        return this.clinicalStatus == 'ACTIVE';
     };
     Condition.prototype.displayString = function () {
         return this.conditionNonCoded || this.concept.shortName || this.concept.name;
     };
     Condition.prototype.isEmpty = function () {
-        return !this.status && !this.concept.name && !(this.isNonCoded || this.concept.uuid)
-            && !this.onSetDate && !this.additionalDetail;
+        return !this.clinicalStatus && !this.concept.name && !(this.isNonCoded || this.concept.uuid)
+            && !this.onsetDate && !this.additionalDetail;
     };
 
     Condition.createFromDiagnosis = function (diagnosis) {
@@ -61,11 +61,25 @@
     };
 
     Conditions.fromConditionHistories = function (conditionsHistories) {
+        if (conditionsHistories && conditionsHistories.length > 0 && conditionsHistories[0].uuid) {
+            var groupedConditions = _.groupBy(conditionsHistories, function (condition) {
+                var conceptUuid = _.get(condition, 'condition.coded.uuid') || '';
+                var nonCoded = _.get(condition, 'condition.nonCoded') || '';
+                return conceptUuid + '|' + nonCoded;
+            });
+            return _.map(groupedConditions, function (conditionGroup) {
+                var nonVoidedConditions = _.reject(conditionGroup, function (condition) {
+                    return condition.voided === true;
+                });
+                var latestCondition = _.last(_.sortBy(nonVoidedConditions, 'onsetDate'));
+                return new Condition(latestCondition);
+            });
+        }
         return _.map(conditionsHistories, function (conditionsHistory) {
             var conditions = conditionsHistory;
             const response = new Condition(_.last(_.sortBy(_.reject(conditions, function (condition) {
                 return condition.voided === true;
-            }))), 'onsetDate');
+            })), 'onsetDate'));
             return response;
         });
     };

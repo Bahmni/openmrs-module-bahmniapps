@@ -270,7 +270,7 @@ Bahmni.Common = Bahmni.Common || {};
         auditLogUrl: RESTWS_V1 + "/auditlog",
         appointmentServiceUrl: RESTWS_V1 + "/appointmentService",
         conditionUrl: RESTWS_V1 + '/condition',
-        conditionHistoryUrl: EMRAPI + '/conditionhistory',
+        conditionHistoryUrl: RESTWS_V1 + '/condition',
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
         privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
