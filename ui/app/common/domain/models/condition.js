@@ -32,17 +32,17 @@
         return !(this.concept.name && !this.concept.uuid && !this.isNonCoded);
     };
     Condition.prototype.isValid = function () {
-        return this.clinicalStatus && ((this.concept.name && this.isNonCoded) || this.concept.uuid);
+        return this.status && ((this.concept.name && this.isNonCoded) || this.concept.uuid);
     };
     Condition.prototype.isActive = function () {
-        return this.clinicalStatus == 'ACTIVE';
+        return this.status == 'ACTIVE';
     };
     Condition.prototype.displayString = function () {
         return this.conditionNonCoded || this.concept.shortName || this.concept.name;
     };
     Condition.prototype.isEmpty = function () {
-        return !this.clinicalStatus && !this.concept.name && !(this.isNonCoded || this.concept.uuid)
-            && !this.onsetDate && !this.additionalDetail;
+        return !this.status && !this.concept.name && !(this.isNonCoded || this.concept.uuid)
+            && !this.onSetDate && !this.additionalDetail;
     };
 
     Condition.createFromDiagnosis = function (diagnosis) {
@@ -88,7 +88,7 @@
         if (condition.clinicalStatus == 'ACTIVE') {
             return condition;
         }
-        var previousCondition = _.find(allConditions, {uuid: condition.previousConditionUuid});
+        var previousCondition = _.find(allConditions, { uuid: condition.previousConditionUuid });
         if (!previousCondition) {
             return condition;
         }
