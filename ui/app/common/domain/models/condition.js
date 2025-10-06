@@ -7,17 +7,17 @@
         data = data || {};
         this.uuid = data.uuid;
         this.concept = {
-            uuid: _.get(data, 'condition.coded.uuid'),
+            uuid: _.get(data, 'condition.coded.uuid') || _.get(data, 'concept.uuid'),
             shortName: _.get(data, 'condition.coded.name.name') || _.get(data, 'concept.shortName'),
-            name: _.get(data, 'condition.coded.display') || data.display
+            name: _.get(data, 'condition.coded.display') || data.display || _.get(data, 'concept.name')
         };
-        this.status = data.clinicalStatus;
-        this.onSetDate = data.onsetDate;
+        this.status = data.clinicalStatus || data.status;
+        this.onSetDate = data.onsetDate || data.onSetDate;
         this.conditionNonCoded = _.get(data, 'condition.nonCoded') || data.conditionNonCoded;
         this.voided = data.voided;
         this.additionalDetail = data.additionalDetail;
         this.isNonCoded = !!_.get(data, 'condition.nonCoded') || data.isNonCoded;
-        this.creator = _.get(data, 'auditInfo.creator.display');
+        this.creator = _.get(data, 'auditInfo.creator.display') || data.creator;
         this.previousConditionUuid = _.get(data, 'previousVersion.uuid') || data.previousConditionUuid;
         this.activeSince = data.onsetDate;
     };
