@@ -9,27 +9,45 @@ angular.module('bahmni.common.domain')
             var newConditions = _.filter(conditionsToBeSaved, function (condition) {
                 return !condition.uuid;
             });
-
-            if (newConditions.length === 0) {
-                return $q.resolve({ data: [] });
-            }
-            var conditionToSave = newConditions[0];
-            var body = {
-                patient: patientUuid,
-                condition: conditionToSave.isNonCoded ?
-                    { nonCoded: conditionToSave.conditionNonCoded } :
-                    { coded: conditionToSave.concept.uuid },
-                clinicalStatus: conditionToSave.status,
-                onsetDate: conditionToSave.onSetDate,
-                endDate: conditionToSave.endDate,
-                previousVersion: conditionToSave.previousConditionUuid,
-                additionalDetail: conditionToSave.additionalDetail
-            };
-
-            return $http.post(Bahmni.Common.Constants.conditionUrl, body, {
-                withCredentials: true,
-                headers: { "Accept": "application/json", "Content-Type": "application/json" }
+            var existingConditions = _.filter(conditionsToBeSaved, function (condition) {
+                return condition.uuid;
             });
+
+            var promises = [];
+
+            if (newConditions.length > 0) {
+                _.forEach(newConditions, function (conditionToSave) {
+                    var body = {
+                        patient: patientUuid,
+                        clinicalStatus: conditionToSave.status,
+                        onsetDate: conditionToSave.onSetDate,
+                        endDate: conditionToSave.endDate,
+                        additionalDetail: conditionToSave.additionalDetail,
+                        previousVersion: conditionToSave.previousConditionUuid
+                    };
+
+                    if (conditionToSave.isNonCoded && conditionToSave.conditionNonCoded) {
+                        body.condition = { nonCoded: conditionToSave.conditionNonCoded };
+                    } else if (conditionToSave.concept && conditionToSave.concept.uuid) {
+                        body.condition = { coded: conditionToSave.concept.uuid };
+                    }
+
+                    promises.push($http.post(Bahmni.Common.Constants.conditionUrl, body, {
+                        withCredentials: true,
+                        headers: { "Accept": "application/json", "Content-Type": "application/json" }
+                    }));
+                });
+
+                return promises[promises.length - 1];
+            }
+
+            return {
+                then: function(callback) {
+                    if (callback) callback({ data: existingConditions });
+                    return this;
+                },
+                catch: function() { return this; }
+            };
         };
         this.getConditionHistory = function (patientUuid) {
             var params = {

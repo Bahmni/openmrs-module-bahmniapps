@@ -6,11 +6,10 @@
     var Condition = Bahmni.Common.Domain.Condition = function (data) {
         data = data || {};
         this.uuid = data.uuid;
-        this.concept = {
-            uuid: _.get(data, 'condition.coded.uuid') || _.get(data, 'concept.uuid'),
-            shortName: _.get(data, 'condition.coded.name.name') || _.get(data, 'concept.shortName'),
-            name: _.get(data, 'condition.coded.display') || data.display || _.get(data, 'concept.name')
-        };
+        this.concept = data.concept || {};
+        this.concept.uuid = _.get(data, 'condition.coded.uuid') || this.concept.uuid;
+        this.concept.shortName = _.get(data, 'condition.coded.name.name') || _.get(data, 'concept.shortName') || this.concept.shortName;
+        this.concept.name = _.get(data, 'condition.coded.display') || data.display || _.get(data, 'concept.name') || this.concept.name;
         this.status = data.clinicalStatus || data.status;
         this.onSetDate = data.onsetDate || data.onSetDate;
         this.conditionNonCoded = _.get(data, 'condition.nonCoded') || data.conditionNonCoded;
