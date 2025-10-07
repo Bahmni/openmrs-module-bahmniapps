@@ -12,11 +12,10 @@ angular.module('bahmni.common.domain')
             var existingConditions = _.filter(conditionsToBeSaved, function (condition) {
                 return condition.uuid;
             });
-
+            conditionsToBeSaved = newConditions.length ? newConditions : existingConditions;
             var promises = [];
 
-            if (newConditions.length > 0) {
-                _.forEach(newConditions, function (conditionToSave) {
+                _.forEach(conditionsToBeSaved, function (conditionToSave) {
                     var body = {
                         patient: patientUuid,
                         clinicalStatus: conditionToSave.status,
@@ -39,15 +38,6 @@ angular.module('bahmni.common.domain')
                 });
 
                 return promises[promises.length - 1];
-            }
-
-            return {
-                then: function(callback) {
-                    if (callback) callback({ data: existingConditions });
-                    return this;
-                },
-                catch: function() { return this; }
-            };
         };
         this.getConditionHistory = function (patientUuid) {
             var params = {
