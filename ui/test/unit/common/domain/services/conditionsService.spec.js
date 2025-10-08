@@ -27,8 +27,7 @@ describe("conditionsService", function () {
 
             conditionsService.save(conditions, 'patientUuid').then(function () {
                 expect(_$http.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conditionUrl);
-                expect(_$http.post.calls.mostRecent().args[1].length).toBe(1);
-                expect(_$http.post.calls.mostRecent().args[1][0].unwantedProperty).toBeUndefined();
+                expect(_$http.post.calls.mostRecent().args[1].unwantedProperty).toBeUndefined();
             }).catch(notifyError).finally(done);
         });
     });
