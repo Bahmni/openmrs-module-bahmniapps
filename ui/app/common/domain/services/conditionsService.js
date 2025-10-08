@@ -6,13 +6,7 @@ angular.module('bahmni.common.domain')
             var conditionsToBeSaved = _.reject(conditions, function (condition) {
                 return condition.onSetDate === null || Number.isInteger(condition.onSetDate);
             });
-            var newConditions = _.filter(conditionsToBeSaved, function (condition) {
-                return !condition.uuid;
-            });
-            var existingConditions = _.filter(conditionsToBeSaved, function (condition) {
-                return condition.uuid;
-            });
-            conditionsToBeSaved = newConditions.length ? newConditions : existingConditions;
+            
             var promises = [];
 
                 _.forEach(conditionsToBeSaved, function (conditionToSave) {
