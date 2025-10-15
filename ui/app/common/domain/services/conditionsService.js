@@ -6,33 +6,34 @@ angular.module('bahmni.common.domain')
             var conditionsToBeSaved = _.reject(conditions, function (condition) {
                 return condition.onSetDate === null || Number.isInteger(condition.onSetDate);
             });
-            
+
             var promises = [];
 
-                _.forEach(conditionsToBeSaved, function (conditionToSave) {
-                    var body = {
-                        patient: patientUuid,
-                        clinicalStatus: conditionToSave.status,
-                        onsetDate: conditionToSave.onSetDate,
-                        endDate: conditionToSave.endDate,
-                        additionalDetail: conditionToSave.additionalDetail,
-                        previousVersion: conditionToSave.previousConditionUuid
-                    };
+            _.forEach(conditionsToBeSaved, function (conditionToSave) {
+                var body = {
+                    patient: patientUuid,
+                    clinicalStatus: conditionToSave.status,
+                    onsetDate: conditionToSave.onSetDate,
+                    endDate: conditionToSave.endDate,
+                    additionalDetail: conditionToSave.additionalDetail,
+                    previousVersion: conditionToSave.previousConditionUuid
+                };
 
-                    if (conditionToSave.isNonCoded && conditionToSave.conditionNonCoded) {
-                        body.condition = { nonCoded: conditionToSave.conditionNonCoded };
-                    } else if (conditionToSave.concept && conditionToSave.concept.uuid) {
-                        body.condition = { coded: conditionToSave.concept.uuid };
-                    }
+                if (conditionToSave.isNonCoded && conditionToSave.conditionNonCoded) {
+                    body.condition = { nonCoded: conditionToSave.conditionNonCoded };
+                } else if (conditionToSave.concept && conditionToSave.concept.uuid) {
+                    body.condition = { coded: conditionToSave.concept.uuid };
+                }
 
-                    promises.push($http.post(Bahmni.Common.Constants.conditionUrl, body, {
-                        withCredentials: true,
-                        headers: { "Accept": "application/json", "Content-Type": "application/json" }
-                    }));
-                });
+                promises.push($http.post(Bahmni.Common.Constants.conditionUrl, body, {
+                    withCredentials: true,
+                    headers: { "Accept": "application/json", "Content-Type": "application/json" }
+                }));
+            });
 
-                return promises[promises.length - 1];
+            return promises[promises.length - 1];
         };
+
         this.getConditionHistory = function (patientUuid) {
             var params = {
                 patientUuid: patientUuid,
@@ -62,11 +63,11 @@ angular.module('bahmni.common.domain')
                 return (conceptUuid && conceptUuid === latestCondition.concept.uuid) ||
                        (nonCoded && nonCoded === latestCondition.conditionNonCoded);
             });
-            
+
             var activeCondition = _.find(matchingConditions, function (condition) {
                 return condition.clinicalStatus === 'ACTIVE';
             });
-            
+
             return activeCondition ? new Bahmni.Common.Domain.Condition(activeCondition) : latestCondition;
         };
         this.getConditions = function (patientUuid) {
