@@ -27,19 +27,47 @@ describe("conditionsService", function () {
 
             conditionsService.save(conditions, 'patientUuid').then(function () {
                 expect(_$http.post.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conditionUrl);
-                expect(_$http.post.calls.mostRecent().args[1].length).toBe(1);
-                expect(_$http.post.calls.mostRecent().args[1][0].unwantedProperty).toBeUndefined();
+                expect(_$http.post.calls.mostRecent().args[1].unwantedProperty).toBeUndefined();
             }).catch(notifyError).finally(done);
         });
     });
 
     describe("getConditionHistory",function () {
         it("should fetch from condition History Url",function (done) {
-            _$http.get.and.returnValue(specUtil.respondWithPromise(Q, {data: []}));
+            _$http.get.and.returnValue(specUtil.respondWithPromise(Q, {data: {results: []}}));
 
             conditionsService.getConditionHistory('patientUuid').then(function () {
                 expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conditionHistoryUrl);
                 expect(_$http.get.calls.mostRecent().args[1].params.patientUuid).toBe('patientUuid');
+                expect(_$http.get.calls.mostRecent().args[1].params.v).toBe('full');
+                expect(_$http.get.calls.mostRecent().args[1].params.includeInactive).toBe(true);
+            }).catch(notifyError).finally(done);
+        });
+    });
+    
+    describe("getConditions",function () {
+        it("should fetch and transform conditions",function (done) {
+            var mockResponse = {
+                data: {
+                    results: [
+                        {
+                            uuid: '001',
+                            condition: {
+                                coded: {uuid: 'concept-uuid', display: 'Headache'}
+                            },
+                            clinicalStatus: 'ACTIVE',
+                            onsetDate: '2017-01-01',
+                            voided: false
+                        }
+                    ]
+                }
+            };
+            _$http.get.and.returnValue(specUtil.respondWithPromise(Q, mockResponse));
+
+            conditionsService.getConditions('patientUuid').then(function (conditions) {
+                expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conditionHistoryUrl);
+                expect(conditions).toBeDefined();
+                expect(conditions.length).toBeGreaterThan(0);
             }).catch(notifyError).finally(done);
         });
     });
