@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('conditionsService', ['$http', function ($http) {
+    .service('conditionsService', ['$http', '$q', function ($http, $q) {
         this.save = function (conditions, patientUuid) {
             var conditionsToBeSaved = _.reject(conditions, function (condition) {
                 return condition.onSetDate === null || Number.isInteger(condition.onSetDate);
@@ -30,8 +30,7 @@ angular.module('bahmni.common.domain')
                     headers: { "Accept": "application/json", "Content-Type": "application/json" }
                 }));
             });
-
-            return promises.length > 0 ? Promise.all(promises) : Promise.resolve({});
+            return promises.length > 0 ? $q.all(promises) : $q.when([]);
         };
 
         this.getConditionHistory = function (patientUuid) {
@@ -42,9 +41,7 @@ angular.module('bahmni.common.domain')
             };
             return $http.get(Bahmni.Common.Constants.conditionHistoryUrl, {
                 params: params,
-                headers: {
-                    withCredentials: true
-                }
+                withCredentials: true
             });
         };
         this.getFollowUpConditionConcept = function () {
