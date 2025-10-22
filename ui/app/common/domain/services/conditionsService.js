@@ -31,7 +31,7 @@ angular.module('bahmni.common.domain')
                 }));
             });
 
-            return promises[promises.length - 1];
+            return promises.length > 0 ? Promise.all(promises) : Promise.resolve({});
         };
 
         this.getConditionHistory = function (patientUuid) {
