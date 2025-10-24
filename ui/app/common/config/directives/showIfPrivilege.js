@@ -15,7 +15,7 @@ angular.module('bahmni.common.config')
                     intersect.length > 0 ? requiredPrivilege = true : requiredPrivilege = false;
                 }
                 if (!requiredPrivilege) {
-                    element.hide();
+                    element.hide = true;
                 }
             }
         };

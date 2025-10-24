@@ -1,4 +1,5 @@
 <section class="bacteriology-dashboard" confirm-on-exit>
+<ul show-if-privilege="{{::section.dashboardConfig.requiredPrivilege}}">
     <h2 class="section-title">{{section | titleTranslate}}</h2>
     <div>
         <div ng-include src="'../common/ui-helper/messages.html'"></div>
@@ -35,4 +36,5 @@
             </ul>
         </section>
     </div>
+</ul>	
 </section>
