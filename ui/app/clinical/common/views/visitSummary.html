@@ -12,7 +12,7 @@
 <div ng-if="::(!clearBoard)">
     <div ng-repeat="section in visitTabConfig.currentTab.sections">
         <div ng-switch="section.type">
-            <div ng-switch-when="patientInformation" class="section">
+            <div ng-switch-when="patientInformation" class="section" ng-show="showPatientInformation">
                 <section class="block dashboard-section" >
                     <ng-include src="'common/views/patientInfoPrint.html'"></ng-include>
                 </section>
