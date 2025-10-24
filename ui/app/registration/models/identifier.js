@@ -45,7 +45,7 @@ prototype.generate = function () {
     if (this.registrationNumber && this.registrationNumber.length > 0) {
         this.identifier = this.selectedIdentifierSource ? this.selectedIdentifierSource.prefix + this.registrationNumber : this.registrationNumber;
         this.voided = false;
-    } else if (this.uuid) {
+    } else if (this.uuid || _.isEmpty(this.registrationNumber)) {
         this.voided = true;
     }
 };
