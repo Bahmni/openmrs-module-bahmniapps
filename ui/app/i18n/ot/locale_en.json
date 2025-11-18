@@ -81,6 +81,7 @@
     "OT_CALENDAR_KEY": "Calendar",
     "OT_LIST_VIEW_KEY": "List View",
     "OT_DAY_KEY": "Day",
+    "OT_PROVIDER_VIEW_KEY": "Provider View",
     "OT_WEEK_KEY": "Week",
     "OT_THIS_WEEK_KEY": "This Week",
     "OT_MOVE_KEY": "Move",

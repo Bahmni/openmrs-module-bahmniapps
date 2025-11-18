@@ -4,8 +4,13 @@ import { ProviderNotifications } from './ProviderNotifications';
 import { getCookies } from '../../utils/cookieHandler/cookieHandler';
 import { getProvider, getEmergencyDrugAcknowledgements, sortMedicationList, groupByIdentifier, acknowledgeEmergencyMedication, getPatientIPDDashboardUrl } from '../../utils/providerNotifications/ProviderNotificationUtils';
 
-jest.mock('../../utils/cookieHandler/cookieHandler', () => ({
-    getCookies: jest.fn(),
+
+jest.mock('../../Components/ProviderNotificationPatients/PatientsList', () => {
+    return jest.fn(() => <div data-testid="patients-list"></div>);
+});
+
+jest.mock('react-intl', () => ({
+    FormattedMessage: ({ id, defaultMessage }) => <span>{defaultMessage}</span>
 }));
 
 jest.mock('../../utils/providerNotifications/ProviderNotificationUtils', () => ({
@@ -15,6 +20,10 @@ jest.mock('../../utils/providerNotifications/ProviderNotificationUtils', () => (
     groupByIdentifier: jest.fn(),
     acknowledgeEmergencyMedication: jest.fn(),
     getPatientIPDDashboardUrl: jest.fn()
+}));
+
+jest.mock('../../utils/cookieHandler/cookieHandler', () => ({
+    getCookies: jest.fn(),
 }));
 
 describe('ProviderNotifications Component', () => {
@@ -53,6 +62,13 @@ describe('ProviderNotifications Component', () => {
         sortMedicationList.mockReturnValue(sortedMedicationListMock);
         acknowledgeEmergencyMedication.mockResolvedValue(acknowledgeResponseMock);
     });
+
+
+    it('should render acknowledgementRequiredText correctly', () => {
+        const {queryByText} = render(<ProviderNotifications />);
+
+        waitFor (()=> {expect(queryByText('Acknowledgement required')).toBeTruthy();})
+    }); 
 
     it('should render without crashing and display no drugs to be acknowledged message', async () => {
         jest.clearAllMocks();
@@ -115,6 +131,14 @@ describe('ProviderNotifications Component', () => {
         });
         await waitFor(() => expect(acknowledgeEmergencyMedication).toHaveBeenCalled());
         expect(await screen.findByText(/Acknowledgement failed/i)).toBeTruthy();
+    });
+
+     it('should render PatientsList component', () => {
+        const { queryByTestId } = render(<ProviderNotifications />);
+        waitFor(() => {
+            const patientsList = queryByTestId('patients-list');
+            expect(patientsList).toBeTruthy();
+        });
     });
 
     it('should fetch provider and medications on component mount', async () => {

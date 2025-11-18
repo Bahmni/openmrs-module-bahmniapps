@@ -109,6 +109,23 @@ angular.module('bahmni.ot')
                     });
                 }
             };
+
+            $scope.updateNotes = function () {
+                if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
+                    return;
+                }
+                if (!$scope.otNotesField) {
+                    $scope.emptyNoteError = true;
+                    return;
+                }
+                var note;
+                if ($scope.weekOrDay === "week") {
+                    note = $scope.notesForWeek[$scope.notesStartDate];
+                }
+                surgicalAppointmentService.updateNoteForADay(note ? note.noteId : $scope.noteId, $scope.otNotesField, $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null);
+                $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
+            };
+
             var heightPerMin = 120 / $scope.dayViewSplit;
             var showToolTipForNotes = function () {
                 $('.notes-text').tooltip({

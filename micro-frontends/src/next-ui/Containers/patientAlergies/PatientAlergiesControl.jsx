@@ -13,6 +13,7 @@ import {
 import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import { NotificationCarbon } from "bahmni-carbon-ui";
+import { allergyError, getErrorKey } from "../../errorMessages";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -45,7 +46,7 @@ export function PatientAlergiesControl(props) {
     reactionData?.setMembers
       ?.filter((reaction) => reaction.display !== "Other non-coded")
       .map((reaction) => {
-        return { name: reaction.names[0].display, uuid: reaction.uuid };
+        return { name: reaction.name.display, uuid: reaction.uuid };
       });
 
   const TransformReactionData = (reactionData) => {
@@ -233,8 +234,8 @@ export function PatientAlergiesControl(props) {
               }}
             />
           )}
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy saved successfully"/>} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={allergyError[error?.trim()] ?? <FormattedMessage id={"ERROR_SAVING_ALLERGY"} defaultMessage="Error saving allergy"/>} hideCloseButton={true}/>
         </div>
       )}
       </I18nProvider>

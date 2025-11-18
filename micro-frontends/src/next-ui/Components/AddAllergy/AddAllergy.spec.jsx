@@ -1,6 +1,7 @@
 import React from "react";
-import { render, fireEvent, screen, act } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, getByTestId } from "@testing-library/react";
 import { AddAllergy } from "./AddAllergy";
+import { IntlProvider } from "react-intl";
 import {
   saveAllergiesAPICall
 } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
@@ -28,17 +29,17 @@ const mockReactionsData = {
 };
 
 const mockSeverityData = [
-    { name: "Mild", uuid: "162301AAAAAA" },
-    { name: "Moderate", uuid: "162302AAAAAA" },
-    { name: "Severe", uuid: "162303AAAAAA" },
+  { name: "Mild", uuid: "162301AAAAAA" },
+  { name: "Moderate", uuid: "162302AAAAAA" },
+  { name: "Severe", uuid: "162303AAAAAA" },
 ]
 const patient = {
-    uuid: "patient#1",
-    name: "demo"
+  uuid: "patient#1",
+  name: "demo"
 }
 const provider = {
-    uuid: "provider#1",
-    name: "demo provider"
+  uuid: "provider#1",
+  name: "demo provider"
 }
 
 describe("AddAllergy", () => {
@@ -65,6 +66,7 @@ describe("AddAllergy", () => {
   };
   it("should render the component", () => {
     const { container } = render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -74,12 +76,14 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     expect(container).toMatchSnapshot();
   });
 
   it("should call onClose when close button is clicked", () => {
     const { container } = render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -89,6 +93,7 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     fireEvent.click(container.querySelector(".close"));
     expect(onClose).toHaveBeenCalledTimes(1);
@@ -96,6 +101,7 @@ describe("AddAllergy", () => {
 
   it("should show Search Allergen when allergen is empty", () => {
     const { getByTestId } = render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -105,12 +111,14 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     expect(getByTestId("search-allergen")).not.toBeNull();
   });
 
   it("should show Allergen List when Search is done", () => {
     render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -120,6 +128,7 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     searchAllergen();
     expect(screen.getByText("Peanuts")).not.toBeNull();
@@ -128,6 +137,7 @@ describe("AddAllergy", () => {
 
   it("should show select reactions when allergen is selected", () => {
     render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -137,6 +147,7 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     searchAllergen();
     expect(screen.getByTestId("search-allergen")).not.toBeNull();
@@ -151,6 +162,7 @@ describe("AddAllergy", () => {
 
   it("should show search Allergen ocClick of back button", () => {
     render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -160,6 +172,7 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     searchAllergen();
     selectAllergen();
@@ -172,15 +185,17 @@ describe("AddAllergy", () => {
 
   it("should render severity after allergen is selected", () => {
     render(
-      <AddAllergy
-        onClose={onClose}
-        onSave={onSave}
-        patient={patient}
-        provider={provider}
-        severityOptions={mockSeverityData}
-        allergens={mockAllergensData}
-        reaction={mockReactionsData}
-      />
+      <IntlProvider locale="en">
+        <AddAllergy
+          onClose={onClose}
+          onSave={onSave}
+          patient={patient}
+          provider={provider}
+          severityOptions={mockSeverityData}
+          allergens={mockAllergensData}
+          reaction={mockReactionsData}
+        />
+      </IntlProvider>
     );
     searchAllergen();
 
@@ -192,15 +207,17 @@ describe("AddAllergy", () => {
 
   it("should enable save button when reactions and severity are selected", () => {
     const { container } = render(
-      <AddAllergy
-        onClose={onClose}
-        onSave={onSave}
-        patient={patient}
-        provider={provider}
-        severityOptions={mockSeverityData}
-        allergens={mockAllergensData}
-        reaction={mockReactionsData}
-      />
+      <IntlProvider locale="en">
+        <AddAllergy
+          onClose={onClose}
+          onSave={onSave}
+          patient={patient}
+          provider={provider}
+          severityOptions={mockSeverityData}
+          allergens={mockAllergensData}
+          reaction={mockReactionsData}
+        />
+      </IntlProvider>
     );
     searchAllergen();
     selectAllergen();
@@ -213,6 +230,7 @@ describe("AddAllergy", () => {
 
   it("should update severity when severity is changed", () => {
     const { container } = render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -222,14 +240,16 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     searchAllergen();
     selectAllergen();
     selectSeverity(container);
   });
 
-  it("should render notes", () => {
-    const { container } = render(
+  it("should render the textarea with the correct placeholder", async () => {
+    const { container, getByTestId } = render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -239,11 +259,17 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
+
+    await waitFor(() => {
+      expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
+    });
+
     searchAllergen();
     selectAllergen();
 
-    const textArea = container.querySelector(".bx--text-area");
+    const textArea = getByTestId("additional-comments");
     expect(textArea.placeholder).toBe(
       "Additional comments such as onset date etc."
     );
@@ -251,6 +277,7 @@ describe("AddAllergy", () => {
 
   it("should save allergies successfully and set isSaveSuccess to true", async () => {
     const { container } = render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -260,6 +287,7 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider>
     );
     saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
     searchAllergen();
@@ -285,6 +313,7 @@ describe("AddAllergy", () => {
 
   it("should set isSaveSuccess to false if saveAllergiesAPICall fails", async () => {
     const { container } = render(
+      <IntlProvider locale="en">
       <AddAllergy
         onClose={onClose}
         onSave={onSave}
@@ -294,6 +323,7 @@ describe("AddAllergy", () => {
         allergens={mockAllergensData}
         reaction={mockReactionsData}
       />
+      </IntlProvider> 
     );
     searchAllergen();
     selectAllergen();
@@ -312,6 +342,6 @@ describe("AddAllergy", () => {
       severity: { uuid: "162301AAAAAA"},
       comment: "",
     }, "patient#1");
-    
+
   });
 });

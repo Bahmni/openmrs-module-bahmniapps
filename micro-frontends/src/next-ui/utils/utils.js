@@ -1,5 +1,7 @@
+import React from "react";
 import moment from "moment";
 import { defaultDateTimeFormat } from "../constants";
+import { FormattedMessage } from "react-intl";
 
 export const formatDate = (value, format = defaultDateTimeFormat) => {
     return value ? moment(value).format(format) : value;
@@ -19,11 +21,11 @@ export const formatGender = (gender) => {
   let formattedGender;
 
   if (gender === "M") {
-    formattedGender = "Male";
+    formattedGender = <FormattedMessage id={"MALE"} defaultMessage="Male"/>;
   } else if (gender === "F") {
-    formattedGender = "Female";
+    formattedGender = <FormattedMessage id={"FEMALE"} defaultMessage="Female"/>;
   } else {
-    formattedGender = "Other";
+    formattedGender = <FormattedMessage id={"OTHER"} defaultMessage="Other"/>;
   }
 
   return formattedGender;

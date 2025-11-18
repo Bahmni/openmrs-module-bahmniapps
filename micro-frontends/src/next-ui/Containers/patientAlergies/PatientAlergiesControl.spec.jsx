@@ -2,6 +2,7 @@ import React from "react";
 import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { PatientAlergiesControl } from "./PatientAlergiesControl";
 import {fetchAllergiesAndReactionsForPatient} from "../../utils/PatientAllergiesControl/AllergyControlUtils";
+import { IntlProvider } from "react-intl";
 
 const mockMedicationResponseData = {
   uuid: "100340AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -10,32 +11,29 @@ const mockMedicationResponseData = {
     {
       uuid: "100341AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       display: "Allergic to bee stings",
-      names: [
+      name:
         {
           uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           display: "Bee sting",
-        },
-      ],
+        }
     },
     {
       uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       display: "Allergic to cats",
-      names: [
+      name:
         {
           uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           display: "Cat",
-        },
-      ],
+        }
     },
     {
       uuid: "100343AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       display: "Allergic to dust",
-      names: [
+      name:
         {
           uuid: "100343AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           display: "Dust",
-        },
-      ],
+        }
     },
   ],
 };
@@ -119,6 +117,10 @@ const testHostData = {
       uuid: "___visit_type_uuid__",
     },
   },
+  provider: {
+    uuid: "___provider_uuid__",
+    name: "___provider_name__",
+  },
   allergyControlConceptIdMap: {
     medicationAllergenUuid: "drug_allergen_Uuid",
     foodAllergenUuid: "food_allergen_Uuid",
@@ -150,13 +152,18 @@ const mockAppService = {
 
 describe("PatientAlergiesControl", () => {
   it("renders loading message when isLoading is true", () => {
-    render(<PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>);
+    render(<IntlProvider locale="en">
+      <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+    </IntlProvider>);
     expect(screen.getByText("Loading... Please Wait")).not.toBeNull();
   });
 
   it("renders allergies section when isLoading is false", async () => {
-    render(<PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>);
-
+    render(
+      <IntlProvider locale="en">
+        <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>;
+      </IntlProvider>
+    );
     await waitFor(() => {
       expect(screen.getByText("Allergies")).not.toBeNull();
     });
@@ -164,7 +171,9 @@ describe("PatientAlergiesControl", () => {
 
   it("renders allergies section with Add button when active visit", async () => {
     const { container } = render(
-      <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+      <IntlProvider locale="en">
+        <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+      </IntlProvider>
     );
 
     await waitFor(() => {
@@ -175,7 +184,9 @@ describe("PatientAlergiesControl", () => {
 
   it("renders allergies section without Add button when it is not active visit", async () => {
     const { container } = render(
-      <PatientAlergiesControl hostData={testHostDataWithoutActiveVisit} appService={mockAppService}/>
+      <IntlProvider locale="en">
+        <PatientAlergiesControl hostData={testHostDataWithoutActiveVisit} appService={mockAppService}/>
+      </IntlProvider>
     );
 
     await waitFor(() => {
@@ -185,7 +196,9 @@ describe("PatientAlergiesControl", () => {
 
   it("should show the side panel when add button is clicked", async () => {
     const { container } = render(
-      <PatientAlergiesControl hostData={testHostData} appService={mockAppService} />
+      <IntlProvider locale="en">
+        <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+      </IntlProvider>
     );
 
     await waitFor(() => {
@@ -199,7 +212,9 @@ describe("PatientAlergiesControl", () => {
 
   it("should not show the side panel when Cancel button is clicked", async () => {
     const { container, getByTestId } = render(
-      <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+      <IntlProvider locale="en">
+        <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+      </IntlProvider>
     );
     await waitFor(() => {
       expect(screen.getByText("Add +")).toBeTruthy();

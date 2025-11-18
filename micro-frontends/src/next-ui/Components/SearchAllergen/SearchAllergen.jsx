@@ -3,11 +3,12 @@ import propTypes from "prop-types";
 import "../../../styles/common.scss";
 import "./SearchAllergen.scss";
 import { Link, Search, Tag } from "carbon-components-react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 export function SearchAllergen(props) {
   const { onChange, allergens } = props;
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(false);
+  const intl = useIntl();
   const noAllergenText = (
     <FormattedMessage
       id={"NO_ALLERGENS_FOUND"}
@@ -22,6 +23,10 @@ export function SearchAllergen(props) {
   );
   const reactionsLinkText = (
     <FormattedMessage id={"REACTIONS"} defaultMessage={"Reaction(s)"} />
+  );
+
+  const searchAllergenPlaceholder = (
+    intl.formatMessage(({ id: "ALLERGEN_SEARCH_PLACEHOLDER", defaultMessage: "Type to search Allergen" }))
   );
 
   const clearSearch = () => {
@@ -59,7 +64,7 @@ export function SearchAllergen(props) {
       <div>
         <Search
           id={"allergen-search"}
-          placeholder={"Type to search Allergen"}
+          placeholder={searchAllergenPlaceholder}
           onChange={(e) => {
             search(e.target.value);
           }}

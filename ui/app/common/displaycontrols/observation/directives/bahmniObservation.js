@@ -20,7 +20,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                         observations = _.filter(observations, function (observation) {
                             return _.some($scope.config.conceptNames, function (conceptName) {
                                 var comparableAttr = observation.conceptFSN != null ? 'conceptFSN' : 'concept.name';
-                                return _.toLower(conceptName) === _.toLower(_.get(observation, comparableAttr));
+                                return (_.toLower(conceptName) === _.toLower(_.get(observation, 'concept.name'))
+                                || _.toLower(conceptName) === _.toLower(_.get(observation, 'conceptFSN')));
                             });
                         });
                         if ($scope.config.customSortNeeded && $scope.config.conceptNames) {

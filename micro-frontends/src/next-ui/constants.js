@@ -14,6 +14,7 @@ const hostUrl = localStorage.getItem("host")
 
 export const verifierFunction = "Verifier";
 export const document_images_path = "../../document_images/";
+
 const RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
 
 export const FORM_BASE_URL = RESTWS_V1 + "/bahmnicore/patient/{patientUuid}/forms";
@@ -32,5 +33,6 @@ export const GET_DRUG_ACKNOWLEDGEMENT_URL = RESTWS_V1 + "/bahmnicore/sql?q={prop
 export const EMERGENCY_MEDICATIONS_BASE_URL = RESTWS_V1 + "/ipd/adhocMedicationAdministrations/{medication_administration_uuid}";
 export const GET_PROVIDER_UUID_URL = RESTWS_V1 + "/session";
 export const SAVE_ALLERGIES_URL =  RESTWS_V1 + "/patient/{patientId}/allergy";
+export const NEXT_UI_CONFIG_PATH = hostUrl + "/bahmni_config/openmrs/";
 export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
 

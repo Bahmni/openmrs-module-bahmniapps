@@ -13,5 +13,6 @@
   "VISIT_LABEL": "Visite",
   "VISIT_FROM_LABEL": "De:",
   "VISIT_TO_LABEL": "À:",
-  "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "Le type de fichier n'est pas pris en charge"
+  "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "Le type de fichier n'est pas pris en charge",
+  "FILE_UPLOAD_SUCCESS_MESSAGE": "Fichier(s) mis à jour avec succès"
 }

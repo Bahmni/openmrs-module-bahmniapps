@@ -51,7 +51,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
               dir="auto"
             >
               <div
-                class=" allergies-row allergies-red-text"
+                class=" allergies-row red-text"
               >
                 <div>
                   Bee

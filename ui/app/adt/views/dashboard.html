@@ -24,7 +24,7 @@
                         </div>
                         <button ng-switch-default="" type="submit" class="right admit_btn"
                                 single-click="call(extn.extensionParams.action)">
-                            {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display)}}
+                            {{getDisplay(extn.extensionParams.displayFunction, extn.extensionParams.display) | titleTranslate}}
                         </button>
                     </span>
                 </span>

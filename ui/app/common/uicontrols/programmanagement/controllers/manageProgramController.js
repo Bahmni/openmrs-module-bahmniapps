@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
+    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService', '$translate',
         'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', '$state',
-        function ($scope, retrospectiveEntryService, $window, programService,
+        function ($scope, retrospectiveEntryService, $window, programService, $translate,
             spinner, messagingService, $stateParams, $q, confirmBox, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
@@ -225,12 +225,12 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.confirmDeletion = function (patientProgram) {
                 var scope = {};
-                scope.message = 'Are you sure, you want to delete ' + patientProgram.display + '?';
+                scope.message = $translate.instant('PROGRAM_DELETE_POPUP_MESSAGE_KEY', {programName: patientProgram.display});
                 scope.cancel = _.partial(unVoidPatientProgram, patientProgram, _);
                 scope.delete = _.partial(voidPatientProgram, patientProgram, _);
                 confirmBox({
                     scope: scope,
-                    actions: [{name: 'cancel', display: 'cancel'}, {name: 'delete', display: 'delete'}],
+                    actions: [{ name: 'cancel', display: $translate.instant('PROGRAM_DELETE_POPUP_CANCEL_KEY') }, { name: 'delete', display: $translate.instant('PROGRAM_DELETE_POPUP_DELETE_KEY') }],
                     className: "ngdialog-theme-default delete-program-popup"
                 });
             };

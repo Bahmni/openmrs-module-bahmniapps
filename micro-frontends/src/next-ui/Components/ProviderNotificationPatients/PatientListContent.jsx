@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
 import { Button, TextArea } from "carbon-components-react";
-import { FormattedMessage } from 'react-intl';
 import "./PatientListContent.scss";
 import { Title } from "bahmni-carbon-ui";
 import { formatArrayDateToDefaultDateFormat } from "../../utils/utils";
 import PropTypes from "prop-types";
+import { FormattedMessage, useIntl } from "react-intl";
 
-const PatientListContent = ({ patientMedicationDetails, handleOnClick }) => {
-  const { administered_date_time, administered_drug_name, medication_administration_performer_uuid, medication_administration_uuid } = patientMedicationDetails;
-  const acknowledgementRequiredText = (<FormattedMessage id="AKNOWLEDGE_BUTTON" defaultMessage="Acknowledge" />);
-  const [providerNotes, setProviderNotes] = useState("");
+const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPatients}) => {
+  const [notes, setNotes] = useState("");
+  const intl = useIntl();
+  const { administered_date_time, administered_drug_name, medication_administration_performer_uuid, medication_administration_uuid } =
+    patientMedicationDetails;
 
-  function acknowledgeMedication() {
-    handleOnClick(medication_administration_performer_uuid, medication_administration_uuid, providerNotes);
-    setProviderNotes("");
-  }
-
-  const handleNotesChange = (e) => {
-    setProviderNotes(e.target.value);
+  const handleOnClick = async () => {
+    await updateEmergencyMedication({ providers: [
+        {
+          uuid:medication_administration_performer_uuid,
+          providerUuid,
+          function: verifierFunction
+        }
+      ],
+      notes: [{ authorUuid: providerUuid, text: notes }]}, medication_administration_uuid
+    );
+    refreshPatients();
+    setNotes("");
   };
 
   return (
@@ -28,8 +34,10 @@ const PatientListContent = ({ patientMedicationDetails, handleOnClick }) => {
         <div className="notes">
           <TextArea
             className="patient-list-text-area"
-            labelText={<Title text="Note" isRequired />}
-            placeholder="Enter Notes"
+            labelText={
+              <Title text={intl.formatMessage({id: "NOTE",defaultMessage: "Note"})} isRequired={true}/>
+            }
+            placeholder={intl.formatMessage({id: "ENTER_NOTES",defaultMessage: "Enter Notes"})}
             rows={1}
             required
             value={providerNotes}
