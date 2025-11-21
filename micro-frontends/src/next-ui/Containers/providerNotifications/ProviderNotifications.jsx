@@ -12,7 +12,7 @@ import { NotificationCarbon } from "bahmni-carbon-ui";
 
 export function ProviderNotifications() {
     const acknowledgementRequiredText = (<FormattedMessage id="ACKNOWLEDGEMENT_REQUIRED_TEXT" defaultMessage="Acknowledgement required" />);
-    const noDrugsToBeAcknowledgedText = (<FormattedMessage id="NO_DRUGS_TO_BE_AKNOWLEDGED_TEXT" defaultMessage="You have no new drugs to be acknowledged." />);
+    const noDrugsToBeAcknowledgedText = (<FormattedMessage id="NO_DRUGS_TO_BE_ACKNOWLEDGED_TEXT" defaultMessage="You have no new drugs to be acknowledged." />);
     const [patientListWithMedications, setPatientListWithMedications] = useState([]);
     const [showNotification, setShowNotification] = useState(false);
     const [notificationTitle, setNotificationTitle] = useState("");
