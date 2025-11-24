@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('ReportsController', ['$scope', '$filter', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, $filter, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
+    .controller('ReportsController', ['$scope', '$filter', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', '$log', function ($scope, $filter, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService, $log) {
         const format = _.values(reportService.getAvailableFormats());
         const dateRange = _.values(reportService.getAvailableDateRange());
 
@@ -92,7 +92,7 @@ angular.module('bahmni.reports')
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
             }
-            if (report.type == 'concatenated' && report.responseType == reportService.getMimeTypeForFormat('CSV')) {
+            if (report.type === 'concatenated' && report.responseType === reportService.getMimeTypeForFormat('CSV')) {
                 messagingService.showMessage('error', 'CSV format is not supported for concatenated reports');
                 return false;
             }
@@ -142,14 +142,188 @@ angular.module('bahmni.reports')
             $scope.dateRange = _.pick(reportService.getAvailableDateRange(), supportedDateRange);
         };
 
+        // Grouping configuration - matches reports by keywords in their names
+        var getReportGroup = function (reportName) {
+            var name = reportName.toLowerCase();
+
+            // Group 1: ACUTE EPISODIC CARE/MINOR AILMENTS
+            // Sub1: Epidemic care
+            if (name.includes('epidemic') || name.includes('minor ailment') || name.includes('family planning') ||
+                name.includes('pregnancy') || name.includes('community screening') || name.includes('universal test') ||
+                 name.includes('mc') || name.includes('srh')) {
+                return { mainGroup: 1, subGroup: 'Epidemic Care' };
+            }
+            // Sub2: Medical emergency
+            if (name.includes('emergency') || name.includes('emerg')) {
+                return { mainGroup: 1, subGroup: 'Medical Emergency' };
+            }
+
+            // Group 2: CHRONIC CARE
+            // Sub1: HIV
+            if (name.includes('art') || name.includes('hiv') || name.includes('wellness') ||
+                name.includes('pre-art') || name.includes('initiation') || name.includes('hts')) {
+                return { mainGroup: 2, subGroup: 'HIV' };
+            }
+            // Sub2: TB
+            if (name.includes('tb') || name.includes('tuberculosis') || name.includes('ipt') ||
+                name.includes('mdr') || name.includes('drug sensitive')) {
+                return { mainGroup: 2, subGroup: 'TB' };
+            }
+            // Sub3: NCDs
+            if (name.includes('diabetes') || name.includes('hypertension') || name.includes('cardiovascular') ||
+                name.includes('cardio') || name.includes('asthma') || name.includes('epilepsy') ||
+                name.includes('ncd')) {
+                return { mainGroup: 2, subGroup: 'NCDs' };
+            }
+
+            // Group 3: PREVENTIVE/PROMOTIVE CARE
+            // Sub1: Maternal health
+            if (name.includes('antenatal') || name.includes('postnatal') || name.includes('post natal') ||
+                name.includes('maternal')) {
+                return { mainGroup: 3, subGroup: 'Maternal Health' };
+            }
+            // Sub2: Reproductive health
+            if (name.includes('top') || name.includes('termination') || name.includes('sterilisation') ||
+                name.includes('sterilization') || name.includes('mmc') || name.includes('reproductive')) {
+                return { mainGroup: 3, subGroup: 'Reproductive Health' };
+            }
+            // Sub3: Child health
+            if (name.includes('well-baby') || name.includes('well baby') || name.includes('immunisation') ||
+                name.includes('immunization') || name.includes('child health')) {
+                return { mainGroup: 3, subGroup: 'Child Health' };
+            }
+
+            // Group 4: HEALTH SUPPORT SERVICES (check before general mental health)
+            if (name.includes('oral health') || name.includes('dental') || name.includes('physical therapy') ||
+                name.includes('physio') || name.includes('occupational') || name.includes('podiatry') ||
+                name.includes('speech') || name.includes('hearing') || name.includes('psychiatrist') ||
+                name.includes('psychologist') || name.includes('mental health nurse') || name.includes('mental health team')) {
+                return { mainGroup: 4, subGroup: 'Health Support Services' };
+            }
+
+            // Sub4: Mental health (chronic care) - after health support services check
+            if (name.includes('mental health') || name.includes('mental')) {
+                return { mainGroup: 2, subGroup: 'Mental Health' };
+            }
+
+            // Lab
+            if (name.includes('lab') || name.includes('laboratory')) {
+                return { mainGroup: 4, subGroup: 'Lab' };
+            }
+
+            // Pharmacy
+            if (name.includes('pharmacy') || name.includes('phar') || name.includes('pharmacy stock')) {
+                return { mainGroup: 4, subGroup: 'Pharmacy' };
+            }
+
+            // Supply Chain
+            if (name.includes('supply chain') || name.includes('supplychain')) {
+                return { mainGroup: 4, subGroup: 'Supply Chain' };
+            }
+
+            // Other - uncategorized
+            return { mainGroup: 5, subGroup: 'Other' };
+        };
+
+        // Get user roles and log them
+        var getUserRoles = function () {
+            if (!$rootScope.currentUser || !$rootScope.currentUser.roles) {
+                $log.log('ReportsController: No user roles found');
+                return [];
+            }
+            var roles = _.map($rootScope.currentUser.roles, function (role) {
+                return role.name;
+            });
+            $log.log('ReportsController: User roles:', roles);
+            return roles;
+        };
+
+        // Convert group name to role name
+        // Examples: "Epidemic Care" -> "Reports-Epidemic-Care", "HIV" -> "Reports-HIV"
+        var getRoleNameForGroup = function (groupName) {
+            // Replace spaces with hyphens and prefix with "Reports-"
+            return 'Reports-' + groupName.replace(/\s+/g, '-');
+        };
+
+        // Check if user has required role for a group
+        var hasRoleForGroup = function (groupName, userRoles) {
+            var requiredRole = getRoleNameForGroup(groupName);
+            return _.includes(userRoles, requiredRole);
+        };
+
+        // Group reports by category
+        var groupReports = function (reports) {
+            var grouped = {};
+            var userRoles = getUserRoles();
+
+            reports.forEach(function (report) {
+                var group = getReportGroup(report.name);
+                var key = group.subGroup;
+
+                // Check if user has permission to see this group
+                if (!hasRoleForGroup(key, userRoles)) {
+                    return; // Skip this report if user doesn't have the required role
+                }
+
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        subGroupName: key,
+                        mainGroup: group.mainGroup,
+                        reports: []
+                    };
+                }
+                grouped[key].reports.push(report);
+            });
+
+            // Convert to array and sort by main group, then by subgroup name
+            var groupedArray = _.values(grouped);
+            groupedArray.sort(function (a, b) {
+                if (a.mainGroup !== b.mainGroup) {
+                    return a.mainGroup - b.mainGroup;
+                }
+                return a.subGroupName.localeCompare(b.subGroupName);
+            });
+
+            return groupedArray;
+        };
+
         var initialization = function () {
+            $log.log('ReportsController: LOADING...');
+
+            // Log current user information for debugging
+            if ($rootScope.currentUser) {
+                $log.log('ReportsController: Current user:', $rootScope.currentUser.username);
+                $log.log('ReportsController: User roles object:', $rootScope.currentUser.roles);
+                if ($rootScope.currentUser.roles) {
+                    var roleNames = _.map($rootScope.currentUser.roles, function (role) {
+                        return role.name;
+                    });
+                    $log.log('ReportsController: User role names:', roleNames);
+                } else {
+                    $log.log('ReportsController: User roles property is undefined or null');
+                }
+            } else {
+                $log.log('ReportsController: No current user found in $rootScope');
+            }
+
             var reportList = appService.getAppDescriptor().getConfigForPage("reports");
-            $rootScope.reportsRequiringDateRange = _.isUndefined($rootScope.reportsRequiringDateRange) ? _.values(reportList).filter(function (report) {
+
+            var allReportsRequiringDateRange = _.isUndefined($rootScope.reportsRequiringDateRange) ? _.values(reportList).filter(function (report) {
                 return !(report.config && report.config.dateRangeRequired === false);
             }) : $rootScope.reportsRequiringDateRange;
-            $rootScope.reportsNotRequiringDateRange = _.isUndefined($rootScope.reportsNotRequiringDateRange) ? _.values(reportList).filter(function (report) {
+
+            var allReportsNotRequiringDateRange = _.isUndefined($rootScope.reportsNotRequiringDateRange) ? _.values(reportList).filter(function (report) {
                 return (report.config && report.config.dateRangeRequired === false);
             }) : $rootScope.reportsNotRequiringDateRange;
+
+            // Group reports (this will filter based on roles)
+            $scope.groupedReportsRequiringDateRange = groupReports(allReportsRequiringDateRange);
+            $scope.groupedReportsNotRequiringDateRange = groupReports(allReportsNotRequiringDateRange);
+
+            // Keep original arrays for backward compatibility if needed
+            $rootScope.reportsRequiringDateRange = allReportsRequiringDateRange;
+            $rootScope.reportsNotRequiringDateRange = allReportsNotRequiringDateRange;
+
             $scope.reportsDefined = _.values(reportList).length > 0;
 
             initializeFormats();
