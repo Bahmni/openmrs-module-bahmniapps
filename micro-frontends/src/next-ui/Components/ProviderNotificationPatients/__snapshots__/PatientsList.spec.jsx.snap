@@ -83,7 +83,7 @@ exports[`PatientsList Component renders the component without crashing 1`] = `
         id="accordion-item-2"
       >
         <div
-          class="patient-list-content"
+          class="patient-list-content "
         >
           <span>
             2/0/2

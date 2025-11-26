@@ -2,15 +2,28 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import PatientsList from './PatientsList';
 
+jest.mock('react-intl', () => ({
+    FormattedMessage: ({ id, defaultMessage }) => defaultMessage,
+    useIntl: () => ({
+        formatMessage: ({ defaultMessage }) => defaultMessage
+    })
+}));
+
+jest.mock("../../utils/utils", () => ({
+  calculateAgeFromEpochDOB: jest.fn(() => '34 years 5 months 8 days'),
+  formatGender: jest.fn((gender) => gender === 'M' ? 'Male' : gender === 'F' ? 'Female' : 'Other'),
+  formatArrayDateToDefaultDateFormat: jest.fn(() => '2/0/2'),
+}));
+
 describe('PatientsList Component', () => {
   const patientListWithMedications = [
     [{
-      administered_date_time: '2022-06-09',
+      administered_date_time: [2022, 6, 9],
       administered_drug_name: 'Drug A',
       administered_dose: '10mg',
       administered_dose_units: 'mg',
       administered_route: 'Oral',
-      date_of_birth: '1990-01-01',
+      date_of_birth: [1990, 1, 1],
       gender: 'M',
       identifier: 'PID123',
       name: 'John Doe',

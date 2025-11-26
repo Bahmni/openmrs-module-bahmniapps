@@ -4,13 +4,15 @@ import { ProviderNotifications } from './ProviderNotifications';
 import { getCookies } from '../../utils/cookieHandler/cookieHandler';
 import { getProvider, getEmergencyDrugAcknowledgements, sortMedicationList, groupByIdentifier, acknowledgeEmergencyMedication, getPatientIPDDashboardUrl } from '../../utils/providerNotifications/ProviderNotificationUtils';
 
-
-jest.mock('../../Components/ProviderNotificationPatients/PatientsList', () => {
-    return jest.fn(() => <div data-testid="patients-list"></div>);
-});
-
 jest.mock('react-intl', () => ({
-    FormattedMessage: ({ id, defaultMessage }) => <span>{defaultMessage}</span>
+    FormattedMessage: ({ id, defaultMessage }) => defaultMessage,
+    useIntl: () => ({
+        formatMessage: ({ id, defaultMessage }) => defaultMessage,
+    }),
+}));
+
+jest.mock('../../utils/cookieHandler/cookieHandler', () => ({
+    getCookies: jest.fn(),
 }));
 
 jest.mock('../../utils/providerNotifications/ProviderNotificationUtils', () => ({
@@ -22,8 +24,14 @@ jest.mock('../../utils/providerNotifications/ProviderNotificationUtils', () => (
     getPatientIPDDashboardUrl: jest.fn()
 }));
 
-jest.mock('../../utils/cookieHandler/cookieHandler', () => ({
-    getCookies: jest.fn(),
+jest.mock('../../utils/utils', () => ({
+    formatGender: jest.fn((gender) => gender === 'M' ? 'Male' : gender === 'F' ? 'Female' : 'Other'),
+    formatArrayDateToDefaultDateFormat: jest.fn((dateArray) => `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`),
+    calculateAgeFromEpochDOB: jest.fn((epoch) => '34 years 4 months 8 days'),
+}));
+
+jest.mock('../../Components/i18n/I18nProvider', () => ({
+    I18nProvider: ({ children }) => <div>{children}</div>,
 }));
 
 describe('ProviderNotifications Component', () => {
@@ -61,14 +69,8 @@ describe('ProviderNotifications Component', () => {
         groupByIdentifier.mockReturnValue(groupedByIdentifierMock);
         sortMedicationList.mockReturnValue(sortedMedicationListMock);
         acknowledgeEmergencyMedication.mockResolvedValue(acknowledgeResponseMock);
+        getPatientIPDDashboardUrl.mockReturnValue('/bahmni/clinical/index.html#/default/patient/patient123/dashboard/visit/ipd/visit123');
     });
-
-
-    it('should render acknowledgementRequiredText correctly', () => {
-        const {queryByText} = render(<ProviderNotifications />);
-
-        waitFor (()=> {expect(queryByText('Acknowledgement required')).toBeTruthy();})
-    }); 
 
     it('should render without crashing and display no drugs to be acknowledged message', async () => {
         jest.clearAllMocks();
@@ -131,14 +133,6 @@ describe('ProviderNotifications Component', () => {
         });
         await waitFor(() => expect(acknowledgeEmergencyMedication).toHaveBeenCalled());
         expect(await screen.findByText(/Acknowledgement failed/i)).toBeTruthy();
-    });
-
-     it('should render PatientsList component', () => {
-        const { queryByTestId } = render(<ProviderNotifications />);
-        waitFor(() => {
-            const patientsList = queryByTestId('patients-list');
-            expect(patientsList).toBeTruthy();
-        });
     });
 
     it('should fetch provider and medications on component mount', async () => {

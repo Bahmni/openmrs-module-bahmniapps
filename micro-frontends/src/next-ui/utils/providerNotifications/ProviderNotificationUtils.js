@@ -23,24 +23,21 @@ export const sortMedicationList = (medicationList) => {
     medicationList.forEach(group => {
         group.sort((a, b) => parseDateArray(a.administered_date_time).diff(parseDateArray(b.administered_date_time)));
     });
+
     medicationList.sort((a, b) => parseDateArray(a[0].administered_date_time).diff(parseDateArray(b[0].administered_date_time)));
+
     return medicationList;
 };
 
-export const acknowledgeEmergencyMedication = async (emergencyMedication, medicationAdministrationUuid) => {
+export const updateEmergencyMedication = async (emergencyMedication, medicationAdministrationUuid) => {
     try {
-        const response = await axios.put(
+        return await axios.put(
             EMERGENCY_MEDICATIONS_BASE_URL.replace("{medication_administration_uuid}",medicationAdministrationUuid),
             emergencyMedication
         );
-        if (response.status === 200) {
-            return { success: true, message: 'Emergency Medication Acknowledged Successfully' };
-        } else {
-            const errorMessage = response.data.error.message;
-            return { success: false, message: `Error: ${errorMessage}` };
-        }
     } catch (error) {
-        return { success: false, message: `Error: ${error}` };
+        console.error(error);
+        throw error; // Re-throw the error so acknowledgeEmergencyMedication can catch it
     }
 };
 
@@ -56,13 +53,27 @@ export const getProvider = async () => {
     }
 }
 
-export const groupByIdentifier = (data, key) => {
-    return data.reduce((accumulator, item) => {
-      if (!accumulator[item[key]]) {
-        accumulator[item[key]] = [];
-      }
-      accumulator[item[key]].push(item);
-      return accumulator;
+export const acknowledgeEmergencyMedication = async (emergencyMedication, medicationAdministrationUuid) => {
+    try {
+        const response = await updateEmergencyMedication(emergencyMedication, medicationAdministrationUuid);
+        if (response && response.status === 200) {
+            return { success: true, message: 'Emergency Medication Acknowledged Successfully' };
+        } else {
+            const errorMessage = response?.data?.error?.message || 'Unknown error';
+            return { success: false, message: `Error: ${errorMessage}` };
+        }
+    } catch (error) {
+        return { success: false, message: `Error: ${error}` };
+    }
+};
+
+export const groupByIdentifier = (data, identifierKey) => {
+    return data.reduce((grouped, item) => {
+        const key = item[identifierKey];
+        if (!grouped[key]) {
+            grouped[key] = [];
+        }
+        grouped[key].push(item);
+        return grouped;
     }, {});
-  };
-  
+};

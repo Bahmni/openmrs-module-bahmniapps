@@ -7,6 +7,14 @@ import { getPatientIPDDashboardUrl } from "../../utils/providerNotifications/Pro
 const mockWindowOpen = jest.fn();
 global.window.open = mockWindowOpen;
 
+jest.mock('react-intl', () => ({
+    FormattedMessage: ({ id, defaultMessage }) => defaultMessage,
+}));
+
+jest.mock("../../utils/utils", () => ({
+  formatGender: jest.fn((gender) => gender === 'M' ? 'Male' : gender === 'F' ? 'Female' : 'Other'),
+}));
+
 jest.mock("../../utils/providerNotifications/ProviderNotificationUtils", () => ({
   getPatientIPDDashboardUrl: jest.fn(),
 }));
