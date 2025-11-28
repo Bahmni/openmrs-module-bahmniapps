@@ -39,4 +39,38 @@
     <div ng-if="isFormTemplate(conceptSet)" id={{::conceptSet.formUuid}} class="form-controls-container">
         <form-controls form="conceptSet" patient="patient" validate-form="false"></form-controls>
     </div>
+    
+    <!-- Appointment fields OUTSIDE form-controls-container to avoid scope isolation -->
+    <!-- Only show for follow-up forms -->
+    <div ng-if="isFormTemplate(conceptSet) && conceptSet.label && conceptSet.label.toLowerCase().indexOf('follow') !== -1" style="margin-top: 15px;">
+        <!-- Custom appointment fields for follow-up forms -->
+        <div class="appointment-fields" style="padding: 10px; border: 1px solid #ddd; background: #f9f9f9;">
+            <div class="form-field" style="margin-bottom: 10px;">
+                <div class="field-attribute">
+                    <label>Appointment Time <span class="asterick">*</span></label>
+                </div>
+                <div class="field-value">
+                    <input type="time" 
+                           ng-model="conceptSet.appointmentTime" 
+                           ng-change="updateAppointmentTime(conceptSet)"
+                           style="width: 200px; padding: 5px;"
+                           required />
+                </div>
+            </div>
+            <div class="form-field" style="margin-bottom: 10px;">
+                <div class="field-attribute">
+                    <label>Service <span class="asterick">*</span></label>
+                </div>
+                <div class="field-value">
+                    <select ng-model="conceptSet.appointmentServiceUuid" 
+                            ng-change="updateAppointmentService(conceptSet)"
+                            ng-options="service.uuid as service.name for service in appointmentServices"
+                            style="width: 300px; padding: 5px;"
+                            required>
+                        <option value="">-- Select Service --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div> 
 </div>

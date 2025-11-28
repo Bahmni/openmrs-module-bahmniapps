@@ -3,10 +3,10 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner', 'messagingService',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate',
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate', 'appointmentService',
         function ($scope, contextChangeHandler, spinner, messagingService, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, retrospectiveEntryService, userService,
-                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate) {
+                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate, appointmentService) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var init = function () {
                 $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
@@ -183,6 +183,115 @@ angular.module('bahmni.common.conceptSet')
 
             $scope.isFormTemplate = function (data) {
                 return data.formUuid;
+            };
+
+            // Load appointment services for the dropdown
+            $scope.appointmentServices = [];
+            appointmentService.getAppointmentServices().then(function (services) {
+                $scope.appointmentServices = services;
+                // Restore appointment data for all forms after services are loaded
+                restoreAppointmentData();
+            }).catch(function (error) {
+                $log.error('Failed to load appointment services:', error);
+            });
+
+            // Store appointment data in rootScope so it can be accessed from encounterService
+            $rootScope.appointmentData = $rootScope.appointmentData || {};
+
+            // Restore appointment data from rootScope to form fields
+            var restoreAppointmentData = function () {
+                if (!$scope.allTemplates) return;
+                $scope.allTemplates.forEach(function (conceptSet) {
+                    if (conceptSet.formUuid && $rootScope.appointmentData[conceptSet.formUuid]) {
+                        var data = $rootScope.appointmentData[conceptSet.formUuid];
+                        if (data.time) {
+                            // Convert stored time to HH:MM format for HTML5 time input
+                            var timeValue = data.time;
+                            if (typeof timeValue === 'string') {
+                                // Check if it's ISO format (contains T or Z)
+                                if (timeValue.indexOf('T') !== -1 || timeValue.indexOf('Z') !== -1) {
+                                    // It's an ISO string, extract time part
+                                    var dateObj = new Date(timeValue);
+                                    if (!isNaN(dateObj.getTime())) {
+                                        var hours = dateObj.getHours();
+                                        var minutes = dateObj.getMinutes();
+                                        conceptSet.appointmentTime = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                                    }
+                                } else if (timeValue.match(/^\d{2}:\d{2}$/)) {
+                                    // Already in HH:MM format
+                                    conceptSet.appointmentTime = timeValue;
+                                }
+                            } else if (timeValue instanceof Date) {
+                                // Date object, extract time
+                                var hours = timeValue.getHours();
+                                var minutes = timeValue.getMinutes();
+                                conceptSet.appointmentTime = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                            }
+                        }
+                        if (data.serviceUuid) {
+                            conceptSet.appointmentServiceUuid = data.serviceUuid;
+                        }
+                    }
+                });
+            };
+
+            // Watch for form templates being added/loaded and restore their data
+            $scope.$watch('allTemplates', function (newVal) {
+                if (newVal && $scope.appointmentServices.length > 0) {
+                    restoreAppointmentData();
+                }
+            }, true);
+
+            // Update appointment time - stores time in HH:MM format in rootScope
+            $scope.updateAppointmentTime = function (conceptSet) {
+                if (!conceptSet.formUuid) return;
+                $rootScope.appointmentData[conceptSet.formUuid] = $rootScope.appointmentData[conceptSet.formUuid] || {};
+                
+                // Get the time value - HTML5 time input returns string in HH:MM format
+                var timeValue = conceptSet.appointmentTime;
+                
+                // Handle different formats
+                if (typeof timeValue === 'string') {
+                    // If it's already a string, check if it's ISO format or HH:MM
+                    if (timeValue.indexOf('T') !== -1 || timeValue.indexOf('Z') !== -1) {
+                        // It's an ISO string, extract time part
+                        var dateObj = new Date(timeValue);
+                        if (!isNaN(dateObj.getTime())) {
+                            var hours = dateObj.getHours();
+                            var minutes = dateObj.getMinutes();
+                            timeValue = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                        } else {
+                            timeValue = '';
+                        }
+                    } else {
+                        // Already in HH:MM format, use as is
+                        timeValue = timeValue.trim();
+                    }
+                } else if (timeValue instanceof Date) {
+                    // Extract hours and minutes from Date object
+                    var hours = timeValue.getHours();
+                    var minutes = timeValue.getMinutes();
+                    timeValue = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                } else {
+                    timeValue = '';
+                }
+                
+                $rootScope.appointmentData[conceptSet.formUuid].time = timeValue;
+            };
+
+            // Update appointment service - stores service UUID and duration in rootScope
+            $scope.updateAppointmentService = function (conceptSet) {
+                if (!conceptSet.formUuid) return;
+                $rootScope.appointmentData[conceptSet.formUuid] = $rootScope.appointmentData[conceptSet.formUuid] || {};
+                $rootScope.appointmentData[conceptSet.formUuid].serviceUuid = conceptSet.appointmentServiceUuid;
+                
+                // Find the selected service to get duration (using lodash find for compatibility)
+                var selectedService = _.find($scope.appointmentServices, function (s) {
+                    return s.uuid === conceptSet.appointmentServiceUuid;
+                });
+                if (selectedService) {
+                    $rootScope.appointmentData[conceptSet.formUuid].durationMins = selectedService.durationMins || 15;
+                }
             };
 
             init();
