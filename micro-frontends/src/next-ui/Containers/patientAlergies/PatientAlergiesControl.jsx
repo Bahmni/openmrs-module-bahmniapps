@@ -23,6 +23,7 @@ const AllergenKind = {
   DRUG: "Drug",
   FOOD: "Food",
   ENVIRONMENT: "Environment",
+  OTHER: "Other",
 };
 export function PatientAlergiesControl(props) {
   const { hostData, appService } = props;
@@ -45,7 +46,7 @@ export function PatientAlergiesControl(props) {
     reactionData?.setMembers
       ?.filter((reaction) => reaction.display !== "Other non-coded")
       .map((reaction) => {
-        return { name: reaction.names[0].display, uuid: reaction.uuid };
+        return { name: reaction.name.display, uuid: reaction.uuid };
       });
 
   const TransformReactionData = (reactionData) => {
@@ -68,7 +69,8 @@ export function PatientAlergiesControl(props) {
   const TransformAllergenData = (
     medicationAllergenData,
     foodAllergenData,
-    environmentAllergenData
+    environmentAllergenData,
+    otherAllergenData
   ) => {
     const medicationAllergens = extractAllergenData(
       medicationAllergenData,
@@ -82,12 +84,31 @@ export function PatientAlergiesControl(props) {
       foodAllergenData,
       AllergenKind.FOOD
     );
+    const otherAllergens = extractAllergenData(
+      otherAllergenData,
+      AllergenKind.OTHER
+    );
 
     return [
       ...medicationAllergens,
       ...environmentalAllergens,
       ...foodAllergens,
+      ...otherAllergens,
     ];
+  };
+
+  const SEVERITY_RANK = {
+    severe: 1,
+    moderate: 2,
+    mild: 3
+  };
+  const DEFAULT_SEVERITY_RANK = 4;
+
+  const compareByRankThenDate = (a, b) => {
+    if (a?.severityRank !== b?.severityRank) {
+      return a?.severityRank - b?.severityRank;
+    }
+    return b?.date - a?.date;
   };
 
   const allergiesAndReactionsForPatient = async () => {
@@ -95,25 +116,20 @@ export function PatientAlergiesControl(props) {
     const allergies = allergiesAndReactions.entry;
     const allergiesData = allergies?.map((allergy) => {
       const { resource } = allergy;
-      const allergen = resource.reaction[0]?.substance?.coding?.[0].display;
-      const severity = resource.reaction[0].severity;
+      const allergen = resource.reaction[0]?.substance?.coding?.[0]?.display;
+      const severity = resource.reaction[0]?.severity;
+      const severityRank =  SEVERITY_RANK[severity] ?? DEFAULT_SEVERITY_RANK;
       const note = resource.note && resource.note[0].text;
       const date = new Date(resource.recordedDate);
       const provider = resource.recorder?.display;
-      const reactions = resource.reaction[0]?.manifestation.map((reaction) => {
+      const reactions = resource.reaction[0]?.manifestation?.map((reaction) => {
         return reaction.coding[0].display;
-      });
-      return {allergen, severity, reactions, note, provider, date};
+      }) ?? [];
+      return {allergen, severity, severityRank, reactions, note, provider, date};
     });
-    allergiesData && allergiesData.sort((a, b) => b?.date - a?.date);
-    const filterSeverity = (severity) =>
-      allergiesData.filter((allergy) => allergy.severity === severity);
+
     allergiesData
-      ? setAllergiesAndReactions([
-          ...filterSeverity("severe"),
-          ...filterSeverity("moderate"),
-          ...filterSeverity("mild"),
-        ])
+      ? setAllergiesAndReactions([...allergiesData].sort(compareByRankThenDate))
       : setAllergiesAndReactions([]);
   };
 
@@ -150,6 +166,7 @@ export function PatientAlergiesControl(props) {
       allergyControlConceptIdMap.medicationAllergenUuid,
       allergyControlConceptIdMap.foodAllergenUuid,
       allergyControlConceptIdMap.environmentalAllergenUuid,
+      allergyControlConceptIdMap.otherAllergenUuid,
       allergyControlConceptIdMap.allergyReactionUuid,
       allergyControlConceptIdMap.allergySeverityUuid
     ];
@@ -160,13 +177,15 @@ export function PatientAlergiesControl(props) {
         medicationResponseData,
         foodResponseData,
         environmentalResponseData,
+        otherResponseData,
         reactionResponseData,
         severityResponseData
       ] = await Promise.all(urls.map((url) => fetchAllergensOrReactions(url)));
       const allergenData = TransformAllergenData(
         medicationResponseData,
         foodResponseData,
-        environmentalResponseData
+        environmentalResponseData,
+        otherResponseData
       );
       const reactionsData = TransformReactionData(reactionResponseData);
 
@@ -218,6 +237,7 @@ export function PatientAlergiesControl(props) {
               severityOptions={transformedSeverityData}
               patient={patient}
               provider={provider}
+              existingAllergies={allergiesAndReactions}
               data-testid={"allergies-overlay"}
               onClose={() => {
                 setShowAddAllergyPanel(false);
@@ -233,8 +253,8 @@ export function PatientAlergiesControl(props) {
               }}
             />
           )}
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy Information is saved successfully"/>} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={<FormattedMessage id={"ERROR_SAVING_ALLERGY"} defaultMessage="Error saving allergy"/>} hideCloseButton={true}/>
         </div>
       )}
       </I18nProvider>

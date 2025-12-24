@@ -15,5 +15,18 @@
   "SEARCH_REACTION": "Search Reaction",
   "COMMON_REACTIONS": "Common Reactions",
   "ALLERGEN": "Allergen",
-  "EDIT_FORM_ERROR_MESSAGE": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed"
+  "EDIT_FORM_ERROR_MESSAGE": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
+  "ACKNOWLEDGEMENT": "Reconnaître",
+  "ENTER_NOTES": "Saisir des notes",
+  "NOTE": "Note",
+  "ALLERGY_SAVED_SUCCESS": "Les informations relatives aux allergies ont été enregistrées avec succès",
+  "ERROR_SAVING_ALLERGY": "Erreur lors de l'enregistrement de l'allergie",
+  "ACKNOWLEDGEMENT_REQUIRED_TEXT": "Accusé de réception requis",
+  "MALE": "Homme",
+  "FEMALE": "Femme",
+  "OTHER": "Autre",
+  "ADDITIONAL_COMMENT_ALLERGY": "Commentaires supplémentaires tels que la date d'apparition, etc.",
+  "ALLERGEN_SEARCH_PLACEHOLDER": "Saisissez pour rechercher un allergène",
+  "ADD_BUTTON_TEXT": "Ajouter +",
+  "OK_KEY": "D'ACCORD"
 }
