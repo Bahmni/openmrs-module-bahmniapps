@@ -25,8 +25,16 @@ describe("ViewAllergiesAndReactions", () => {
             severity: "mild",
             note: "Onset Date: 2023-10-01",
             provider: "Dr. Jane"
+        },
+        {
+            allergen: "No Known Allergy",
+            reactions: [],
+            severity: undefined,
+            note: undefined,
+            provider: "Dr. John Doe"
         }
-    ]
+    ];
+
     it('should render ViewAllergiesAndReactions component', () => {
         const {container} = render(<ViewAllergiesAndReactions allergies={allergiesMock}/>);
         expect(container).toMatchSnapshot();

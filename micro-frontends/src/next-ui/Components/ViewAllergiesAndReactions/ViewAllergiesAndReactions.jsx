@@ -16,6 +16,12 @@ import { Document } from "@carbon/icons-react/next";
 import PropTypes from "prop-types";
 export const ViewAllergiesAndReactions = (props) => {
     const { allergies, showTextAsAbnormal } = props;
+
+    const NO_KNOWN_ALLERGY = "No Known Allergy";
+    const hasMultipleAllergies = allergies.length > 1;
+    const hasNoKnownAllergy = allergies.some(allergy => allergy.allergen === NO_KNOWN_ALLERGY);
+    const shouldStrikethroughNoKnown = hasMultipleAllergies && hasNoKnownAllergy;
+
     return <div className={"next-ui"}>
             <div className={"allergies-row allergies-row-heading"}>
                 <div><FormattedMessage id={"ALLERGEN"} defaultMessage={"Allergen"}/></div>
@@ -24,14 +30,20 @@ export const ViewAllergiesAndReactions = (props) => {
             </div>
             <div>
                 {allergies.map((allergy, index) => {
+                    const isNoKnownAllergy = allergy.allergen === NO_KNOWN_ALLERGY;
+                    const isSevere = allergy.severity?.toLowerCase() === "severe";
+                    const className = isNoKnownAllergy && shouldStrikethroughNoKnown
+                        ? "no-known-allergy"
+                            : showTextAsAbnormal || isSevere
+                                ? "red-text"
+                                : "";
                     const title = <div key={index}
-                                       className={` allergies-row ${showTextAsAbnormal ? "allergies-red-text" 
-                                           : allergy.severity === "severe" ? "allergies-red-text": ""}`}>
+                                       className={`allergies-row ${className}`}>
                         <div>{allergy.allergen}</div>
                         <div>{allergy.reactions.join(", ")}</div>
                         <div className={"capitalize"}>{allergy.severity}</div>
                     </div>
-                    return (<Accordion>
+                    return (<Accordion key={index}>
                         <AccordionItem title={title}>
                             <div className={"allergies-accordion-item"}>
                                 <div>

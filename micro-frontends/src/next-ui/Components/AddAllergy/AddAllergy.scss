@@ -26,6 +26,23 @@
   max-width: 500px;
 }
 
+.known-allergy-radio-group {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  .bx--label {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .bx--radio-button__label {
+    font-size: 14px;
+  }
+}
+
+.no-known-allergy-textarea {
+  padding: 10px;
+  background: #fff;
+}
+
 .back-button {
   color: #0F62FE;
   display: flex;

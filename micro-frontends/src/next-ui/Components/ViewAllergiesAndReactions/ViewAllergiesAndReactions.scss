@@ -12,6 +12,10 @@
   grid-template-columns: 1fr 2fr 1fr;
   gap: 10px;
 }
+.allergies-row.no-known-allergy {
+  color: #000000;
+  text-decoration: line-through;
+}
 .allergies-row-heading{
   font-weight: 600;
   background-color: #F1F1F1;
