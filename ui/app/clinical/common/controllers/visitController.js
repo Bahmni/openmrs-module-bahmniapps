@@ -148,8 +148,22 @@ angular.module('bahmni.clinical')
                     }
 
                     $scope.allergies = "";
-                    var allergyPromise = allergyService.fetchAndProcessAllergies($scope.patient.uuid).then(function (allergies) {
-                        $scope.allergies = allergies;
+                    var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
+                        var allergies = response.data;
+                        var allergiesList = [];
+                        if (response.status === 200 && allergies.entry) {
+                            allergies.entry.forEach(function (allergy) {
+                                if (allergy.resource.code.coding) {
+                                    allergiesList.push(allergy.resource.code.coding[0].display);
+                                }
+                            });
+                        }
+                        if (allergiesList.length > 1) {
+                            allergiesList = allergiesList.filter(function (allergy) {
+                                return allergy !== Bahmni.Clinical.Constants.noKnownAllergy;
+                            });
+                        }
+                        $scope.allergies = allergiesList.join(", ");
                     });
                     promises.push(allergyPromise);
 

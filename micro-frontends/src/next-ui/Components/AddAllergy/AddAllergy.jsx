@@ -19,6 +19,7 @@
   import { SearchAllergen } from "../SearchAllergen/SearchAllergen.jsx";
   import { SelectReactions } from "../SelectReactions/SelectReactions";
   import "./AddAllergy.scss";
+  import {NO_KNOWN_ALLERGY} from "../../constants";
 
   export function AddAllergy(props) {
     const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies } = props;
@@ -37,7 +38,6 @@
     const additionalComments = (
       intl.formatMessage({ id: "ADDITIONAL_COMMENT_ALLERGY", defaultMessage: "Additional comments such as onset date etc."})
     );
-    const NO_KNOWN_ALLERGY = "No Known Allergy";
     const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
     const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
 
