@@ -377,6 +377,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             form.component.state.data = runEventScript(form.component.state.data,
                                 form.events.onFormSave, form.component.props && form.component.props.patient);
                         } catch (error) {
+                            console.error("Error occurred while trying to run scripts for form:" + form.formName, error);
                             throw error;
                         }
                     }
