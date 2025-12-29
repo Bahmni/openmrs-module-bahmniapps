@@ -28,6 +28,7 @@ import SaveAndCloseButtons from "../SaveAndCloseButtons/SaveAndCloseButtons.jsx"
 import { SearchAllergen } from "../SearchAllergen/SearchAllergen.jsx";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
 import "./AddAllergy.scss";
+import {NO_KNOWN_ALLERGY} from "../../constants";
 
   export function AddAllergy(props) {
     const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies } = props;

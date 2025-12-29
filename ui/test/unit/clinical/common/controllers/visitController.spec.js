@@ -31,6 +31,7 @@ describe('VisitController', function () {
     var allergiesMock = {
         data: {
             entry: [
+                {resource: { code: {coding:[{display: "No Known Allergy"}]}}},
                 {resource: { code: {coding:[{display: "Eggs"}]}}}
             ],
         },

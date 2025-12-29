@@ -42,4 +42,4 @@ export const EMERGENCY_MEDICATIONS_BASE_URL = RESTWS_V1 + "/ipd/adhocMedicationA
 export const GET_PROVIDER_UUID_URL = RESTWS_V1 + "/session";
 export const SAVE_ALLERGIES_URL =  RESTWS_V1 + "/patient/{patientId}/allergy";
 export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
-
+export const NO_KNOWN_ALLERGY = "No Known Allergy";

@@ -30,6 +30,8 @@ angular.module('bahmni.clinical')
                 $state.current.views['print-content'].templateUrl;
             var showProviderInfo = appService.getAppDescriptor().getConfigValue('showProviderInfoinVisits');
             $scope.showProviderInfo = showProviderInfo !== false ? true : showProviderInfo;
+            var showPatientInfo = appService.getAppDescriptor().getConfigValue('showPatientInfoInVisits');
+            $scope.showPatientInformation = showPatientInfo !== false ? true : showPatientInfo;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
             $scope.visitTabConfig = visitConfig;
@@ -38,8 +40,10 @@ angular.module('bahmni.clinical')
             $scope.visitUuid = $stateParams.visitUuid;
             $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD";
             $scope.isIpdReadMode = true;
-            if ($scope.visitSummary.stopDateTime === null) {
+            if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null) {
                 $scope.isIpdReadMode = false;
+            } else if ($scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime !== null) {
+                $scope.isIpdReadMode = true;
             }
             $scope.ipdDashboard = {
                 hostData: {
@@ -157,8 +161,22 @@ angular.module('bahmni.clinical')
                     }
 
                     $scope.allergies = "";
-                    var allergyPromise = allergyService.fetchAndProcessAllergies($scope.patient.uuid).then(function (allergies) {
-                        $scope.allergies = allergies;
+                    var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
+                        var allergies = response.data;
+                        var allergiesList = [];
+                        if (response.status === 200 && allergies.entry) {
+                            allergies.entry.forEach(function (allergy) {
+                                if (allergy.resource.code.coding) {
+                                    allergiesList.push(allergy.resource.code.coding[0].display);
+                                }
+                            });
+                        }
+                        if (allergiesList.length > 1) {
+                            allergiesList = allergiesList.filter(function (allergy) {
+                                return allergy !== Bahmni.Clinical.Constants.noKnownAllergy;
+                            });
+                        }
+                        $scope.allergies = allergiesList.join(", ");
                     });
                     promises.push(allergyPromise);
 

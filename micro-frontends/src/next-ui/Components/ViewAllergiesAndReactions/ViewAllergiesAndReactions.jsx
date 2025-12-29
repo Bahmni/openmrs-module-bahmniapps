@@ -14,10 +14,10 @@ import {FormattedMessage} from "react-intl";
 import { Accordion, AccordionItem } from "carbon-components-react";
 import { Document } from "@carbon/icons-react/next";
 import PropTypes from "prop-types";
+import {NO_KNOWN_ALLERGY} from "../../constants";
 export const ViewAllergiesAndReactions = (props) => {
     const { allergies, showTextAsAbnormal } = props;
 
-    const NO_KNOWN_ALLERGY = "No Known Allergy";
     const hasMultipleAllergies = allergies.length > 1;
     const hasNoKnownAllergy = allergies.some(allergy => allergy.allergen === NO_KNOWN_ALLERGY);
     const shouldStrikethroughNoKnown = hasMultipleAllergies && hasNoKnownAllergy;
