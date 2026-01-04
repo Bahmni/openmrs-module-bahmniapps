@@ -38,10 +38,11 @@ Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function () {
 
         for (var obsKey in bahmniObservations) {
             var dateTime = obsKey;
+            var uniqueObservations = _.uniqBy(bahmniObservations[dateTime], 'uuid');
 
             var anObs = {
                 "key": dateTime,
-                "value": bahmniObservations[dateTime].sort(sortWithInAConceptDateCombination),
+                "value": uniqueObservations.sort(sortWithInAConceptDateCombination),
                 "date": dateTime
             };
 
@@ -88,11 +89,12 @@ Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function () {
         for (var obsKey in sortedArr) {
             obsValues.push(sortedArr[obsKey].value);
         }
+        var uniqueObsValues = _.uniqBy(obsValues, 'uuid');
         var ele = {};
         ele.key = oKey;
-        ele.value = obsValues;
+        ele.value = uniqueObsValues;
         ele.date = oKey;
-        return obsValues.length > 0 ? [ele] : [];
+        return uniqueObsValues.length > 0 ? [ele] : [];
     };
 
     return self;
