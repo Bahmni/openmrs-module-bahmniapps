@@ -31,6 +31,18 @@
                     <label class="surgeon-block surgeon-text">{{defaultAttributeTranslations.get(attributeTypeName) | translate}}</label>
                     <textarea class="text-section" id="procedureID" ng-model="attributes.procedure.value" msd-elastic> </textarea>
                 </p>
+                <p ng-show="attributeTypeName === conceptFormatAttributeName">
+                    <label class="surgeon-block surgeon-text">
+                        <span ng-if="currentLanguage === 'en'">{{ conceptFormatAttributeName }}</span>
+                        <span ng-if="currentLanguage !== 'en'">{{ defaultAttributeTranslations.get(conceptFormatAttributeName) | translate }}</span>
+                        <span class="asterick">*</span>
+                    </label>
+                    <select ng-options="option.value as (option.label | translate) for option in conceptFormatAttributeDropdownOptions"
+                            ng-model="attributes[conceptFormatAttributeName].value"
+                            required>
+                            <option value=""> {{'OT_SELECT_OPTION_KEY' | translate}}</option>
+                    </select>
+                </p>
                 <p ng-switch-when="estTimeHours">
                     <!--Since time and hours are displayed as one single attribute in UI, OT_SURGICAL_APPOINTMENT_MINUTES and
                     OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME have to be hard-coded-->
@@ -63,7 +75,7 @@
                     <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</label>
                     <input type="text" id="{{attribute.surgicalAppointmentAttributeType.anaesthetist}}" ng-model="attribute.value">
                 </p>
-                <p ng-switch-default ng-if="attributeTypeName != 'estTimeMinutes'">
+                <p ng-switch-default ng-if="attributeTypeName != 'estTimeMinutes' && attributeTypeName !== conceptFormatAttributeName">
                     <label class="surgeon-block surgeon-text">{{(defaultAttributeTranslations.get(attributeTypeName) | translate) || attribute.surgicalAppointmentAttributeType.name}}</label>
                     <input type="text" id="{{attribute.surgicalAppointmentAttributeType.name}}" ng-model="attribute.value">
                 </p>

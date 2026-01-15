@@ -18,6 +18,8 @@
             ng-blur="deselectSurgicalAppointment($event)" tabindex="1" ng-class="{'current-date': isCurrentDateinWeekView(appointment.derivedAttributes.expectedStartDate),
              'status-postponed': isStatusPostponed(appointment.status), 'status-cancelled': isStatusCancelled(appointment.status)}">
             <td>
+                {{conceptFormatAttributeName && appointment.surgicalAppointmentAttributes[conceptFormatAttributeName] ? (conceptFormatDropdownConstants.indexOf((appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate)) === -1 ? (appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate) : '') : ''}}
+            <td>
                 {{appointment.status}}
             </td>
             <td>

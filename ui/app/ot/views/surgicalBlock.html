@@ -93,6 +93,9 @@
                                                     </b> - {{attribute.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}, </span>
                                             <span ng-switch-when="otherSurgeon"
                                                   ng-if="attribute.value.person.display"><b>{{(defaultAttributeTranslations.get(attribute.surgicalAppointmentAttributeType.name) | translate)}}</b> - {{attribute.value.person.display}}, </span>
+                                            <span ng-switch-when="attributeTypeName === conceptFormatAttributeName"
+                                                  ng-if="attribute.value">
+                                                <b> {{'OT_SURGICAL_APPOINTMENT_CONCEPT_FORMAT_REQUIREMENT' | translate}}</b> - {{attribute.value | translate}}, </span>
                                             <span ng-switch-default
                                                   ng-if="attribute.value && attribute.surgicalAppointmentAttributeType.name != 'estTimeMinutes'"><b>{{(defaultAttributeTranslations.get(attribute.surgicalAppointmentAttributeType.name) | translate)
                                                         || attribute.surgicalAppointmentAttributeType.name}}</b> - {{attribute.value}}<span

@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('calendarViewController', ['$scope', '$rootScope', '$state', '$stateParams', 'appService', 'patientService', 'locationService', 'ngDialog', 'surgicalAppointmentHelper',
-        function ($scope, $rootScope, $state, $stateParams, appService, patientService, locationService, ngDialog, surgicalAppointmentHelper) {
+    .controller('calendarViewController', ['$scope', '$rootScope', '$state', '$stateParams', 'appService', 'patientService', 'locationService', 'ngDialog', 'surgicalAppointmentHelper', 'otUtils',
+        function ($scope, $rootScope, $state, $stateParams, appService, patientService, locationService, ngDialog, surgicalAppointmentHelper, otUtils) {
             var CALENDAR_VIEW = 'Calendar';
             $scope.viewDate = $stateParams.viewDate || $state.viewDate || (moment().startOf('day')).toDate();
             $state.viewDate = $scope.viewDate;
@@ -54,6 +54,8 @@ angular.module('bahmni.ot')
                 $scope.weekOrDay = $state.weekOrDay || 'day';
                 $state.weekOrDay = $scope.weekOrDay;
                 $scope.isFilterOpen = true;
+                $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
+                $scope.conceptFormatDropdownConstants = Bahmni.OT.Constants.notApplicableValues;
                 if ($scope.weekOrDay === 'week') {
                     $scope.weekStartDate = $state.weekStartDate || new Date(moment().startOf('week'));
                     $state.weekStartDate = $scope.weekStartDate;
