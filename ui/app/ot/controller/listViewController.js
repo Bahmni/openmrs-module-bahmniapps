@@ -10,17 +10,20 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('listViewController', ['$scope', '$rootScope', '$q', 'spinner', 'surgicalAppointmentService', 'appService', 'surgicalAppointmentHelper', 'surgicalBlockFilter', 'printer',
-        function ($scope, $rootScope, $q, spinner, surgicalAppointmentService, appService, surgicalAppointmentHelper, surgicalBlockFilter, printer) {
+    .controller('listViewController', ['$scope', '$rootScope', '$q', 'spinner', 'surgicalAppointmentService', 'appService', 'surgicalAppointmentHelper', 'surgicalBlockFilter', 'printer', 'otUtils',
+        function ($scope, $rootScope, $q, spinner, surgicalAppointmentService, appService, surgicalAppointmentHelper, surgicalBlockFilter, printer, otUtils) {
             var startDatetime = moment($scope.viewDate).toDate();
             var surgicalBlockMapper = new Bahmni.OT.SurgicalBlockMapper();
             var endDatetime = moment(startDatetime).endOf('day').toDate();
             $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations();
+            $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
+            $scope.conceptFormatDropdownConstants = Bahmni.OT.Constants.notApplicableValues;
             $scope.filteredSurgicalAttributeTypes = getFilteredSurgicalAttributeTypes();
             $scope.tableInfo = getTableInfo();
 
             function getTableInfo () {
                 var listViewAttributes = [
+                    {heading: $scope.conceptFormatAttributeName, sortInfo: 'surgicalAppointmentAttributes.' + $scope.conceptFormatAttributeName + '.value'},
                     {heading: 'Status', sortInfo: 'status'},
                     {heading: 'Day', sortInfo: 'derivedAttributes.expectedStartDate'},
                     {heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
@@ -46,6 +49,9 @@ angular.module('bahmni.ot')
 
             function getFilteredSurgicalAttributeTypes () {
                 var derivedSurgicalAttributes = ['estTimeHours', 'estTimeMinutes', 'cleaningTime'];
+                if ($scope.conceptFormatAttributeName) {
+                    derivedSurgicalAttributes.push($scope.conceptFormatAttributeName);
+                }
                 return surgicalAppointmentHelper.getAttributeTypesByRemovingAttributeNames($rootScope.attributeTypes, derivedSurgicalAttributes);
             }
 
@@ -139,7 +145,11 @@ angular.module('bahmni.ot')
                     weekEndDate: $scope.weekEndDate,
                     viewDate: $scope.viewDate,
                     weekOrDay: $scope.weekOrDay,
-                    isCurrentDate: $scope.isCurrentDateinWeekView
+                    isCurrentDate: $scope.isCurrentDateinWeekView,
+                    conceptFormatAttributeName: $scope.conceptFormatAttributeName,
+                    filteredSurgicalAttributeTypes: $scope.filteredSurgicalAttributeTypes,
+                    tableInfo: $scope.tableInfo,
+                    defaultAttributeTranslations: $scope.defaultAttributeTranslations
                 });
             };
 

@@ -31,4 +31,16 @@ angular.module('bahmni.ot').factory('initialization', ['$rootScope', '$q', 'surg
         };
         return spinner.forPromise(authenticator.authenticateUser().then(initApp).then(loadConfigPromise));
     }
-]);
+]).factory('otUtils', ['$rootScope', function ($rootScope) {
+    return {
+        getConceptFormatAttributeName: function () {
+            if (!$rootScope.attributeTypes) {
+                return null;
+            }
+            var conceptFormatAttribute = _.find($rootScope.attributeTypes, function (attr) {
+                return attr.format === 'org.openmrs.Concept';
+            });
+            return conceptFormatAttribute ? conceptFormatAttribute.name : null;
+        }
+    };
+}]);

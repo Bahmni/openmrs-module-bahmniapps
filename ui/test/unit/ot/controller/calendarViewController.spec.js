@@ -18,6 +18,7 @@ describe("calendarViewController", function () {
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+    var otUtils = jasmine.createSpyObj('otUtils', ['getConceptFormatAttributeName']);
     appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     appDescriptor.getConfigValue.and.callFake(function (value) {
@@ -61,7 +62,8 @@ describe("calendarViewController", function () {
             patientService: patientService,
             locationService: locationService,
             ngDialog: customNgDialog || ngDialog,
-            $stateParams: stateParams
+            $stateParams: stateParams,
+            otUtils: otUtils
         });
     };
 
@@ -108,6 +110,13 @@ describe("calendarViewController", function () {
         expect(state.viewDate).toEqual((moment().startOf('day')).toDate());
         expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(moment().startOf('day').toDate(), scope.startOfWeekCode));
         expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(moment().startOf('day').toDate(), scope.startOfWeekCode));
+    });
+
+    it('should initialize conceptFormatAttributeName from otUtils', function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
+        createController();
+        expect(otUtils.getConceptFormatAttributeName).toHaveBeenCalled();
+        expect(scope.conceptFormatAttributeName).toBe('Blood Transfusion Requested for Surgery?');
     });
 
     it('Should search the patient with the given search string', function () {
