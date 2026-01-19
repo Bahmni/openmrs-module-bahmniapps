@@ -8,7 +8,8 @@ import { AddAllergy } from "../../Components/AddAllergy/AddAllergy";
 import { FormattedMessage } from "react-intl";
 import {
   fetchAllergensOrReactions,
-  fetchAllergiesAndReactionsForPatient
+  fetchAllergiesAndReactionsForPatient,
+  getNoKnownAllergyUuid
 } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
 import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
@@ -117,6 +118,7 @@ export function PatientAlergiesControl(props) {
     const allergiesData = allergies?.map((allergy) => {
       const { resource } = allergy;
       const allergen = resource.reaction[0]?.substance?.coding?.[0]?.display;
+      const allergenCode = resource.reaction[0]?.substance?.coding?.[0]?.code;
       const severity = resource.reaction[0]?.severity;
       const severityRank =  SEVERITY_RANK[severity] ?? DEFAULT_SEVERITY_RANK;
       const note = resource.note && resource.note[0].text;
@@ -125,7 +127,7 @@ export function PatientAlergiesControl(props) {
       const reactions = resource.reaction[0]?.manifestation?.map((reaction) => {
         return reaction.coding[0].display;
       }) ?? [];
-      return {allergen, severity, severityRank, reactions, note, provider, date};
+      return {allergen, allergenCode, severity, severityRank, reactions, note, provider, date};
     });
 
     allergiesData
@@ -141,6 +143,7 @@ export function PatientAlergiesControl(props) {
   const [allergiesAndReactions, setAllergiesAndReactions] = useState([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [noKnownAllergyUuid, setnoKnownAllergyUuid] = useState('');
 
   const noAllergiesText = (
     <FormattedMessage
@@ -207,6 +210,12 @@ export function PatientAlergiesControl(props) {
     allergiesAndReactionsForPatient();
   }, []);
 
+  useEffect(() => {
+    getNoKnownAllergyUuid().then((code) => {
+      setnoKnownAllergyUuid(code);
+    });
+  }, []);
+
   return (
     <>
       <I18nProvider>
@@ -228,7 +237,7 @@ export function PatientAlergiesControl(props) {
             )}
           </h2>
             {allergiesAndReactions.length === 0 ?<div className={"placeholder-text"}>{noAllergiesText}</div>:
-                <ViewAllergiesAndReactions allergies={allergiesAndReactions} showTextAsAbnormal={appService.getAppDescriptor().getConfigValue("showTextAsAbnormal")}/>
+                <ViewAllergiesAndReactions allergies={allergiesAndReactions} showTextAsAbnormal={appService.getAppDescriptor().getConfigValue("showTextAsAbnormal")} noKnownAllergyUuid={noKnownAllergyUuid}/>
             }
           { showAddAllergyPanel && (
             <AddAllergy
@@ -251,6 +260,7 @@ export function PatientAlergiesControl(props) {
                   setShowErrorPopup(true);
                 }
               }}
+              noKnownAllergyUuid={noKnownAllergyUuid}
             />
           )}
           <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy information saved successfully"/>} hideCloseButton={true}/>

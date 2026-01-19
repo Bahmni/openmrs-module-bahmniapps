@@ -45,4 +45,8 @@
   "UPDATE": "Update",
   "ACKNOWLEDGE_BUTTON": "Acknowledge",
   "NO_DRUGS_TO_BE_AKNOWLEDGED_TEXT": "You have no new drugs to be acknowledged"
+  "NO_KNOWN_ALLERGY": "No known allergy",
+  "KNOWN_ALLERGY_QUESTION": "Does the patient have any known allergies?",
+  "YES": "Yes",
+  "NO": "No"
 }
