@@ -28,10 +28,10 @@ import SaveAndCloseButtons from "../SaveAndCloseButtons/SaveAndCloseButtons.jsx"
 import { SearchAllergen } from "../SearchAllergen/SearchAllergen.jsx";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
 import "./AddAllergy.scss";
-import {NO_KNOWN_ALLERGY} from "../../constants";
+
 
   export function AddAllergy(props) {
-    const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies } = props;
+    const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies, noKnownAllergyUuid } = props;
     const [allergen, setAllergen] = React.useState({});
     const [reactions, setReactions] = React.useState([]);
     const [severity, setSeverity] = React.useState("");
@@ -47,7 +47,16 @@ import {NO_KNOWN_ALLERGY} from "../../constants";
     const additionalComments = (
       intl.formatMessage({ id: "ADDITIONAL_COMMENT_ALLERGY", defaultMessage: "Additional comments such as onset date etc."})
     );
-    const NO_KNOWN_ALLERGY = "No Known Allergy";
+    const noKnownAllergyText = (<FormattedMessage id={"NO_KNOWN_ALLERGY"} defaultMessage={"No known allergy"} />);
+    const knownAllergyQuestionText = (
+        <FormattedMessage
+            id="KNOWN_ALLERGY_QUESTION"
+            defaultMessage="Does the patient have any known allergies?"
+        />
+    );
+    const yesText = (<FormattedMessage id="YES" defaultMessage="Yes" />);
+    const noText = (<FormattedMessage id="NO" defaultMessage="No" />);
+
     const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
     const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
 
@@ -87,7 +96,7 @@ import {NO_KNOWN_ALLERGY} from "../../constants";
       const isYes = value === "yes";
       setPatientHasAllergies(isYes);
       if (!isYes) {
-        const noKnownAllergyValue = allergens.find(allergen => allergen?.name === NO_KNOWN_ALLERGY);
+        const noKnownAllergyValue = allergens.find(allergen => allergen?.uuid === noKnownAllergyUuid);
         setAllergen(noKnownAllergyValue ?? {});
         setReactions([]);
         setSeverity(null);
@@ -98,6 +107,7 @@ import {NO_KNOWN_ALLERGY} from "../../constants";
         setIsSaveEnabled(false);
       }
     };
+
 
     const showKnownAllergySelector = existingAllergies?.length === 0
 
@@ -112,25 +122,25 @@ import {NO_KNOWN_ALLERGY} from "../../constants";
               {showKnownAllergySelector && (
                   <RadioButtonGroup
                       name="known-allergy"
-                      legendText="Does the patient have any known allergies?"
+                      legendText={knownAllergyQuestionText}
                       onChange={handleKnownAllergyChange}
                       orientation="horizontal"
                       defaultSelected="yes"
                       className={"font-large known-allergy-radio-group"}
                   >
-                    <RadioButton labelText="Yes" value="yes" />
-                    <RadioButton labelText="No" value="no" />
+                    <RadioButton labelText={yesText} value="yes" />
+                    <RadioButton labelText={noText} value="no" />
                   </RadioButtonGroup>
               )}
 
               {patientHasAllergies === false ? (
-                  <div className={"font-large no-known-allergy-textarea"}>{NO_KNOWN_ALLERGY}</div>
+                  <div className={"font-large no-known-allergy-textarea"}>{noKnownAllergyText}</div>
               ) : (
                   <>
                     {isEmpty(allergen) && (
                         <div data-testid={"search-allergen"}>
                           <SearchAllergen
-                              allergens={allergens.filter(allergen => allergen?.name !== NO_KNOWN_ALLERGY)}
+                              allergens={allergens.filter(allergen => allergen?.uuid !== noKnownAllergyUuid)}
                               onChange={(allergen) => {
                                 setAllergen(allergen);
                               }}
@@ -217,4 +227,5 @@ import {NO_KNOWN_ALLERGY} from "../../constants";
     patient: propTypes.object.isRequired,
     severityOptions: propTypes.array.isRequired,
     existingAllergies: propTypes.array.isRequired,
+    noKnownAllergyUuid: propTypes.string.isRequired
   };
