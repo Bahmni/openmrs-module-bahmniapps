@@ -45,5 +45,9 @@
   "OTHER": "Other",
   "ADDITIONAL_COMMENT_ALLERGY": "Additional comments such as onset date etc.",
   "ALLERGEN_SEARCH_PLACEHOLDER": "Type to search Allergen",
-  "OK_KEY": "OK"
+  "OK_KEY": "OK",
+  "NO_KNOWN_ALLERGY": "No known allergy",
+  "KNOWN_ALLERGY_QUESTION": "Does the patient have any known allergies?",
+  "YES": "Yes",
+  "NO": "No"
 }

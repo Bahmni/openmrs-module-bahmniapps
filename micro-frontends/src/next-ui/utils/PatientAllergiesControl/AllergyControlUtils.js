@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BAHMNI_ENCOUNTER_URL, ENCOUNTER_TYPE_URL, FETCH_CONCEPT_URL, GET_ALLERGIES_URL, SAVE_ALLERGIES_URL } from "../../constants";
+import { BAHMNI_ENCOUNTER_URL, ENCOUNTER_TYPE_URL, FETCH_CONCEPT_URL, GET_ALLERGIES_URL, SAVE_ALLERGIES_URL, GLOBAL_PROPERTY_URL } from "../../constants";
 import { getLocale } from "../../Components/i18n/utils";
 
 export const fetchAllergensOrReactions = async (conceptId) => {
@@ -64,3 +64,21 @@ export const getEncounterType = async (encounterType) => {
         console.log(error);
     }
 }
+
+export const getNoKnownAllergyUuid = async () => {
+  try {
+    const response = await axios.get(GLOBAL_PROPERTY_URL, {
+      params: {
+        property: "allergy.concept.noKnownAllergyUuid",
+      },
+      withCredentials: true,
+      headers: {
+        Accept: "text/plain",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching no known allergy uuid:", error);
+    throw error;
+  }
+};

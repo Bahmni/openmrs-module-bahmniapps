@@ -15,5 +15,9 @@
   "SEARCH_REACTION": "Search Reaction",
   "COMMON_REACTIONS": "Common Reactions",
   "ALLERGEN": "Allergen",
-  "EDIT_FORM_ERROR_MESSAGE": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed"
+  "EDIT_FORM_ERROR_MESSAGE": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
+  "NO_KNOWN_ALLERGY": "Nenhuma Alergia Conhecida",
+  "KNOWN_ALLERGY_QUESTION": "O paciente tem alguma alergia conhecida?",
+  "YES": "Sim",
+  "NO": "Não"
 }

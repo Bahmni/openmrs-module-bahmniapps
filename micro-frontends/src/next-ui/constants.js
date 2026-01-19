@@ -37,3 +37,4 @@ export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
 export const NEXT_UI_CONFIG_PATH = hostUrl + "/bahmni_config/openmrs/";
 
 export const NO_KNOWN_ALLERGY = "No Known Allergy";
+export const GLOBAL_PROPERTY_URL = RESTWS_V1 + "/bahmnicore/sql/globalproperty";
