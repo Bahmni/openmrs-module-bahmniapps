@@ -174,10 +174,15 @@ angular.module('bahmni.clinical')
                 }
 
                 $scope.allergies = "";
-                var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
-                    var allergies = response.data;
+                var allergyPromise = $q.all([
+                    allergyService.getAllergyForPatient($scope.patient.uuid),
+                    allergyService.getNoKnownAllergyUuid()
+                ]).then(function (responses) {
+                    var allergies = responses[0].data;
+                    var noKnownAllergyUuid = responses[1];
                     var allergiesList = [];
-                    if (response.status === 200 && allergies.entry) {
+
+                    if (responses[0].status === 200 && allergies.entry) {
                         allergies.entry.forEach(function (allergy) {
                             if (allergy.resource.code.coding) {
                                 allergiesList.push({
@@ -187,16 +192,16 @@ angular.module('bahmni.clinical')
                             }
                         });
                     }
-                    allergyService.getNoKnownAllergyUuid().then(function (noKnownAllergyUuid) {
-                        if (allergiesList.length > 1) {
-                            allergiesList = allergiesList.filter(function (allergy) {
-                                return allergy.allergenCode !== noKnownAllergyUuid;
-                            });
-                        }
-                        $scope.allergies = allergiesList.map(function (allergy) {
-                            return allergy.display;
-                        }).join(", ");
-                    });
+
+                    if (allergiesList.length > 1) {
+                        allergiesList = allergiesList.filter(function (allergy) {
+                            return allergy.allergenCode !== noKnownAllergyUuid;
+                        });
+                    }
+
+                    $scope.allergies = allergiesList.map(function (allergy) {
+                        return allergy.display;
+                    }).join(", ");
                 });
                 promises.push(allergyPromise);
 
