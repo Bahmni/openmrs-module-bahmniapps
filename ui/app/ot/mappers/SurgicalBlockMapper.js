@@ -38,68 +38,45 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         return mappedAttributes;
     };
 
-    var mapAnaesthesiaAssessment = function (anaesthesiaAssessmentObs) {
-        if (!anaesthesiaAssessmentObs || !angular.isArray(anaesthesiaAssessmentObs) || anaesthesiaAssessmentObs.length === 0) {
+    var mapConcepts = function (observations, conceptDisplayName, validityDays) {
+        if (!observations || !angular.isArray(observations) || observations.length === 0) {
             return { value: null, date: null };
         }
-        var anaesthesiaAssessmentValue = null;
-        var anaesthesiaAssessmentDate = null;
-        _.each(anaesthesiaAssessmentObs, function (anaesthesiaAssessment) {
-            if (!anaesthesiaAssessment || !anaesthesiaAssessment.display) {
+        var latestValue = null;
+        var latestDate = null;
+        _.each(observations, function (obs) {
+            if (!obs || !obs.display) {
                 return;
             }
-            if (anaesthesiaAssessment.concept && anaesthesiaAssessment.concept.display === Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery) {
-                var currentObsDate = anaesthesiaAssessment.obsDatetime;
-                if (!anaesthesiaAssessmentDate || (currentObsDate && currentObsDate > anaesthesiaAssessmentDate)) {
-                    if (anaesthesiaAssessment.value) {
-                        anaesthesiaAssessmentValue = anaesthesiaAssessment.value.display;
+            if (obs.concept && obs.concept.display === conceptDisplayName) {
+                var currentObsDate = obs.obsDatetime;
+                var parsedDate = currentObsDate && Bahmni.Common.Util.DateUtil.parseServerDateToDate(currentObsDate);
+                if (!latestDate || (parsedDate && parsedDate > latestDate)) {
+                    if (obs.value) {
+                        latestValue = obs.value.display || obs.value;
                     }
-                    if (currentObsDate) {
-                        anaesthesiaAssessmentDate = Bahmni.Common.Util.DateUtil.parseServerDateToDate(currentObsDate);
+                    if (parsedDate) {
+                        latestDate = parsedDate;
                     }
                 }
             }
         });
-        if (anaesthesiaAssessmentDate) {
+        if (latestDate && validityDays) {
             var now = new Date();
-            var diffDays = (now - anaesthesiaAssessmentDate) / (1000 * 60 * 60 * 24);
-            if (diffDays > Bahmni.OT.Constants.anaesthesiaAssessmentValidityDays) {
+            var diffDays = (now - latestDate) / (1000 * 60 * 60 * 24);
+            if (diffDays > validityDays) {
                 return { value: '', date: null };
             }
         }
-        return { value: anaesthesiaAssessmentValue, date: anaesthesiaAssessmentDate };
+        return { value: latestValue, date: latestDate };
+    };
+
+    var mapAnaesthesiaAssessment = function (anaesthesiaAssessmentObs) {
+        return mapConcepts(anaesthesiaAssessmentObs, Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery, Bahmni.OT.Constants.anaesthesiaAssessmentValidityDays);
     };
 
     var mapPaediatricAssessment = function (paediatricAssessmentObs) {
-        if (!paediatricAssessmentObs || !angular.isArray(paediatricAssessmentObs) || paediatricAssessmentObs.length === 0) {
-            return { value: null, date: null };
-        }
-        var paediatricAssessmentValue = null;
-        var paediatricAssessmentDate = null;
-        _.each(paediatricAssessmentObs, function (paediatricAssessment) {
-            if (!paediatricAssessment || !paediatricAssessment.display) {
-                return;
-            }
-            if (paediatricAssessment.concept && paediatricAssessment.concept.display === Bahmni.OT.Constants.assessedForSurgery) {
-                var currentObsDate = paediatricAssessment.obsDatetime;
-                if (!paediatricAssessmentDate || (currentObsDate && currentObsDate > paediatricAssessmentDate)) {
-                    if (paediatricAssessment.value) {
-                        paediatricAssessmentValue = paediatricAssessment.value.display;
-                    }
-                    if (currentObsDate) {
-                        paediatricAssessmentDate = Bahmni.Common.Util.DateUtil.parseServerDateToDate(currentObsDate);
-                    }
-                }
-            }
-        });
-        if (paediatricAssessmentDate) {
-            var now = new Date();
-            var diffDays = (now - paediatricAssessmentDate) / (1000 * 60 * 60 * 24);
-            if (diffDays > Bahmni.OT.Constants.paediatricAssessmentValidityDays) {
-                return { value: '', date: null };
-            }
-        }
-        return { value: paediatricAssessmentValue, date: paediatricAssessmentDate };
+        return mapConcepts(paediatricAssessmentObs, Bahmni.OT.Constants.assessedForSurgery, Bahmni.OT.Constants.paediatricAssessmentValidityDays);
     };
 
     var mapPrimaryDiagnoses = function (diagnosisObs) {

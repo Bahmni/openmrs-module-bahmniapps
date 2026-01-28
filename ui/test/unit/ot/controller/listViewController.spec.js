@@ -404,8 +404,8 @@ describe('listViewController', function () {
     it("should include conceptFormatAttributeName in tableInfo when it is available", function () {
         otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
         createController();
-        expect(scope.tableInfo[0].heading).toBe('Blood Transfusion Requested for Surgery?');
-        expect(scope.tableInfo[0].sortInfo).toBe('surgicalAppointmentAttributes.Blood Transfusion Requested for Surgery?.value');
+        expect(scope.tableInfo[3].heading).toBe('Blood Transfusion Requested for Surgery?');
+        expect(scope.tableInfo[3].sortInfo).toBe('surgicalAppointmentAttributes.Blood Transfusion Requested for Surgery?.value');
     });
 
     it("should exclude conceptFormatAttributeName from filteredSurgicalAttributeTypes", function () {
@@ -722,14 +722,14 @@ describe('listViewController', function () {
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
         expect(scope.tableInfo.length).toBe(27);
-        expect(scope.tableInfo[1].heading).toBe("OT_ANAESTHESIA_ASSESSMENT_DATE");
-        expect(scope.tableInfo[1].sortInfo).toBe("patientObservations");
-        expect(scope.tableInfo[2].heading).toBe("OT_ANAESTHESIA_ASSESSMENT");
-        expect(scope.tableInfo[2].sortInfo).toBe("patientObservations");
-        expect(scope.tableInfo[3].heading).toBe("OT_PAEDIATRIC_ASSESSMENT_DATE");
-        expect(scope.tableInfo[3].sortInfo).toBe("patientObservations");
-        expect(scope.tableInfo[4].heading).toBe("OT_PAEDIATRIC_ASSESSMENT");
+        expect(scope.tableInfo[4].heading).toBe("OT_ANAESTHESIA_REVIEW_DATE");
         expect(scope.tableInfo[4].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[5].heading).toBe("OT_ANAESTHESIA_REVIEW");
+        expect(scope.tableInfo[5].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[6].heading).toBe("OT_PAEDIATRIC_REVIEW_DATE");
+        expect(scope.tableInfo[6].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[7].heading).toBe("OT_PAEDIATRIC_REVIEW");
+        expect(scope.tableInfo[7].sortInfo).toBe("patientObservations");
         expect(scope.tableInfo[24].heading).toBe("Bed Location");
         expect(scope.tableInfo[24].sortInfo).toBe("bedLocation");
         expect(scope.tableInfo[25].heading).toBe("Bed ID");

@@ -26,10 +26,10 @@ Bahmni.OT.Constants = (function () {
         paediatricAssessmentValidityDays: 30,
         notApplicableValues: ['Not Applicable', 'Non applicable'],
         listViewAttributeHeadings: {
-            anaesthesiaAssessmentDate: 'OT_ANAESTHESIA_ASSESSMENT_DATE',
-            anaesthesiaAssessment: 'OT_ANAESTHESIA_ASSESSMENT',
-            paediatricAssessmentDate: 'OT_PAEDIATRIC_ASSESSMENT_DATE',
-            paediatricAssessment: 'OT_PAEDIATRIC_ASSESSMENT'
+            anaesthesiaAssessmentDate: 'OT_ANAESTHESIA_REVIEW_DATE',
+            anaesthesiaAssessment: 'OT_ANAESTHESIA_REVIEW',
+            paediatricAssessmentDate: 'OT_PAEDIATRIC_REVIEW_DATE',
+            paediatricAssessment: 'OT_PAEDIATRIC_REVIEW'
         }
     };
 })();

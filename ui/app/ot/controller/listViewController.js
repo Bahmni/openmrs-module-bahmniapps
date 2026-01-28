@@ -23,16 +23,16 @@ angular.module('bahmni.ot')
 
             function getTableInfo () {
                 var listViewAttributes = [
+                    {heading: 'Identifier', sortInfo: 'derivedAttributes.patientIdentifier'},
+                    {heading: 'Patient Name', sortInfo: 'derivedAttributes.patientName'},
+                    {heading: 'Status', sortInfo: 'status'},
                     {heading: $scope.conceptFormatAttributeName, sortInfo: 'surgicalAppointmentAttributes.' + $scope.conceptFormatAttributeName + '.value'},
                     {heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessmentDate, sortInfo: 'patientObservations'},
                     {heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessment, sortInfo: 'patientObservations'},
                     {heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessmentDate, sortInfo: 'patientObservations'},
                     {heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessment, sortInfo: 'patientObservations'},
-                    {heading: 'Status', sortInfo: 'status'},
                     {heading: 'Day', sortInfo: 'derivedAttributes.expectedStartDate'},
                     {heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
-                    {heading: 'Identifier', sortInfo: 'derivedAttributes.patientIdentifier'},
-                    {heading: 'Patient Name', sortInfo: 'derivedAttributes.patientName'},
                     {heading: 'Patient Age', sortInfo: 'derivedAttributes.patientAge'},
                     {heading: 'Start Time', sortInfo: 'derivedAttributes.expectedStartTime'},
                     {heading: 'Est Time', sortInfo: 'derivedAttributes.duration'},
