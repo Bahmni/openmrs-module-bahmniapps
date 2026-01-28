@@ -24,6 +24,10 @@ angular.module('bahmni.ot')
             function getTableInfo () {
                 var listViewAttributes = [
                     {heading: $scope.conceptFormatAttributeName, sortInfo: 'surgicalAppointmentAttributes.' + $scope.conceptFormatAttributeName + '.value'},
+                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessmentDate, sortInfo: 'patientObservations'},
+                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessment, sortInfo: 'patientObservations'},
+                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessmentDate, sortInfo: 'patientObservations'},
+                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessment, sortInfo: 'patientObservations'},
                     {heading: 'Status', sortInfo: 'status'},
                     {heading: 'Day', sortInfo: 'derivedAttributes.expectedStartDate'},
                     {heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},

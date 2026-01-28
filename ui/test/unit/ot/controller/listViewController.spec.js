@@ -709,7 +709,7 @@ describe('listViewController', function () {
         expect(isCancelled).toBeFalsy();
     });
 
-    it("should have bed location and bed id in table info", function () {
+    it("should have assessment and other fields in table info", function () {
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -721,13 +721,21 @@ describe('listViewController', function () {
         };
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
-        expect(scope.tableInfo.length).toBe(23);
-        expect(scope.tableInfo[20].heading).toBe("Bed Location");
-        expect(scope.tableInfo[20].sortInfo).toBe("bedLocation");
-        expect(scope.tableInfo[21].heading).toBe("Bed ID");
-        expect(scope.tableInfo[21].sortInfo).toBe("bedNumber");
-        expect(scope.tableInfo[22].heading).toBe("Primary Diagnoses");
-        expect(scope.tableInfo[22].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo.length).toBe(27);
+        expect(scope.tableInfo[1].heading).toBe("OT_ANAESTHESIA_ASSESSMENT_DATE");
+        expect(scope.tableInfo[1].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[2].heading).toBe("OT_ANAESTHESIA_ASSESSMENT");
+        expect(scope.tableInfo[2].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[3].heading).toBe("OT_PAEDIATRIC_ASSESSMENT_DATE");
+        expect(scope.tableInfo[3].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[4].heading).toBe("OT_PAEDIATRIC_ASSESSMENT");
+        expect(scope.tableInfo[4].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[24].heading).toBe("Bed Location");
+        expect(scope.tableInfo[24].sortInfo).toBe("bedLocation");
+        expect(scope.tableInfo[25].heading).toBe("Bed ID");
+        expect(scope.tableInfo[25].sortInfo).toBe("bedNumber");
+        expect(scope.tableInfo[26].heading).toBe("Primary Diagnoses");
+        expect(scope.tableInfo[26].sortInfo).toBe("patientObservations");
     });
 
     it('should have all the surgical attributes in table info', function () {
@@ -738,21 +746,21 @@ describe('listViewController', function () {
         };
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
-        expect(scope.tableInfo.length).toBe(23);
-        expect(scope.tableInfo[12].heading).toBe('procedure');
-        expect(scope.tableInfo[12].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
-        expect(scope.tableInfo[13].heading).toBe('otherSurgeon');
-        expect(scope.tableInfo[13].sortInfo).toBe('surgicalAppointmentAttributes.otherSurgeon.value.person.display');
-        expect(scope.tableInfo[14].heading).toBe('surgicalAssistant');
-        expect(scope.tableInfo[14].sortInfo).toBe('surgicalAppointmentAttributes.surgicalAssistant.value');
-        expect(scope.tableInfo[15].heading).toBe('anaesthetist');
-        expect(scope.tableInfo[15].sortInfo).toBe('surgicalAppointmentAttributes.anaesthetist.value');
-        expect(scope.tableInfo[16].heading).toBe('scrubNurse');
-        expect(scope.tableInfo[16].sortInfo).toBe('surgicalAppointmentAttributes.scrubNurse.value');
-        expect(scope.tableInfo[17].heading).toBe('circulatingNurse');
-        expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.circulatingNurse.value');
-        expect(scope.tableInfo[18].heading).toBe('notes');
-        expect(scope.tableInfo[18].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
+        expect(scope.tableInfo.length).toBe(27);
+        expect(scope.tableInfo[16].heading).toBe('procedure');
+        expect(scope.tableInfo[16].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
+        expect(scope.tableInfo[17].heading).toBe('otherSurgeon');
+        expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.otherSurgeon.value.person.display');
+        expect(scope.tableInfo[18].heading).toBe('surgicalAssistant');
+        expect(scope.tableInfo[18].sortInfo).toBe('surgicalAppointmentAttributes.surgicalAssistant.value');
+        expect(scope.tableInfo[19].heading).toBe('anaesthetist');
+        expect(scope.tableInfo[19].sortInfo).toBe('surgicalAppointmentAttributes.anaesthetist.value');
+        expect(scope.tableInfo[20].heading).toBe('scrubNurse');
+        expect(scope.tableInfo[20].sortInfo).toBe('surgicalAppointmentAttributes.scrubNurse.value');
+        expect(scope.tableInfo[21].heading).toBe('circulatingNurse');
+        expect(scope.tableInfo[21].sortInfo).toBe('surgicalAppointmentAttributes.circulatingNurse.value');
+        expect(scope.tableInfo[22].heading).toBe('notes');
+        expect(scope.tableInfo[22].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
     })
 
     it('should have primaryDiagnosisInfo attributes in table info', function () {

@@ -131,5 +131,9 @@
     "NO_KEY": "No",
     "DELETE_NOTE_MESSAGE": "Are you sure you want to delete this note?",
     "NOTES_PLACEHOLDER": "Enter a maximum of 150 characters",
-    "LOGOUT_TRANSLATION_KEY": "Logout"
+    "LOGOUT_TRANSLATION_KEY": "Logout",
+    "OT_ANAESTHESIA_ASSESSMENT_DATE": "Anaesthesia Assessment Date",
+    "OT_ANAESTHESIA_ASSESSMENT": "Anaesthesia Assessment",
+    "OT_PAEDIATRIC_ASSESSMENT_DATE": "Paediatric Assessment Date",
+    "OT_PAEDIATRIC_ASSESSMENT": "Paediatric Assessment"
 }

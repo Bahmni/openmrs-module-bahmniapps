@@ -2,5 +2,14 @@
     "OT_SURGICAL_APPOINTMENT_CONCEPT_FORMAT_REQUIREMENT": "Transfusion sanguine demandée pour",
     "OT_SELECT_OPTION_KEY": "Sélectionner une option",
     "Requested by Surgeon": "Demandé par le chirurgien",
-    "Not Applicable": "Non applicable"
+    "Not Applicable": "Non applicable",
+    "OT_ANAESTHESIA_ASSESSMENT_DATE": "Date de l'évaluation anesthésique",
+    "OT_ANAESTHESIA_ASSESSMENT": "Évaluation anesthésique",
+    "OT_PAEDIATRIC_ASSESSMENT_DATE": "Date de l'évaluation pédiatrique",
+    "OT_PAEDIATRIC_ASSESSMENT": "Évaluation pédiatrique",
+    "Cleared for Surgery": "Apte à la chirurgie",
+    "Not Cleared for Surgery": "Non apte à la chirurgie",
+    "Assessed and Cleared": "Évalué et apte",
+    "Assessed and Not Cleared": "Évalué et non apte",
+    "Not Assessed": "Non évalué"
 }

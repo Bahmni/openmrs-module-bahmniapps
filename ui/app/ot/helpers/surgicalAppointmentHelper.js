@@ -109,7 +109,11 @@ angular.module('bahmni.ot')
                 ['Actual Time', "OT_SURGICAL_APPOINTMENT_ACTUAL_TIME"], ['OT#', "OT_SURGICAL_BLOCK_LOCATION_NAME"],
                 ['Surgeon', "OT_PROVIDER_SURGEON"], ['Status Change Notes', "OT_SURGICAL_APPOINTMENT_STATUS_CHANGE_NOTES"],
                 ['Bed Location', "OT_SURGICAL_APPOINTMENT_BED_LOCATION"],
-                ['Bed ID', "OT_SURGICAL_APPOINTMENT_BED_ID"]
+                ['Bed ID', "OT_SURGICAL_APPOINTMENT_BED_ID"],
+                ['OT_ANAESTHESIA_ASSESSMENT_DATE', "OT_ANAESTHESIA_ASSESSMENT_DATE"],
+                ['OT_ANAESTHESIA_ASSESSMENT', "OT_ANAESTHESIA_ASSESSMENT"],
+                ['OT_PAEDIATRIC_ASSESSMENT_DATE', "OT_PAEDIATRIC_ASSESSMENT_DATE"],
+                ['OT_PAEDIATRIC_ASSESSMENT', "OT_PAEDIATRIC_ASSESSMENT"]
             ]);
         };
 
