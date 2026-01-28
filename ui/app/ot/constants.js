@@ -20,7 +20,17 @@ Bahmni.OT.Constants = (function () {
         providerSurgicalAttributeFormat: 'org.openmrs.Provider',
         notesUrl: RESTWS_V1 + '/notes',
         conceptFormatAttributeName: 'Blood Transfusion Requested for Surgery?',
-        notApplicableValues: ['Not Applicable', 'Non applicable']
+        preAnaesthesiaAssessedForSurgery: 'Pre Anaesthesia Assessed for Surgery?',
+        assessedForSurgery: 'Assessed for Surgery?',
+        anaesthesiaAssessmentValidityDays: 30,
+        paediatricAssessmentValidityDays: 30,
+        notApplicableValues: ['Not Applicable', 'Non applicable'],
+        listViewAttributeHeadings: {
+            anaesthesiaAssessmentDate: 'OT_ANAESTHESIA_ASSESSMENT_DATE',
+            anaesthesiaAssessment: 'OT_ANAESTHESIA_ASSESSMENT',
+            paediatricAssessmentDate: 'OT_PAEDIATRIC_ASSESSMENT_DATE',
+            paediatricAssessment: 'OT_PAEDIATRIC_ASSESSMENT'
+        }
     };
 })();
 

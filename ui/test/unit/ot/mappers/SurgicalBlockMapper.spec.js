@@ -676,6 +676,67 @@ describe("SurgicalBlockMapper", function () {
         ]
         var diagnosisInfo = surgicalBlockMapper.mapPrimaryDiagnoses(diagnosisObs);
         expect(diagnosisInfo).toEqual('Hemarthrosis hand');
+    });
+
+    function getDateString(daysAgo) {
+        var date = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000);
+        return date.toISOString();
+    }
+
+    it('should return blank anaesthesiaAssessment if obs is older than 30 days', function () {
+        var diagnosisObs = [
+            {
+                concept: { display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery },
+                value: { display: 'Yes' },
+                obsDatetime: getDateString(40),
+                display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery
+            }
+        ];
+        var result = surgicalBlockMapper.mapAnaesthesiaAssessment(diagnosisObs);
+        expect(result.value).toBe('');
+        expect(result.date).toBeNull();
+    });
+
+    it('should return value for anaesthesiaAssessment if obs is within 30 days', function () {
+        var diagnosisObs = [
+            {
+                concept: { display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery },
+                value: { display: 'Yes' },
+                obsDatetime: getDateString(10),
+                display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery
+            }
+        ];
+        var result = surgicalBlockMapper.mapAnaesthesiaAssessment(diagnosisObs);
+        expect(result.value).toBe('Yes');
+        expect(result.date).not.toBeNull();
+    });
+
+    it('should return blank paediatricAssessment if obs is older than 30 days', function () {
+        var diagnosisObs = [
+            {
+                concept: { display: Bahmni.OT.Constants.assessedForSurgery },
+                value: { display: 'No' },
+                obsDatetime: getDateString(35),
+                display: Bahmni.OT.Constants.assessedForSurgery
+            }
+        ];
+        var result = surgicalBlockMapper.mapPaediatricAssessment(diagnosisObs);
+        expect(result.value).toBe('');
+        expect(result.date).toBeNull();
+    });
+
+    it('should return value for paediatricAssessment if obs is within 30 days', function () {
+        var diagnosisObs = [
+            {
+                concept: { display: Bahmni.OT.Constants.assessedForSurgery },
+                value: { display: 'No' },
+                obsDatetime: getDateString(5),
+                display: Bahmni.OT.Constants.assessedForSurgery
+            }
+        ];
+        var result = surgicalBlockMapper.mapPaediatricAssessment(diagnosisObs);
+        expect(result.value).toBe('No');
+        expect(result.date).not.toBeNull();
     })
 });
 

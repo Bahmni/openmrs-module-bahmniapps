@@ -38,9 +38,79 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         return mappedAttributes;
     };
 
+    var mapAnaesthesiaAssessment = function (anaesthesiaAssessmentObs) {
+        if (!anaesthesiaAssessmentObs || !angular.isArray(anaesthesiaAssessmentObs) || anaesthesiaAssessmentObs.length === 0) {
+            return { value: null, date: null };
+        }
+        var anaesthesiaAssessmentValue = null;
+        var anaesthesiaAssessmentDate = null;
+        _.each(anaesthesiaAssessmentObs, function (anaesthesiaAssessment) {
+            if (!anaesthesiaAssessment || !anaesthesiaAssessment.display) {
+                return;
+            }
+            if (anaesthesiaAssessment.concept && anaesthesiaAssessment.concept.display === Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery) {
+                var currentObsDate = anaesthesiaAssessment.obsDatetime;
+                if (!anaesthesiaAssessmentDate || (currentObsDate && currentObsDate > anaesthesiaAssessmentDate)) {
+                    if (anaesthesiaAssessment.value) {
+                        anaesthesiaAssessmentValue = anaesthesiaAssessment.value.display;
+                    }
+                    if (currentObsDate) {
+                        anaesthesiaAssessmentDate = Bahmni.Common.Util.DateUtil.parseServerDateToDate(currentObsDate);
+                    }
+                }
+            }
+        });
+        if (anaesthesiaAssessmentDate) {
+            var now = new Date();
+            var diffDays = (now - anaesthesiaAssessmentDate) / (1000 * 60 * 60 * 24);
+            if (diffDays > Bahmni.OT.Constants.anaesthesiaAssessmentValidityDays) {
+                return { value: '', date: null };
+            }
+        }
+        return { value: anaesthesiaAssessmentValue, date: anaesthesiaAssessmentDate };
+    };
+
+    var mapPaediatricAssessment = function (paediatricAssessmentObs) {
+        if (!paediatricAssessmentObs || !angular.isArray(paediatricAssessmentObs) || paediatricAssessmentObs.length === 0) {
+            return { value: null, date: null };
+        }
+        var paediatricAssessmentValue = null;
+        var paediatricAssessmentDate = null;
+        _.each(paediatricAssessmentObs, function (paediatricAssessment) {
+            if (!paediatricAssessment || !paediatricAssessment.display) {
+                return;
+            }
+            if (paediatricAssessment.concept && paediatricAssessment.concept.display === Bahmni.OT.Constants.assessedForSurgery) {
+                var currentObsDate = paediatricAssessment.obsDatetime;
+                if (!paediatricAssessmentDate || (currentObsDate && currentObsDate > paediatricAssessmentDate)) {
+                    if (paediatricAssessment.value) {
+                        paediatricAssessmentValue = paediatricAssessment.value.display;
+                    }
+                    if (currentObsDate) {
+                        paediatricAssessmentDate = Bahmni.Common.Util.DateUtil.parseServerDateToDate(currentObsDate);
+                    }
+                }
+            }
+        });
+        if (paediatricAssessmentDate) {
+            var now = new Date();
+            var diffDays = (now - paediatricAssessmentDate) / (1000 * 60 * 60 * 24);
+            if (diffDays > Bahmni.OT.Constants.paediatricAssessmentValidityDays) {
+                return { value: '', date: null };
+            }
+        }
+        return { value: paediatricAssessmentValue, date: paediatricAssessmentDate };
+    };
+
     var mapPrimaryDiagnoses = function (diagnosisObs) {
+        if (!diagnosisObs || !angular.isArray(diagnosisObs) || diagnosisObs.length === 0) {
+            return "";
+        }
         var uniqueDiagnoses = new Map();
         _.each(diagnosisObs, function (diagnosis) {
+            if (!diagnosis || !diagnosis.display) {
+                return;
+            }
             var existingDiagnosis = uniqueDiagnoses.get(diagnosis.display);
             if (existingDiagnosis) {
                 if (existingDiagnosis.obsDatetime < diagnosis.obsDatetime) {
@@ -51,19 +121,30 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             }
         });
         var primaryDiagnosesNames = _.filter(Array.from(uniqueDiagnoses.values()), function (diagnosis) {
-            var obsGroupList = diagnosis.obsGroup.display.split(": ")[1].split(", ");
+            if (!diagnosis.obsGroup || !diagnosis.obsGroup.display) {
+                return false;
+            }
+            var splitResult = diagnosis.obsGroup.display.split(": ");
+            if (splitResult.length < 2) {
+                return false;
+            }
+            var obsGroupList = splitResult[1].split(", ");
             return _.includes(obsGroupList, "Primary") && !(_.includes(obsGroupList, "Ruled Out Diagnosis"));
         }).map(function (diagnosis) {
-            if (diagnosis.concept.display == "Non-coded Diagnosis") {
+            if (diagnosis.concept && diagnosis.concept.display == "Non-coded Diagnosis") {
                 return diagnosis.value;
             }
-            return diagnosis.value.display;
+            return diagnosis.value && diagnosis.value.display ? diagnosis.value.display : "";
+        }).filter(function (name) {
+            return name && name.trim() !== "";
         }).join(", ");
         return primaryDiagnosesNames;
     };
 
     var mapSurgicalAppointment = function (openMrsSurgicalAppointment, attributeTypes, surgeonsList) {
         var surgicalAppointmentAttributes = mapOpenMrsSurgicalAppointmentAttributes(openMrsSurgicalAppointment.surgicalAppointmentAttributes, surgeonsList);
+        var anaesthesiaAssessmentData = mapAnaesthesiaAssessment(openMrsSurgicalAppointment.patientObservations) || "";
+        var paediatricAssessmentData = mapPaediatricAssessment(openMrsSurgicalAppointment.patientObservations) || "";
         return {
             id: openMrsSurgicalAppointment.id,
             uuid: openMrsSurgicalAppointment.uuid,
@@ -77,7 +158,11 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             bedLocation: (openMrsSurgicalAppointment.bedLocation || ""),
             bedNumber: (openMrsSurgicalAppointment.bedNumber || ""),
             surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes),
-            primaryDiagnosis: mapPrimaryDiagnoses(openMrsSurgicalAppointment.patientObservations) || ""
+            primaryDiagnosis: mapPrimaryDiagnoses(openMrsSurgicalAppointment.patientObservations) || "",
+            anaesthesiaAssessmentDate: anaesthesiaAssessmentData.date || null,
+            anaesthesiaAssessmentValue: anaesthesiaAssessmentData.value || "",
+            paediatricAssessmentDate: paediatricAssessmentData.date || null,
+            paediatricAssessmentValue: paediatricAssessmentData.value || ""
         };
     };
 
@@ -167,4 +252,6 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     };
 
     this.mapPrimaryDiagnoses = mapPrimaryDiagnoses;
+    this.mapAnaesthesiaAssessment = mapAnaesthesiaAssessment;
+    this.mapPaediatricAssessment = mapPaediatricAssessment;
 };
