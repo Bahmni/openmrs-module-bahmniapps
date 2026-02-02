@@ -737,6 +737,76 @@ describe("SurgicalBlockMapper", function () {
         var result = surgicalBlockMapper.mapPaediatricAssessment(diagnosisObs);
         expect(result.value).toBe('No');
         expect(result.date).not.toBeNull();
-    })
+    });
+
+    describe('needsAnaesthesiaData', function () {
+        it('should return true when anaesthesiaAssessmentDate is in config', function () {
+            var columnConfig = ['anaesthesiaAssessmentDate'];
+            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(true);
+        });
+
+        it('should return true when anaesthesiaAssessment is in config', function () {
+            var columnConfig = ['anaesthesiaAssessment'];
+            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(true);
+        });
+
+        it('should return true when both anaesthesia columns are in config', function () {
+            var columnConfig = ['anaesthesiaAssessmentDate', 'anaesthesiaAssessment'];
+            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(true);
+        });
+
+        it('should return false when only paediatric columns are in config', function () {
+            var columnConfig = ['paediatricAssessmentDate', 'paediatricAssessment'];
+            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(false);
+        });
+
+        it('should return false when config is empty', function () {
+            var columnConfig = [];
+            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(false);
+        });
+
+        it('should return false when config is null', function () {
+            expect(surgicalBlockMapper.needsAnaesthesiaData(null)).toBe(false);
+        });
+
+        it('should return false when config is undefined', function () {
+            expect(surgicalBlockMapper.needsAnaesthesiaData(undefined)).toBe(false);
+        });
+    });
+
+    describe('needsPaediatricData', function () {
+        it('should return true when paediatricAssessmentDate is in config', function () {
+            var columnConfig = ['paediatricAssessmentDate'];
+            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(true);
+        });
+
+        it('should return true when paediatricAssessment is in config', function () {
+            var columnConfig = ['paediatricAssessment'];
+            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(true);
+        });
+
+        it('should return true when both paediatric columns are in config', function () {
+            var columnConfig = ['paediatricAssessmentDate', 'paediatricAssessment'];
+            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(true);
+        });
+
+        it('should return false when only anaesthesia columns are in config', function () {
+            var columnConfig = ['anaesthesiaAssessmentDate', 'anaesthesiaAssessment'];
+            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(false);
+        });
+
+        it('should return false when config is empty', function () {
+            var columnConfig = [];
+            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(false);
+        });
+
+        it('should return false when config is null', function () {
+            expect(surgicalBlockMapper.needsPaediatricData(null)).toBe(false);
+        });
+
+        it('should return false when config is undefined', function () {
+            expect(surgicalBlockMapper.needsPaediatricData(undefined)).toBe(false);
+        });
+    });
 });
 

@@ -79,6 +79,22 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         return mapConcepts(paediatricAssessmentObs, Bahmni.OT.Constants.assessedForSurgery, Bahmni.OT.Constants.paediatricAssessmentValidityDays);
     };
 
+    var needsAnaesthesiaData = function (columnConfig) {
+        if (!columnConfig || !angular.isArray(columnConfig)) {
+            return false;
+        }
+        return columnConfig.indexOf('anaesthesiaAssessmentDate') !== -1 ||
+               columnConfig.indexOf('anaesthesiaAssessment') !== -1;
+    };
+
+    var needsPaediatricData = function (columnConfig) {
+        if (!columnConfig || !angular.isArray(columnConfig)) {
+            return false;
+        }
+        return columnConfig.indexOf('paediatricAssessmentDate') !== -1 ||
+               columnConfig.indexOf('paediatricAssessment') !== -1;
+    };
+
     var mapPrimaryDiagnoses = function (diagnosisObs) {
         if (!diagnosisObs || !angular.isArray(diagnosisObs) || diagnosisObs.length === 0) {
             return "";
@@ -118,10 +134,20 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         return primaryDiagnosesNames;
     };
 
-    var mapSurgicalAppointment = function (openMrsSurgicalAppointment, attributeTypes, surgeonsList) {
+    var mapSurgicalAppointment = function (openMrsSurgicalAppointment, attributeTypes, surgeonsList, columnConfig) {
         var surgicalAppointmentAttributes = mapOpenMrsSurgicalAppointmentAttributes(openMrsSurgicalAppointment.surgicalAppointmentAttributes, surgeonsList);
-        var anaesthesiaAssessmentData = mapAnaesthesiaAssessment(openMrsSurgicalAppointment.patientObservations) || "";
-        var paediatricAssessmentData = mapPaediatricAssessment(openMrsSurgicalAppointment.patientObservations) || "";
+
+        var anaesthesiaAssessmentData = { date: null, value: "" };
+        var paediatricAssessmentData = { date: null, value: "" };
+
+        if (needsAnaesthesiaData(columnConfig)) {
+            anaesthesiaAssessmentData = mapAnaesthesiaAssessment(openMrsSurgicalAppointment.patientObservations) || { date: null, value: "" };
+        }
+
+        if (needsPaediatricData(columnConfig)) {
+            paediatricAssessmentData = mapPaediatricAssessment(openMrsSurgicalAppointment.patientObservations) || { date: null, value: "" };
+        }
+
         return {
             id: openMrsSurgicalAppointment.id,
             uuid: openMrsSurgicalAppointment.uuid,
@@ -143,9 +169,9 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         };
     };
 
-    this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList) {
+    this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList, columnConfig) {
         var surgicalAppointments = _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
-            return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList);
+            return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList, columnConfig);
         });
         return {
             id: openMrsSurgicalBlock.id,
@@ -231,4 +257,6 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     this.mapPrimaryDiagnoses = mapPrimaryDiagnoses;
     this.mapAnaesthesiaAssessment = mapAnaesthesiaAssessment;
     this.mapPaediatricAssessment = mapPaediatricAssessment;
+    this.needsAnaesthesiaData = needsAnaesthesiaData;
+    this.needsPaediatricData = needsPaediatricData;
 };

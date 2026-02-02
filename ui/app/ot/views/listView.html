@@ -29,17 +29,9 @@
             <td>
                 {{conceptFormatAttributeName && appointment.surgicalAppointmentAttributes[conceptFormatAttributeName] ? (conceptFormatDropdownConstants.indexOf((appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate)) === -1 ? (appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate) : '') : ''}}
             </td>
-            <td>
-                {{appointment.anaesthesiaAssessmentDate | bahmniDate}}
-            </td>
-            <td>
-                {{appointment.anaesthesiaAssessmentValue}}
-            </td>
-            <td>
-                {{appointment.paediatricAssessmentDate | bahmniDate}}
-            </td>
-            <td>
-                {{appointment.paediatricAssessmentValue}}
+            <td ng-repeat="obsColumn in filteredObservationColumns"
+                ng-init="obsValue=appointment[obsColumn.dataProperty]">
+                {{obsColumn.isDate ? (obsValue | bahmniDate) : obsValue}}
             </td> 
             <td>
                 {{appointment.derivedAttributes.expectedStartDate | date : 'EEEE'}}
