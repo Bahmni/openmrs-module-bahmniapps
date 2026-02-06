@@ -683,129 +683,103 @@ describe("SurgicalBlockMapper", function () {
         return date.toISOString();
     }
 
-    it('should return blank anaesthesiaAssessment if obs is older than 30 days', function () {
-        var diagnosisObs = [
-            {
-                concept: { display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery },
-                value: { display: 'Yes' },
-                obsDatetime: getDateString(40),
-                display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery
-            }
-        ];
-        var result = surgicalBlockMapper.mapAnaesthesiaAssessment(diagnosisObs);
-        expect(result.value).toBe('');
-        expect(result.date).toBeNull();
-    });
-
-    it('should return value for anaesthesiaAssessment if obs is within 30 days', function () {
-        var diagnosisObs = [
-            {
-                concept: { display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery },
-                value: { display: 'Yes' },
-                obsDatetime: getDateString(10),
-                display: Bahmni.OT.Constants.preAnaesthesiaAssessedForSurgery
-            }
-        ];
-        var result = surgicalBlockMapper.mapAnaesthesiaAssessment(diagnosisObs);
-        expect(result.value).toBe('Yes');
-        expect(result.date).not.toBeNull();
-    });
-
-    it('should return blank paediatricAssessment if obs is older than 30 days', function () {
-        var diagnosisObs = [
-            {
-                concept: { display: Bahmni.OT.Constants.assessedForSurgery },
-                value: { display: 'No' },
-                obsDatetime: getDateString(35),
-                display: Bahmni.OT.Constants.assessedForSurgery
-            }
-        ];
-        var result = surgicalBlockMapper.mapPaediatricAssessment(diagnosisObs);
-        expect(result.value).toBe('');
-        expect(result.date).toBeNull();
-    });
-
-    it('should return value for paediatricAssessment if obs is within 30 days', function () {
-        var diagnosisObs = [
-            {
-                concept: { display: Bahmni.OT.Constants.assessedForSurgery },
-                value: { display: 'No' },
-                obsDatetime: getDateString(5),
-                display: Bahmni.OT.Constants.assessedForSurgery
-            }
-        ];
-        var result = surgicalBlockMapper.mapPaediatricAssessment(diagnosisObs);
-        expect(result.value).toBe('No');
-        expect(result.date).not.toBeNull();
-    });
-
-    describe('needsAnaesthesiaData', function () {
-        it('should return true when anaesthesiaAssessmentDate is in config', function () {
-            var columnConfig = ['anaesthesiaAssessmentDate'];
-            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(true);
+    describe('mapObservations', function () {
+        it('should return blank values when obs is older than validityDays', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(40),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('');
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].date).toBeNull();
         });
 
-        it('should return true when anaesthesiaAssessment is in config', function () {
-            var columnConfig = ['anaesthesiaAssessment'];
-            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(true);
+        it('should return value when obs is within validityDays', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('Yes');
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].date).not.toBeNull();
         });
 
-        it('should return true when both anaesthesia columns are in config', function () {
-            var columnConfig = ['anaesthesiaAssessmentDate', 'anaesthesiaAssessment'];
-            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(true);
+        it('should map multiple concepts independently', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                },
+                {
+                    concept: { display: 'Assessed for Surgery?' },
+                    value: { display: 'No' },
+                    obsDatetime: getDateString(5),
+                    display: 'Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [
+                { conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 },
+                { conceptName: 'Assessed for Surgery?', validityDays: 45 }
+            ];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('Yes');
+            expect(result['Assessed for Surgery?'].value).toBe('No');
         });
 
-        it('should return false when only paediatric columns are in config', function () {
-            var columnConfig = ['paediatricAssessmentDate', 'paediatricAssessment'];
-            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(false);
+        it('should use per-concept validityDays', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(35),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                },
+                {
+                    concept: { display: 'Assessed for Surgery?' },
+                    value: { display: 'No' },
+                    obsDatetime: getDateString(35),
+                    display: 'Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [
+                { conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 },
+                { conceptName: 'Assessed for Surgery?', validityDays: 45 }
+            ];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('');
+            expect(result['Assessed for Surgery?'].value).toBe('No');
         });
 
-        it('should return false when config is empty', function () {
-            var columnConfig = [];
-            expect(surgicalBlockMapper.needsAnaesthesiaData(columnConfig)).toBe(false);
+        it('should return defaults for empty observations', function () {
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations([], conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBeNull();
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].date).toBeNull();
         });
 
-        it('should return false when config is null', function () {
-            expect(surgicalBlockMapper.needsAnaesthesiaData(null)).toBe(false);
-        });
-
-        it('should return false when config is undefined', function () {
-            expect(surgicalBlockMapper.needsAnaesthesiaData(undefined)).toBe(false);
-        });
-    });
-
-    describe('needsPaediatricData', function () {
-        it('should return true when paediatricAssessmentDate is in config', function () {
-            var columnConfig = ['paediatricAssessmentDate'];
-            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(true);
-        });
-
-        it('should return true when paediatricAssessment is in config', function () {
-            var columnConfig = ['paediatricAssessment'];
-            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(true);
-        });
-
-        it('should return true when both paediatric columns are in config', function () {
-            var columnConfig = ['paediatricAssessmentDate', 'paediatricAssessment'];
-            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(true);
-        });
-
-        it('should return false when only anaesthesia columns are in config', function () {
-            var columnConfig = ['anaesthesiaAssessmentDate', 'anaesthesiaAssessment'];
-            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(false);
-        });
-
-        it('should return false when config is empty', function () {
-            var columnConfig = [];
-            expect(surgicalBlockMapper.needsPaediatricData(columnConfig)).toBe(false);
-        });
-
-        it('should return false when config is null', function () {
-            expect(surgicalBlockMapper.needsPaediatricData(null)).toBe(false);
-        });
-
-        it('should return false when config is undefined', function () {
-            expect(surgicalBlockMapper.needsPaediatricData(undefined)).toBe(false);
+        it('should return empty map when no concept configs provided', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var result = surgicalBlockMapper.mapObservations(observations, []);
+            expect(Object.keys(result).length).toBe(0);
         });
     });
 });

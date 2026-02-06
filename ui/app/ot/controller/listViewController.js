@@ -21,46 +21,37 @@ angular.module('bahmni.ot')
             $scope.filteredSurgicalAttributeTypes = getFilteredSurgicalAttributeTypes();
 
             var listViewObservationColumns = appService.getAppDescriptor().getConfigValue("listViewObservationColumns") || [];
-            var observationColumnDefinitions = {
-                'anaesthesiaAssessmentDate': {
-                    key: 'anaesthesiaAssessmentDate',
-                    heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessmentDate,
-                    sortInfo: 'anaesthesiaAssessmentDate',
-                    dataProperty: 'anaesthesiaAssessmentDate',
-                    isDate: true
-                },
-                'anaesthesiaAssessment': {
-                    key: 'anaesthesiaAssessment',
-                    heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessment,
-                    sortInfo: 'anaesthesiaAssessmentValue',
-                    dataProperty: 'anaesthesiaAssessmentValue',
-                    isDate: false
-                },
-                'paediatricAssessmentDate': {
-                    key: 'paediatricAssessmentDate',
-                    heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessmentDate,
-                    sortInfo: 'paediatricAssessmentDate',
-                    dataProperty: 'paediatricAssessmentDate',
-                    isDate: true
-                },
-                'paediatricAssessment': {
-                    key: 'paediatricAssessment',
-                    heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessment,
-                    sortInfo: 'paediatricAssessmentValue',
-                    dataProperty: 'paediatricAssessmentValue',
-                    isDate: false
-                }
-            };
 
-            $scope.filteredObservationColumns = listViewObservationColumns
-                .filter(function (key) { return observationColumnDefinitions[key]; })
-                .map(function (key) { return observationColumnDefinitions[key]; });
+            $scope.filteredObservationColumns = listViewObservationColumns.map(function (entry) {
+                return {
+                    conceptName: entry.concept,
+                    isDate: entry.type === 'date',
+                    heading: entry.label
+                };
+            });
+
+            $scope.filteredObservationColumns.forEach(function (col) {
+                $scope.defaultAttributeTranslations.set(col.heading, col.heading);
+            });
+
+            var conceptConfigMap = {};
+            listViewObservationColumns.forEach(function (entry) {
+                if (!conceptConfigMap[entry.concept]) {
+                    conceptConfigMap[entry.concept] = { conceptName: entry.concept, validityDays: entry.validityDays };
+                } else if (entry.validityDays && !conceptConfigMap[entry.concept].validityDays) {
+                    conceptConfigMap[entry.concept].validityDays = entry.validityDays;
+                }
+            });
+            var uniqueConceptConfigs = _.values(conceptConfigMap).map(function (config) {
+                config.validityDays = config.validityDays || Bahmni.OT.Constants.defaultObservationValidityDays;
+                return config;
+            });
 
             $scope.tableInfo = getTableInfo();
 
             function getObservationColumnsTableInfo () {
                 return $scope.filteredObservationColumns.map(function (column) {
-                    return { heading: column.heading, sortInfo: column.sortInfo };
+                    return { heading: column.heading, sortInfo: null };
                 });
             }
 
@@ -119,7 +110,7 @@ angular.module('bahmni.ot')
                 var clonedSurgicalBlocks = _.cloneDeep(surgicalBlocks);
                 var filteredSurgicalBlocks = surgicalBlockFilter(clonedSurgicalBlocks, $scope.filterParams);
                 var mappedSurgicalBlocks = _.map(filteredSurgicalBlocks, function (surgicalBlock) {
-                    return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons, listViewObservationColumns);
+                    return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons, uniqueConceptConfigs);
                 });
                 mappedSurgicalBlocks = _.map(mappedSurgicalBlocks, function (surgicalBlock) {
                     var blockStartDatetime = surgicalBlock.startDatetime;

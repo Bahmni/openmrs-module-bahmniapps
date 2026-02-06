@@ -30,9 +30,9 @@
                 {{conceptFormatAttributeName && appointment.surgicalAppointmentAttributes[conceptFormatAttributeName] ? (conceptFormatDropdownConstants.indexOf((appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate)) === -1 ? (appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate) : '') : ''}}
             </td>
             <td ng-repeat="obsColumn in filteredObservationColumns"
-                ng-init="obsValue=appointment[obsColumn.dataProperty]">
-                {{obsColumn.isDate ? (obsValue | bahmniDate) : obsValue}}
-            </td> 
+                ng-init="obsData=appointment.observationMap[obsColumn.conceptName]">
+                {{obsColumn.isDate ? (obsData.date | bahmniDate) : obsData.value}}
+            </td>
             <td>
                 {{appointment.derivedAttributes.expectedStartDate | date : 'EEEE'}}
             </td>
