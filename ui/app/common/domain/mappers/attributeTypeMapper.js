@@ -7,6 +7,9 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
     AttributeTypeMapper.prototype.mapFromOpenmrsAttributeTypes = function (mrsAttributeTypes, mandatoryAttributes, attributesConfig, defaultLocale) {
         var attributeTypes = [];
         angular.forEach(mrsAttributeTypes, function (mrsAttributeType) {
+            if (mrsAttributeType.retired) {
+                return;
+            }
             var isRequired = function () {
                 var element = _.find(mandatoryAttributes, function (mandatoryAttribute) {
                     return mandatoryAttribute == mrsAttributeType.name;

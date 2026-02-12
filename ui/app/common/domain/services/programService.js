@@ -79,7 +79,7 @@ angular.module('bahmni.common.domain')
         };
 
         var getProgramAttributeTypes = function () {
-            return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)'}}).then(function (response) {
+            return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,retired,description,datatypeClassname,datatypeConfig,concept)'}}).then(function (response) {
                 var programAttributesConfig = appService.getAppDescriptor().getConfigValue("program");
 
                 var mandatoryProgramAttributes = [];
