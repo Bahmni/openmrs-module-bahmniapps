@@ -19,18 +19,53 @@ angular.module('bahmni.ot')
             $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
             $scope.conceptFormatDropdownConstants = Bahmni.OT.Constants.notApplicableValues;
             $scope.filteredSurgicalAttributeTypes = getFilteredSurgicalAttributeTypes();
+
+            var listViewObservationColumns = appService.getAppDescriptor().getConfigValue("listViewObservationColumns") || [];
+
+            $scope.filteredObservationColumns = listViewObservationColumns.map(function (entry) {
+                return {
+                    conceptName: entry.concept,
+                    isDate: entry.type === 'date',
+                    heading: entry.label
+                };
+            });
+
+            $scope.filteredObservationColumns.forEach(function (col) {
+                $scope.defaultAttributeTranslations.set(col.heading, col.heading);
+            });
+
+            var conceptConfigMap = {};
+            listViewObservationColumns.forEach(function (entry) {
+                if (!conceptConfigMap[entry.concept]) {
+                    conceptConfigMap[entry.concept] = { conceptName: entry.concept, validityDays: entry.validityDays };
+                } else if (entry.validityDays && !conceptConfigMap[entry.concept].validityDays) {
+                    conceptConfigMap[entry.concept].validityDays = entry.validityDays;
+                }
+            });
+            var uniqueConceptConfigs = _.values(conceptConfigMap).map(function (config) {
+                config.validityDays = config.validityDays || Bahmni.OT.Constants.defaultObservationValidityDays;
+                return config;
+            });
+
             $scope.tableInfo = getTableInfo();
+
+            function getObservationColumnsTableInfo () {
+                return $scope.filteredObservationColumns.map(function (column) {
+                    return { heading: column.heading, sortInfo: null };
+                });
+            }
 
             function getTableInfo () {
                 var listViewAttributes = [
                     {heading: 'Identifier', sortInfo: 'derivedAttributes.patientIdentifier'},
                     {heading: 'Patient Name', sortInfo: 'derivedAttributes.patientName'},
                     {heading: 'Status', sortInfo: 'status'},
-                    {heading: $scope.conceptFormatAttributeName, sortInfo: 'surgicalAppointmentAttributes.' + $scope.conceptFormatAttributeName + '.value'},
-                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessmentDate, sortInfo: 'patientObservations'},
-                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.anaesthesiaAssessment, sortInfo: 'patientObservations'},
-                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessmentDate, sortInfo: 'patientObservations'},
-                    {heading: Bahmni.OT.Constants.listViewAttributeHeadings.paediatricAssessment, sortInfo: 'patientObservations'},
+                    {heading: $scope.conceptFormatAttributeName, sortInfo: 'surgicalAppointmentAttributes.' + $scope.conceptFormatAttributeName + '.value'}
+                ];
+
+                listViewAttributes = listViewAttributes.concat(getObservationColumnsTableInfo());
+
+                listViewAttributes = listViewAttributes.concat([
                     {heading: 'Day', sortInfo: 'derivedAttributes.expectedStartDate'},
                     {heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
                     {heading: 'Patient Age', sortInfo: 'derivedAttributes.patientAge'},
@@ -38,7 +73,8 @@ angular.module('bahmni.ot')
                     {heading: 'Est Time', sortInfo: 'derivedAttributes.duration'},
                     {heading: 'Actual Time', sortInfo: 'actualStartDatetime'},
                     {heading: 'OT#', sortInfo: 'surgicalBlock.location.name'},
-                    {heading: 'Surgeon', sortInfo: 'surgicalBlock.provider.person.display'}];
+                    {heading: 'Surgeon', sortInfo: 'surgicalBlock.provider.person.display'}
+                ]);
 
                 var attributesRelatedToBed = [{heading: 'Status Change Notes', sortInfo: 'notes'},
                     {heading: 'Bed Location', sortInfo: 'bedLocation'},
@@ -74,7 +110,7 @@ angular.module('bahmni.ot')
                 var clonedSurgicalBlocks = _.cloneDeep(surgicalBlocks);
                 var filteredSurgicalBlocks = surgicalBlockFilter(clonedSurgicalBlocks, $scope.filterParams);
                 var mappedSurgicalBlocks = _.map(filteredSurgicalBlocks, function (surgicalBlock) {
-                    return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons);
+                    return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons, uniqueConceptConfigs);
                 });
                 mappedSurgicalBlocks = _.map(mappedSurgicalBlocks, function (surgicalBlock) {
                     var blockStartDatetime = surgicalBlock.startDatetime;
@@ -152,6 +188,7 @@ angular.module('bahmni.ot')
                     isCurrentDate: $scope.isCurrentDateinWeekView,
                     conceptFormatAttributeName: $scope.conceptFormatAttributeName,
                     filteredSurgicalAttributeTypes: $scope.filteredSurgicalAttributeTypes,
+                    filteredObservationColumns: $scope.filteredObservationColumns,
                     tableInfo: $scope.tableInfo,
                     defaultAttributeTranslations: $scope.defaultAttributeTranslations
                 });
