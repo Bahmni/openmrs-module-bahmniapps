@@ -519,12 +519,11 @@ describe('programService', function () {
                 "resourceVersion": "1.9",
                 "uuid": "79f68f3e-a2b2-4680-bf9d-86cb3124d6e5",
                 "value": "bmn",
-                "voided": false,
-                "retired": false
+                "voided": false
             }];
 
             mockBackend.whenGET(Bahmni.Common.Constants.programEnrollPatientUrl + '?patient=somePatientUuid&v=full').respond(data.data);
-            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond({
+            mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,retired,description,datatypeClassname,datatypeConfig,concept)').respond({
                 "results": [
                     {
                         "description": null,
