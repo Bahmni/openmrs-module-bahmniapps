@@ -519,7 +519,8 @@ describe('programService', function () {
                 "resourceVersion": "1.9",
                 "uuid": "79f68f3e-a2b2-4680-bf9d-86cb3124d6e5",
                 "value": "bmn",
-                "voided": false
+                "voided": false,
+                "retired": false
             }];
 
             mockBackend.whenGET(Bahmni.Common.Constants.programEnrollPatientUrl + '?patient=somePatientUuid&v=full').respond(data.data);
