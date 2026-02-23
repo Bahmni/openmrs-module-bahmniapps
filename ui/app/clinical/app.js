@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient',

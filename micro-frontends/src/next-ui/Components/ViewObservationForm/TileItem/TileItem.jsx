@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import propTypes from "prop-types";
 import { Document } from "@carbon/icons-react/next";

@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 xdescribe("selectAllCheckbox()", function () {
     var scope, messagingService, compile, rootScope;
 

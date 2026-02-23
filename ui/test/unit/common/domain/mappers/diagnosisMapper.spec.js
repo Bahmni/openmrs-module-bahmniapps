@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("Diagnosis Mapper", function () {
     it("should map simple diagnosis", function() {
         var mappedDiagnosis = new Bahmni.DiagnosisMapper().mapDiagnosis({});

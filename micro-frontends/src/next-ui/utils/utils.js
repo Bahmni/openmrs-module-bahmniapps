@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import moment from "moment";
 import { defaultDateTimeFormat } from "../constants";
 

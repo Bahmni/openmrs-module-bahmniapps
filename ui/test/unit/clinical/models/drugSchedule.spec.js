@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("DrugSchedule", function () {
     var visit;
     var DrugSchedule = Bahmni.Clinical.DrugSchedule;

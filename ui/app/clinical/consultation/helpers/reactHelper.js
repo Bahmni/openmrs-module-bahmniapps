@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 var ReactHelper = {
     createReactComponent: function (component, props) {
         return React.createElement(component, props);

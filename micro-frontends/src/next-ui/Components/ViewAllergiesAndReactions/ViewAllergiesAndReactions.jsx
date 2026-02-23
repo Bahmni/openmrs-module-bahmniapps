@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import "./ViewAllergiesAndReactions.scss";
 import "../../../styles/common.scss";

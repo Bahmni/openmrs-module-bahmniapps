@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("loading config functionality", function () {
 
     var loadConfigService, mockHttp, $q = Q;

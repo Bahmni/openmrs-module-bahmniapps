@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import axios from "axios";
 import { findByEncounterUuid, buildFormMap, subLabels, isAbnormal, memberTypes, formatDate, getValue } from "./FormView.js";
 import { ENCOUNTER_BASE_URL } from "../../constants";

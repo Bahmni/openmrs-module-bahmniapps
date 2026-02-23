@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React, { useState } from 'react';
 import { Button, TextArea } from "carbon-components-react";
 import { FormattedMessage } from 'react-intl';

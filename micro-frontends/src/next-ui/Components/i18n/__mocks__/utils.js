@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 export function getTranslations() {
   return import("../../../../../public/i18n/locale_en.json").then(
     (module) => module.default

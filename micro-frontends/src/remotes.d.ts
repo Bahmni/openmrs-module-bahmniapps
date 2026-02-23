@@ -7,5 +7,4 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 declare module '@openmrs-mf/ipd/Dashboard';

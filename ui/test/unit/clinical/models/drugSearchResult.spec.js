@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("DrugSchedule", function () {
 
     describe("createSynonym",function () {

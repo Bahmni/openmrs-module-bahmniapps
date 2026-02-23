@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("Observation Value Mapper", function () {
     var mapper = Bahmni.Common.Domain.ObservationValueMapper;
     it("should return date value", function() {

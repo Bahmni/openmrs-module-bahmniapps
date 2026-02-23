@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 /* eslint-disable angular/module-getter */
 /* eslint-disable angular/di */
 'use strict';

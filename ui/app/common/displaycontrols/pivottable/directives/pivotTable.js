@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$rootScope', '$filter', '$stateParams', 'spinner', 'pivotTableService', 'appService', 'conceptSetUiConfigService', '$interval',
     function ($rootScope, $filter, $stateParams, spinner, pivotTableService, appService, conceptSetUiConfigService, $interval) {

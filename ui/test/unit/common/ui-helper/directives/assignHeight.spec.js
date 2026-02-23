@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("assignHeight", function () {
     var element, scope, compile;
 

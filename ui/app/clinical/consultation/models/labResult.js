@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 Bahmni.Clinical.LabResult = function (name, value, alert, lowNormal, highNormal, unit, notes, members) {

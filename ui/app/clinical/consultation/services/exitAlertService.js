@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 angular.module('bahmni.clinical')
     .factory('exitAlertService', ['messagingService', 'spinner', '$state',
         function (messagingService, spinner, $state) {

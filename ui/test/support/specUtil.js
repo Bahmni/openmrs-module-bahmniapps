@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 var specUtil = {
     createServicePromise: function (name) {
         var servicePromise = {};

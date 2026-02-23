@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 angular.module('bahmni.ot').controller('moveSurgicalAppointmentController', ['$rootScope', '$scope', '$state', '$q', 'ngDialog', 'surgicalAppointmentService', 'surgicalAppointmentHelper', 'surgicalBlockHelper', 'messagingService',

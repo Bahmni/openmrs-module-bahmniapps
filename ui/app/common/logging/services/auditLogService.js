@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 angular.module('bahmni.common.logging')
     .service('auditLogService', ['$http', '$translate', 'configurationService', function ($http, $translate, configurationService) {

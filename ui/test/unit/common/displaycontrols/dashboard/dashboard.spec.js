@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("Dashboard", function () {
 
     var DASHBOARD = {

@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('alertOnExit Directive', function () {
     var $rootScope, $compile, $scope, exitAlertService, $state;
 

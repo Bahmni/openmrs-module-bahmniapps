@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observations, label, extension) {

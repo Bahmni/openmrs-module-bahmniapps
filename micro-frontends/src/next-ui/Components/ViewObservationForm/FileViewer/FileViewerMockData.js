@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 export const mockInfoMap = {
   providerName: "test provider",
   encounterDateTime: "encounterDateTime",

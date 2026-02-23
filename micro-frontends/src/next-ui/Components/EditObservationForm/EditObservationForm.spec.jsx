@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import EditObservationForm from './EditObservationForm';

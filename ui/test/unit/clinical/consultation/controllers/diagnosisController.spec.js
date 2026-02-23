@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("Diagnosis Controller", function () {
     var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, $state, drugService, cdssService;;
     var DateUtil = Bahmni.Common.Util.DateUtil;

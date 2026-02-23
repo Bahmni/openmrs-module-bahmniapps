@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from 'react';
 import { FormattedMessage } from "react-intl";
 import './Loader.scss';

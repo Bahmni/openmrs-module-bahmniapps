@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("patientVisitHistoryService", function() {
 	var rootScope, patientVisitHistoryService, visitService, visits;
 

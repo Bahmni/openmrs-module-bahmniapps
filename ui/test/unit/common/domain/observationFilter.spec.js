@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("Observation Filter", function () {    
     describe("filter", function() {
       var buildObservation = Bahmni.Tests.observationMother.build;

@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import axios from "axios";
 import { GET_ALL_FORMS_BASE_URL } from "../../constants";
 import { build } from "./BuildFormView.js";

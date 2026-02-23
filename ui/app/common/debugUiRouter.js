@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 // Tip from http://stackoverflow.com/a/20786262/69362

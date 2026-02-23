@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("bedManagementService", function() {
     var bedLayouts = [
             {bedId: 1,

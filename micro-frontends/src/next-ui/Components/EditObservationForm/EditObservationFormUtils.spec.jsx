@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import axios from "axios";
 import { getFormDetail, getFormTranslations, getAllForms, getFormByFormName, getFormNameAndVersion } from "./EditObservationFormUtils";
 import { GET_FORMS_BASE_URL, FORM_TRANSLATIONS_URL, GET_ALL_FORMS_BASE_URL } from "../../constants";

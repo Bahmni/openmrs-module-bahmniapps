@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import { Close24 } from "@carbon/icons-react";
 import { ArrowLeft } from "@carbon/icons-react/next";
 import { RadioButton, RadioButtonGroup, TextArea } from "carbon-components-react";

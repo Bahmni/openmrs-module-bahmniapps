@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("PatientProgramMapper", function () {
     var mapper = new Bahmni.Common.Domain.PatientProgramMapper();
     it('should map dateCompleted', function () {

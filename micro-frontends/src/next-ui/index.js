@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import { React2AngularBridgeBuilder } from "../utils/bridge-builder";
 import { PatientAlergiesControl } from "./Containers/patientAlergies/PatientAlergiesControl";
 import { FormDisplayControl } from "./Containers/formDisplayControl/FormDisplayControl";

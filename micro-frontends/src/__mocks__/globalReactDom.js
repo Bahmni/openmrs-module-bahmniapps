@@ -7,5 +7,4 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 module.exports = window.ReactDOM;

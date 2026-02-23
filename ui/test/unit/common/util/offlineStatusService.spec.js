@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("offlineStatusService", function () {
     var rootScope, appService, offlineStatusService, offline, interval;
 

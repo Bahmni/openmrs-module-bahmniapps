@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 var Bahmni = Bahmni || {};
 Bahmni.Tests = Bahmni.Tests || {};
 

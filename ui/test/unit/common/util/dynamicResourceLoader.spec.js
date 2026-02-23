@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('DynamicResourceLoader', function () {
     validate_name = jasmine.createSpyObj('validate_name', ['method']);
     var dynamicResourceLoader = Bahmni.Common.Util.DynamicResourceLoader;

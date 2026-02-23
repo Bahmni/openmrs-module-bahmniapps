@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import axios from 'axios';
 import { OT_NOTES_BASE_URL } from "../../constants";
 

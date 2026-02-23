@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observations, conceptSet) {

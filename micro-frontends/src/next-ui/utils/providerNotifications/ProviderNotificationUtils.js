@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import axios from "axios";
 import { EMERGENCY_MEDICATIONS_BASE_URL, GET_DRUG_ACKNOWLEDGEMENT_URL, GET_PROVIDER_UUID_URL } from "../../constants";
 import { parseDateArray } from "../utils";

@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 angular.module('bahmni.home')
     .controller('ChangePasswordController', ['$scope', '$state', 'sessionService', '$rootScope', 'authenticator', '$window', 'userService', 'messagingService', function ($scope, $state, sessionService, $rootScope, authenticator, $window, userService, messagingService) {

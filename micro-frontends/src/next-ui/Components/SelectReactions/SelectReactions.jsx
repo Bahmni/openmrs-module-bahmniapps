@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React, { useEffect, useState } from "react";
 import propTypes from "prop-types";
 import "../../../styles/common.scss";

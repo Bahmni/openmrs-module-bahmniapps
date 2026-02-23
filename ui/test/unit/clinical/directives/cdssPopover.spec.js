@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('cdssPopover Directive', function () {
     var httpBackend, scope;
     var html = '<cdss-popover alerts="alerts"></cdss-popover>';

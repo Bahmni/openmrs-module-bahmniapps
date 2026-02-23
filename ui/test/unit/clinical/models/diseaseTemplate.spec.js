@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("DiseaseTemplate", function () {
     it("should map the server model to view model for patient dashboard", function () {
         var diseaseTemplateJson = {"concept": {"name": "Breast Cancer", "shortName" : "Breast Cancer -shortName"}, "observationTemplates": observationTemplates};

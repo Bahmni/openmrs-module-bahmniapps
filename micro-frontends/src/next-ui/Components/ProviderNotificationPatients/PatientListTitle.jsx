@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import { WarningAlt16 } from "@carbon/icons-react";
 import { Link } from "carbon-components-react";

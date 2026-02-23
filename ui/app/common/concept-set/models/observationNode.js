@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 (function () {
     var findObservationByClassName = function (groupMembers, conceptClassName) {
         return _.find(groupMembers, function (member) {

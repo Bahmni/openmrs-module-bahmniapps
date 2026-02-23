@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import PropTypes from "prop-types";
 import React, { Suspense, lazy } from "react";
 import Loader from "../next-ui/Components/Loader/Loader";

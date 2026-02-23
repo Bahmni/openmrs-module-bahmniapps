@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("TabularLabOrderResults", function() {
 	describe("hasUploadedFiles()", function() {
 		it("should return true if any uploaded files present for a given date and test", function() {

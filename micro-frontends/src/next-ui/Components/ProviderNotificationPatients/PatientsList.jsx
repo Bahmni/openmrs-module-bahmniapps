@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import PatientListTitle from "./PatientListTitle";
 import { Accordion, AccordionItem } from "carbon-components-react";

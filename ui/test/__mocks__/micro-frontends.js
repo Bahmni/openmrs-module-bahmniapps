@@ -7,6 +7,5 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 angular.module("bahmni.mfe.ipd", []);
 angular.module("bahmni.mfe.nextUi", []);

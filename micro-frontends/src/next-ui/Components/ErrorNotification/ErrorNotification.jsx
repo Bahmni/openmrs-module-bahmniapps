@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from 'react'
 import "./ErrorNotification.scss";
 import { I18nProvider } from '../i18n/I18nProvider';

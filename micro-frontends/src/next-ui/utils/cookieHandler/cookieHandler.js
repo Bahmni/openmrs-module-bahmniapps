@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 export const getCookies = () => {
     const cookies = document.cookie.split(';');
     const cookiesObj = {};

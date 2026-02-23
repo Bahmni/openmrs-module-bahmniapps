@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Modal } from "carbon-components-react";

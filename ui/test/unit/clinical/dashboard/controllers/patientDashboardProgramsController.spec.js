@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("PatientDashboardProgramsController", function () {
     var scope, state;
 

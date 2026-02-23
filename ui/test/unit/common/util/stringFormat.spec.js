@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('stringFormat', function() {
     describe('toValidId', function() {
         it('should replace all the spaces with hyphens to make it a valid html id value', function() {

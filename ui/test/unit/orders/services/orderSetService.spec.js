@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('Order Set Service', function () {
   var orderSetService, mockHttp, $q=Q;
 

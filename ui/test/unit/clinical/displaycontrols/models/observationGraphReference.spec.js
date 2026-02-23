@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('Observation Graph Reference', function () {
     'use strict';
     var csvString, config, gender, ageInMonths;

@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 Bahmni.Common.AuditLogEventDetails = {
     "USER_LOGIN_SUCCESS": {eventType: "USER_LOGIN_SUCCESS", message: "USER_LOGIN_SUCCESS_MESSAGE"},
     "USER_LOGIN_FAILED": {eventType: "USER_LOGIN_FAILED", message: "USER_LOGIN_FAILED_MESSAGE"},

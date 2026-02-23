@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import PropTypes from "prop-types";
 import {I18nProvider} from "../../Components/i18n/I18nProvider";

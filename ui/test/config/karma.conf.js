@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 module.exports = function (config) {
     config.set({
         basePath: '../..',

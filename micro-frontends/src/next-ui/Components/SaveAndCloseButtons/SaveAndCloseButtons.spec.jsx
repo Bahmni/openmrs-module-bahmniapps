@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import SaveAndCloseButtons from "./SaveAndCloseButtons.jsx";

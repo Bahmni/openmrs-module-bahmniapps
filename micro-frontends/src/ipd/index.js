@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 // Adapt all IPD components to use within angular
 "use strict";
 

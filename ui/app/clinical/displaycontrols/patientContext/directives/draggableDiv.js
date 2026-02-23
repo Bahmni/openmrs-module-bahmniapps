@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 angular.module('bahmni.clinical')
     .directive("draggableDiv", ['$document', function ($document) {
         return {

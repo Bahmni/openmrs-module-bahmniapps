@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 String.prototype.format = function () { // eslint-disable-line no-extend-native

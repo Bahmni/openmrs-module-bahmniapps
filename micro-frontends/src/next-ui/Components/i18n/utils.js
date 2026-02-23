@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import { LS_LANG_KEY, BASE_URL } from "../../constants";
 
 const translationsBaseUrl = "i18n";

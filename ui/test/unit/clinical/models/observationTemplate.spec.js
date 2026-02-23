@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("ObservationTemplate", function () {
     it("should group observations by encounterDateTime", function () {
         var observationTemplate = new Bahmni.Clinical.ObservationTemplate({name : "Breast Cancer - Intake", shortName : "Breast Cancer - Intake -shortName"}, "1218997800000", bahmniObservations);

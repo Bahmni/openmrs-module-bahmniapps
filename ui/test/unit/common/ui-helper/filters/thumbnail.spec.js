@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('Filter: thumbnail', function() {
     var thumbnailFilter;
 

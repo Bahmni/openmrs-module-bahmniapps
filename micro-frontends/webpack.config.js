@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 const path = require("path");
 const cssExtract = require("mini-css-extract-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");

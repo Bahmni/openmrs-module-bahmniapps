@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 export const defaultDateFormat = "DD MMM YYYY";
 export const defaultDateTimeFormat = "DD MMM YYYY hh:mm a";
 

@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import axios from "axios";
 import { BAHMNI_ENCOUNTER_URL, ENCOUNTER_TYPE_URL, FETCH_CONCEPT_URL, GET_ALLERGIES_URL, SAVE_ALLERGIES_URL } from "../../constants";
 import { getLocale } from "../../Components/i18n/utils";

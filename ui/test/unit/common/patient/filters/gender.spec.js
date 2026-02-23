@@ -7,8 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
-
 'use strict';
 
 describe("gender Filter", function () {

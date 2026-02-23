@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 angular.module('bahmni.common.uiHelper').directive('autoScroll', ['$location', '$anchorScroll', '$timeout', function ($location, $anchorScroll, $timeout) {

@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("PatientDashboardVisitsController", function () {
     var scope;
     var spinner = jasmine.createSpyObj("spinner", ["forPromise"]);

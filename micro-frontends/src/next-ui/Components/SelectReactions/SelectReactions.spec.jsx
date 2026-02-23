@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import { fireEvent, render, screen, act } from "@testing-library/react";
 import { SelectReactions } from "./SelectReactions";

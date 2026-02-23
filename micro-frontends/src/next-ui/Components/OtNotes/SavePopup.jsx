@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Modal, TextArea, DatePicker, DatePickerInput} from "carbon-components-react";

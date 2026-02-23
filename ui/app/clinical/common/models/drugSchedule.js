@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 (function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;

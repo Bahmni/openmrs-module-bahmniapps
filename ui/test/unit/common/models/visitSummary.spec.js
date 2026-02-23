@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('VisitSummary', function () {
     describe("isAdmitted", function () {
         it("should return true if the visit has admission details", function () {

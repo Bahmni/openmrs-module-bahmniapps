@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import PropTypes from "prop-types";
 import React, { useEffect, useMemo, useState } from "react";
 import { IntlProvider } from "react-intl";

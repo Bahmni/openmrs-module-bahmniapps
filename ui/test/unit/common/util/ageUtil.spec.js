@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('AgeUtil', function () {
     var ageUtil = Bahmni.Common.Util.AgeUtil;
 

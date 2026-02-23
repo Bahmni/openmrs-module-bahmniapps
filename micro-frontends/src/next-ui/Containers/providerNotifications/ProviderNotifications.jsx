@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React, { useEffect, useState } from 'react';
 import './ProviderNotifications.scss';
 import PropTypes from 'prop-types';

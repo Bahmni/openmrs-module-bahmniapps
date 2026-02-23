@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 angular.module('bahmni.ipd').factory('bedInitialization', ['$rootScope', '$q', 'patientService', 'initialization', 'bedService', 'spinner',

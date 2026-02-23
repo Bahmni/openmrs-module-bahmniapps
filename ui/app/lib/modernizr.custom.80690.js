@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 /* Modernizr 2.8.3 (Custom Build) | MIT & BSD
  * Build: http://modernizr.com/download/#-touch-mq-cssclasses-teststyles-prefixes
  */

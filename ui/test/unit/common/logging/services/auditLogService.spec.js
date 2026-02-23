@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('auditLogService', function () {
     var auditLogService;
     var DateUtil = Bahmni.Common.Util.DateUtil;

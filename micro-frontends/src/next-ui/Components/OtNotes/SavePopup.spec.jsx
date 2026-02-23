@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from "react";
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {SavePopup} from "./SavePopup";

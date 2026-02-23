@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 Bahmni.Registration.StateNameEvenTypeMap = {
     "search": "VIEWED_REGISTRATION_PATIENT_SEARCH",
     "newpatient": "VIEWED_NEW_PATIENT_PAGE",

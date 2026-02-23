@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 angular.module('stateMock', []);
 angular.module('stateMock').service("$state", function () {
     this.expectedTransitions = [];

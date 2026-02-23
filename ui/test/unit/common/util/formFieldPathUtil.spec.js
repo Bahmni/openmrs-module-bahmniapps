@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("FormFieldPathUtil", function() {
     it("should formName and version for given formFielPath", function() {
         let formNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion("Test Form.v1/1-1");

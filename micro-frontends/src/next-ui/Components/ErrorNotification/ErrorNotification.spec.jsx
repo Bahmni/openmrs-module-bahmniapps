@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import ErrorNotification from './ErrorNotification';

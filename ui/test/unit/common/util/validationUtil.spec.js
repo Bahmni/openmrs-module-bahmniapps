@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 Bahmni.Registration.customValidator = {
     "age.days": {},
     "name": {},

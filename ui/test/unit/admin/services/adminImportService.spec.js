@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("adminImportService", function() {
     var adminImportService;
     var mockHttp = jasmine.createSpyObj('$http', ['get']);

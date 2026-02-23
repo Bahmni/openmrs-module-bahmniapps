@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.programs', ['bahmni.common.domain', 'bahmni.common.uiHelper']);

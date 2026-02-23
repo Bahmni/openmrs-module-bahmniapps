@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService',

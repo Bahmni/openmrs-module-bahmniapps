@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("Bacteriology Controller", function () {
     var $scope, rootScope, contextChangeHandler, spinner, conceptSetService, appService, appDescriptor, controller, retrospectiveEntryService, $state;
     var existingSpecimen = new Bahmni.Clinical.Specimen({

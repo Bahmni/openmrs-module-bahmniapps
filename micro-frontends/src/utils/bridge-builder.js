@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 import { react2angular } from "react2angular";
 /**
  * Creates a new instance of React2AngularBridgeBuilder. This helper utility creates angular wrapper components

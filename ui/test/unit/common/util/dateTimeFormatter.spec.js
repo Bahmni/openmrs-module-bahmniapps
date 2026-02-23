@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe("getDateWithoutTime", function() {
     it("should return date without time",function(){
         expect(Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(new Date('2016', '7', '15', '12','30','25'))).toBe('2016-08-15');

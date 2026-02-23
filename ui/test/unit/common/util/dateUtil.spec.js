@@ -7,7 +7,6 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-
 describe('DateUtil', function () {
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var dateFormat = "YYYY-MM-DDTHH:mm:ss.SSS";
