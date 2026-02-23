@@ -1,3 +1,13 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://www.bahmni.org/license/mplv2hd.
+ *
+ * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+ * graphic logo is a trademark of OpenMRS Inc.
+ */
+
+
 import axios from "axios";
 import { BAHMNI_ENCOUNTER_URL, ENCOUNTER_TYPE_URL, FETCH_CONCEPT_URL, GET_ALLERGIES_URL, SAVE_ALLERGIES_URL } from "../../constants";
 import { getLocale } from "../../Components/i18n/utils";

@@ -4,7 +4,7 @@
   "description": "Hosting microfrontends for openmrs",
   "main": "dist/index.js",
   "author": "bahmni@thoughtworks.com",
-  "license": "AGPL-3.0",
+  "license": "MPL-2.0",
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/plugin-transform-runtime": "^7.22.4",
@@ -60,5 +60,15 @@
   "engines": {
     "yarn": ">= 1.0.0",
     "npm": "use yarn instead of npm."
-  }
+  },
+  "licenses": [
+    {
+      "type": "MPL-2.0",
+      "url": "https://www.bahmni.org/license/mplv2hd"
+    },
+    {
+      "type": "Healthcare Disclaimer",
+      "url": "https://www.bahmni.org/license"
+    }
+  ]
 }
