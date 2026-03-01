@@ -11,6 +11,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { ViewAllergiesAndReactions } from './ViewAllergiesAndReactions';
 import {NO_KNOWN_ALLERGY_CODE} from "../../constants";
+import { IntlProvider } from "react-intl";
 
 describe("ViewAllergiesAndReactions", () => {
     const allergiesMock = [
@@ -40,7 +41,11 @@ describe("ViewAllergiesAndReactions", () => {
     ];
 
     it('should render ViewAllergiesAndReactions component', () => {
-        const {container} = render(<ViewAllergiesAndReactions allergies={allergiesMock}/>);
+        const {container} = render(
+            <IntlProvider locale="en">
+                <ViewAllergiesAndReactions allergies={allergiesMock} noKnownAllergyUuid={NO_KNOWN_ALLERGY_CODE}/>
+            </IntlProvider>
+        );
         expect(container).toMatchSnapshot();
     });
 });

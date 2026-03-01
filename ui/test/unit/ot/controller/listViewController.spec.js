@@ -19,6 +19,7 @@ describe('listViewController', function () {
     var printer = jasmine.createSpyObj('printer', ['print']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    var otUtils = jasmine.createSpyObj('otUtils', ['getConceptFormatAttributeName']);
     appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     beforeEach(function () {
@@ -29,10 +30,28 @@ describe('listViewController', function () {
             scope = $rootScope.$new();
             q = $q;
         });
+        printer.print.calls.reset();
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [];
+            }
+            return null;
+        });
     });
 
     var createController = function () {
         spyOn(scope, "$emit");
+        if (!scope.viewDate) {
+            scope.viewDate = moment('2017-06-22').toDate();
+        }
+        if (!scope.filterParams) {
+            scope.filterParams = {
+                providers: [],
+                locations: {},
+                patient: {},
+                statusList: []
+            };
+        }
         controller('listViewController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -43,7 +62,8 @@ describe('listViewController', function () {
             appService: appService,
             $state: state,
             ngDialog: ngDialog,
-            printer: printer
+            printer: printer,
+            otUtils: otUtils
         });
         scope.$apply();
     };
@@ -97,6 +117,11 @@ describe('listViewController', function () {
             "uuid": "910f2c7f-4b73-11e7-81d5-0800274a5156",
             "name": "notes",
             "format": "java.lang.String"
+        },
+        {
+            "uuid": "a1b2c3d4-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
+            "name": "Blood Transfusion Requested for Surgery?",
+            "format": "org.openmrs.Concept"
         }
     ];
 
@@ -375,9 +400,36 @@ describe('listViewController', function () {
         return {data: {results: results}};
     });
 
+    it("should initialize conceptFormatAttributeName from otUtils", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
+        createController();
+        expect(otUtils.getConceptFormatAttributeName).toHaveBeenCalled();
+        expect(scope.conceptFormatAttributeName).toBe('Blood Transfusion Requested for Surgery?');
+    });
+
+    it("should include conceptFormatAttributeName in tableInfo when it is available", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
+        createController();
+        expect(scope.tableInfo[3].heading).toBe('Blood Transfusion Requested for Surgery?');
+        expect(scope.tableInfo[3].sortInfo).toBe('surgicalAppointmentAttributes.Blood Transfusion Requested for Surgery?.value');
+    });
+
+    it("should exclude conceptFormatAttributeName from filteredSurgicalAttributeTypes", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
+        rootScope.attributeTypes = defaultAttributeTypes.concat([{
+            "uuid": "test-uuid",
+            "name": "Blood Transfusion Requested for Surgery?",
+            "format": "org.openmrs.Concept"
+        }]);
+        createController();
+        var filteredNames = scope.filteredSurgicalAttributeTypes.map(function(attr) { return attr.name; });
+        expect(filteredNames).not.toContain('Blood Transfusion Requested for Surgery?');
+        expect(filteredNames).not.toContain('estTimeHours');
+        expect(filteredNames).not.toContain('estTimeMinutes');
+        expect(filteredNames).not.toContain('cleaningTime');
+    });
 
     it("should sort the appointments by start date and by the location and by start time", function () {
-        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -396,7 +448,6 @@ describe('listViewController', function () {
     });
 
     it("should set the derived attributes for appointments", function () {
-        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": false, "OT 3": false},
@@ -417,7 +468,10 @@ describe('listViewController', function () {
             if (value == 'printListViewTemplateUrl') {
                 return "/bahmni_config/openmrs/apps/ot/printListView.html";
             }
-            return value;
+            if (value == 'listViewObservationColumns') {
+                return [];
+            }
+            return null;
         });
         scope.filterParams = {
             providers: [],
@@ -425,6 +479,7 @@ describe('listViewController', function () {
             patient: {uuid: "2300015f-95a3-4d47-933d-a81138ad0aa6"},
             statusList: []
         };
+        rootScope.attributeTypes = defaultAttributeTypes;
         createController();
         scope.printPage();
         expect(printer.print).toHaveBeenCalledWith("/bahmni_config/openmrs/apps/ot/printListView.html",
@@ -434,7 +489,12 @@ describe('listViewController', function () {
                 weekEndDate: scope.weekEndDate,
                 viewDate: scope.viewDate,
                 weekOrDay: scope.weekOrDay,
-                isCurrentDate: scope.isCurrentDateinWeekView
+                isCurrentDate: scope.isCurrentDateinWeekView,
+                conceptFormatAttributeName: scope.conceptFormatAttributeName,
+                filteredSurgicalAttributeTypes: scope.filteredSurgicalAttributeTypes,
+                filteredObservationColumns: scope.filteredObservationColumns,
+                tableInfo: scope.tableInfo,
+                defaultAttributeTranslations: scope.defaultAttributeTranslations
             });
     });
 
@@ -443,7 +503,10 @@ describe('listViewController', function () {
             if (value == 'printListViewTemplateUrl') {
                 return '';
             }
-            return value;
+            if (value == 'listViewObservationColumns') {
+                return [];
+            }
+            return null;
         });
         scope.filterParams = {
             providers: [],
@@ -451,6 +514,7 @@ describe('listViewController', function () {
             patient: {uuid: "2300015f-95a3-4d47-933d-a81138ad0aa6"},
             statusList: []
         };
+        rootScope.attributeTypes = defaultAttributeTypes;
         createController();
         scope.printPage();
         expect(printer.print).toHaveBeenCalledWith("views/listView.html",
@@ -460,12 +524,16 @@ describe('listViewController', function () {
                 weekEndDate: scope.weekEndDate,
                 viewDate: scope.viewDate,
                 weekOrDay: scope.weekOrDay,
-                isCurrentDate: scope.isCurrentDateinWeekView
+                isCurrentDate: scope.isCurrentDateinWeekView,
+                conceptFormatAttributeName: scope.conceptFormatAttributeName,
+                filteredSurgicalAttributeTypes: scope.filteredSurgicalAttributeTypes,
+                filteredObservationColumns: scope.filteredObservationColumns,
+                tableInfo: scope.tableInfo,
+                defaultAttributeTranslations: scope.defaultAttributeTranslations
             });
     });
 
     it("should sort appointments by the sort column", function () {
-        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -534,7 +602,6 @@ describe('listViewController', function () {
     });
 
     it("should reverse sort appointments if sorted on the same column consecutively", function () {
-        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -656,51 +723,18 @@ describe('listViewController', function () {
         expect(isCancelled).toBeFalsy();
     });
 
-    it("should have bed location and bed id in table info", function () {
-        scope.filterParams = {
-            providers: [],
-            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
-            statusList: []
-        };
-        var event = {
-            stopPropagation: function () {
+    it("should have assessment and other fields in table info when configured", function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", label: "OT_ANAESTHESIA_REVIEW"},
+                    {concept: "Assessed for Surgery?", type: "date", label: "OT_PAEDIATRIC_REVIEW_DATE", validityDays: 30},
+                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"}
+                ];
             }
-        };
-        rootScope.attributeTypes = defaultAttributeTypes;
-        createController();
-        expect(scope.tableInfo.length).toBe(21);
-        expect(scope.tableInfo[19].heading).toBe("Bed Location");
-        expect(scope.tableInfo[19].sortInfo).toBe("bedLocation");
-        expect(scope.tableInfo[20].heading).toBe("Bed ID");
-        expect(scope.tableInfo[20].sortInfo).toBe("bedNumber");
-    });
-
-    it('should have all the surgical attributes in table info', function () {
-        scope.filterParams = {
-            providers: [],
-            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
-            statusList: []
-        };
-        rootScope.attributeTypes = defaultAttributeTypes;
-        createController();
-        expect(scope.tableInfo.length).toBe(21);
-        expect(scope.tableInfo[11].heading).toBe('procedure');
-        expect(scope.tableInfo[11].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
-        expect(scope.tableInfo[12].heading).toBe('otherSurgeon');
-        expect(scope.tableInfo[12].sortInfo).toBe('surgicalAppointmentAttributes.otherSurgeon.value.person.display');
-        expect(scope.tableInfo[13].heading).toBe('surgicalAssistant');
-        expect(scope.tableInfo[13].sortInfo).toBe('surgicalAppointmentAttributes.surgicalAssistant.value');
-        expect(scope.tableInfo[14].heading).toBe('anaesthetist');
-        expect(scope.tableInfo[14].sortInfo).toBe('surgicalAppointmentAttributes.anaesthetist.value');
-        expect(scope.tableInfo[15].heading).toBe('scrubNurse');
-        expect(scope.tableInfo[15].sortInfo).toBe('surgicalAppointmentAttributes.scrubNurse.value');
-        expect(scope.tableInfo[16].heading).toBe('circulatingNurse');
-        expect(scope.tableInfo[16].sortInfo).toBe('surgicalAppointmentAttributes.circulatingNurse.value');
-        expect(scope.tableInfo[17].heading).toBe('notes');
-        expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
-    })
-
-    it('should have primaryDiagnosisInfo attributes in table info', function () {
+            return null;
+        });
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -709,9 +743,174 @@ describe('listViewController', function () {
         rootScope.attributeTypes = defaultAttributeTypes;
         rootScope.showPrimaryDiagnosisForOT = true;
         createController();
-        console.log(scope.tableInfo)
-        expect(scope.tableInfo.length).toBe(22);
-        expect(scope.tableInfo[21].heading).toBe('Primary Diagnoses');
-        expect(scope.tableInfo[21].sortInfo).toBe('patientObservations');
+        expect(scope.tableInfo.length).toBe(27);
+        expect(scope.tableInfo[4].heading).toBe("OT_ANAESTHESIA_REVIEW_DATE");
+        expect(scope.tableInfo[4].sortInfo).toBeNull();
+        expect(scope.tableInfo[5].heading).toBe("OT_ANAESTHESIA_REVIEW");
+        expect(scope.tableInfo[5].sortInfo).toBeNull();
+        expect(scope.tableInfo[6].heading).toBe("OT_PAEDIATRIC_REVIEW_DATE");
+        expect(scope.tableInfo[6].sortInfo).toBeNull();
+        expect(scope.tableInfo[7].heading).toBe("OT_PAEDIATRIC_REVIEW");
+        expect(scope.tableInfo[7].sortInfo).toBeNull();
+        expect(scope.tableInfo[24].heading).toBe("Bed Location");
+        expect(scope.tableInfo[24].sortInfo).toBe("bedLocation");
+        expect(scope.tableInfo[25].heading).toBe("Bed ID");
+        expect(scope.tableInfo[25].sortInfo).toBe("bedNumber");
+        expect(scope.tableInfo[26].heading).toBe("Primary Diagnoses");
+        expect(scope.tableInfo[26].sortInfo).toBe("patientObservations");
+    });
+
+    it("should not include assessment columns when config is absent", function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return undefined;
+            }
+            return null;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
+        createController();
+
+        var headings = scope.tableInfo.map(function(info) { return info.heading; });
+        expect(headings).not.toContain("OT_ANAESTHESIA_REVIEW_DATE");
+        expect(headings).not.toContain("OT_ANAESTHESIA_REVIEW");
+        expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW_DATE");
+        expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW");
+        expect(scope.tableInfo.length).toBe(23);
+    });
+
+    it("should not include assessment columns when config is empty array", function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [];
+            }
+            return null;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
+        createController();
+
+        var headings = scope.tableInfo.map(function(info) { return info.heading; });
+        expect(headings).not.toContain("OT_ANAESTHESIA_REVIEW_DATE");
+        expect(headings).not.toContain("OT_ANAESTHESIA_REVIEW");
+        expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW_DATE");
+        expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW");
+        expect(scope.tableInfo.length).toBe(23);
+    });
+
+    it("should include only configured assessment columns in configured order", function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [
+                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30}
+                ];
+            }
+            return null;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
+        createController();
+
+        expect(scope.tableInfo.length).toBe(25);
+        expect(scope.tableInfo[4].heading).toBe("OT_PAEDIATRIC_REVIEW");
+        expect(scope.tableInfo[5].heading).toBe("OT_ANAESTHESIA_REVIEW_DATE");
+
+        var headings = scope.tableInfo.map(function(info) { return info.heading; });
+        expect(headings).not.toContain("OT_ANAESTHESIA_REVIEW");
+        expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW_DATE");
+    });
+
+    it("should build filteredObservationColumns based on configuration order", function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
+                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"}
+                ];
+            }
+            return null;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        createController();
+
+        expect(scope.filteredObservationColumns.length).toBe(2);
+        expect(scope.filteredObservationColumns[0].conceptName).toBe('Pre Anaesthesia Assessed for Surgery?');
+        expect(scope.filteredObservationColumns[0].heading).toBe('OT_ANAESTHESIA_REVIEW_DATE');
+        expect(scope.filteredObservationColumns[0].isDate).toBe(true);
+        expect(scope.filteredObservationColumns[1].conceptName).toBe('Assessed for Surgery?');
+        expect(scope.filteredObservationColumns[1].heading).toBe('OT_PAEDIATRIC_REVIEW');
+        expect(scope.filteredObservationColumns[1].isDate).toBe(false);
+    });
+
+    it('should have all the surgical attributes in table info', function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", label: "OT_ANAESTHESIA_REVIEW"},
+                    {concept: "Assessed for Surgery?", type: "date", label: "OT_PAEDIATRIC_REVIEW_DATE", validityDays: 30},
+                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"}
+                ];
+            }
+            return null;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
+        createController();
+        expect(scope.tableInfo.length).toBe(27);
+        expect(scope.tableInfo[16].heading).toBe('procedure');
+        expect(scope.tableInfo[16].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
+        expect(scope.tableInfo[17].heading).toBe('otherSurgeon');
+        expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.otherSurgeon.value.person.display');
+        expect(scope.tableInfo[18].heading).toBe('surgicalAssistant');
+        expect(scope.tableInfo[18].sortInfo).toBe('surgicalAppointmentAttributes.surgicalAssistant.value');
+        expect(scope.tableInfo[19].heading).toBe('anaesthetist');
+        expect(scope.tableInfo[19].sortInfo).toBe('surgicalAppointmentAttributes.anaesthetist.value');
+        expect(scope.tableInfo[20].heading).toBe('scrubNurse');
+        expect(scope.tableInfo[20].sortInfo).toBe('surgicalAppointmentAttributes.scrubNurse.value');
+        expect(scope.tableInfo[21].heading).toBe('circulatingNurse');
+        expect(scope.tableInfo[21].sortInfo).toBe('surgicalAppointmentAttributes.circulatingNurse.value');
+        expect(scope.tableInfo[22].heading).toBe('notes');
+        expect(scope.tableInfo[22].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
+    })
+
+    it('should have primaryDiagnosisInfo attributes in table info', function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
+        createController();
+        expect(scope.tableInfo.length).toBe(23);
+        expect(scope.tableInfo[22].heading).toBe('Primary Diagnoses');
+        expect(scope.tableInfo[22].sortInfo).toBe('patientObservations');
         })
 });
