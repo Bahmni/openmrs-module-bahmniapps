@@ -67,10 +67,16 @@ export function FormDisplayControl(props) {
 
   const buildResponseData = async () => {
     try {
-      const formResponseData = await fetchFormData(
+      let formResponseData = await fetchFormData(
         props?.hostData?.patientUuid,
         props?.hostData?.numberOfVisits
       );
+      const formGroup = props?.hostData?.formGroup || [];
+      if (formGroup.length > 0) {
+        formResponseData = formResponseData.filter((form) =>
+          formGroup.includes(form.formName)
+        );
+      }
       const latestForms = await getLatestPublishedForms();
       var grouped = {};
       if (formResponseData?.length > 0 && latestForms?.length > 0) {
