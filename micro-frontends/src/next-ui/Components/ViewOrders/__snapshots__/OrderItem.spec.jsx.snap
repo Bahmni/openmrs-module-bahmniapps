@@ -81,7 +81,7 @@ exports[`OrderItemContainer should render the component 1`] = `
               Status
             </div>
             <div>
-              New
+              Completed
             </div>
             <div
               class="order-item-chevron"
