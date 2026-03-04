@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderItem should render the component 1`] = `
+<div>
+  <div
+    class="order-item-wrapper"
+  >
+    <div
+      class="order-item-header"
+    >
+      <div>
+        Test Name
+      </div>
+      <div>
+        Test Value
+      </div>
+      <div
+        class="order-item-chevron"
+      >
+        <svg
+          aria-hidden="true"
+          fill="currentColor"
+          focusable="false"
+          height="16"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`OrderItemContainer should render the component 1`] = `
+<div>
+  <div
+    class="accordion order-item-container"
+  >
+    <div
+      class="accordion-header"
+    >
+      <span
+        class="accordion-icon"
+      >
+        <svg
+          aria-hidden="true"
+          fill="currentColor"
+          focusable="false"
+          height="16"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 32 32"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M24 12L16 22 8 12z"
+          />
+        </svg>
+      </span>
+      <span>
+        01 Jan 2024 10:00 AM
+      </span>
+    </div>
+    <div
+      class="accordion-content"
+    >
+      <div>
+        <div
+          class="order-item-wrapper"
+        >
+          <div
+            class="order-item-header"
+          >
+            <div>
+              Status
+            </div>
+            <div>
+              Completed
+            </div>
+            <div
+              class="order-item-chevron"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                focusable="false"
+                height="16"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div
+          class="order-item-wrapper"
+        >
+          <div
+            class="order-item-header"
+          >
+            <div>
+              Owner
+            </div>
+            <div>
+              Owner Name
+            </div>
+            <div
+              class="order-item-chevron"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                focusable="false"
+                height="16"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div
+          class="order-item-wrapper"
+        >
+          <div
+            class="order-item-header"
+          >
+            <div>
+              Notes
+            </div>
+            <div>
+              Test notes
+            </div>
+            <div
+              class="order-item-chevron"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                focusable="false"
+                height="16"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

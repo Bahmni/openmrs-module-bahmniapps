@@ -85,6 +85,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     activeVisit: $scope.visitHistory ? $scope.visitHistory.activeVisit : null,
                     allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
                 };
+                $scope.ordersData = { patient: $scope.patient };
+                $scope.ordersApi = {};
                 $scope.appService = appService;
                 $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
             }
