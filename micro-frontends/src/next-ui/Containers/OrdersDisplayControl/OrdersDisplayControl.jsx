@@ -12,7 +12,7 @@ import {
     FHIR_EXT_TASK_CREATED_ON,
     FHIR_EXT_TASK_NOTE,
     FHIR_EXT_TASK_OWNER,
-    FHIR_EXT_TASK_STATUS
+    FHIR_EXT_ORDER_STATUS,
 } from "../../constants";
 
 const transformOrders = (entries = []) => {
@@ -24,7 +24,7 @@ const transformOrders = (entries = []) => {
             if (extension.url) {
                 if (extension.url.endsWith(FHIR_EXT_TASK_CREATED_ON)) {
                     updatedAt = new Date(extension.valueDateTime).getTime()
-                } else if (extension.url.endsWith(FHIR_EXT_TASK_STATUS)) {
+                } else if (extension.url.endsWith(FHIR_EXT_ORDER_STATUS)) {
                     orderStatus = extension.valueString
                 } else if (extension.url.endsWith(FHIR_EXT_TASK_OWNER)) {
                     owner = extension.valueReference.display

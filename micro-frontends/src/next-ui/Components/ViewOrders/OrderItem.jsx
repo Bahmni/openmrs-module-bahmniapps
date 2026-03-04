@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {ChevronUp, ChevronDown} from "@carbon/icons-react/next";
 import {Accordion} from "./Accordion";
 import "./OrderItem.scss";
-import {ORDER_STATUS_TO_UI_STATUS} from "../../constants";
+import { DB_FULFILLER_STATUS_TO_UI_STATUS } from "../../constants";
 import { FormattedMessage } from "react-intl";
 
 export function OrderItem({name, value, updatedBy}) {
@@ -32,7 +32,7 @@ export function OrderItemContainer(props) {
             <div>
                 <OrderItem updatedBy={statusUpdatedBy}
                            name={<FormattedMessage id={"STATUS"} defaultMessage={"Status"}/>}
-                           value={orderStatus ? ORDER_STATUS_TO_UI_STATUS[orderStatus] : "New"}/>
+                           value={orderStatus == null ? "New": DB_FULFILLER_STATUS_TO_UI_STATUS[orderStatus]}/>
                 <OrderItem updatedBy={ownerUpdatedBy} name={<FormattedMessage id={"OWNER"} defaultMessage={"Owner"}/>}
                            value={owner ? owner : "Unassigned"}/>
                 {notes &&

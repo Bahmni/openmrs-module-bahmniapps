@@ -9,7 +9,7 @@ describe("ViewOrders", () => {
             createdBy: "Dr. Smith",
             createdAt: "2024-01-01T10:00:00.000Z",
             updatedAt: "2024-01-20T11:00:00.000Z",
-            orderStatus: "REQUESTED",
+            orderStatus: "RECEIVED",
             statusUpdatedBy: "Status updated by Nurse A",
             owner: "Dr. David",
             ownerUpdatedBy: "Owner updated by Admin",
