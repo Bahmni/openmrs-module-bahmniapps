@@ -98,7 +98,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                         formGroup: sectionDashboardConfig && sectionDashboardConfig.formGroup || [],
                         numberOfVisits: sectionDashboardConfig && sectionDashboardConfig.maximumNoOfVisits || undefined,
                         showEditForActiveEncounter: sectionDashboardConfig && sectionDashboardConfig.showEditForActiveEncounter || true,
-                        showPrintOption: sectionDashboardConfig && sectionDashboardConfig.printing ? true : false
+                        showPrintOption: sectionDashboardConfig && sectionDashboardConfig.printing ? true : false,
+                        sectionTitle: section.translationKey || null
                     }));
                 }
                 return sectionFormDataCache.get(section);

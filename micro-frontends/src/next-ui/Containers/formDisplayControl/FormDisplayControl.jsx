@@ -43,7 +43,7 @@ export function FormDisplayControl(props) {
   );
   const formsHeading = (
     <FormattedMessage
-      id={"DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY"}
+      id={props?.hostData?.sectionTitle || "DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY"}
       defaultMessage={"Observation Forms"}
     />
   );
