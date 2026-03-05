@@ -16,38 +16,42 @@ import {
 } from "../../constants";
 
 const transformOrders = (entries = []) => {
-    return entries.map(entry => {
+    const orders = []
+    entries.forEach(entry => {
         const resource = entry.resource;
         const extensions = resource.extension || [];
         let updatedAt, orderStatus, owner, notes, updatedBy;
-        extensions.forEach(extension => {
-            if (extension.url) {
-                if (extension.url.endsWith(FHIR_EXT_TASK_CREATED_ON)) {
-                    updatedAt = new Date(extension.valueDateTime).getTime()
-                } else if (extension.url.endsWith(FHIR_EXT_ORDER_STATUS)) {
-                    orderStatus = extension.valueString
-                } else if (extension.url.endsWith(FHIR_EXT_TASK_OWNER)) {
-                    owner = extension.valueReference.display
-                } else if (extension.url.endsWith(FHIR_EXT_TASK_NOTE)) {
-                    notes = extension.valueAnnotation.text
-                } else if (extension.url.endsWith(FHIR_EXT_CREATED_BY)) {
-                    updatedBy = extension.valueReference.display
+        if(resource.status === "active") {
+            extensions.forEach(extension => {
+                if (extension.url) {
+                    if (extension.url.endsWith(FHIR_EXT_TASK_CREATED_ON)) {
+                        updatedAt = new Date(extension.valueDateTime).getTime()
+                    } else if (extension.url.endsWith(FHIR_EXT_ORDER_STATUS)) {
+                        orderStatus = extension.valueString
+                    } else if (extension.url.endsWith(FHIR_EXT_TASK_OWNER)) {
+                        owner = extension.valueReference.display
+                    } else if (extension.url.endsWith(FHIR_EXT_TASK_NOTE)) {
+                        notes = extension.valueAnnotation.text
+                    } else if (extension.url.endsWith(FHIR_EXT_CREATED_BY)) {
+                        updatedBy = extension.valueReference.display
+                    }
                 }
-            }
-        })
-        return {
-            name: resource.code?.text || "",
-            createdBy: resource.requester?.display || "",
-            createdAt: resource.authoredOn || "",
-            updatedAt: updatedAt,
-            orderStatus: orderStatus,
-            statusUpdatedBy: orderStatus ? updatedBy : undefined,
-            owner: owner,
-            ownerUpdatedBy: owner ? updatedBy : undefined,
-            notes: notes,
-            notesUpdatedBy: notes ? updatedBy : undefined,
-        };
+            })
+            orders.push({
+                name: resource.code?.text || "",
+                createdBy: resource.requester?.display || "",
+                createdAt: resource.authoredOn || "",
+                updatedAt: updatedAt,
+                orderStatus: orderStatus,
+                statusUpdatedBy: orderStatus ? updatedBy : undefined,
+                owner: owner,
+                ownerUpdatedBy: owner ? updatedBy : undefined,
+                notes: notes,
+                notesUpdatedBy: notes ? updatedBy : undefined,
+            });
+        }
     });
+    return orders;
 };
 
 export function OrdersDisplayControl({hostData}) {
