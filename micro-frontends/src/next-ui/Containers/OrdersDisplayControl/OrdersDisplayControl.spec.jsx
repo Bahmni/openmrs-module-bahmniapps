@@ -49,6 +49,7 @@ describe("OrdersDisplayControl", () => {
             code: { text: "Lab Order 1" },
             requester: { display: "Dr. Smith" },
             authoredOn: "2024-01-15T10:00:00.000Z",
+            status: "active",
             extension: [
               {
                 url: "http://example.com/fhir/StructureDefinition/task-created-on",
@@ -78,6 +79,7 @@ describe("OrdersDisplayControl", () => {
             code: { text: "Lab Order 2" },
             requester: { display: "Dr. Johnson" },
             authoredOn: "2024-01-10T10:00:00.000Z",
+            status: "active",
             extension: [
               {
                 url: "http://example.com/fhir/StructureDefinition/task-created-on",
@@ -103,6 +105,7 @@ describe("OrdersDisplayControl", () => {
             code: { text: "Lab Order 3" },
             requester: { display: "Dr. Brown" },
             authoredOn: "2024-01-05T10:00:00.000Z",
+            status: "active",
             extension: [
               {
                 url: "http://example.com/fhir/StructureDefinition/task-created-on",
@@ -219,6 +222,7 @@ describe("OrdersDisplayControl", () => {
               code: { text: "Simple Order" },
               requester: { display: "Dr. Test" },
               authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
               extension: [
                 {
                   url: "http://example.com/fhir/StructureDefinition/task-status",
@@ -248,6 +252,7 @@ describe("OrdersDisplayControl", () => {
             resource: {
               code: { text: "Order Without Extensions" },
               requester: { display: "Dr. Test" },
+              status: "active",
               authoredOn: "2024-01-15T10:00:00.000Z",
             },
           },
@@ -273,6 +278,7 @@ describe("OrdersDisplayControl", () => {
               code: { text: "Order With Invalid URLs" },
               requester: { display: "Dr. Test" },
               authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
               extension: [
                 {
                   url: "http://example.com/unknown-extension",
@@ -303,6 +309,7 @@ describe("OrdersDisplayControl", () => {
               code: {},
               requester: { display: "Dr. Test" },
               authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
               extension: [],
             },
           },
@@ -326,6 +333,7 @@ describe("OrdersDisplayControl", () => {
           {
             resource: {
               code: { text: "Order Without Requester" },
+              status: "active",
               authoredOn: "2024-01-15T10:00:00.000Z",
               extension: [],
             },
@@ -352,6 +360,7 @@ describe("OrdersDisplayControl", () => {
               code: { text: "Order A" },
               requester: { display: "Dr. A" },
               authoredOn: "2024-01-20T10:00:00.000Z",
+              status: "active",
               extension: [],
             },
           },
@@ -359,6 +368,7 @@ describe("OrdersDisplayControl", () => {
             resource: {
               code: { text: "Order B" },
               requester: { display: "Dr. B" },
+              status: "active",
               authoredOn: "2024-01-10T10:00:00.000Z",
               extension: [],
             },
@@ -367,6 +377,7 @@ describe("OrdersDisplayControl", () => {
             resource: {
               code: { text: "Order C" },
               requester: { display: "Dr. C" },
+              status: "active",
               authoredOn: "2024-01-30T10:00:00.000Z",
               extension: [],
             },
