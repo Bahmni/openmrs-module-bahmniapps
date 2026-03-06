@@ -425,4 +425,355 @@ describe("OrdersDisplayControl", () => {
       expect(screen.getByTestId("order-0")).toBeTruthy();
     });
   });
+
+  it("should filter out replacement orders (orders with replaces field)", async () => {
+    const responseWithReplacementOrder = {
+      data: {
+        entry: [
+          {
+            resource: {
+              id: "order-1",
+              code: { text: "Active Order" },
+              requester: { display: "Dr. Smith" },
+              authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "order-2",
+              code: { text: "Replacement Order" },
+              requester: { display: "Dr. Smith" },
+              authoredOn: "2024-01-16T10:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: "ServiceRequest/order-1",
+                },
+              ],
+              extension: [],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithReplacementOrder);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Replacement Order")).toBeNull();
+      expect(screen.queryByText("Active Order")).toBeNull();
+    });
+  });
+
+  it("should filter out cancelled orders (orders referenced in replaces field)", async () => {
+    const responseWithCancelledOrder = {
+      data: {
+        entry: [
+          {
+            resource: {
+              id: "cancelled-order-123",
+              code: { text: "Cancelled Order" },
+              requester: { display: "Dr. Johnson" },
+              authoredOn: "2024-01-10T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "replacement-order-456",
+              code: { text: "Replacement Order" },
+              requester: { display: "Dr. Johnson" },
+              authoredOn: "2024-01-12T10:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: "ServiceRequest/cancelled-order-123",
+                },
+              ],
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "normal-order-789",
+              code: { text: "Normal Order" },
+              requester: { display: "Dr. Brown" },
+              authoredOn: "2024-01-13T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithCancelledOrder);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Cancelled Order")).toBeNull();
+      expect(screen.queryByText("Replacement Order")).toBeNull();
+      expect(screen.getByText("Normal Order")).toBeTruthy();
+    });
+  });
+
+  it("should show orders with empty replaces array", async () => {
+    const responseWithEmptyReplaces = {
+      data: {
+        entry: [
+          {
+            resource: {
+              id: "order-with-empty-replaces",
+              code: { text: "Order With Empty Replaces" },
+              requester: { display: "Dr. Test" },
+              authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
+              replaces: [],
+              extension: [],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithEmptyReplaces);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Order With Empty Replaces")).toBeTruthy();
+    });
+  });
+
+  it("should handle malformed reference strings without crashing", async () => {
+    const responseWithMalformedReference = {
+      data: {
+        entry: [
+          {
+            resource: {
+              id: "order-1",
+              code: { text: "Active Order" },
+              requester: { display: "Dr. Smith" },
+              authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "order-2",
+              code: { text: "Order With Malformed Reference" },
+              requester: { display: "Dr. Smith" },
+              authoredOn: "2024-01-16T10:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: "InvalidFormat",
+                },
+              ],
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "order-3",
+              code: { text: "Order With Null Reference" },
+              requester: { display: "Dr. Jones" },
+              authoredOn: "2024-01-17T10:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: null,
+                },
+              ],
+              extension: [],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithMalformedReference);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Active Order")).toBeTruthy();
+      expect(screen.queryByText("Order With Malformed Reference")).toBeNull();
+      expect(screen.queryByText("Order With Null Reference")).toBeNull();
+    });
+  });
+
+  it("should handle complex replacement chains correctly", async () => {
+    const responseWithReplacementChain = {
+      data: {
+        entry: [
+          {
+            resource: {
+              id: "original-order",
+              code: { text: "Original Order" },
+              requester: { display: "Dr. A" },
+              authoredOn: "2024-01-10T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "first-replacement",
+              code: { text: "First Replacement" },
+              requester: { display: "Dr. B" },
+              authoredOn: "2024-01-11T10:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: "ServiceRequest/original-order",
+                },
+              ],
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "second-replacement",
+              code: { text: "Second Replacement" },
+              requester: { display: "Dr. C" },
+              authoredOn: "2024-01-12T10:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: "ServiceRequest/first-replacement",
+                },
+              ],
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "independent-order",
+              code: { text: "Independent Order" },
+              requester: { display: "Dr. D" },
+              authoredOn: "2024-01-13T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithReplacementChain);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Original Order")).toBeNull();
+      expect(screen.queryByText("First Replacement")).toBeNull();
+      expect(screen.queryByText("Second Replacement")).toBeNull();
+      expect(screen.getByText("Independent Order")).toBeTruthy();
+    });
+  });
+
+  it("should handle multiple orders replacing the same order", async () => {
+    const responseWithMultipleReplacements = {
+      data: {
+        entry: [
+          {
+            resource: {
+              id: "original-order",
+              code: { text: "Original Order" },
+              requester: { display: "Dr. A" },
+              authoredOn: "2024-01-10T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "replacement-1",
+              code: { text: "Replacement 1" },
+              requester: { display: "Dr. B" },
+              authoredOn: "2024-01-11T10:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: "ServiceRequest/original-order",
+                },
+              ],
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "replacement-2",
+              code: { text: "Replacement 2" },
+              requester: { display: "Dr. C" },
+              authoredOn: "2024-01-11T11:00:00.000Z",
+              status: "active",
+              replaces: [
+                {
+                  reference: "ServiceRequest/original-order",
+                },
+              ],
+              extension: [],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithMultipleReplacements);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Original Order")).toBeNull();
+      expect(screen.queryByText("Replacement 1")).toBeNull();
+      expect(screen.queryByText("Replacement 2")).toBeNull();
+      expect(screen.getByText(/No Orders found/)).toBeTruthy();
+    });
+  });
+
+  it("should handle missing resource.id gracefully", async () => {
+    const responseWithMissingId = {
+      data: {
+        entry: [
+          {
+            resource: {
+              code: { text: "Order Without ID" },
+              requester: { display: "Dr. Test" },
+              authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+          {
+            resource: {
+              id: "order-with-id",
+              code: { text: "Order With ID" },
+              requester: { display: "Dr. Test" },
+              authoredOn: "2024-01-16T10:00:00.000Z",
+              status: "active",
+              extension: [],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithMissingId);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Order Without ID")).toBeTruthy();
+      expect(screen.getByText("Order With ID")).toBeTruthy();
+    });
+  });
 });

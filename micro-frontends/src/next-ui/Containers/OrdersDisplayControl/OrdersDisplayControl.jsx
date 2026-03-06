@@ -15,13 +15,37 @@ import {
     FHIR_EXT_ORDER_STATUS,
 } from "../../constants";
 
+const extractOrderIdFromReference = (reference) => {
+    if (!reference || typeof reference !== 'string') {
+        return null;
+    }
+    const parts = reference.split('/');
+    return parts.length === 2 ? parts[1] : null;
+};
+
 const transformOrders = (entries = []) => {
+    const cancelledOrderIds = new Set();
+    entries.forEach(entry => {
+        const replaces = entry.resource?.replaces;
+        if (Array.isArray(replaces) && replaces.length > 0) {
+            const cancelledId = extractOrderIdFromReference(replaces[0].reference);
+            if (cancelledId) {
+                cancelledOrderIds.add(cancelledId);
+            }
+        }
+    });
+
     const orders = []
     entries.forEach(entry => {
         const resource = entry.resource;
+        const orderId = resource.id;
         const extensions = resource.extension || [];
         let updatedAt, orderStatus, owner, notes, updatedBy;
-        if(resource.status === "active") {
+
+        const isReplacementOrder = Array.isArray(resource.replaces) && resource.replaces.length > 0;
+        const isCancelledOrder = cancelledOrderIds.has(orderId);
+
+        if(resource.status !== "unknown" && !isReplacementOrder && !isCancelledOrder) {
             extensions.forEach(extension => {
                 if (extension.url) {
                     if (extension.url.endsWith(FHIR_EXT_TASK_CREATED_ON)) {
