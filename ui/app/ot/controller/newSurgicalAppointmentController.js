@@ -19,30 +19,38 @@ angular.module('bahmni.ot')
                 $scope.otherSurgeons = _.cloneDeep($scope.surgeons);
                 $scope.currentLanguage = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
                 $scope.conceptFormatAttributeDropdownOptions = [];
-                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations();
+                $scope.conceptFormatAttributeDropdownOptionsMap = {};
+                var additionalTranslations = appService.getAppDescriptor().getConfigValue("additionalSurgeryAttributeTranslations");
+                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(additionalTranslations);
                 return $q.all([surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.attributeTypes = response[0].data.results;
                     $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
-                    surgicalAppointmentHelper.addConceptFormatAttributeTranslation($scope.defaultAttributeTranslations, $scope.conceptFormatAttributeName);
+                    $scope.conceptFormatAttributeNames = otUtils.getConceptFormatAttributeNames();
+                    var configuredRequired = appService.getAppDescriptor().getConfigValue("requiredSurgeryAttributes");
+                    $scope.requiredConceptAttributes = configuredRequired || [$scope.conceptFormatAttributeName];
                     var attributes = {};
                     var mapAttributes = new Bahmni.OT.SurgicalBlockMapper().mapAttributes(attributes, $scope.attributeTypes);
                     $scope.attributes = $scope.ngDialogData && $scope.ngDialogData.surgicalAppointmentAttributes || mapAttributes;
-                    if ($scope.conceptFormatAttributeName) {
+                    $scope.conceptFormatAttributeNames.forEach(function (attrName) {
                         conceptService.getAnswersForConceptName({
-                            answersConceptName: $scope.conceptFormatAttributeName
+                            answersConceptName: attrName
                         }).then(function (answers) {
-                            $scope.conceptFormatAttributeDropdownOptions = answers.map(function (answer) {
+                            if (!answers || answers.length === 0) {
+                                $scope.conceptFormatAttributeNames = $scope.conceptFormatAttributeNames.filter(function (n) { return n !== attrName; });
+                                return;
+                            }
+                            $scope.conceptFormatAttributeDropdownOptionsMap[attrName] = answers.map(function (answer) {
                                 var conceptName = answer.name.name || answer.name;
                                 return { label: conceptName, value: conceptName };
                             });
-                            var attr = $scope.attributes[$scope.conceptFormatAttributeName];
+                            var attr = $scope.attributes[attrName];
                             if (attr && attr.value != null) {
                                 attr.value = angular.isObject(attr.value)
                                 ? (attr.value.display || attr.value.name)
                                 : attr.value;
                             }
                         });
-                    }
+                    });
                     if ($scope.isEditMode()) {
                         programService.getEnrollmentInfoFor($scope.ngDialogData.patient.uuid, "custom:(uuid,dateEnrolled,dateCompleted,program:(uuid),patient:(uuid))").then(function (response) {
                             var groupedPrograms = programHelper.groupPrograms(response);

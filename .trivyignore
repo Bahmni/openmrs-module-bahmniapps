@@ -1,0 +1,114 @@
+# Ignoring the below vulnerabilities, to be reviewed later
+CVE-2020-15366
+CVE-2022-25844
+CVE-2022-25869
+CVE-2023-26116
+CVE-2023-26117
+CVE-2023-26118
+CVE-2021-3807
+CVE-2021-43138
+CVE-2022-38900
+CVE-2020-36048
+CVE-2022-41940
+CVE-2022-0155
+CVE-2022-0536
+CVE-2020-28469
+CVE-2022-33987
+CVE-2022-1537
+CVE-2022-0436
+CVE-2022-25881
+CVE-2022-46175
+CVE-2021-23807
+CVE-2021-23495
+CVE-2022-0437
+CVE-2022-37601
+CVE-2022-37599
+CVE-2022-37603
+CVE-2019-10744
+CVE-2018-16487
+CVE-2020-8203
+CVE-2021-23337
+CVE-2019-1010266
+CVE-2020-28500
+CVE-2020-8203
+CVE-2021-23337
+CVE-2020-28500
+CVE-2022-21704
+CVE-2016-10540
+CVE-2022-3517
+NSWG-ECO-118
+CVE-2016-10540
+CVE-2022-3517
+NSWG-ECO-118
+CVE-2022-3517
+CVE-2021-44906
+CVE-2020-7598
+CVE-2021-44906
+CVE-2022-24785
+CVE-2022-31129
+CVE-2021-3803
+CVE-2021-23343
+CVE-2022-24999
+CVE-2021-3795
+CVE-2022-0144
+GHSA-64g7-mvw6-v9qj
+CVE-2020-28481
+CVE-2022-2421
+CVE-2020-36049
+CVE-2021-33623
+CVE-2023-34104
+CVE-2023-26920
+CVE-2022-25883
+CVE-2020-7753
+CVE-2023-26115
+CVE-2023-45133
+CVE-2022-37602
+CVE-2023-42282 #Installed version 2.0.0 https://avd.aquasec.com/nvd/cve-2023-42282
+CVE-2024-21490 #angular: Inefficient Regular Expression Complexity https://avd.aquasec.com/nvd/cve-2024-21490
+CVE-2024-29180 #webpack-dev-middleware https://avd.aquasec.com/nvd/cve-2024-29180
+CVE-2022-37620 #html-minifier latest version 4.0.0 does not have a fix for the vulnerability kangax html-minifier REDoS vulnerability https://avd.aquasec.com/nvd/cve-2022-37620
+CVE-2024-29415 #node-ip: Incomplete fix for CVE-2023-42282 https://avd.aquasec.com/nvd/cve-2024-29415
+CVE-2024-38355 #Installed version 2.1.1 Fixed Version 2.5.1, 4.6.2 socket.io: Unhandled 'error' event https://avd.aquasec.com/nvd/cve-2024-38355
+CVE-2024-45590 #body-parser: Denial of Service Vulnerability in body-parser https://avd.aquasec.com/nvd/cve-2024-45590
+CVE-2024-45296 path-to-regexp: Backtracking regular expressions cause ReDoS https://avd.aquasec.com/nvd/cve-2024-45296
+CVE-2024-21538
+GHSA-vjh7-7g9h-fjfh  # elliptic vulnerability
+CVE-2024-52798       # path-to-regexp vulnerability
+CVE-2024-4068   #braces
+CVE-2023-46234  #browserify-sign
+CVE-2024-37890  #ws
+CVE-2025-25977 #canvg
+CVE-2025-29907 #jspdf
+CVE-2025-57810 #jspdf
+CVE-2022-21680 #marked
+CVE-2022-21681 #marked
+CVE-2025-68428 #jspdf: jsPDF Local File Inclusion/Path Traversal https://avd.aquasec.com/nvd/cve-2025-68428
+CVE-2026-22787 #html2pdf.js contains a cross-site scripting vulnerability https://avd.aquasec.com/nvd/cve-2026-22787
+CVE-2026-23745 # tar: https://avd.aquasec.com/nvd/2026/cve-2026-23745
+CVE-2026-23950 # node-tar: tar: node-tar: Arbitrary file overwrite https://avd.aquasec.com/nvd/2026/cve-2026-23950
+CVE-2026-24842 # node-tar: tar: node-tar: Arbitrary file creation via path traversal bypass in hardlink https://avd.aquasec.com/nvd/cve-2026-24842
+CVE-2025-9287        # cipher-base: Cipher-base hash manipulation
+CVE-2025-7783        # form-data: Unsafe random function in form-data
+CVE-2025-6545        # pbkdf2: pbkdf2 silently returns predictable key material
+CVE-2025-6547        # pbkdf2: pbkdf2 silently returns static keys
+CVE-2025-9288        # sha.js: Missing type checks leading to hash rewind
+CVE-2025-15284       # qs: qs: Denial of Service via improper input validation in array parsing... https://avd.aquasec.com/nvd/cve-2025-15284
+CVE-2026-23745 # tar: https://avd.aquasec.com/nvd/2026/cve-2026-23745/
+CVE-2025-15284       # qs: qs: Denial of Service via improper input validation in array parsing... https://avd.aquasec.com/nvd/cve-2025-15284
+CVE-2026-23950 # tar: node-tar: tar: node-tar: Arbitrary file overwrite via Unicode path collision race condition.  https://avd.aquasec.com/nvd/cve-2026-23950
+CVE-2026-24842 # node-tar: tar: node-tar: Arbitrary file creation via path traversal bypass in hardlink https://avd.aquasec.com/nvd/cve-2026-24842
+CVE-2026-26996 # minimatch: https://avd.aquasec.com/nvd/cve-2026-26996
+CVE-2026-26960 # tar: https://avd.aquasec.com/nvd/cve-2026-26960
+CVE-2026-27903 # minimatch: https://avd.aquasec.com/nvd/cve-2026-27903
+CVE-2026-27904 # minimatch: https://avd.aquasec.com/nvd/cve-2026-27904
+GHSA-5c6j-r48x-rmvq # serialize-javascript: https://github.com/advisories/GHSA-5c6j-r48x-rmvq
+CVE-2026-27212 # swiper: https://avd.aquasec.com/nvd/cve-2026-27212
+CVE-2026-24133 # jspdf: https://avd.aquasec.com/nvd/cve-2026-24133
+CVE-2026-24737 # jspdf: https://avd.aquasec.com/nvd/cve-2026-24737
+CVE-2026-25535 # jspdf: https://avd.aquasec.com/nvd/cve-2026-25535
+CVE-2026-25755 # jspdf: https://avd.aquasec.com/nvd/cve-2026-25755
+CVE-2026-25940 # jspdf: https://avd.aquasec.com/nvd/cve-2026-25940
+GHSA-qffp-2rhf-9h96
+CVE-2026-29786
+CVE-2026-29063
+CVE-2026-31802
