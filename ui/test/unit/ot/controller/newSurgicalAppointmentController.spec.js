@@ -23,8 +23,9 @@ describe("newSurgicalAppointmentController", function () {
     appService.getAppDescriptor.and.returnValue(getAppDescriptor);
     programHelper = jasmine.createSpyObj('programHelper', ['groupPrograms']);
     var conceptService = jasmine.createSpyObj('conceptService', ['getAnswersForConceptName']);
-    var otUtils = jasmine.createSpyObj('otUtils', ['getConceptFormatAttributeName']);
+    var otUtils = jasmine.createSpyObj('otUtils', ['getConceptFormatAttributeName', 'getConceptFormatAttributeNames']);
     otUtils.getConceptFormatAttributeName.and.returnValue("conceptFormatAttributeName");
+    otUtils.getConceptFormatAttributeNames.and.returnValue(["conceptFormatAttributeName"]);
     conceptService.getAnswersForConceptName.and.returnValue(specUtil.simplePromise([]));
     var ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
     _window = jasmine.createSpyObj('$window', ['open', 'location']);
@@ -133,12 +134,9 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.conceptFormatAttributeName).toBe("conceptFormatAttributeName");
     });
 
-    it("should add conceptFormatAttributeName to defaultAttributeTranslations", function () {
+    it("should initialize defaultAttributeTranslations from surgicalAppointmentHelper", function () {
         createController();
-        expect(surgicalAppointmentHelper.addConceptFormatAttributeTranslation).toHaveBeenCalledWith(
-            scope.defaultAttributeTranslations,
-            "conceptFormatAttributeName"
-        );
+        expect(surgicalAppointmentHelper.getDefaultAttributeTranslations).toHaveBeenCalled();
     });
 
     it("should fetch concept answers for conceptFormatAttributeName dropdown options", function () {
@@ -154,7 +152,7 @@ describe("newSurgicalAppointmentController", function () {
         expect(conceptService.getAnswersForConceptName).toHaveBeenCalledWith({
             answersConceptName: "conceptFormatAttributeName"
         });
-        expect(scope.conceptFormatAttributeDropdownOptions).toEqual([
+        expect(scope.conceptFormatAttributeDropdownOptionsMap["conceptFormatAttributeName"]).toEqual([
             { label: "Not Applicable", value: "Not Applicable" },
             { label: "Requested", value: "Requested" },
             { label: "Not Requested", value: "Not Requested" }
@@ -195,9 +193,9 @@ describe("newSurgicalAppointmentController", function () {
                 }
             }
         };
-        
+
         createController();
-        
+
         expect(scope.attributes.conceptFormatAttributeName.value).toBe("Not Applicable");
     });
 
