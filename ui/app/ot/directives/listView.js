@@ -10,7 +10,7 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .directive('listView', [function () {
+    .directive('listView', ['appService', function (appService) {
         return {
             restrict: 'E',
             controller: "listViewController",
@@ -21,6 +21,8 @@ angular.module('bahmni.ot')
                 weekEndDate: "=",
                 weekOrDay: "="
             },
-            templateUrl: "../ot/views/listView.html"
+            templateUrl: function () {
+                return appService.getAppDescriptor().getConfigValue("listViewTemplateUrl") || "../ot/views/listView.html";
+            }
         };
     }]);
