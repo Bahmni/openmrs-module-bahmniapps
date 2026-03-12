@@ -17,7 +17,8 @@ angular.module('bahmni.ot')
                     surgicalAppointments: []
                 };
                 $scope.configuredSurgeryAttributeNames = appService.getAppDescriptor().getConfigValue("surgeryAttributes");
-                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations();
+                var listViewTranslations = appService.getAppDescriptor().getConfigValue("listViewTranslations") || [];
+                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(listViewTranslations);
                 $scope.conceptFormatAttributeName = surgicalAppointmentHelper.getConceptFormatAttributeName ? surgicalAppointmentHelper.getConceptFormatAttributeName() : Bahmni.OT.Constants.conceptFormatAttributeName;
                 var providerNamesFromConfig = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                 return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater"), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
