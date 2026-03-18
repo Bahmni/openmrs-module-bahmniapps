@@ -55,7 +55,7 @@ const transformOrders = (entries = []) => {
                     } else if (extension.url.endsWith(FHIR_EXT_TASK_OWNER)) {
                         owner = extension.valueReference.display
                     } else if (extension.url.endsWith(FHIR_EXT_TASK_NOTE)) {
-                        notes = extension.valueAnnotation.text
+                        notes = extension.valueAnnotation.text ? extension.valueAnnotation.text.split('\n').join(' | ') : ""
                     } else if (extension.url.endsWith(FHIR_EXT_CREATED_BY)) {
                         updatedBy = extension.valueReference.display
                     }
