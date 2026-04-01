@@ -1,4 +1,5 @@
 <div ng-controller="PatientDashboardVisitsController" class="dashboard-visits-section">
+<ul show-if-privilege="{{::dashboardConfig.requiredPrivilege}}">
     <h2 class="section-title has-link"
         ng-dialog="dashboard/views/dashboardSections/allVisits.html"
         ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
@@ -7,4 +8,5 @@
 	    <i class="fa fa-external-link"></i>
     </h2>
     <visits-table params="dashboardConfig" patient-uuid="patientUuid"></visits-table>
+</ul>	
 </div>
