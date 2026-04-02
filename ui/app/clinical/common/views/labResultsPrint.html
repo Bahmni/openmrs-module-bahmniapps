@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="common/styles/labResultsPrint.css"/>
+
+<div class="print-wrapper lab-results-print">
+    <!-- Header -->
+    <div class="print-header" ng-if="printParams">
+        <div class="print-logo-plus-text">
+            <img class="print-logo" width="125px" ng-if="printParams.logo" ng-src="{{printParams.logo}}" alt="logo"/>
+            <h1>{{printParams.title}}</h1>
+            <div class="print-right"></div>
+        </div>
+    </div>
+    <h3>LABORATORY TESTS</h3>
+    <p class="location-address"><strong>{{printParams.locationAddress}}</strong></p>
+    <!-- Patient Information Table -->
+    <table class="patient-table">
+        <tr>
+            <td colspan="2"><strong>Name of the Patient:</strong> {{patient.name}} ({{patient.identifier}})</td>
+            <td><strong>Date:</strong> {{accessionDateTime | bahmniDate}}</td>
+        </tr>
+        <tr>
+            <td><strong>Age:</strong> <span ng-bind-html="patient.birthdate | dateToAge:accessionDateTime"></span></td>
+            <td><strong>Sex:</strong> {{patient.genderText.substring(6, patient.genderText.length - 7)}}</td>
+            <td><strong>Weight:</strong> {{patient.weight}}{{patient.weight ? ' Kg' : ''}}</td>
+        </tr>
+        <tr>
+            <td><strong>Tel no:</strong> {{patient.mobilePhone.value}}</td>
+            <td colspan="2"><strong>Allergies:</strong> {{patient.allergies || 'No allergies recorded for this patient'}}</td>
+        </tr>
+    </table>
+
+    <!-- Lab Tests Section -->
+    <div class="section-title">{{ 'LAB_TESTS_LABEL' | translate }}</div>
+
+    <table class="lab-results-table">
+        <tr>
+            <th>{{ 'TEST_NAME_LABEL' | translate }}</th>
+            <th>{{ 'NOTES_LABEL' | translate }}</th>
+        </tr>
+        <tr ng-repeat="test in labOrderResults">
+            <td ng-class="{'sub-test-name': test.isSubTest}">{{test.name}}</td>
+            <td>{{test.notes}}</td>
+        </tr>
+    </table>
+
+    <!-- Doctor Section -->
+    <div ng-if="printParams.orderer">
+        <div class="section-title">Doctor:</div>
+        <table>
+            <tr ng-repeat="attr in printParams.orderer.attributes">
+                <td class="no-border"><strong>{{attr.attributeType.display}}:</strong> {{attr.value}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

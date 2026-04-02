@@ -10,6 +10,13 @@
                     <span class="hidden-print">{{ 'ACCESSION_AT_LABEL'|translate }} </span>
                     <span class="visible-print">{{ 'SAMPLE_AT_LABEL'|translate }} </span>
                     <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | bahmniDateTime"></span>
+                    <div class="share-prescription-icon" ng-if="::!params.visitUuids" bm-pop-over autoclose="true" title="{{'CLINICAL_SHARE_LAB_RESULTS_KEY'|translate}}">
+                        <i class="fa fa-share-alt" bm-pop-over-trigger>
+                        </i>
+                        <div class="share-popup" bm-pop-over-target>
+                            <i class="fa fa-download" ng-click="downloadLabResults(labOrderResults, getAccessionDetailsFrom(labOrderResults).accessionDateTime, getAccessionDetailsFrom(labOrderResults).accessionUuid)"></i>
+                        </div>
+                    </div>
                     <button class="toggle-btn fr" ng-if="showAccessionNotes(labOrderResults)" ng-click="toggle(labOrderResults)">
                         <i class="fa fa-envelope" ng-hide="!labOrders.show"></i>
                         <i class="fa fa-envelope-alt" ng-show="!labOrders.show"></i>

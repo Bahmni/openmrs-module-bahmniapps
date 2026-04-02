@@ -41,7 +41,16 @@ angular.module('bahmni.common.orders')
             });
         };
 
+        var getOrderByUuid = function (orderUuid, representation) {
+            var url = Bahmni.Common.Constants.orderUrl.replace('{{orderUuid}}', orderUuid);
+            return $http.get(url, {
+                params: {v: representation},
+                withCredentials: true
+            });
+        };
+
         return {
-            getOrders: getOrders
+            getOrders: getOrders,
+            getOrderByUuid: getOrderByUuid
         };
     }]);

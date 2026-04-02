@@ -145,7 +145,34 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
+        var getReferredOutPrintableLabOrders = function (labOrderResults) {
+            var printableTests = [];
+            labOrderResults.forEach(function (test) {
+                if (test.isPanel) {
+                    var referredOutTests = test.tests.filter(function (t) { return t.referredOut; });
+                    if (referredOutTests.length > 0) {
+                        printableTests.push({
+                            name: test.orderName + ' (' + referredOutTests.length + ')',
+                            notes: referredOutTests[0].commentToFulfiller || '',
+                            isSubTest: false
+                        });
+                        referredOutTests.forEach(function (subTest) {
+                            printableTests.push({ name: subTest.testName, notes: '', isSubTest: true });
+                        });
+                    }
+                } else if (!test.panelName && test.referredOut) {
+                    printableTests.push({
+                        name: test.orderName || test.testName,
+                        notes: test.commentToFulfiller || '',
+                        isSubTest: false
+                    });
+                }
+            });
+            return printableTests;
+        };
+
         return {
-            getAllForPatient: getAllForPatient
+            getAllForPatient: getAllForPatient,
+            getReferredOutPrintableLabOrders: getReferredOutPrintableLabOrders
         };
     }]);
