@@ -416,5 +416,6 @@
     "FULL_NAME_LABEL": "Full Name",
     "PROVIDER_TITLE_LABEL": "Title",
     "MEDICAL_LICENCE_NUMBER_LABEL": "Medical Licence Number",
-    "NO_ALLERGIES_MESSAGE": "No allergies recorded for this patient"
+    "NO_ALLERGIES_MESSAGE": "No allergies recorded for this patient",
+    "LABORATORY_TESTS_LABEL": "LABORATORY TESTS"
 }
