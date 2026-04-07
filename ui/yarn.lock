@@ -3606,12 +3606,12 @@ graceful-fs@^4.1.10, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
   integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
 
-grunt-cli@~1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/grunt-cli/-/grunt-cli-1.4.2.tgz#8a83dcc89ebd92d278ccd6014105011cffc71165"
-  integrity sha512-wsu6BZh7KCnfeaSkDrKIAvOlqGKxNRTZjc8xfZlvxCByQIqUfZ31kh5uHpPnhQ4NdVgvaWaVxa1LUbVU80nACw==
+grunt-cli@~1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/grunt-cli/-/grunt-cli-1.4.3.tgz#22c9f1a3d2780bf9b0d206e832e40f8f499175ff"
+  integrity sha512-9Dtx/AhVeB4LYzsViCjUQkd0Kw0McN2gYpdmGYKtE2a5Yt7v1Q+HYZVWhqXc/kGnxlMtqKDxSwotiGeFmkrCoQ==
   dependencies:
-    grunt-known-options "~1.1.1"
+    grunt-known-options "~2.0.0"
     interpret "~1.1.0"
     liftup "~3.0.1"
     nopt "~4.0.1"
@@ -3752,10 +3752,10 @@ grunt-karma@^2.0.0:
   dependencies:
     lodash "^3.10.1"
 
-grunt-known-options@~1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/grunt-known-options/-/grunt-known-options-1.1.1.tgz#6cc088107bd0219dc5d3e57d91923f469059804d"
-  integrity sha512-cHwsLqoighpu7TuYj5RonnEuxGVFnztcUqTqp5rXFGYL4OuPFofwC4Ycg7n9fYwvK6F5WbYgeVOwph9Crs2fsQ==
+grunt-known-options@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/grunt-known-options/-/grunt-known-options-2.0.0.tgz#cac641e897f9a0a680b8c9839803d35f3325103c"
+  integrity sha512-GD7cTz0I4SAede1/+pAbmJRG44zFLPipVtdL9o3vqx9IEyb7b4/Y3s7r6ofI3CchR5GvYJ+8buCSioDv5dQLiA==
 
 grunt-legacy-log-utils@~2.1.0:
   version "2.1.0"
@@ -3819,18 +3819,18 @@ grunt-usemin@~3.1.1:
     lodash "^3.6.0"
     path-exists "^1.0.0"
 
-grunt@^1.0.3:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/grunt/-/grunt-1.4.0.tgz#235219cf922cf5f249809d60722442bb8247eff7"
-  integrity sha512-yRFc0GVCDu9yxqOFzpuXQ2pEdgtLDnFv5Qz54jfIcNnpJ8Z7B7P7kPkT4VMuRvm+N+QOsI8C4v/Q0DSaoj3LgQ==
+grunt@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/grunt/-/grunt-1.5.3.tgz#3214101d11257b7e83cf2b38ea173b824deab76a"
+  integrity sha512-mKwmo4X2d8/4c/BmcOETHek675uOqw0RuA/zy12jaspWqvTp4+ZeQF1W+OTpcbncnaBsfbQJ6l0l4j+Sn/GmaQ==
   dependencies:
     dateformat "~3.0.3"
     eventemitter2 "~0.4.13"
     exit "~0.1.2"
     findup-sync "~0.3.0"
     glob "~7.1.6"
-    grunt-cli "~1.4.2"
-    grunt-known-options "~1.1.1"
+    grunt-cli "~1.4.3"
+    grunt-known-options "~2.0.0"
     grunt-legacy-log "~3.0.0"
     grunt-legacy-util "~2.0.1"
     iconv-lite "~0.4.13"
