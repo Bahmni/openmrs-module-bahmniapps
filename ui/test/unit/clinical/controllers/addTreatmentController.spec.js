@@ -31,7 +31,8 @@ describe("AddTreatmentController", function () {
                     "calculateDoseOnlyOnCurrentVisitValues": false,
                     "showRulesInMedication": true,
                     "dosageRuleUnitsMap": {
-                        "mg/kg": ["mg", "ml"]
+                        "mg/kg": ["mg", "ml"],
+                        "mcg/kg": ["mcg"]
                     }
                 }
             }
@@ -2231,6 +2232,29 @@ describe("AddTreatmentController", function () {
             var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
             drugOrder1.dosingRule = null;
             expect(scope.isRuleMode(drugOrder1)).toBeFalsy();
+        });
+    });
+
+    describe('ruleUnitsMap initialization', function () {
+        it('should initialize ruleUnitsMap from medicationConfig dosageRuleUnitsMap', function () {
+            expect(scope.ruleUnitsMap).toBeDefined();
+            expect(scope.ruleUnitsMap['mcg/kg']).toEqual(['mcg']);
+            expect(scope.ruleUnitsMap['mg/kg']).toEqual(['mg', 'ml']);
+        });
+    });
+
+    describe('auto-populate dose unit on dosing rule selection', function () {
+        it('should auto-populate doseUnits to mcg when mcg/kg rule is selected', function () {
+            scope.treatment.dosingRule = 'mcg/kg';
+            scope.$digest();
+            expect(scope.treatment.uniformDosingType.doseUnits).toEqual('mcg');
+        });
+
+        it('should not auto-populate doseUnits when rule has multiple units', function () {
+            var previousDoseUnit = scope.treatment.uniformDosingType.doseUnits;
+            scope.treatment.dosingRule = 'mg/kg';
+            scope.$digest();
+            expect(scope.treatment.uniformDosingType.doseUnits).toEqual(previousDoseUnit);
         });
     });
 
