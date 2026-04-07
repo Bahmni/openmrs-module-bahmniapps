@@ -10,7 +10,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService, appService;
     stateParams = {conceptSetGroupName: "concept set group name"};
     var extension = {"extension": {
         extensionParams: {}
@@ -60,7 +60,11 @@ describe('ConceptSetPageController', function () {
         formService = jasmine.createSpyObj("formService", ["getFormList"]);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
-        translate = jasmine.createSpyObj('$translate',['instant']);
+        translate = jasmine.createSpyObj('$translate', ['instant']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appDescriptor.getConfigValue.and.returnValue(false);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
     };
 
     beforeEach(initController);
@@ -78,7 +82,8 @@ describe('ConceptSetPageController', function () {
             configurations: configurations,
             $state: state,
             spinner: spinner,
-            $translate : translate
+            $translate: translate,
+            appService: appService
         });
     };
 
@@ -487,6 +492,77 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[1].isOpen).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[1].isLoaded).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[1].klass).toBe("active");
-        })
+        });
+    });
+
+    describe('Feature Toggle - enableFormDraftFeature', function () {
+        it("should set enableFormDraftFeature to true when config value is true", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+            var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appDescriptor.getConfigValue.and.returnValue(true);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            rootScope.currentUser = {
+                isFavouriteObsTemplate: function () {
+                    return false;
+                }
+            };
+
+            createController();
+
+            expect(scope.enableFormDraftFeature).toBe(true);
+        });
+
+        it("should set enableFormDraftFeature to false when config value is false", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+            var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appDescriptor.getConfigValue.and.returnValue(false);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            rootScope.currentUser = {
+                isFavouriteObsTemplate: function () {
+                    return false;
+                }
+            };
+
+            createController();
+
+            expect(scope.enableFormDraftFeature).toBe(false);
+        });
+
+        it("should call appService.getAppDescriptor().getConfigValue() with enableFormDraftFeature", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+            rootScope.currentUser = {
+                isFavouriteObsTemplate: function () {
+                    return false;
+                }
+            };
+
+            createController();
+
+            expect(appService.getAppDescriptor).toHaveBeenCalled();
+        });
     })
 });

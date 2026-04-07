@@ -12,13 +12,14 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService',
+        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout', '$filter', 'appService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-                  contextChangeHandler, $q, $translate, formService) {
+                  contextChangeHandler, $q, $translate, formService, $timeout, $filter, appService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
+            $scope.enableFormDraftFeature = appService.getAppDescriptor().getConfigValue('enableFormDraftFeature');
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
             var configs = clinicalAppConfigService.getAllConceptsConfig();
             var visitType = configurations.encounterConfig().getVisitTypeByUuid($scope.consultation.visitTypeUuid);
@@ -282,6 +283,51 @@ angular.module('bahmni.clinical')
                 return result;
             };
 
-            // Form Code :: End
+            // Update below when API integrations are done
+            var saveAsDraftSuccess = true;
+
+            var getDraftTimestamp = function () {
+                var now = new Date();
+                return {
+                    date: $filter('date')(now, 'dd MMM yyyy'),
+                    time: $filter('date')(now, 'hh:mm a')
+                };
+            };
+
+            $scope.formDraft = {
+                draftDate: getDraftTimestamp().date,
+                draftTime: getDraftTimestamp().time,
+                showSpinner: false,
+                statusMessage: null,
+                statusParams: {},
+                statusError: false
+            };
+
+            $scope.saveAsDraft = function () {
+                $scope.formDraft.showSpinner = true;
+                $scope.formDraft.statusMessage = null;
+                $scope.formDraft.statusError = false;
+
+                $timeout(function () {
+                    if (saveAsDraftSuccess) {
+                        var now = new Date();
+                        var draftDate = $filter('date')(now, 'dd MMM yyyy');
+                        var draftTime = $filter('date')(now, 'hh:mm a');
+                        $scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
+                        $scope.formDraft.statusParams = {draftDate: draftDate, draftTime: draftTime};
+                        $scope.formDraft.draftDate = draftDate;
+                        $scope.formDraft.draftTime = draftTime;
+                        // Broadcast event to update parent scope's draft date and time - update this during API integration
+                        $rootScope.$broadcast('draft:saved', {draftDate: draftDate, draftTime: draftTime});
+                    } else {
+                        $scope.formDraft.statusMessage = 'CHANGES_NOT_SAVED_KEY';
+                        $scope.formDraft.statusError = true;
+                    }
+
+                    $scope.formDraft.showSpinner = false;
+                    saveAsDraftSuccess = !saveAsDraftSuccess;
+                }, 2000);
+            };
+
             init();
         }]);
