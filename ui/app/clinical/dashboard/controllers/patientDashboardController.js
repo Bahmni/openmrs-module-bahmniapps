@@ -14,6 +14,7 @@ angular.module('bahmni.clinical')
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
             $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
+            $scope.enableFormDraftFeature = appService.getAppDescriptor().getConfigValue('enableFormDraftFeature');
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -22,6 +23,20 @@ angular.module('bahmni.clinical')
             $scope.visitSummary = visitSummary;
             $scope.enrollment = $stateParams.enrollment;
             $scope.isDashboardPrinting = false;
+
+            // Draft timestamp initialization - can be removed after API integration
+            var getDraftTimestamp = function () {
+                var now = new Date();
+                return {
+                    date: $filter('date')(now, 'dd MMM yyyy'),
+                    time: $filter('date')(now, 'hh:mm a')
+                };
+            };
+            var draftTimestampObj = getDraftTimestamp();
+            $scope.formDraft = {
+                draftDate: draftTimestampObj.date,
+                draftTime: draftTimestampObj.time
+            };
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
             $state.discardChanges = false;
 
@@ -50,6 +65,14 @@ angular.module('bahmni.clinical')
                 $scope.init(dashboard);
             });
 
+            // Listen for draft saved event from ConceptSetPageController - change logic to use GET call once it is developed
+            var cleanUpListenerDraftSaved = $scope.$on("draft:saved", function (event, draftTimestamp) {
+                if (draftTimestamp && typeof draftTimestamp === 'object') {
+                    $scope.formDraft.draftDate = draftTimestamp.draftDate;
+                    $scope.formDraft.draftTime = draftTimestamp.draftTime;
+                }
+            });
+
             var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function (event, tab) {
                 var printScope = $scope.$new();
                 printScope.isDashboardPrinting = true;
@@ -69,6 +92,7 @@ angular.module('bahmni.clinical')
 
             $scope.$on("$destroy", function () {
                 cleanUpListenerSwitchDashboard();
+                cleanUpListenerDraftSaved();
                 cleanUpListenerPrintDashboard();
             });
 

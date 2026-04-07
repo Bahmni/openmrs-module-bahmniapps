@@ -7,6 +7,178 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
+.draft-notification {
+    position: relative;
+    z-index: 999;
+    margin: 50px 0 -30px 0 !important;
+    padding: 12px 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    visibility: visible !important;
+    width: 100%;
+    top: auto !important;
+    left: auto !important;
+    border-top: 1px solid #A6C0F0;
+    border-right: 1px solid #A6C0F0;
+    border-bottom: 1px solid #A6C0F0;
+
+    @media screen and (max-width: $max-page-width) {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    &.bx--inline-notification {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        background-color: #f3f3f3;
+        border-left: 4px solid #0043CE;
+        border-radius: 0;
+        gap: 16px;
+        width: 100% !important;
+        min-width: auto !important;
+        max-width: 100% !important;
+    }
+
+    &.bx--inline-notification--info {
+        background-color: #EDF5FF;
+        border-left-color: #0043CE;
+
+        .bx--notification__icon {
+            color: #fff;
+            flex-shrink: 0;
+            margin-top: 0;
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            border-radius: 50%;
+            background-color: #0043CE;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 1;
+        }
+
+        .bx--notification__title {
+            color: #161616;
+        }
+
+        .bx--notification__subtitle {
+            color: #161616;
+        }
+    }
+
+    .bx--notification__details {
+        display: flex;
+        gap: 12px;
+        flex: 1;
+        align-items: center;
+        margin-left: 16px;
+    }
+
+    .bx--notification__icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
+
+    .bx--notification__text-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    .bx--notification__title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    .bx--notification__subtitle {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .bx--notification__action-button {
+        display: flex;
+        gap: 0;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    .bx--notification__close-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: inherit;
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 2px;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .draft-notification-actions {
+        order: 3;
+        display: flex;
+        gap: 8px;
+        margin-top: 0;
+        padding-left: 0;
+    }
+}
+
+.consultation-page .draft-notification {
+    position: fixed !important;
+    top: 50px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 10000 !important;
+    max-width: 90% !important;
+    width: auto !important;
+    margin: 0 !important;
+}
+
+.draft-action-button {
+    background: transparent;
+    border-radius: 3px;                                                                                              
+    background-color: transparent;    
+    border: none;
+    padding: 6px 20px 7px;    
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.2s; 
+    font-size: 13px;
+    white-space: nowrap;
+    color: #0F62FE;
+
+    &:hover:not(:disabled) {
+        background-color: #E8E8E8;
+        color: #0043CE;
+    }
+}
+
 .template-control {
     width: 100%;
     height: 42px;
@@ -50,7 +222,7 @@
         @include clearfix();
         padding: 7px 0 5px;
 
-        button {
+        button:not(.save-draft-button) {
             @include button($bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%), $white);
             font-size: 14px;
             border-color: darken($bahmniSecondaryColor, 15%);
@@ -60,6 +232,83 @@
     .patient-details {
         color: $black;
         text-shadow: 1px 1px 1px rgba($lightGray, 0.9);
+    }
+}
+
+.template-control .template-control-panel-button .saving-draft-indicator {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    padding: 6px 10px;
+    color: #000000;
+    font-size: 14px;
+    white-space: nowrap;
+    gap: 8px;
+    vertical-align: middle;
+
+    .carbon-loader {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        .loader-circle {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #DDDDDD;
+            border-top: 2px solid #527a7a;
+            border-radius: 50%;
+            animation: carbon-spin 0.75s linear infinite;
+        }
+    }
+
+    .saving-text {
+        display: inline-block;
+        white-space: nowrap;
+    }
+}
+
+@keyframes carbon-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.template-control .template-control-panel-button .save-draft-button {
+    border-radius: 3px;
+    background-color: #DDDDDD;
+    border: #CCCCCC 1px solid;
+    padding: 6px 20px 7px;
+    display: inline-block;
+    line-height: 1.2em;
+    color: #000000;
+    cursor: pointer;
+    min-width: 0;
+    max-width: 300px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-right: 10px;
+    vertical-align: middle;
+
+    &:hover:not(:disabled) {
+        background-color: #CCCCCC;
+        color: #000000;
+    }
+}
+
+.template-control .template-control-panel-button .draft-status-text {
+    display: inline-block;
+    padding: 6px 10px;
+    color: #000000;
+    font-size: 14px;
+    margin-right: 10px;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    &.draft-status-error {
+        color: #ff0000;
     }
 }
 

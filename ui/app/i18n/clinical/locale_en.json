@@ -394,5 +394,13 @@
     "MEDICATION_PHARMACIST_REVIEW_HEADING": "New Medications Available to be Dispensed",
     "MEDICATION_PHARMACIST_REVIEW_SUBTEXT": "Please review the patient's weight, allergies, and prescriptions to continue with dispensing.",
     "ADDITIONAL_INSTRUCTIONS": "Additional Instructions",
-    "VARIABLE_DOSAGE_HEADER": "Variable Dosage"
+    "VARIABLE_DOSAGE_HEADER": "Variable Dosage",
+    "SAVE_AS_DRAFT": "Save as Draft",
+    "SAVING_AS_DRAFT": "Saving as Draft...",
+    "SAVED_AS_DRAFT_KEY": "Saved as draft on {{ draftDate }} at {{ draftTime }}",
+    "CHANGES_NOT_SAVED_KEY": "Changes are not saved due to a system error",
+    "RESUME": "Resume",
+    "DISCARD_DRAFT": "Discard Draft",
+    "FORMS_DRAFT_BANNER_TITLE": "Observation Forms are in Progress",
+    "FORMS_DRAFT_BANNER_SUBTITLE": "Your inputs were saved as a draft on {{ draftDate }} at {{ draftTime }}. Click Resume to continue where you left off or Discard Draft to start over."
 }

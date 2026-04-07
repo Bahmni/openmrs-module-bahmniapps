@@ -5,7 +5,15 @@
                 <div class="template-control-panel-right-wrap">
                     <div class="template-control-panel-right">
                         <div class="template-control-panel" >
-                            <div  class="template-control-panel-button">
+                            <div class="template-control-panel-button">
+                                <div class="saving-draft-indicator" ng-show="formDraft.showSpinner && enableFormDraftFeature">
+                                    <div class="carbon-loader">
+                                        <div class="loader-circle"></div>
+                                    </div>
+                                    <span class="saving-text">{{::'SAVING_AS_DRAFT' | translate }}</span>
+                                </div>
+                                <span class="draft-status-text" ng-show="formDraft.statusMessage && enableFormDraftFeature" ng-class="{'draft-status-error': formDraft.statusError}">{{ formDraft.statusMessage | translate: formDraft.statusParams }}</span>
+                                <button id="save-as-draft-button" class="save-draft-button" ng-click="saveAsDraft()" ng-show="enableFormDraftFeature">{{::'SAVE_AS_DRAFT'  | translate }}</button>
                                 <button id="template-control-panel-button" class="fr" bm-pop-over-trigger>{{::'ADD_NEW_OBSERVATION'  | translate }}</button>
                             </div>
                             <div class="primary-section-grid" bm-pop-over-target>
