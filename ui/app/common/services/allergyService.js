@@ -10,7 +10,7 @@
 'use strict';
 
 angular.module('bahmni.common.util')
-    .factory('allergyService', ['$http', 'appService', function ($http, appService) {
+    .factory('allergyService', ['$http', '$q', 'appService', function ($http, $q, appService) {
         const getAllergyForPatient = function (patientUuid) {
             const patientAllergyURL = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.patientAllergiesURL, {'patientUuid': patientUuid});
             return $http.get(patientAllergyURL, {
@@ -21,17 +21,29 @@ angular.module('bahmni.common.util')
         };
 
         var fetchAndProcessAllergies = function (patientUuid) {
-            return getAllergyForPatient(patientUuid).then(function (response) {
-                var allergies = response.data;
+            return $q.all([
+                getAllergyForPatient(patientUuid),
+                getNoKnownAllergyUuid()
+            ]).then(function (responses) {
+                var allergies = responses[0].data;
+                var noKnownAllergyUuid = responses[1];
                 var allergiesList = [];
-                if (response.status === 200 && allergies.entry && allergies.entry.length > 0) {
+                if (responses[0].status === 200 && allergies.entry && allergies.entry.length > 0) {
                     allergies.entry.forEach(function (allergy) {
                         if (allergy.resource.code.coding) {
-                            allergiesList.push(allergy.resource.code.coding[0].display);
+                            allergiesList.push({
+                                display: allergy.resource.code.coding[0].display,
+                                allergenCode: allergy.resource.code.coding[0].code
+                            });
                         }
                     });
                 }
-                return allergiesList.join(", ");
+                if (allergiesList.length > 1) {
+                    allergiesList = allergiesList.filter(function (allergy) {
+                        return allergy.allergenCode !== noKnownAllergyUuid;
+                    });
+                }
+                return allergiesList.map(function (allergy) { return allergy.display; }).join(", ");
             });
         };
         const getNoKnownAllergyUuid = function () {
