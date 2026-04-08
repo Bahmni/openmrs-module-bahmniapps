@@ -235,6 +235,22 @@
     }
 }
 
+.template-control .template-control-panel-button .draft-feedback-area {
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 180px;
+    text-align: right;
+    margin-right: 10px;
+
+    .saving-draft-indicator {
+        margin-right: 0;
+    }
+
+    .draft-status-text {
+        margin-right: 0;
+    }
+}
+
 .template-control .template-control-panel-button .saving-draft-indicator {
     display: inline-flex;
     align-items: center;

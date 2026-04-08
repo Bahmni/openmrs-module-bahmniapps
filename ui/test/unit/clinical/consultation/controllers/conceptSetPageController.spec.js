@@ -565,4 +565,76 @@ describe('ConceptSetPageController', function () {
             expect(appService.getAppDescriptor).toHaveBeenCalled();
         });
     })
+
+    describe('Save As Draft', function () {
+        var createControllerWithTimeoutAndFilter;
+
+        beforeEach(inject(function ($timeout) {
+            createControllerWithTimeoutAndFilter = function (timeoutMock, filterMock) {
+                var defaultFilterMock = function () {
+                    return function () {
+                        return 'mocked-time';
+                    };
+                };
+                clinicalAppConfigService.getAllConceptSetExtensions.and.returnValue(extension);
+                return controller("ConceptSetPageController", {
+                    $scope: scope,
+                    $rootScope: rootScope,
+                    $stateParams: stateParams,
+                    conceptSetService: conceptSetService,
+                    formService: formService,
+                    clinicalAppConfigService: clinicalAppConfigService,
+                    messagingService: messagingService,
+                    configurations: configurations,
+                    $state: state,
+                    spinner: spinner,
+                    $translate: translate,
+                    appService: appService,
+                    $timeout: timeoutMock || $timeout,
+                    $filter: filterMock || defaultFilterMock
+                });
+            };
+        }));
+
+        it('should set dirty true when form component observation changes', function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: 'abcd'}, uuid: 123}]
+                    }
+                ]
+            };
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+
+            var observationValue;
+            var timeoutMock = function (callback, delay) {
+                if (delay === 0) {
+                    callback();
+                }
+                return {$$timeoutId: delay};
+            };
+            timeoutMock.cancel = jasmine.createSpy('cancel');
+
+            createControllerWithTimeoutAndFilter(timeoutMock);
+
+            scope.consultation.selectedObsTemplate = [{
+                component: {
+                    getValue: function () {
+                        return {
+                            observations: [{value: observationValue}]
+                        };
+                    }
+                },
+                observations: []
+            }];
+
+            scope.$digest();
+            expect(scope.formDraft.isDirty).toBe(false);
+
+            observationValue = 'updated-value';
+            scope.$digest();
+            expect(scope.formDraft.isDirty).toBe(true);
+        });
+    });
 });
