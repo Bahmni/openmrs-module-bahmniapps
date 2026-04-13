@@ -4,11 +4,12 @@
             <bm-back-links></bm-back-links>
             <div class="fr">
                 <div class="retro-date-widget-wrapper"
-                     show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}"
-                     ng-if="getTitle()">
-                    <div class="retro-date-widget-header fr">
+                     show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}">
+                    <div class="retro-date-widget-header fr"
+                         ng-if="getTitle()">
                         <button ng-click="popUpHandler()">{{ getTitle() | translate }}</button>
                     </div>
+                    <mfe-ipd-draft-indicator show-if-has-privilege="app:clinical:observationTab"></mfe-ipd-draft-indicator>
                     <button class="btn-user-info">
                         <i class="fa fa-user-md fa-white small"></i>
                         <i class="fa fa-caret-down fa-white mini"></i>

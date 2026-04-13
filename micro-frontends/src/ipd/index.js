@@ -13,6 +13,7 @@
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
 import { CareViewDashboard } from "./CareViewDashboard";
+import { DraftIndicator } from "./DraftIndicator";
 
 angular.module("bahmni.mfe.ipd", [
   "ui.router",
@@ -41,3 +42,10 @@ angular
     template:
         '<mfe-ipd-care-view-dashboard host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>'
 });
+
+/** MFE component 3: DraftIndicator
+ *================================================= */
+
+angular
+.module("bahmni.mfe.ipd")
+.component("mfeIpdDraftIndicator", react2angular(DraftIndicator));

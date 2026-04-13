@@ -1,0 +1,23 @@
+mfe-ipd-draft-indicator {
+    display: flex;
+    align-items: center;
+    float: right;
+    margin: 0 10px;
+}
+
+.retro-date-widget-wrapper mfe-ipd-draft-indicator {
+    margin: 0 6px;
+}
+
+.hidden-mobile mfe-ipd-draft-indicator,
+.dashboard-header-right-wrapper mfe-ipd-draft-indicator {
+    display: block;
+    margin: 5px 6px 5px 0;
+}
+
+.ipd-draft-indicator {
+    &__overlay-wrapper {
+        position: fixed;
+        z-index: 10000;
+    }
+}

@@ -13,6 +13,11 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
 
+        <!-- All styles from the microfrontends available -->
+        <link rel="stylesheet" href="../micro-frontends-dist/shared.min.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/ipd.min.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/next-ui.min.css"/>
+
         <!-- build:css home.min.css -->
         <link rel="stylesheet" href="../styles/home.css"/>
         <!-- endbuild -->
@@ -44,6 +49,18 @@
         <script src="../components/moment/min/moment-with-locales.min.js"></script>
         <script src="../components/ngDialog/js/ngDialog.min.js"></script>
 
+        <script src="../components/react/react.production.min.js"></script>
+        <script src="../components/react-dom/react-dom.production.min.js"></script>
+
+        <!-- polyfill to add angular feature which will allow easy loading of mfe into angular component -->
+        <script src="../micro-frontends-dist/shared.min.js"></script>
+
+        <!-- load the ipd mfe as angular components -->
+        <script src="../micro-frontends-dist/ipd.min.js"></script>
+
+        <!-- load the next-ui mfe as angular components -->
+        <script src="../micro-frontends-dist/next-ui.min.js"></script>
+
         <!-- build:js home.min.js -->
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
         <script src="../common/util/init.js"></script>
@@ -65,6 +82,7 @@
 
         <script src="../common/config/init.js"></script>
         <script src="../common/config/services/configurations.js"></script>
+        <script src="../common/config/directives/showIfPrivilege.js"></script>
 
         <script src="../common/domain/init.js"></script>
         <script src="../common/domain/mappers/observationValueMapper.js"></script>
