@@ -740,6 +740,39 @@ describe("OrdersDisplayControl", () => {
     });
   });
 
+  it("should use shortName from FHIR_EXT_ORDER_SHORT_NAME extension instead of code.text when present", async () => {
+    const responseWithShortName = {
+      data: {
+        entry: [
+          {
+            resource: {
+              id: "order-with-short-name",
+              code: { text: "Full Long Order Name" },
+              requester: { display: "Dr. Test" },
+              authoredOn: "2024-01-15T10:00:00.000Z",
+              status: "active",
+              extension: [
+                {
+                  url: "http://example.com/fhir/StructureDefinition/order-short-name",
+                  valueString: "Short Name",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(responseWithShortName);
+
+    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Short Name")).toBeTruthy();
+      expect(screen.queryByText("Full Long Order Name")).toBeNull();
+    });
+  });
+
   it("should handle missing resource.id gracefully", async () => {
     const responseWithMissingId = {
       data: {

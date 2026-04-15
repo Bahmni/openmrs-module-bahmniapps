@@ -13,6 +13,7 @@ import {
     FHIR_EXT_TASK_NOTE,
     FHIR_EXT_TASK_OWNER,
     FHIR_EXT_ORDER_STATUS,
+    FHIR_EXT_ORDER_SHORT_NAME,
 } from "../../constants";
 
 const extractOrderIdFromReference = (reference) => {
@@ -40,7 +41,7 @@ const transformOrders = (entries = []) => {
         const resource = entry.resource;
         const orderId = resource.id;
         const extensions = resource.extension || [];
-        let updatedAt, orderStatus, owner, notes, updatedBy;
+        let updatedAt, orderStatus, owner, notes, updatedBy, shortName;
 
         const isReplacementOrder = Array.isArray(resource.replaces) && resource.replaces.length > 0;
         const isCancelledOrder = cancelledOrderIds.has(orderId);
@@ -58,11 +59,13 @@ const transformOrders = (entries = []) => {
                         notes = extension.valueAnnotation.text ? extension.valueAnnotation.text.split('\n').join(' | ') : ""
                     } else if (extension.url.endsWith(FHIR_EXT_CREATED_BY)) {
                         updatedBy = extension.valueReference.display
+                    } else if (extension.url.endsWith(FHIR_EXT_ORDER_SHORT_NAME)) {
+                        shortName = extension.valueString
                     }
                 }
             })
             orders.push({
-                name: resource.code?.text || "",
+                name: shortName || resource.code?.text || "",
                 createdBy: resource.requester?.display || "",
                 createdAt: resource.authoredOn || "",
                 updatedAt: updatedAt,
