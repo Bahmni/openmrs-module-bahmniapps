@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
-import { render, fireEvent, screen, act } from "@testing-library/react";
 import { AddAllergy } from "./AddAllergy";
+import { IntlProvider } from "react-intl";
 import {
   saveAllergiesAPICall
 } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
@@ -9,7 +9,6 @@ import {
 jest.mock('../../utils/PatientAllergiesControl/AllergyControlUtils', () => ({
   saveAllergiesAPICall: jest.fn(),
 }));
-import { IntlProvider } from "react-intl";
 
 const mockAllergensData = [
   { name: "Eggs", kind: "Food", uuid: "162301AAAAAA" },
