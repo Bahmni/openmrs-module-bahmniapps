@@ -12,10 +12,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout', '$filter', 'appService',
+        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout', '$filter', 'appService', 'formDraftService', 'formDirtyStateService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-                  contextChangeHandler, $q, $translate, formService, $timeout, $filter, appService) {
+              contextChangeHandler, $q, $translate, formService, $timeout, $filter, appService, formDraftService, formDirtyStateService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -41,7 +41,6 @@ angular.module('bahmni.clinical')
                             showOnlyTemplatesFilledInProgram();
                         }
 
-                        // Retrieve Form Details
                         if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
                             spinner.forPromise(formService.getFormList($scope.consultation.encounterUuid)
                                 .then(function (response) {
@@ -75,9 +74,19 @@ angular.module('bahmni.clinical')
             };
 
             var addTemplatesInSavedOrder = function () {
-                var templatePreference = JSON.parse(localStorage.getItem("templatePreference"));
+                var templatePreference = null;
+                try {
+                    var stored = localStorage.getItem("templatePreference");
+                    if (stored) {
+                        templatePreference = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    templatePreference = null;
+                }
+
+                var currentProviderUuid = $rootScope.currentProvider && $rootScope.currentProvider.uuid;
                 if (templatePreference && templatePreference.patientUuid === $scope.patient.uuid &&
-                    !_.isEmpty(templatePreference.templates) && $rootScope.currentProvider.uuid === templatePreference.providerUuid) {
+                    !_.isEmpty(templatePreference.templates) && currentProviderUuid === templatePreference.providerUuid) {
                     insertInSavedOrder(templatePreference);
                 } else {
                     insertInDefaultOrder();
@@ -233,7 +242,6 @@ angular.module('bahmni.clinical')
             };
 
             $scope.consultation.preSaveHandler.register("collectObservationsFromConceptSets", collectObservationsFromConceptSets);
-            // Form Code :: Start
             var getObservationForms = function (observationsForms) {
                 var forms = [];
                 var observations = $scope.consultation.observations || [];
@@ -284,137 +292,254 @@ angular.module('bahmni.clinical')
                 return result;
             };
 
-            // Update below when API integrations are done
-            var saveAsDraftSuccess = true;
-
-            var getDraftTimestamp = function () {
-                var now = new Date();
-                return {
-                    date: $filter('date')(now, 'dd MMM yyyy'),
-                    time: $filter('date')(now, 'hh:mm a')
-                };
-            };
-
             $scope.formDraft = {
-                draftDate: getDraftTimestamp().date,
-                draftTime: getDraftTimestamp().time,
+                draftDate: null,
+                draftTime: null,
                 showSpinner: false,
                 statusMessage: null,
                 statusParams: {},
                 statusError: false,
-                isDirty: false
+                isDirty: false,
+                hasDrafts: false
             };
 
-            var cleanState = null;
-            var dirtyTrackingInitialized = false;
-            var dirtyTrackingSyncPromise;
+            var suppressionWindowMs = 1500;
 
-            var updateDirtyState = function (currentState) {
-                $scope.formDraft.isDirty = currentState !== cleanState;
+            var dirtyTrackingState = {
+                cleanState: null,
+                initialized: false,
+                watchDeregister: null,
+                suppressTracking: false,
+                suppressionUnsuppressPromise: null,
+                form2ListenerState: null,
+                isSaving: false
             };
 
-            var getTemplateObservationsForDirtyTracking = function (template) {
-                if (template.component && angular.isFunction(template.component.getValue)) {
-                    var formValue = template.component.getValue() || {};
-                    if (formValue.observations) {
-                        return formValue.observations;
-                    }
-                }
-                return template.observations || [];
-            };
-
-            var collectObsValues = function (obs, values) {
-                if (!obs) {
-                    return;
-                }
-                if (obs.isMultiSelect) {
-                    var selectedKeys = _.keys(obs.selectedObs || {}).filter(function (k) {
-                        return k.indexOf('$') !== 0;
-                    });
-                    if (selectedKeys.length > 0) {
-                        values.push(obs.selectedObs);
-                    }
-                    return;
-                }
-                if (obs.groupMembers && obs.groupMembers.length > 0) {
-                    _.each(obs.groupMembers, function (member) {
-                        collectObsValues(member, values);
-                    });
-                    return;
-                }
-                if (obs.value !== null && obs.value !== undefined) {
-                    values.push(obs.value);
-                }
-            };
-
-            var getObsValues = function () {
-                var values = [];
-                if ($scope.consultation.selectedObsTemplate) {
-                    _.each($scope.consultation.selectedObsTemplate, function (template) {
-                        var observations = getTemplateObservationsForDirtyTracking(template);
-                        if (observations.length > 0) {
-                            _.each(observations, function (obs) {
-                                collectObsValues(obs, values);
-                            });
-                        }
-                    });
-                }
-                return angular.toJson(values);
-            };
-
-            var syncDirtyState = function () {
-                updateDirtyState(getObsValues());
-                dirtyTrackingSyncPromise = $timeout(syncDirtyState, 500);
+            var clearDraftStatus = function () {
+                $scope.formDraft.hasDrafts = false;
+                $scope.formDraft.draftDate = null;
+                $scope.formDraft.draftTime = null;
+                $scope.formDraft.statusMessage = null;
+                $scope.formDraft.statusParams = {};
+                $scope.formDraft.statusError = false;
             };
 
             var setupDirtyTracking = function () {
-                if (dirtyTrackingInitialized) {
+                if (dirtyTrackingState.initialized) {
                     return;
                 }
-                dirtyTrackingInitialized = true;
-                cleanState = getObsValues();
-                $scope.$watch(getObsValues, function (newVal, oldVal) {
-                    if (newVal !== oldVal) {
-                        updateDirtyState(newVal);
+                dirtyTrackingState.initialized = true;
+                dirtyTrackingState.cleanState = formDirtyStateService.getObsValues($scope.consultation.selectedObsTemplate);
+
+                dirtyTrackingState.watchDeregister = $scope.$watch(
+                    function () { return formDirtyStateService.getObsValues($scope.consultation.selectedObsTemplate); },
+                    function (newVal, oldVal) {
+                        if (newVal !== oldVal) {
+                            if (dirtyTrackingState.suppressTracking) {
+                                dirtyTrackingState.cleanState = newVal;
+                                $scope.formDraft.isDirty = false;
+                                return;
+                            }
+                            $scope.formDraft.isDirty = newVal !== dirtyTrackingState.cleanState;
+                        }
                     }
+                );
+
+                dirtyTrackingState.form2ListenerState = formDirtyStateService.registerForm2SyncListeners(function () {
+                    $scope.$evalAsync(function () {
+                        formDirtyStateService.syncForm2Observations($scope.consultation.observationForms);
+                    });
                 });
-                syncDirtyState();
+            };
+
+            var suppressDirtyTrackingDuringSaveRefresh = function () {
+                dirtyTrackingState.suppressTracking = true;
+                $scope.formDraft.isDirty = false;
+                dirtyTrackingState.cleanState = formDirtyStateService.getObsValues($scope.consultation.selectedObsTemplate);
+                if (dirtyTrackingState.suppressionUnsuppressPromise) {
+                    $timeout.cancel(dirtyTrackingState.suppressionUnsuppressPromise);
+                }
+                dirtyTrackingState.suppressionUnsuppressPromise = $timeout(function () {
+                    dirtyTrackingState.cleanState = formDirtyStateService.getObsValues($scope.consultation.selectedObsTemplate);
+                    $scope.formDraft.isDirty = false;
+                    dirtyTrackingState.suppressTracking = false;
+                    dirtyTrackingState.suppressionUnsuppressPromise = null;
+                }, suppressionWindowMs);
+            };
+
+            var resetDirtyTracking = function (restartTracking) {
+                if (dirtyTrackingState.watchDeregister) {
+                    dirtyTrackingState.watchDeregister();
+                    dirtyTrackingState.watchDeregister = null;
+                }
+                formDirtyStateService.unregisterForm2SyncListeners(dirtyTrackingState.form2ListenerState);
+                dirtyTrackingState.form2ListenerState = null;
+                dirtyTrackingState.initialized = false;
+                dirtyTrackingState.suppressTracking = false;
+                if (dirtyTrackingState.suppressionUnsuppressPromise) {
+                    $timeout.cancel(dirtyTrackingState.suppressionUnsuppressPromise);
+                    dirtyTrackingState.suppressionUnsuppressPromise = null;
+                }
+                $scope.formDraft.isDirty = false;
+                if (restartTracking !== false) {
+                    $timeout(setupDirtyTracking, 0);
+                }
             };
 
             var saveFormDraft = function () {
+                if (dirtyTrackingState.isSaving) {
+                    return;
+                }
+
+                dirtyTrackingState.isSaving = true;
                 $scope.formDraft.statusError = false;
                 $scope.formDraft.showSpinner = true;
 
-                $timeout(function () {
-                    if (saveAsDraftSuccess) {
-                        var now = new Date();
-                        var draftDate = $filter('date')(now, 'dd MMM yyyy');
-                        var draftTime = $filter('date')(now, 'hh:mm a');
-                        $scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
-                        $scope.formDraft.statusParams = {draftDate: draftDate, draftTime: draftTime};
-                        $scope.formDraft.draftDate = draftDate;
-                        $scope.formDraft.draftTime = draftTime;
-                        $scope.formDraft.isDirty = false;
-                        cleanState = getObsValues();
-                        // Broadcast event to update parent scope's draft date and time - update this during API integration
-                        $rootScope.$broadcast('draft:saved', {draftDate: draftDate, draftTime: draftTime});
-                    } else {
-                        $scope.formDraft.statusMessage = 'CHANGES_NOT_SAVED_KEY';
-                        $scope.formDraft.statusError = true;
-                    }
+                var patientUuid = $scope.patient ? $scope.patient.uuid : null;
+                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                var formData = formDirtyStateService.serializeFormData($scope.consultation.selectedObsTemplate);
 
+                formDraftService.saveDraft(patientUuid, providerUuid, formData).then(function (response) {
+                    var serverTimestamp = response.data.timestamp;
+                    var savedDate = new Date(serverTimestamp);
+                    var draftDate = $filter('date')(savedDate, 'dd MMM yyyy');
+                    var draftTime = $filter('date')(savedDate, 'hh:mm a');
+
+                    $scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
+                    $scope.formDraft.statusParams = {draftDate: draftDate, draftTime: draftTime};
+                    $scope.formDraft.draftDate = draftDate;
+                    $scope.formDraft.draftTime = draftTime;
+                    $scope.formDraft.isDirty = false;
+                    $scope.formDraft.hasDrafts = true;
+                    dirtyTrackingState.cleanState = formDirtyStateService.getObsValues($scope.consultation.selectedObsTemplate);
+                    $rootScope.$broadcast('draft:saved', {draftDate: draftDate, draftTime: draftTime});
+                }, function () {
+                    $scope.formDraft.statusMessage = 'CHANGES_NOT_SAVED_KEY';
+                    $scope.formDraft.statusError = true;
+                }).finally(function () {
                     $scope.formDraft.showSpinner = false;
-                    saveAsDraftSuccess = !saveAsDraftSuccess;
-                }, 2000);
+                    dirtyTrackingState.isSaving = false;
+                });
             };
 
             $scope.saveAsDraft = saveFormDraft;
 
-            $scope.$on('$destroy', function () {
-                if (dirtyTrackingSyncPromise) {
-                    $timeout.cancel(dirtyTrackingSyncPromise);
+            var draftContextWatchDeregister = null;
+
+            var checkForExistingDrafts = function () {
+                var patientUuid = $scope.patient ? $scope.patient.uuid : null;
+                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+
+                if (!(patientUuid && providerUuid)) {
+                    return false;
                 }
+
+                var justSavedDraft = sessionStorage.getItem('formSaveCompleted');
+                if (justSavedDraft) {
+                    sessionStorage.removeItem('formSaveCompleted');
+                    clearDraftStatus();
+                    return true;
+                }
+
+                formDraftService.getDraft(patientUuid, providerUuid).then(
+                    function (response) {
+                        if (response.data && response.data.uuid && !response.data.markedAsSaved) {
+                            $scope.formDraft.hasDrafts = true;
+                            $rootScope.draftData = response.data;
+                            var serverTimestamp = response.data.timestamp;
+                            if (serverTimestamp && !isNaN(new Date(serverTimestamp).getTime())) {
+                                var draftDate = $filter('date')(new Date(serverTimestamp), 'dd MMM yyyy');
+                                var draftTime = $filter('date')(new Date(serverTimestamp), 'hh:mm a');
+                                $scope.formDraft.draftDate = draftDate;
+                                $scope.formDraft.draftTime = draftTime;
+                                $scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
+                                $scope.formDraft.statusParams = {draftDate: draftDate, draftTime: draftTime};
+                            }
+                        } else {
+                            $rootScope.draftData = null;
+                            clearDraftStatus();
+                        }
+                    },
+                    function () {
+                        $rootScope.draftData = null;
+                        clearDraftStatus();
+                    }
+                ).catch(function () {
+                    $rootScope.draftData = null;
+                    clearDraftStatus();
+                });
+
+                return true;
+            };
+
+            var registerDraftContextWatcher = function () {
+                if (draftContextWatchDeregister) {
+                    return;
+                }
+
+                draftContextWatchDeregister = $scope.$watchGroup([
+                    function () {
+                        return $scope.patient && $scope.patient.uuid;
+                    },
+                    function () {
+                        return $rootScope.currentProvider && $rootScope.currentProvider.uuid;
+                    }
+                ], function (newValues) {
+                    if (newValues[0] && newValues[1]) {
+                        checkForExistingDrafts();
+                        draftContextWatchDeregister();
+                        draftContextWatchDeregister = null;
+                    }
+                });
+            };
+
+            var populateFormWithDraftData = function (draftFormData) {
+                var result = formDirtyStateService.populateFormWithDraftData(draftFormData, $scope.consultation.selectedObsTemplate);
+                if (!result.success) {
+                    $scope.formDraft.statusMessage = 'ERROR_LOADING_DRAFT_KEY';
+                    $scope.formDraft.statusError = true;
+                } else {
+                    $scope.formDraft.isDraftResumed = true;
+                }
+            };
+
+            var resetDraftStateAfterSave = function () {
+                resetDirtyTracking();
+                suppressDirtyTrackingDuringSaveRefresh();
+                clearDraftStatus();
+            };
+            $scope.consultation.postSaveHandler.register("resetDraftStateAfterSave", resetDraftStateAfterSave);
+
+            var saveSuccessfulListener = $rootScope.$on('event:save-successful', function () {
+                resetDirtyTracking();
+                suppressDirtyTrackingDuringSaveRefresh();
+                $scope.formDraft.showSpinner = false;
+                clearDraftStatus();
+            });
+
+            var saveStartedListener = $rootScope.$on('event:save-started', function () {
+                $scope.formDraft.showSpinner = false;
+                clearDraftStatus();
+            });
+
+            $scope.$on('$destroy', function () {
+                if (dirtyTrackingState.watchDeregister) {
+                    dirtyTrackingState.watchDeregister();
+                }
+                if (dirtyTrackingState.suppressionUnsuppressPromise) {
+                    $timeout.cancel(dirtyTrackingState.suppressionUnsuppressPromise);
+                }
+                formDirtyStateService.unregisterForm2SyncListeners(dirtyTrackingState.form2ListenerState);
+                if (draftContextWatchDeregister) {
+                    draftContextWatchDeregister();
+                    draftContextWatchDeregister = null;
+                }
+                saveSuccessfulListener();
+                saveStartedListener();
             });
 
             init();
+            if (!checkForExistingDrafts()) {
+                registerDraftContextWatcher();
+            }
         }]);

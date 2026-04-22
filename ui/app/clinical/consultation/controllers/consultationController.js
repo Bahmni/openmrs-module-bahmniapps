@@ -14,12 +14,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
         'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'confirmBox',
-        'virtualConsultService', 'adhocTeleconsultationService',
+        'virtualConsultService', 'adhocTeleconsultationService', 'formDraftService',
         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
                   ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox,
-                  virtualConsultService, adhocTeleconsultationService) {
+                  virtualConsultService, adhocTeleconsultationService, formDraftService) {
             var ERROR = 1;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
@@ -347,7 +347,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 if ($scope.lastConsultationTabUrl.url) {
                     $location.url($scope.lastConsultationTabUrl.url);
                 } else {
-                    // Default tab
                     getUrl($scope.availableBoards[0]);
                 }
             };
@@ -524,6 +523,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
+                sessionStorage.setItem('formSaveCompleted', 'true');
+                $rootScope.$broadcast('event:save-started');
                 try {
                     var alerts = angular.copy($rootScope.cdssAlerts) || [];
                     var activeAlerts = alerts.filter(function (alert) {
@@ -577,6 +578,14 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                             consultationWithDiagnosis.conditions = $scope.consultation.conditions;
                                         }).then(function () {
                                             copyConsultationToScope(consultationWithDiagnosis);
+                                            var patientUuid = $scope.patient ? $scope.patient.uuid : null;
+                                            var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                                            if (patientUuid && providerUuid) {
+                                                formDraftService.markDraftAsSaved(patientUuid, providerUuid).catch(function () {
+                                                });
+                                                $rootScope.draftData = null;
+                                            }
+                                            $rootScope.$broadcast('event:save-successful');
                                             if ($scope.targetUrl) {
                                                 return $window.open($scope.targetUrl, "_self");
                                             }
@@ -585,8 +594,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                                 notify: true,
                                                 reload: (toStateConfig !== undefined)
                                             });
-                                        }).then(function () {
-                                            $rootScope.$broadcast('event:save-successful');
                                         });
                                     }));
                             }).catch(function (error) {

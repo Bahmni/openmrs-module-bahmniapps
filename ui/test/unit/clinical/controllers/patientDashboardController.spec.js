@@ -11,9 +11,12 @@
 
 describe("patient dashboard controller", function () {
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module(function ($provide) {
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved']));
+    }));
 
     var scope, spinner, _clinicalDashboardConfig, _clinicalAppConfigService, _state, _appService, _diseaseTemplateService,
-        _stateParams, _controller, _appConfig, location, filter;
+        _stateParams, _controller, _appConfig, location, filter, _rootScope, _formDraftService;
     var diseaseTemplates;
     location = {
         path: function () {
@@ -86,10 +89,12 @@ describe("patient dashboard controller", function () {
                 return value;
             });
         });
-        inject(function ($controller, $rootScope, $filter) {
+        inject(function ($controller, $rootScope, $filter, formDraftService) {
             scope = $rootScope.$new();
             scope.patient = {};
             scope.visitHistory = {};
+            _rootScope = $rootScope;
+            _formDraftService = formDraftService;
 
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             filter = $filter;
@@ -210,6 +215,253 @@ describe("patient dashboard controller", function () {
 
         });
         expect(_clinicalDashboardConfig.currentTab.translationKey).toBe("DASHBOARD_TAB_PATIENT_SUMMARY_KEY");
+    });
+
+    describe("draft feature integration", function () {
+        var createControllerForDraft = function (patient, provider, printerMock) {
+            _rootScope.currentProvider = provider;
+            _diseaseTemplateService.getLatestDiseaseTemplates.and.returnValue(specUtil.respondWith([]));
+
+            _controller('PatientDashboardController', {
+                $scope: scope,
+                encounterService: jasmine.createSpy(),
+                clinicalAppConfigService: _clinicalAppConfigService,
+                clinicalDashboardConfig: _clinicalDashboardConfig,
+                visitSummary: {},
+            printer: printerMock || {},
+                $state: _state,
+                spinner: spinner,
+                appService: _appService,
+                $stateParams: _stateParams,
+                diseaseTemplateService: _diseaseTemplateService,
+                patientContext: {patient: patient === undefined ? {} : patient},
+                $filter: filter,
+                $location: location
+            });
+        };
+
+        it("should fetch existing draft when patient and provider are present", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: 'draft-uuid', timestamp: Date.now(), markedAsSaved: false}});
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+            expect(_formDraftService.getDraft).toHaveBeenCalledWith('patient-uuid', 'provider-uuid');
+            expect(scope.formDraft.hasDrafts).toBe(true);
+            expect(_rootScope.draftData.uuid).toBe('draft-uuid');
+        });
+
+        it("should clear draft state when fetched draft is already marked as saved", function () {
+            _rootScope.draftData = {uuid: 'old-draft'};
+            _formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: 'draft-uuid', timestamp: Date.now(), markedAsSaved: true}});
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+            expect(scope.formDraft.hasDrafts).toBe(false);
+            expect(scope.formDraft.draftDate).toBeNull();
+            expect(scope.formDraft.draftTime).toBeNull();
+            expect(_rootScope.draftData).toBeNull();
+        });
+
+        it("should keep draft banner active when draft has uuid but no timestamp", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: 'draft-uuid', markedAsSaved: false}});
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+            expect(scope.formDraft.hasDrafts).toBe(true);
+            expect(_rootScope.draftData.uuid).toBe('draft-uuid');
+        });
+
+        it("should clear draft state when getDraft error callback is invoked", function () {
+            _rootScope.draftData = {uuid: 'old-draft'};
+            _formDraftService.getDraft.and.returnValue({
+                then: function (success, error) {
+                    error();
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+            expect(scope.formDraft.hasDrafts).toBe(false);
+            expect(scope.formDraft.draftDate).toBeNull();
+            expect(scope.formDraft.draftTime).toBeNull();
+            expect(_rootScope.draftData).toBeNull();
+        });
+
+        it("should clear draft state when getDraft promise catches unhandled error", function () {
+            var promise = {
+                then: function () {
+                    return promise;
+                },
+                catch: function (handler) {
+                    handler();
+                    return promise;
+                }
+            };
+            _rootScope.draftData = {uuid: 'old-draft'};
+            _formDraftService.getDraft.and.returnValue(promise);
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+            expect(scope.formDraft.hasDrafts).toBe(false);
+            expect(scope.formDraft.draftDate).toBeNull();
+            expect(scope.formDraft.draftTime).toBeNull();
+            expect(_rootScope.draftData).toBeNull();
+        });
+
+        it("should not fetch existing draft when patient or provider are missing", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function () {
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, null);
+
+            expect(_formDraftService.getDraft).not.toHaveBeenCalled();
+        });
+
+        it("should not fetch existing draft when patient context is null", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function () {
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft(null, {uuid: 'provider-uuid'});
+
+            expect(_formDraftService.getDraft).not.toHaveBeenCalled();
+        });
+
+        it("should update draft banner when draft:saved event is broadcast with timestamp object", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function () {
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+            _rootScope.$broadcast('draft:saved', {draftDate: '08 Apr 2026', draftTime: '10:30 AM'});
+
+            expect(scope.formDraft.hasDrafts).toBe(true);
+            expect(scope.formDraft.draftDate).toBe('08 Apr 2026');
+            expect(scope.formDraft.draftTime).toBe('10:30 AM');
+        });
+
+        it("should ignore draft:saved event when payload is not an object", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function () {
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+            scope.formDraft.hasDrafts = false;
+            scope.formDraft.draftDate = null;
+            scope.formDraft.draftTime = null;
+
+            _rootScope.$broadcast('draft:saved', 'invalid-payload');
+
+            expect(scope.formDraft.hasDrafts).toBe(false);
+            expect(scope.formDraft.draftDate).toBeNull();
+            expect(scope.formDraft.draftTime).toBeNull();
+        });
+
+        it("should clear draft banner when event:save-successful is broadcast", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function () {
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+            scope.formDraft.hasDrafts = true;
+            scope.formDraft.draftDate = '08 Apr 2026';
+            scope.formDraft.draftTime = '10:30 AM';
+
+            _rootScope.$broadcast('event:save-successful');
+
+            expect(scope.formDraft.hasDrafts).toBe(false);
+            expect(scope.formDraft.draftDate).toBeNull();
+            expect(scope.formDraft.draftTime).toBeNull();
+        });
+
+        it("should use dashboard-content templateUrl when dashboard-content view is configured", function () {
+            _state.current.views['dashboard-content'] = {
+                templateUrl: 'dashboard/views/custom-content.html'
+            };
+            _formDraftService.getDraft.and.returnValue({
+                then: function () {
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+            expect(scope.currentDashboardTemplateUrl).toBe('dashboard/views/custom-content.html');
+        });
+
+        it("should trigger printDashboard event listener", function () {
+            _formDraftService.getDraft.and.returnValue({
+                then: function () {
+                    return this;
+                },
+                catch: function () {
+                    return this;
+                }
+            });
+
+            createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+            scope.$broadcast('event:printDashboard', 'vitals');
+
+            expect(scope).toBeDefined();
+        });
+
     });
 
     var breastCancerDiseaseTemplate =

@@ -273,12 +273,16 @@ describe("ConsultationController", function () {
     };
     beforeEach(module('bahmni.common.util'));
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module(function ($provide) {
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved']));
+    }));
     beforeEach(function () {
-        inject(function ($controller, $rootScope, _$window_) {
+        inject(function ($controller, $rootScope, _$window_, $q, formDraftService) {
             _window_ = _$window_;
             scope = $rootScope.$new();
             rootScope = $rootScope;
             controller = $controller;
+            formDraftService.markDraftAsSaved.and.returnValue($q.when({}));
         });
         appDescriptor = {
             formatUrl: function (url) {
@@ -811,6 +815,40 @@ describe("ConsultationController", function () {
                 done();
             });
         });
+
+        it("should fallback to [ERROR] when non-array form save error does not include message", function (done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                observationForms: [{
+                    isAdded: true,
+                    component: {
+                        getValue: function () {
+                            return {}
+                        },
+                        state: {data: {}},
+                        props: {patient: {}},
+                    },
+                    events: {
+                        onFormSave: 'Save event'
+                    }
+                }],
+                conditions: [{uuid: undefined, conditionNonCoded: "fever"}]
+            };
+            window.runEventScript = function () {
+                throw {};
+            };
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.getEncounterType).not.toHaveBeenCalled();
+                expect(encounterService.create).not.toHaveBeenCalled();
+                expect(conditionsService.save).not.toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', '[ERROR]');
+                done();
+            });
+        });
     });
 
     describe("startAdhocTeleconsultationLink", function ()  {
@@ -893,5 +931,102 @@ describe("ConsultationController", function () {
         expect(scope.adtNavigationConfig.privilege).toBe("app:ipd");
         expect(scope.adtNavigationConfig.title).toBe("Go to ADT Dashboard");
         expect(scope.adtNavigationConfig.forwardUrl).toBe("../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/");
+    });
+
+    it("should call markDraftAsSaved when save is successful with both patient and provider UUIDs", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: 'patient-uuid-123'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(formDraftService.markDraftAsSaved).toHaveBeenCalledWith('patient-uuid-123', 'provider-uuid-123');
+                done();
+            });
+        });
+    });
+
+    it("should not call markDraftAsSaved when save is successful but patient UUID is null", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: null};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(formDraftService.markDraftAsSaved).not.toHaveBeenCalled();
+                done();
+            });
+        });
+    });
+
+    it("should not call markDraftAsSaved when save is successful but provider UUID is null", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = null;
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: 'patient-uuid-123'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(formDraftService.markDraftAsSaved).not.toHaveBeenCalled();
+                done();
+            });
+        });
+    });
+
+    it("should clear draftData from rootScope after successful save when provider and patient exist", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
+            rootScope.draftData = {uuid: 'draft-uuid', formData: '{}'};
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: 'patient-uuid-123'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(rootScope.draftData).toBeNull();
+                done();
+            });
+        });
+    });
+
+    it("should broadcast event:save-successful after save completes", function (done) {
+        spyOn(rootScope, '$broadcast');
+        scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+        scope.patient = {uuid: 'patient-uuid-123'};
+        diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+        scope.save({toState: {}}).then(function () {
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:save-successful');
+            done();
+        });
+    });
+
+    it("should open targetUrl when save is successful and targetUrl is set", function (done) {
+        spyOn(_window_, 'open');
+        scope.targetUrl = '/some/target/url';
+        scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+        scope.patient = {uuid: 'patient-uuid-123'};
+        diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+        scope.save({toState: {}}).then(function () {
+            expect(_window_.open).toHaveBeenCalledWith('/some/target/url', '_self');
+            done();
+        });
+    });
+
+    it("should transition using current state and params when save is called without toStateConfig", function (done) {
+        spyOn(state, 'transitionTo').and.callThrough();
+        scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+        scope.patient = {uuid: 'patient-uuid-123'};
+        diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+        scope.save().then(function () {
+            expect(state.transitionTo).toHaveBeenCalled();
+            var args = state.transitionTo.calls.mostRecent().args;
+            expect(args[0]).toBe(state.current);
+            expect(args[2]).toEqual({inherit: false, notify: true, reload: false});
+            done();
+        });
     });
 });
