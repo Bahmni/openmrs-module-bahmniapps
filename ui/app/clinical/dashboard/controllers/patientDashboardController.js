@@ -11,9 +11,9 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
-        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
+        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter', 'formDraftService', '$rootScope',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
+            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter, formDraftService, $rootScope) {
             $scope.enableFormDraftFeature = appService.getAppDescriptor().getConfigValue('enableFormDraftFeature');
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
@@ -24,7 +24,6 @@ angular.module('bahmni.clinical')
             $scope.enrollment = $stateParams.enrollment;
             $scope.isDashboardPrinting = false;
 
-            // Draft timestamp initialization - can be removed after API integration
             var getDraftTimestamp = function () {
                 var now = new Date();
                 return {
@@ -35,7 +34,8 @@ angular.module('bahmni.clinical')
             var draftTimestampObj = getDraftTimestamp();
             $scope.formDraft = {
                 draftDate: draftTimestampObj.date,
-                draftTime: draftTimestampObj.time
+                draftTime: draftTimestampObj.time,
+                hasDrafts: false
             };
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
             $state.discardChanges = false;
@@ -61,16 +61,84 @@ angular.module('bahmni.clinical')
                 return $state.current.name === 'patient.dashboard.show';
             };
 
+            $scope.resumeDraft = function () {
+                // COMMENTED OUT: Resume draft functionality disabled
+                // // Set flag to auto-populate draft data in ConceptSetPageController
+                // $rootScope.resumeDraftOnLoad = true;
+                // // Navigate to last consultation tab if available, otherwise go to dashboard
+                // if ($scope.lastConsultationTabUrl && $scope.lastConsultationTabUrl.url) {
+                //     $location.url($scope.lastConsultationTabUrl.url);
+                // } else {
+                //     // Default to observations with all observation templates
+                //     $state.go('patient.dashboard.show.observations', {
+                //         patientUuid: $stateParams.patientUuid,
+                //         encounterUuid: $scope.consultation.encounterUuid,
+                //         conceptSetGroupName: 'All Observation Templates'
+                //     });
+                // }
+            };
+
+            var checkForExistingDrafts = function () {
+                var patientUuid = $scope.patient ? $scope.patient.uuid : null;
+                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+
+                if (patientUuid && providerUuid) {
+                    formDraftService.getDraft(patientUuid, providerUuid).then(
+                        function (response) {
+                            if (response.data && response.data.uuid && !response.data.markedAsSaved) {
+                                $scope.formDraft.hasDrafts = true;
+                                $rootScope.draftData = response.data;
+                                var serverTimestamp = response.data.timestamp;
+                                if (serverTimestamp) {
+                                    var draftDate = $filter('date')(new Date(serverTimestamp), 'dd MMM yyyy');
+                                    var draftTime = $filter('date')(new Date(serverTimestamp), 'hh:mm a');
+                                    $scope.formDraft.draftDate = draftDate;
+                                    $scope.formDraft.draftTime = draftTime;
+                                }
+                            } else {
+                                $scope.formDraft.hasDrafts = false;
+                                $scope.formDraft.draftDate = null;
+                                $scope.formDraft.draftTime = null;
+                                $rootScope.draftData = null;
+                            }
+                        },
+                        function () {
+                            $scope.formDraft.hasDrafts = false;
+                            $scope.formDraft.draftDate = null;
+                            $scope.formDraft.draftTime = null;
+                            $rootScope.draftData = null;
+                        }
+                    ).catch(function () {
+                        $scope.formDraft.hasDrafts = false;
+                        $scope.formDraft.draftDate = null;
+                        $scope.formDraft.draftTime = null;
+                        $rootScope.draftData = null;
+                    });
+                }
+            };
+
             var cleanUpListenerSwitchDashboard = $scope.$on("event:switchDashboard", function (event, dashboard) {
                 $scope.init(dashboard);
             });
 
-            // Listen for draft saved event from ConceptSetPageController - change logic to use GET call once it is developed
             var cleanUpListenerDraftSaved = $scope.$on("draft:saved", function (event, draftTimestamp) {
                 if (draftTimestamp && typeof draftTimestamp === 'object') {
+                    $scope.formDraft.hasDrafts = true;
                     $scope.formDraft.draftDate = draftTimestamp.draftDate;
                     $scope.formDraft.draftTime = draftTimestamp.draftTime;
                 }
+            });
+
+            var cleanUpListenerSaveSuccessful = $scope.$on("event:save-successful", function () {
+                $scope.formDraft.hasDrafts = false;
+                $scope.formDraft.draftDate = null;
+                $scope.formDraft.draftTime = null;
+            });
+
+            var cleanUpListenerSaveStarted = $scope.$on("event:save-started", function () {
+                $scope.formDraft.hasDrafts = false;
+                $scope.formDraft.draftDate = null;
+                $scope.formDraft.draftTime = null;
             });
 
             var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function (event, tab) {
@@ -93,6 +161,8 @@ angular.module('bahmni.clinical')
             $scope.$on("$destroy", function () {
                 cleanUpListenerSwitchDashboard();
                 cleanUpListenerDraftSaved();
+                cleanUpListenerSaveSuccessful();
+                cleanUpListenerSaveStarted();
                 cleanUpListenerPrintDashboard();
             });
 
@@ -132,4 +202,5 @@ angular.module('bahmni.clinical')
             };
 
             $scope.init(getCurrentTab());
+            checkForExistingDrafts();
         }]);

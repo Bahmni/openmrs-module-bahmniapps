@@ -12,6 +12,9 @@
 describe("PatientDashboardLabOrdersController", function () {
 
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module(function ($provide) {
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved']));
+    }));
 
     var scope;
     var stateParams;

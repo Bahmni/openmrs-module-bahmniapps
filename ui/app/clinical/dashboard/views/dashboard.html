@@ -1,6 +1,6 @@
 <patient-context patient="patient" show-name-and-image="tabBeingPrinted.printing.showNameAndImage" class="dashboard-consultation" is-consultation="!stateChange()"></patient-context>
 
-<div ng-if="stateChange() && enableFormDraftFeature" class="bx--inline-notification bx--inline-notification--info draft-notification" role="status">
+<div ng-if="enableFormDraftFeature && stateChange() && formDraft.hasDrafts" class="bx--inline-notification bx--inline-notification--info draft-notification" role="status">
     <div class="bx--notification__details">
         <div class="bx--notification__icon">ℹ</div>
         <div class="bx--notification__text-wrapper">
@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="bx--notification__action-button">
-        <button class="draft-action-button draft-resume-button">{{ 'RESUME' | translate }}</button>
+        <button class="draft-action-button draft-resume-button" ng-click="resumeDraft()">{{ 'RESUME' | translate }}</button>
         <button class="draft-action-button draft-discard-button">{{ 'DISCARD_DRAFT' | translate }}</button>
     </div>
 </div>
