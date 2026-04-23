@@ -275,6 +275,25 @@
                     </div>
                 </article>
 
+                <article class="form-field" ng-if="treatment.dosingRule === 'ml/kg'">
+                    <div class="field-attribute">
+                        <label class="start-date-label fl">{{::treatmentConfig.translate('rate', 'MEDICATION_LABEL_RATE')}}</label>
+                    </div>
+                    <div class="field-value">
+                        <input type="number" id="infusion-rate" class="drug-order-notes"
+                               ng-model="treatment.rate" min="0"/>
+                    </div>
+                </article>
+
+                <article class="form-field" ng-if="treatment.dosingRule === 'ml/kg'">
+                    <div class="field-attribute">
+                        <label class="start-date-label fl">{{::treatmentConfig.translate('additives', 'MEDICATION_LABEL_ADDITIVES')}}</label>
+                    </div>
+                    <div class="field-value">
+                        <textarea id="infusion-additives" rows="1" msd-elastic class="drug-order-notes"
+                                  ng-model="treatment.additives"/>
+                    </div>
+                </article>
 
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
