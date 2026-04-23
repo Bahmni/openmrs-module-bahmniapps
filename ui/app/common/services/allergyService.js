@@ -26,7 +26,6 @@ angular.module('bahmni.common.util')
             });
         };
 
-
         const getNoKnownAllergyUuid = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
