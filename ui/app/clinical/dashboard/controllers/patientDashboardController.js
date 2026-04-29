@@ -62,20 +62,12 @@ angular.module('bahmni.clinical')
             };
 
             $scope.resumeDraft = function () {
-                // COMMENTED OUT: Resume draft functionality disabled
-                // // Set flag to auto-populate draft data in ConceptSetPageController
-                // $rootScope.resumeDraftOnLoad = true;
-                // // Navigate to last consultation tab if available, otherwise go to dashboard
-                // if ($scope.lastConsultationTabUrl && $scope.lastConsultationTabUrl.url) {
-                //     $location.url($scope.lastConsultationTabUrl.url);
-                // } else {
-                //     // Default to observations with all observation templates
-                //     $state.go('patient.dashboard.show.observations', {
-                //         patientUuid: $stateParams.patientUuid,
-                //         encounterUuid: $scope.consultation.encounterUuid,
-                //         conceptSetGroupName: 'All Observation Templates'
-                //     });
-                // }
+                if (!$scope.enableFormDraftFeature) {
+                    return;
+                }
+                $state.go('patient.dashboard.show.observations', {
+                    conceptSetGroupName: 'All Observation Templates'
+                });
             };
 
             var checkForExistingDrafts = function () {

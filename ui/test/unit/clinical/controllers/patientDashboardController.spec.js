@@ -428,6 +428,33 @@ describe("patient dashboard controller", function () {
             expect(scope.formDraft.draftTime).toBeNull();
         });
 
+        describe("resumeDraft", function () {
+            beforeEach(function () {
+                _state.go = jasmine.createSpy('go');
+                _formDraftService.getDraft.and.returnValue({
+                    then: function () { return this; },
+                    catch: function () { return this; }
+                });
+            });
+
+            it("should navigate to observations page when feature is enabled", function () {
+                _appConfig.getConfigValue.and.returnValue(true);
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.resumeDraft();
+
+                expect(_state.go).toHaveBeenCalledWith('patient.dashboard.show.observations', {
+                    conceptSetGroupName: 'All Observation Templates'
+                });
+            });
+
+            it("should not navigate when enableFormDraftFeature is false", function () {
+                _appConfig.getConfigValue.and.returnValue(false);
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.resumeDraft();
+                expect(_state.go).not.toHaveBeenCalled();
+            });
+        });
+
         it("should use dashboard-content templateUrl when dashboard-content view is configured", function () {
             _state.current.views['dashboard-content'] = {
                 templateUrl: 'dashboard/views/custom-content.html'
