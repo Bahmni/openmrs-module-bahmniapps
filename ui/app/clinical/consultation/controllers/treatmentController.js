@@ -12,6 +12,17 @@
 angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', '$rootScope', 'cdssService', 'appService', '$filter',
         function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, $rootScope, cdssService, appService, $filter) {
+            $scope.pharmacistBannerEnabled = !!appService.getAppDescriptor().getConfigValue('enablePharmacistReviewBanner');
+
+            if ($scope.pharmacistBannerEnabled) {
+                $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
+                $scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: false};
+
+                $scope.confirmPharmacistReview = function () {
+                    $scope.pharmacistBanner.confirmed = true;
+                };
+            }
+
             var init = function () {
                 var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
                 $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';

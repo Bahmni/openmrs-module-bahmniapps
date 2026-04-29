@@ -13,7 +13,7 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, prescribedDrugOrders, activeDrugOrder, scheduledOrder, _treatmentService,
-        retrospectiveEntryService, appService, rootScope, visitHistory, allergyService;
+        retrospectiveEntryService, appService, rootScope, visitHistory, allergyService, observationsService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var treatmentConfig = {
         drugOrderHistoryConfig: {
@@ -46,6 +46,13 @@ describe("DrugOrderHistoryController", function () {
             }
         });
         allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
+        allergyService.getAllergyForPatient.and.callFake(function () {
+            return specUtil.respondWithPromise($q, {status: 200, data: {}});
+        });
+        observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
+        observationsService.fetch.and.callFake(function () {
+            return specUtil.respondWithPromise($q, {data: []});
+        });
 
         rootScope = $rootScope;
         spyOn($rootScope, '$broadcast');
@@ -66,7 +73,6 @@ describe("DrugOrderHistoryController", function () {
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         visitHistory = {};
-        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
     }));
 
     var initController = function () {
@@ -82,7 +88,8 @@ describe("DrugOrderHistoryController", function () {
             visitHistory: visitHistory,
             treatmentConfig: treatmentConfig,
             appService: appService,
-            allergyService: allergyService
+            allergyService: allergyService,
+            observationsService: observationsService
         });
         rootScope.$apply();
     };
@@ -178,6 +185,53 @@ describe("DrugOrderHistoryController", function () {
         it('should return true if orderAttribute has an obsUuid', function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
             expect(scope.shouldBeDisabled(drugOrder, {obsUuid: 'some-uuid'})).toBe('some-uuid');
+        });
+    });
+
+    describe('pharmacist review banner', function () {
+        it('should not show banner when feature flag is disabled', function () {
+            initController();
+            expect(scope.showPharmacistReviewBanner()).toBeFalsy();
+        });
+
+        it('should not show banner when user does not have dispense privilege', function () {
+            scope.pharmacistBannerEnabled = true;
+            scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: false};
+            rootScope.currentUser = {privileges: [{name: 'some-other-privilege'}]};
+            initController();
+            expect(scope.showPharmacistReviewBanner()).toBe(false);
+        });
+
+        it('should not show banner when there are no active undispensed orders', function () {
+            scope.pharmacistBannerEnabled = true;
+            scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: false};
+            rootScope.currentUser = {privileges: [{name: 'bahmni:clinical:dispense'}]};
+            initController();
+            expect(scope.hasActiveUndispensedOrders()).toBe(false);
+        });
+
+        it('should not initialize pharmacistBanner on child when feature flag is disabled', function () {
+            initController();
+            expect(scope.pharmacistBanner).toBeUndefined();
+        });
+
+        it('should disable dispense buttons when banner is showing', function () {
+            scope.pharmacistBannerEnabled = true;
+            scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: true};
+            rootScope.currentUser = {privileges: [{name: 'bahmni:clinical:dispense'}]};
+            initController();
+            spyOn(scope, 'showPharmacistReviewBanner').and.returnValue(true);
+            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
+            expect(scope.shouldBeDisabled(drugOrder, {})).toBe(true);
+        });
+
+        it('should not show banner after pharmacist confirms review', function () {
+            scope.pharmacistBannerEnabled = true;
+            scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: true};
+            rootScope.currentUser = {privileges: [{name: 'bahmni:clinical:dispense'}]};
+            initController();
+            scope.pharmacistBanner.confirmed = true;
+            expect(scope.showPharmacistReviewBanner()).toBe(false);
         });
     });
 
@@ -554,7 +608,7 @@ describe("DrugOrderHistoryControllerIPD", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, prescribedDrugOrders, activeDrugOrder, updateDrugOrder, _treatmentService,
-        retrospectiveEntryService, appService, rootScope, visitHistory, allergyService;
+        retrospectiveEntryService, appService, rootScope, visitHistory, allergyService, observationsService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var treatmentConfig = {
         drugOrderHistoryConfig: {
@@ -587,6 +641,13 @@ describe("DrugOrderHistoryControllerIPD", function () {
             }
         });
         allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
+        allergyService.getAllergyForPatient.and.callFake(function () {
+            return specUtil.respondWithPromise($q, {status: 200, data: {}});
+        });
+        observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
+        observationsService.fetch.and.callFake(function () {
+            return specUtil.respondWithPromise($q, {data: []});
+        });
 
         rootScope = $rootScope;
         spyOn($rootScope, '$broadcast');
@@ -618,7 +679,8 @@ describe("DrugOrderHistoryControllerIPD", function () {
             visitHistory: visitHistory,
             treatmentConfig: treatmentConfig,
             appService: appService,
-            allergyService: allergyService
+            allergyService: allergyService,
+            observationsService: observationsService
         });
         rootScope.$apply();
     };
