@@ -976,6 +976,37 @@ angular.module('bahmni.clinical')
                 $scope.addToNewTreatment = true;
                 showRulesInMedication(medicationConfig);
                 setContinuousMedicationRoutes(medicationConfig);
+
+                $scope.showVariableDoseProtocol =
+                    appService.getAppDescriptor().getConfigValue('enableVariableDoseProtocol') === true;
+
+                if ($scope.showVariableDoseProtocol) {
+                    var orderSetConfig = medicationConfig && medicationConfig.tabConfig &&
+                        medicationConfig.tabConfig.allMedicationTabConfig &&
+                        medicationConfig.tabConfig.allMedicationTabConfig.orderSet;
+                    $scope.variableDoseHostData = {
+                        doseUnits: treatmentConfig.getDoseUnits(),
+                        routes: treatmentConfig.getRoutes(),
+                        dosingRules: treatmentConfig.dosingRules || [],
+                        drugFormDefaults: treatmentConfig.inputOptionsConfig.drugFormDefaults || {},
+                        dosageRuleUnitsMap: (orderSetConfig && orderSetConfig.dosageRuleUnitsMap) || {}
+                    };
+                    $scope.variableDoseHostApi = {
+                        onClose: function () {},
+                        onSave: function () {
+                            // prescribing handled in a future story
+                        },
+                        searchDrugs: function (term) {
+                            return new Promise(function (resolve) {
+                                $timeout(function () {
+                                    return drugService.search(term);
+                                }, 0).then(function (results) {
+                                    resolve(results || []);
+                                });
+                            });
+                        }
+                    };
+                }
             };
             init();
         }]);

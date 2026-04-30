@@ -1,0 +1,110 @@
+.variable-dose-trigger-btn.bx--btn--tertiary {
+  &:hover,
+  &:active,
+  &:focus {
+    color: #ffffff;
+  }
+}
+
+.variable-dose-modal {
+  .bx--modal-container {
+    width: 55%;
+    height: 84%;
+    top: 96px;
+    background-color: #ffffff;
+  }
+
+  .bx--modal-content {
+    background-color: #ffffff;
+  }
+
+  .bx--modal-header {
+    display: flex;
+    align-items: center;
+    padding-right: 0;
+
+    .bx--modal-close {
+      position: static;
+      margin-left: auto;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+    }
+  }
+
+  .bx--label {
+    display: block;
+    color: #161616 !important;
+  }
+
+  /* bahmni-carbon-ui sets max-width: 250px on bx--list-box__wrapper */
+  .bx--list-box__wrapper {
+    max-width: 100% !important;
+  }
+
+  /* AngularJS global input CSS overrides Carbon's visually-hidden native checkbox */
+  input.bx--checkbox[type="checkbox"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    appearance: none !important;
+  }
+
+  /* Carbon default is justify-content: space-between, which gaps label from field */
+  .bx--date-picker-container {
+    justify-content: flex-start !important;
+  }
+
+  /* Carbon modal SCSS sets $field-02 (#fff) on date picker inputs inside .bx--modal-container */
+  .bx--date-picker,
+  .bx--date-picker-container,
+  .bx--date-picker-input__wrapper,
+  .bx--date-picker__input {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .bx--date-picker__input {
+    background-color: #f4f4f4 !important;
+  }
+
+  .bx--modal-footer {
+    height: auto !important;
+    justify-content: flex-end !important;
+
+    .bx--btn {
+      width: 270px !important;
+      max-width: 270px !important;
+      flex: 0 0 270px !important;
+      height: 4rem !important;
+    }
+  }
+}
+
+.variable-dose-accept-wrapper {
+  display: flex;
+  align-items: center;
+  align-self: end;
+  padding-bottom: 0.75rem;
+}
+
+.variable-dose-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 3rem;
+  margin-top: 1.5rem;
+
+  > * {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+.variable-dose-required {
+  color: #da1e28;
+}
