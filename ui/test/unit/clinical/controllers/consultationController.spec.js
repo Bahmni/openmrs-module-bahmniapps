@@ -443,11 +443,48 @@ describe("ConsultationController", function () {
         });
 
         it("should validate the current tab drug orders", function () {
-            scope.consultation = {discontinuedDrugs: [{concept: {name: "Paracetmol"}}]};
+            scope.consultation = {discontinuedDrugs: [{concept: {name: "Paracetmol"}, _effectiveStartDate: moment().subtract(1, 'days')}]};
             spyOn(scope.$parent, '$broadcast');
 
             scope.showBoard(1);
             expect(scope.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+        });
+
+        it("should allow tab switching even when Form2 observation form has mandatory field errors", function () {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                observationForms: [{component: {getValue: function () { return {errors: {}}; }}}]
+            };
+            spyOn(scope.$parent, '$broadcast');
+            scope.showBoard(1);
+            expect(scope.$parent.$broadcast).not.toHaveBeenCalledWith('event:errorsOnForm');
+            expect(scope.currentBoard.label).toBe('Treatment');
+        });
+
+        it("should allow tab switching from observations even when concept-set mandatory fields are not filled", function () {
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}]};
+            scope.currentBoard = scope.availableBoards[0]; // observations board
+            spyOn(scope.$parent, '$broadcast');
+            scope.showBoard(1);
+            expect(scope.$parent.$broadcast).not.toHaveBeenCalledWith('event:errorsOnForm');
+            expect(scope.currentBoard.label).toBe('Treatment');
+        });
+
+        it("should block save when concept-set mandatory errors were present during tab switch", function (done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [], conditions: []
+            };
+            scope.currentBoard = scope.availableBoards[0];
+            scope.isErrorPresentInObsTab = true;
+            scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            spyOn(scope.$parent.$parent, '$broadcast');
+            scope.save({toState: {}}).then(function () {
+                expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                done();
+            });
         });
 
         it("should be on currentBoard if click on same tab", function () {
