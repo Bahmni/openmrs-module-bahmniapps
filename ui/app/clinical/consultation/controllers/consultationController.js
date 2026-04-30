@@ -142,17 +142,15 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
-                if (contextChangeHandler.execute()["allow"]) {
-                    var params = {
-                        configName: $scope.configName,
-                        patientUuid: patientContext.patient.uuid,
-                        encounterUuid: undefined
-                    };
-                    if ($scope.dashboardDirty) {
-                        params['dashboardCachebuster'] = Math.random();
-                    }
-                    $state.go("patient.dashboard.show", params);
+                var params = {
+                    configName: $scope.configName,
+                    patientUuid: patientContext.patient.uuid,
+                    encounterUuid: undefined
+                };
+                if ($scope.dashboardDirty) {
+                    params['dashboardCachebuster'] = Math.random();
                 }
+                $state.go("patient.dashboard.show", params);
             };
 
             var isLongerName = function (value) {
@@ -359,6 +357,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 if ($scope.currentBoard === board) {
                     return;
                 }
+                $scope.isObservationPage = board.id == "bahmni.clinical.consultation.observations" ? true : false;
+                $scope.isSave = false;
+                if ($scope.currentBoard) {
+                    $scope.isSwitchedFromObservationToOtherPage = $scope.currentBoard.id == "bahmni.clinical.consultation.observations" ? true : false;
+                }
                 if (!isFormValid()) {
                     $scope.$parent.$broadcast("event:errorsOnForm");
                     return;
@@ -491,10 +494,32 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return valid;
             };
 
+            var checkForObservationPageError = function (shouldAllow, contxChange) {
+                if (!$scope.isSave) {
+                    if ($scope.isSwitchedFromObservationToOtherPage && !shouldAllow) {
+                        $scope.isErrorPresentInObsTab = true;
+                        shouldAllow = true;
+                    } else if ($scope.isSwitchedFromObservationToOtherPage && shouldAllow) {
+                        $scope.isErrorPresentInObsTab = false;
+                    }
+                } else if ($scope.isSave) {
+                    if ($scope.isErrorPresentInObsTab) {
+                        if (!$scope.isObservationPage) {
+                            var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+                            messagingService.showMessage('error', errorMessage);
+                        } else if ($scope.isObservationPage) {
+                            $scope.isErrorPresentInObsTab = false;
+                        }
+                    }
+                }
+                return shouldAllow;
+            };
+
             var isFormValid = function () {
                 var contxChange = contextChange();
                 var shouldAllow = contxChange["allow"];
                 var discontinuedDrugOrderValidationMessage = discontinuedDrugOrderValidation($scope.consultation.discontinuedDrugs);
+                shouldAllow = checkForObservationPageError(shouldAllow, contxChange);
                 if (!shouldAllow) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
                     messagingService.showMessage('error', errorMessage);
@@ -502,7 +527,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     var errorMessage = discontinuedDrugOrderValidationMessage;
                     messagingService.showMessage('error', errorMessage);
                 }
-                return shouldAllow && !discontinuedDrugOrderValidationMessage && isObservationFormValid();
+                return shouldAllow && !discontinuedDrugOrderValidationMessage;
             };
 
             var copyConsultationToScope = function (consultationWithDiagnosis) {
@@ -519,7 +544,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             });
 
             $scope.save = function (toStateConfig) {
-                if (!isFormValid()) {
+                $scope.isSave = true;
+                if (!isFormValid() || !isObservationFormValid() || $scope.isErrorPresentInObsTab) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
