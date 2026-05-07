@@ -42,20 +42,24 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const dosageRuleUnitsMap = hostData?.dosageRuleUnitsMap || {};
 
     const isNextEnabled = !!(selectedDrug && units && startDate);
+    const isDirty = !!(selectedDrug || dosingRule || units || route);
 
-    const resetState = () => {
-        setSelectedDrug(null);
-        setSearchResults([]);
-        setDosingRule(null);
-        setUnits(null);
-        setIsUnitsAutoPopulated(false);
-        setRoute(null);
-        setStartDate(new Date());
-    };
+    const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
 
     const handleClose = () => {
-        resetState();
+        if (isDirty) {
+            setShowCloseConfirmation(true);
+        } else {
+            hostApi?.onClose();
+        }
+    };
+
+    const handleConfirmClose = () => {
         hostApi?.onClose();
+    };
+
+    const handleCancelClose = () => {
+        setShowCloseConfirmation(false);
     };
 
     const handleSave = () => {
@@ -118,6 +122,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const SELECT_ROUTE = intl.formatMessage({ id: "VARIABLE_DOSE_SELECT_ROUTE", defaultMessage: "Select Route" });
 
     return (
+        <>
         <Modal
             open={true}
             className="next-ui variable-dose-modal"
@@ -167,29 +172,38 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
 
             <div className="variable-dose-form-grid">
                 {dosingRules.length > 0 ? (
-                    <BahmniDropdown
-                        id="variable-dose-dosing-rule"
-                        titleText={DOSAGE_RULE_LABEL}
-                        placeholder={SELECT_DOSAGE_RULE}
-                        options={dosingRules.map((rule) => ({ label: rule, value: rule }))}
-                        selectedValue={dosingRule}
-                        onChange={(selectedItem) => {
-                            const rule = selectedItem || null;
-                            setDosingRule(rule);
-                            if (!rule) {
-                                setIsUnitsAutoPopulated(false);
-                                return;
-                            }
-                            const ruleUnits = dosageRuleUnitsMap[rule.value || ""];
-                            if (ruleUnits && ruleUnits.length === 1) {
-                                setUnits({ label: ruleUnits[0], value: ruleUnits[0] });
-                                setIsUnitsAutoPopulated(true);
-                            } else {
-                                setIsUnitsAutoPopulated(false);
-                            }
-                        }}
-                        width="100%"
-                    />
+                    <div onInput={(e) => {
+                        if (e.target.value === "") {
+                            setDosingRule(null);
+                            setUnits(null);
+                            setIsUnitsAutoPopulated(false);
+                        }
+                    }}>
+                        <BahmniDropdown
+                            id="variable-dose-dosing-rule"
+                            titleText={DOSAGE_RULE_LABEL}
+                            placeholder={SELECT_DOSAGE_RULE}
+                            options={dosingRules.map((rule) => ({ label: rule, value: rule }))}
+                            selectedValue={dosingRule}
+                            onChange={(selectedItem) => {
+                                const rule = selectedItem || null;
+                                setDosingRule(rule);
+                                if (!rule) {
+                                    setUnits(null);
+                                    setIsUnitsAutoPopulated(false);
+                                    return;
+                                }
+                                const ruleUnits = dosageRuleUnitsMap[rule.value || ""];
+                                if (ruleUnits && ruleUnits.length === 1) {
+                                    setUnits({ label: ruleUnits[0], value: ruleUnits[0] });
+                                    setIsUnitsAutoPopulated(true);
+                                } else {
+                                    setIsUnitsAutoPopulated(false);
+                                }
+                            }}
+                            width="100%"
+                        />
+                    </div>
                 ) : (
                     <div />
                 )}
@@ -232,6 +246,29 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                 />
             </div>
         </Modal>
+        <Modal
+            open={showCloseConfirmation}
+            className="next-ui variable-dose-close-confirmation"
+            style={{ zIndex: 10000 }}
+            danger
+            preventCloseOnClickOutside={true}
+            modalHeading={
+                <FormattedMessage
+                    id="VARIABLE_DOSE_CLOSE_CONFIRM_MESSAGE"
+                    defaultMessage="You will lose the details entered. Do you want to continue?"
+                />
+            }
+            primaryButtonText={
+                <FormattedMessage id="VARIABLE_DOSE_CLOSE_CONFIRM_NO" defaultMessage="No" />
+            }
+            secondaryButtonText={
+                <FormattedMessage id="VARIABLE_DOSE_CLOSE_CONFIRM_YES" defaultMessage="Yes" />
+            }
+            onRequestClose={handleCancelClose}
+            onRequestSubmit={handleCancelClose}
+            onSecondarySubmit={handleConfirmClose}
+        />
+        </>
     );
 }
 

@@ -421,5 +421,95 @@ exports[`VariableDoseProtocolModal should render the modal (open=true is hardcod
       Focus sentinel
     </span>
   </div>
+  <div
+    class="bx--modal bx--modal-tall bx--modal--danger next-ui variable-dose-close-confirmation"
+    role="presentation"
+    style="z-index: 10000;"
+  >
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+    <div
+      aria-label="[object Object]"
+      aria-modal="true"
+      class="bx--modal-container"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div
+        class="bx--modal-header"
+      >
+        
+        <h3
+          class="bx--modal-header__heading"
+          id="bx--modal-header__heading--modal-2"
+        >
+          You will lose the details entered. Do you want to continue?
+        </h3>
+        <button
+          aria-label="close"
+          class="bx--modal-close"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="bx--modal-close__icon"
+            fill="currentColor"
+            focusable="false"
+            height="20"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 32 32"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        aria-labelledby="bx--modal-header__heading--modal-2"
+        class="bx--modal-content"
+        id="bx--modal-body--modal-2"
+      />
+      <div
+        class="bx--modal-footer bx--btn-set"
+      >
+        <button
+          class="bx--btn bx--btn--secondary"
+          tabindex="0"
+          type="button"
+        >
+          Yes
+        </button>
+        <button
+          aria-describedby="danger-description-4"
+          class="bx--btn bx--btn--danger"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="bx--visually-hidden"
+            id="danger-description-4"
+          >
+            danger
+          </span>
+          No
+        </button>
+      </div>
+    </div>
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+  </div>
 </div>
 `;

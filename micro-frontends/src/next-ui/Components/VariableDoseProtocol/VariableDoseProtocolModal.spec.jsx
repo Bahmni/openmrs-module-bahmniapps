@@ -109,7 +109,7 @@ describe("VariableDoseProtocolModal", () => {
         });
     });
 
-    it("should call hostApi.onClose when X button is clicked", async () => {
+    it("should call hostApi.onClose when X button is clicked on a clean form", async () => {
         renderModal();
         await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
 
@@ -119,13 +119,89 @@ describe("VariableDoseProtocolModal", () => {
         expect(mockOnClose).toHaveBeenCalled();
     });
 
-    it("should call hostApi.onClose when Cancel button is clicked", async () => {
+    it("should call hostApi.onClose when Cancel button is clicked on a clean form", async () => {
         renderModal();
         await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
 
         fireEvent.click(screen.getByText("Cancel"));
 
         expect(mockOnClose).toHaveBeenCalled();
+    });
+
+    it("should show confirmation dialog when X is clicked with a dirty form", async () => {
+        const { container } = renderModal();
+        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        const closeButton = document.querySelector(".bx--modal-close");
+        fireEvent.click(closeButton);
+
+        await waitFor(() => {
+            expect(screen.getByText("You will lose the details entered. Do you want to continue?")).toBeTruthy();
+        });
+        expect(mockOnClose).not.toHaveBeenCalled();
+    });
+
+    it("should close modal when Yes is clicked in the confirmation dialog", async () => {
+        const { container } = renderModal();
+        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        const closeButton = document.querySelector(".bx--modal-close");
+        fireEvent.click(closeButton);
+
+        await waitFor(() => screen.getByText("You will lose the details entered. Do you want to continue?"));
+
+        fireEvent.click(screen.getByText("Yes"));
+
+        expect(mockOnClose).toHaveBeenCalled();
+    });
+
+    it("should dismiss the confirmation dialog and keep the form when No is clicked", async () => {
+        const { container } = renderModal();
+        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        const closeButton = document.querySelector(".bx--modal-close");
+        fireEvent.click(closeButton);
+
+        await waitFor(() => screen.getByText("You will lose the details entered. Do you want to continue?"));
+
+        fireEvent.click(screen.getByText("No"));
+
+        expect(mockOnClose).not.toHaveBeenCalled();
+        const confirmModal = document.querySelector(".variable-dose-close-confirmation");
+        expect(confirmModal.classList.contains("is-visible")).toBe(false);
+    });
+
+    it("should clear units when dosing rule is cleared", async () => {
+        const hostDataWithRuleUnits = {
+            ...defaultHostData,
+            dosingRules: ["mg/kg"],
+            dosageRuleUnitsMap: { "mg/kg": ["mg"] },
+        };
+        const { container } = renderModal(hostDataWithRuleUnits);
+        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+
+        openBahmniDropdown(container, "variable-dose-dosing-rule");
+        fireEvent.click(screen.getByText("mg/kg"));
+
+        await waitFor(() => {
+            expect(getDropdownInput(container, "variable-dose-units").value).toBe("mg");
+        });
+
+        const ruleInput = getDropdownInput(container, "variable-dose-dosing-rule");
+        fireEvent.input(ruleInput, { target: { value: "" } });
+
+        await waitFor(() => {
+            expect(getDropdownInput(container, "variable-dose-units").value).toBe("");
+        });
     });
 
     it("should not render Dosage Rule select when dosingRules is empty", async () => {
