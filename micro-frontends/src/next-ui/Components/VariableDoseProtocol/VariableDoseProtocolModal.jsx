@@ -27,13 +27,23 @@ function useDebounce(fn, delay) {
 export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const intl = useIntl();
 
-    const [selectedDrug, setSelectedDrug] = useState(null);
-    const [searchResults, setSearchResults] = useState([]);
+    const initialValues = hostData?.initialValues || {};
+
+    const [selectedDrug, setSelectedDrug] = useState(initialValues.drug || null);
+    const [searchResults, setSearchResults] = useState(
+        initialValues.drug ? [initialValues.drug] : []
+    );
     const [dosingRule, setDosingRule] = useState(null);
-    const [units, setUnits] = useState(null);
+    const [units, setUnits] = useState(
+        initialValues.units ? { label: initialValues.units, value: initialValues.units } : null
+    );
     const [isUnitsAutoPopulated, setIsUnitsAutoPopulated] = useState(false);
-    const [route, setRoute] = useState(null);
-    const [startDate, setStartDate] = useState(new Date());
+    const [route, setRoute] = useState(
+        initialValues.route ? { label: initialValues.route, value: initialValues.route } : null
+    );
+    const [startDate, setStartDate] = useState(
+        initialValues.startDate ? new Date(initialValues.startDate) : new Date()
+    );
 
     const doseUnits = hostData?.doseUnits || [];
     const routes = hostData?.routes || [];
@@ -142,6 +152,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
             onRequestClose={handleClose}
             onSecondarySubmit={handleClose}
             onRequestSubmit={handleSave}
+            selectorPrimaryFocus="#variable-dose-drug-name"
             size="lg"
         >
             <div className="variable-dose-form-grid">
@@ -165,7 +176,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                                 defaultMessage="Accept"
                             />
                         }
-                        disabled={!selectedDrug}
+                        disabled={true}
                     />
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Button } from "carbon-components-react";
 import { Add16 } from "@carbon/icons-react";
@@ -8,18 +8,33 @@ import { VariableDoseProtocolModalInner } from "../../Components/VariableDosePro
 
 function VariableDoseProtocolInner({ hostData, hostApi }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [editInitialValues, setEditInitialValues] = useState(null);
+    const editIndexRef = useRef(null);
+
+    useEffect(() => {
+        hostApi?.register?.((editIndex, initialValues) => {
+            editIndexRef.current = editIndex ?? null;
+            setEditInitialValues(initialValues || null);
+            setIsOpen(true);
+        });
+    }, [hostApi]);
 
     const handleClose = () => {
         setIsOpen(false);
+        setEditInitialValues(null);
+        editIndexRef.current = null;
         hostApi?.onClose?.();
     };
 
     const handleSave = (data) => {
         setIsOpen(false);
-        hostApi?.onSave?.(data);
+        setEditInitialValues(null);
+        hostApi?.onSave?.({ ...data, editIndex: editIndexRef.current });
+        editIndexRef.current = null;
     };
 
     const augmentedHostApi = { ...hostApi, onClose: handleClose, onSave: handleSave };
+    const augmentedHostData = { ...hostData, initialValues: editInitialValues };
 
     return (
         <>
@@ -38,7 +53,7 @@ function VariableDoseProtocolInner({ hostData, hostApi }) {
             </Button>
             {isOpen && (
                 <VariableDoseProtocolModalInner
-                    hostData={hostData}
+                    hostData={augmentedHostData}
                     hostApi={augmentedHostApi}
                 />
             )}
@@ -73,5 +88,6 @@ VariableDoseProtocol.propTypes = {
         onClose: PropTypes.func,
         onSave: PropTypes.func,
         searchDrugs: PropTypes.func,
+        register: PropTypes.func,
     }),
 };

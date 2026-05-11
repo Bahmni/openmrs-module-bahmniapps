@@ -9,6 +9,19 @@
 
 'use strict';
 
+var VARIABLE_DOSE_MOCK_STAGE_COUNT = 5;
+var VARIABLE_DOSE_MOCK_TOTAL_DAYS = 13;
+
+var buildVariableDoseMockStages = function (unit) {
+    return [
+        { stageName: 'Loading Dose', dose: '2', unit: unit, frequency: 'Once', duration: '1 Occurrence', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
+        { stageName: '1', dose: '10', unit: unit, frequency: 'Three times a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
+        { stageName: '2', dose: '8', unit: unit, frequency: 'Two times a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
+        { stageName: '3', dose: '5', unit: unit, frequency: 'Two times a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
+        { stageName: '4', dose: '5', unit: unit, frequency: 'Once a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' }
+    ];
+};
+
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
@@ -991,10 +1004,50 @@ angular.module('bahmni.clinical')
                         drugFormDefaults: treatmentConfig.inputOptionsConfig.drugFormDefaults || {},
                         dosageRuleUnitsMap: (orderSetConfig && orderSetConfig.dosageRuleUnitsMap) || {}
                     };
+                    var _openVariableDoseModal = null;
+                    $scope.$on('openVariableDoseModal', function (event, payload) {
+                        if (!_openVariableDoseModal) { return; }
+                        var initialValues = null;
+                        if (payload && payload.treatment) {
+                            var t = payload.treatment;
+                            initialValues = {
+                                drug: t.drug || null,
+                                units: t.units || '',
+                                route: t.route || '',
+                                startDate: t.startDate || new Date()
+                            };
+                        }
+                        _openVariableDoseModal(payload ? payload.editIndex : null, initialValues);
+                    });
                     $scope.variableDoseHostApi = {
+                        register: function (openFn) { _openVariableDoseModal = openFn; },
                         onClose: function () {},
-                        onSave: function () {
-                            // prescribing handled in a future story
+                        onSave: function (data) {
+                            $timeout(function () {
+                                $scope.consultation.variableDoseTreatments = $scope.consultation.variableDoseTreatments || [];
+                                var unit = data.units || '';
+                                var entry = {
+                                    drug: data.drug || null,
+                                    drugName: data.drug ? data.drug.name : '',
+                                    drugForm: data.drug && data.drug.dosageForm ? data.drug.dosageForm.display : '',
+                                    units: unit,
+                                    route: data.route || '',
+                                    quantity: 432,
+                                    quantityUnit: 'Tablets',
+                                    careSetting: ($scope.allMedicinesInPrescriptionAvailableForIPD && currentVisitType === 'IPD')
+                                        ? Bahmni.Clinical.Constants.careSetting.inPatient
+                                        : Bahmni.Clinical.Constants.careSetting.outPatient,
+                                    startDate: data.startDate,
+                                    stageCount: VARIABLE_DOSE_MOCK_STAGE_COUNT,
+                                    totalDays: VARIABLE_DOSE_MOCK_TOTAL_DAYS,
+                                    stages: buildVariableDoseMockStages(unit)
+                                };
+                                if (data.editIndex != null) {
+                                    $scope.consultation.variableDoseTreatments[data.editIndex] = entry;
+                                } else {
+                                    $scope.consultation.variableDoseTreatments.push(entry);
+                                }
+                            });
                         },
                         searchDrugs: function (term) {
                             return new Promise(function (resolve) {

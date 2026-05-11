@@ -13,6 +13,7 @@ import { FormDisplayControl } from "./Containers/formDisplayControl/FormDisplayC
 import { ProviderNotifications } from "./Containers/providerNotifications/ProviderNotifications";
 import { OtNotesSavePopup, OtNotesDeletePopup } from "./Containers/otNotes/OtNotes";
 import { VariableDoseProtocol } from "./Containers/variableDoseProtocol/VariableDoseProtocol";
+import { VariableDoseProtocolTable } from "./Components/VariableDoseProtocol/VariableDoseProtocolTable";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -51,5 +52,10 @@ builder.createComponentWithTranslationForwarding(
 builder.createComponentWithTranslationForwarding(
     "VariableDoseProtocol",
     VariableDoseProtocol
+);
+
+builder.createComponentWithTranslationForwarding(
+    "VariableDoseProtocolTable",
+    VariableDoseProtocolTable
 );
 
