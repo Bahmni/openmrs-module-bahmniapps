@@ -396,6 +396,9 @@
     "DAYS_ADMITTED_MESSAGE": "Días en el hospital",
     "RESUME": "Reanudar",
     "DISCARD_DRAFT": "Descartar borrador",
+    "DISCARD_DRAFT_CONFIRM_MESSAGE": "El borrador guardado para los formularios de observación será eliminado y no podrá ser restaurado.",
+    "DISCARD": "Descartar",
+    "DRAFT_DISCARDED_SUCCESS": "La sesión de borrador guardada ha sido descartada",
     "FORMS_DRAFT_BANNER_TITLE": "Formularios de observación en progreso",
     "FORMS_DRAFT_BANNER_SUBTITLE": "Sus entradas fueron guardadas como borrador el {{ draftDate }} a las {{ draftTime }}. Haga clic en Reanudar para continuar donde lo dejó o en Descartar para empezar de nuevo."
 }

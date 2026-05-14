@@ -397,5 +397,8 @@
     "RESUME": "Resume",
     "DISCARD_DRAFT": "Discard Draft",
     "FORMS_DRAFT_BANNER_TITLE": "Observation Forms are in Progress",
-    "FORMS_DRAFT_BANNER_SUBTITLE": "Your inputs were saved as a draft on {{ draftDate }} at {{ draftTime }}. Click Resume to continue where you left off or Discard Draft to start over."
+    "FORMS_DRAFT_BANNER_SUBTITLE": "Your inputs were saved as a draft on {{ draftDate }} at {{ draftTime }}. Click Resume to continue where you left off or Discard Draft to start over.",
+    "DISCARD_DRAFT_CONFIRM_MESSAGE": "The saved draft for observation forms will be removed and cannot be restored.",
+    "DISCARD": "Discard",
+    "DRAFT_DISCARDED_SUCCESS": "The saved draft session is discarded",
 }

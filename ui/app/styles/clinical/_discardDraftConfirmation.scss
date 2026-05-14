@@ -1,0 +1,182 @@
+.draft-discard-success-container {
+    position: fixed;
+    z-index: 10001;
+    display: flex;
+    justify-content: center;
+    top: 52px;
+    width: 100%;
+    left: 0;
+
+    .bx--inline-notification {
+        width: auto;
+        min-width: 18rem;
+        max-width: 38rem;
+        min-height: auto;
+        font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.28572;
+        letter-spacing: 0.16px;
+        color: #161616;
+    }
+
+    .bx--inline-notification--low-contrast.bx--inline-notification--success {
+        background: #defbe6;
+        border-left: 3px solid #198038;
+        color: #161616;
+
+        .bx--inline-notification__icon {
+            fill: #198038;
+        }
+    }
+
+    .bx--inline-notification__details {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+        gap: 0.25rem;
+        flex: 1;
+    }
+
+    .bx--inline-notification__icon {
+        flex-shrink: 0;
+        display: block;
+        margin-top: 0;
+    }
+
+    .bx--inline-notification__text-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .bx--inline-notification__title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: 0.16px;
+        margin: 0;
+    }
+}
+
+.discard-draft-modal.ngdialog-theme-default {
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ngdialog-content {
+        background: #ffffff;
+        border-radius: 0 !important;
+        padding: 0;
+        width: 500px;
+        margin: 0;
+        font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .discard-draft-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 20px 10px 20px;
+
+        .ngdialog-close {
+            position: relative;
+            top: auto;
+            right: auto;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000000;
+
+            &:hover,
+            &:focus {
+                outline: 2px solid #0f62fe;
+                outline-offset: 2px;
+            }
+
+            svg {
+                width: 20px;
+                height: 20px;
+                fill: currentColor;
+            }
+        }
+    }
+
+    .discard-draft-title {
+        font-size: 20px;
+        font-weight: 400;
+        margin: 0;
+        color: #333333;
+    }
+
+    .discard-draft-body {
+        padding: 10px 20px 50px 20px;
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.5;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .discard-draft-buttons {
+        display: flex;
+
+        button {
+            box-sizing: border-box;
+            font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.28572;
+            letter-spacing: 0.16px;
+            position: relative;
+            display: inline-flex;
+            flex: 1;
+            min-height: 3rem;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: space-between;
+            padding: calc(0.875rem - 3px) 63px calc(0.875rem - 3px) 15px;
+            margin: 0;
+            border: 0;
+            border-radius: 0;
+            cursor: pointer;
+            outline: none;
+            text-align: left;
+            text-decoration: none;
+            transition: background 70ms cubic-bezier(0, 0, 0.38, 0.9),
+                        box-shadow 70ms cubic-bezier(0, 0, 0.38, 0.9),
+                        border-color 70ms cubic-bezier(0, 0, 0.38, 0.9),
+                        outline 70ms cubic-bezier(0, 0, 0.38, 0.9);
+            vertical-align: top;
+            background: linear-gradient(to bottom, #FFF, #DDD);
+        }
+
+        .discard-draft-cancel-btn {
+            padding-top: 1rem;
+            padding-bottom: 2rem;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0);
+            background: #393939 !important;
+            color: #ffffff;
+        }
+
+        .discard-draft-confirm-btn {
+            padding-top: 1rem;
+            padding-bottom: 2rem;
+            background: #DA1E28 !important;
+            color: #ffffff;
+        }
+    }
+}

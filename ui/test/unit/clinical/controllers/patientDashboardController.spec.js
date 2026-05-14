@@ -12,11 +12,12 @@
 describe("patient dashboard controller", function () {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module(function ($provide) {
-        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved']));
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved', 'discardDraft']));
+        $provide.value('ngDialog', jasmine.createSpyObj('ngDialog', ['open', 'close']));
     }));
 
     var scope, spinner, _clinicalDashboardConfig, _clinicalAppConfigService, _state, _appService, _diseaseTemplateService,
-        _stateParams, _controller, _appConfig, location, filter, _rootScope, _formDraftService;
+        _stateParams, _controller, _appConfig, location, filter, _rootScope, _formDraftService, _ngDialog, _timeout;
     var diseaseTemplates;
     location = {
         path: function () {
@@ -89,12 +90,14 @@ describe("patient dashboard controller", function () {
                 return value;
             });
         });
-        inject(function ($controller, $rootScope, $filter, formDraftService) {
+        inject(function ($controller, $rootScope, $filter, formDraftService, ngDialog, $timeout) {
             scope = $rootScope.$new();
             scope.patient = {};
             scope.visitHistory = {};
             _rootScope = $rootScope;
             _formDraftService = formDraftService;
+            _ngDialog = ngDialog;
+            _timeout = $timeout;
 
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             filter = $filter;
@@ -452,6 +455,164 @@ describe("patient dashboard controller", function () {
                 createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
                 scope.resumeDraft();
                 expect(_state.go).not.toHaveBeenCalled();
+            });
+        });
+
+        describe("confirmDiscardDraft", function () {
+            var fakeDialog;
+            beforeEach(function () {
+                fakeDialog = {id: 'dialog-1'};
+                _ngDialog.open.and.returnValue(fakeDialog);
+                _formDraftService.getDraft.and.returnValue({
+                    then: function () { return this; },
+                    catch: function () { return this; }
+                });
+            });
+
+            it("should open a confirmation dialog when confirmDiscardDraft is called", function () {
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.confirmDiscardDraft();
+                expect(_ngDialog.open).toHaveBeenCalled();
+            });
+
+            it("should close dialog when cancel is invoked", function () {
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.confirmDiscardDraft();
+                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
+                dialogScope.cancel();
+                expect(_ngDialog.close).toHaveBeenCalledWith(fakeDialog.id);
+            });
+
+            it("should not call discardDraft service or change draft state when cancel is invoked", function () {
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.formDraft.hasDrafts = true;
+                scope.formDraft.draftDate = '10 Apr 2026';
+                scope.formDraft.draftTime = '10:00 AM';
+                _rootScope.draftData = {uuid: 'some-draft'};
+
+                scope.confirmDiscardDraft();
+                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
+                dialogScope.cancel();
+
+                expect(_formDraftService.discardDraft).not.toHaveBeenCalled();
+                expect(scope.formDraft.hasDrafts).toBe(true);
+                expect(scope.formDraft.draftDate).toBe('10 Apr 2026');
+                expect(scope.formDraft.draftTime).toBe('10:00 AM');
+                expect(_rootScope.draftData).toEqual({uuid: 'some-draft'});
+            });
+
+            it("should not call discardDraft service when dialog is opened but not confirmed", function () {
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.confirmDiscardDraft();
+                expect(_formDraftService.discardDraft).not.toHaveBeenCalled();
+            });
+
+            it("should call discardDraft service and clear state when discard is confirmed", function () {
+                _formDraftService.discardDraft.and.returnValue({
+                    then: function (success) {
+                        success();
+                        return this;
+                    }
+                });
+                _rootScope.currentProvider = {uuid: 'provider-uuid'};
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.formDraft.hasDrafts = true;
+                scope.formDraft.draftDate = '10 Apr 2026';
+                scope.formDraft.draftTime = '10:00 AM';
+                _rootScope.draftData = {uuid: 'some-draft'};
+
+                scope.confirmDiscardDraft();
+                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
+                dialogScope.discardDraft();
+
+                expect(_formDraftService.discardDraft).toHaveBeenCalledWith('patient-uuid', 'provider-uuid');
+                expect(scope.formDraft.hasDrafts).toBe(false);
+                expect(scope.formDraft.draftDate).toBeNull();
+                expect(scope.formDraft.draftTime).toBeNull();
+                expect(scope.formDraft.discardSuccess).toBe(true);
+                expect(_rootScope.draftData).toBeNull();
+                expect(_rootScope.resumeDraftOnLoad).toBe(false);
+                expect(_rootScope.resumeDraftPatientUuid).toBeNull();
+                expect(_rootScope.hasVisitedConsultation).toBe(false);
+                expect(_rootScope.draftDiscarded).toBe(true);
+            });
+
+            it("should hide success banner after 5 seconds", function () {
+                _formDraftService.discardDraft.and.returnValue({
+                    then: function (success) {
+                        success();
+                        return this;
+                    }
+                });
+                _rootScope.currentProvider = {uuid: 'provider-uuid'};
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+                scope.confirmDiscardDraft();
+                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
+                dialogScope.discardDraft();
+
+                expect(scope.formDraft.discardSuccess).toBe(true);
+                _timeout.flush(5000);
+                expect(scope.formDraft.discardSuccess).toBe(false);
+            });
+
+            it("should close dialog only after discard API call succeeds", function () {
+                var thenCallback;
+                _formDraftService.discardDraft.and.returnValue({
+                    then: function (success) {
+                        thenCallback = success;
+                        return this;
+                    }
+                });
+                _rootScope.currentProvider = {uuid: 'provider-uuid'};
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+                scope.confirmDiscardDraft();
+                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
+                dialogScope.discardDraft();
+
+                expect(_ngDialog.close).not.toHaveBeenCalled();
+                thenCallback();
+                expect(_ngDialog.close).toHaveBeenCalledWith(fakeDialog.id);
+            });
+
+            it("should close dialog when discard API call fails", function () {
+                _formDraftService.discardDraft.and.returnValue({
+                    then: function (success, error) {
+                        error();
+                        return this;
+                    }
+                });
+                _rootScope.currentProvider = {uuid: 'provider-uuid'};
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.formDraft.hasDrafts = true;
+
+                scope.confirmDiscardDraft();
+                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
+                dialogScope.discardDraft();
+
+                expect(_ngDialog.close).toHaveBeenCalledWith(fakeDialog.id);
+                expect(scope.formDraft.hasDrafts).toBe(true);
+            });
+
+            it("should cancel success banner timeout on scope destroy", function () {
+                _formDraftService.discardDraft.and.returnValue({
+                    then: function (success) {
+                        success();
+                        return this;
+                    }
+                });
+                _rootScope.currentProvider = {uuid: 'provider-uuid'};
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+                scope.confirmDiscardDraft();
+                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
+                dialogScope.discardDraft();
+
+                expect(scope.formDraft.discardSuccess).toBe(true);
+                scope.$destroy();
+                try { _timeout.flush(5000); } catch (e) {}
+                expect(scope.formDraft.discardSuccess).toBe(true);
             });
         });
 
