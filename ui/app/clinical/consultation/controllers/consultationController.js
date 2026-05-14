@@ -14,12 +14,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
         'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'confirmBox',
-        'virtualConsultService', 'adhocTeleconsultationService', 'formDraftService',
+        'virtualConsultService', 'adhocTeleconsultationService', 'formDraftService', 'autoSaveService',
         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
                   ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox,
-                  virtualConsultService, adhocTeleconsultationService, formDraftService) {
+                  virtualConsultService, adhocTeleconsultationService, formDraftService, autoSaveService) {
             var ERROR = 1;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
@@ -267,6 +267,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             });
 
             $scope.$on("$destroy", function () {
+                autoSaveService.stop();
                 cleanUpListenerStateChangeSuccess();
                 cleanUpListenerErrorsOnForm();
                 cleanUpListenerStateChangeStart();

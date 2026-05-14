@@ -10,18 +10,27 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService, appService, formDraftService;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService, appService, formDraftService, autoSaveService;
     stateParams = {conceptSetGroupName: "concept set group name"};
     var extension = {"extension": {
         extensionParams: {}
     }};
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module(function ($provide) {
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appDescriptor.getConfigValue.and.returnValue(false);
+        var mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        mockAppService.getAppDescriptor.and.returnValue(appDescriptor);
+        $provide.value('appService', mockAppService);
+    }));
     var initController = function () {
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, _appService_, _autoSaveService_) {
             controller = $controller;
             scope = $rootScope.$new();
             rootScope = $rootScope;
+            appService = _appService_;
+            autoSaveService = _autoSaveService_;
         });
 
         rootScope.currentUser = {
@@ -74,10 +83,6 @@ describe('ConceptSetPageController', function () {
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         translate = jasmine.createSpyObj('$translate', ['instant']);
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-        appDescriptor.getConfigValue.and.returnValue(false);
-        appService.getAppDescriptor.and.returnValue(appDescriptor);
         formDraftService = jasmine.createSpyObj('formDraftService', ['saveDraft', 'getDraft']);
         formDraftService.getDraft.and.returnValue({
             then: function (success, error) {
@@ -107,7 +112,8 @@ describe('ConceptSetPageController', function () {
             spinner: spinner,
             $translate: translate,
             appService: appService,
-            formDraftService: formDraftService
+            formDraftService: formDraftService,
+            autoSaveService: autoSaveService
         });
     };
 
@@ -1906,6 +1912,168 @@ describe('ConceptSetPageController', function () {
                 createControllerWithTimeoutAndFilter(timeoutMock);
 
                 expect(rootScope.resumeDraftOnLoad).toBe(false);
+            });
+        });
+
+        describe('Auto-Save Interval', function () {
+            var autoSaveService, intervalMock;
+
+            beforeEach(inject(function ($timeout) {
+                autoSaveService = jasmine.createSpyObj('autoSaveService', ['start', 'stop', 'getIntervalMs']);
+                autoSaveService.getIntervalMs.and.returnValue(900000);
+            }));
+
+            var createControllerWithAutoSave = function (timeoutMock, formDraftServiceMock) {
+                var defaultTimeoutMock = function (callback, delay) {
+                    if (delay === 0) { callback(); }
+                    return {$$timeoutId: delay};
+                };
+                defaultTimeoutMock.cancel = jasmine.createSpy('cancel');
+                clinicalAppConfigService.getAllConceptSetExtensions.and.returnValue(extension);
+                return controller("ConceptSetPageController", {
+                    $scope: scope,
+                    $rootScope: rootScope,
+                    $stateParams: stateParams,
+                    conceptSetService: conceptSetService,
+                    formService: formService,
+                    clinicalAppConfigService: clinicalAppConfigService,
+                    messagingService: messagingService,
+                    configurations: configurations,
+                    $state: state,
+                    spinner: spinner,
+                    $translate: translate,
+                    appService: appService,
+                    $timeout: timeoutMock || defaultTimeoutMock,
+                    $filter: function () { return function () { return 'mocked-time'; }; },
+                    formDraftService: formDraftServiceMock || formDraftService,
+                    autoSaveService: autoSaveService
+                });
+            };
+
+            var enableDraftFeature = function () {
+                var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+                appDescriptor.getConfigValue.and.callFake(function (key) {
+                    if (key === 'enableFormDraftFeature') { return true; }
+                    return undefined;
+                });
+                appService.getAppDescriptor.and.returnValue(appDescriptor);
+            };
+
+            it('should start auto-save interval when dirty tracking is set up', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+                enableDraftFeature();
+
+                scope.patient = {uuid: 'patient-uuid'};
+                rootScope.currentProvider = {uuid: 'provider-uuid'};
+
+                createControllerWithAutoSave();
+
+                expect(autoSaveService.start).toHaveBeenCalled();
+            });
+
+            it('should pass a shouldSaveFn that returns true when isDirty is true and feature is enabled', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+                enableDraftFeature();
+
+                scope.patient = {uuid: 'patient-uuid'};
+                rootScope.currentProvider = {uuid: 'provider-uuid'};
+
+                createControllerWithAutoSave();
+
+                var shouldSaveFn = autoSaveService.start.calls.mostRecent().args[0];
+                scope.formDraft.isDirty = true;
+                expect(shouldSaveFn()).toBe(true);
+            });
+
+            it('should pass a shouldSaveFn that returns false when isDirty is false', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+                enableDraftFeature();
+
+                scope.patient = {uuid: 'patient-uuid'};
+                rootScope.currentProvider = {uuid: 'provider-uuid'};
+
+                createControllerWithAutoSave();
+
+                var shouldSaveFn = autoSaveService.start.calls.mostRecent().args[0];
+                scope.formDraft.isDirty = false;
+                expect(shouldSaveFn()).toBe(false);
+            });
+
+            it('should pass a shouldSaveFn that returns false when enableFormDraftFeature is false', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                scope.patient = {uuid: 'patient-uuid'};
+                rootScope.currentProvider = {uuid: 'provider-uuid'};
+
+                createControllerWithAutoSave();
+
+                var shouldSaveFn = autoSaveService.start.calls.mostRecent().args[0];
+                scope.formDraft.isDirty = true;
+                expect(shouldSaveFn()).toBeFalsy();
+            });
+
+            it('should NOT stop auto-save interval when observations tab is destroyed (supports tab switching)', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                createControllerWithAutoSave();
+                autoSaveService.stop.calls.reset();
+
+                scope.$destroy();
+
+                // Auto-save should persist across tab switches, so stop() should NOT be called on tab $destroy
+                expect(autoSaveService.stop).not.toHaveBeenCalled();
+            });
+
+            it('should NOT stop auto-save interval when event:save-successful is broadcast (continues to auto-save)', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                createControllerWithAutoSave();
+                autoSaveService.stop.calls.reset();
+
+                rootScope.$broadcast('event:save-successful');
+
+                // Auto-save should continue running after a successful save
+                expect(autoSaveService.stop).not.toHaveBeenCalled();
+            });
+
+            it('should NOT stop auto-save interval when event:save-started is broadcast (continues to auto-save)', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                createControllerWithAutoSave();
+                autoSaveService.stop.calls.reset();
+
+                rootScope.$broadcast('event:save-started');
+
+                // Auto-save should continue running during save operations
+                expect(autoSaveService.stop).not.toHaveBeenCalled();
+            });
+
+            it('should NOT stop auto-save interval when resetDirtyTracking is called via post-save handler', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                createControllerWithAutoSave();
+                autoSaveService.stop.calls.reset();
+
+                scope.consultation.postSaveHandler.fire();
+
+                // Auto-save should continue running after post-save cleanup
+                expect(autoSaveService.stop).not.toHaveBeenCalled();
             });
         });
 
