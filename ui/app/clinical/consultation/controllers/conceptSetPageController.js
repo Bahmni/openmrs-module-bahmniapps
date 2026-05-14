@@ -30,6 +30,12 @@ angular.module('bahmni.clinical')
             var allConceptSections = [];
 
             var init = function () {
+                if ($rootScope.draftDiscarded) {
+                    $scope.allTemplates = [];
+                    $scope.consultation.selectedObsTemplate = [];
+                    $scope.consultation.observationForms = [];
+                    $rootScope.draftDiscarded = false;
+                }
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
@@ -58,10 +64,12 @@ angular.module('bahmni.clinical')
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
                 var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                 if ($scope.enableFormDraftFeature && !$rootScope.resumeDraftOnLoad && patientUuid && providerUuid) {
-                    var promise = draftCheckPromise || formDraftService.getDraft(patientUuid, providerUuid);
+                    var promise = formDraftService.getDraft(patientUuid, providerUuid);
                     promise.then(function (response) {
                         if (response && response.data && response.data.uuid && !response.data.markedAsSaved) {
                             $rootScope.draftData = response.data;
+                        } else {
+                            $rootScope.draftData = null;
                         }
                         if ($rootScope.draftData && $rootScope.draftData.uuid && !$rootScope.draftData.markedAsSaved) {
                             $rootScope.resumeDraftOnLoad = true;

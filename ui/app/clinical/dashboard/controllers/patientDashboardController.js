@@ -11,9 +11,9 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
-        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter', 'formDraftService', '$rootScope',
+        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter', 'formDraftService', '$rootScope', 'ngDialog', '$timeout',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter, formDraftService, $rootScope) {
+            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter, formDraftService, $rootScope, ngDialog, $timeout) {
             $scope.enableFormDraftFeature = appService.getAppDescriptor().getConfigValue('enableFormDraftFeature');
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
@@ -35,7 +35,8 @@ angular.module('bahmni.clinical')
             $scope.formDraft = {
                 draftDate: draftTimestampObj.date,
                 draftTime: draftTimestampObj.time,
-                hasDrafts: false
+                hasDrafts: false,
+                discardSuccess: false
             };
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
             $state.discardChanges = false;
@@ -68,6 +69,43 @@ angular.module('bahmni.clinical')
                 $state.go('patient.dashboard.show.observations', {
                     conceptSetGroupName: 'All Observation Templates'
                 });
+            };
+
+            var discardSuccessTimeout;
+
+            $scope.confirmDiscardDraft = function () {
+                var dialogScope = $scope.$new();
+                var dialog = ngDialog.open({
+                    template: 'dashboard/views/discardDraftConfirmation.html',
+                    scope: dialogScope,
+                    className: 'ngdialog-theme-default discard-draft-modal'
+                });
+                dialogScope.cancel = function () {
+                    ngDialog.close(dialog.id);
+                };
+                dialogScope.discardDraft = function () {
+                    var patientUuid = $scope.patient ? $scope.patient.uuid : null;
+                    var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                    formDraftService.discardDraft(patientUuid, providerUuid).then(function () {
+                        $scope.formDraft.hasDrafts = false;
+                        $scope.formDraft.draftDate = null;
+                        $scope.formDraft.draftTime = null;
+                        $scope.formDraft.discardSuccess = true;
+                        $rootScope.draftData = null;
+                        $rootScope.resumeDraftOnLoad = false;
+                        $rootScope.resumeDraftPatientUuid = null;
+                        $rootScope.hasVisitedConsultation = false;
+                        $state.discardChanges = true;
+                        $state.dirtyConsultationForm = false;
+                        $rootScope.draftDiscarded = true;
+                        ngDialog.close(dialog.id);
+                        discardSuccessTimeout = $timeout(function () {
+                            $scope.formDraft.discardSuccess = false;
+                        }, 5000);
+                    }, function () {
+                        ngDialog.close(dialog.id);
+                    });
+                };
             };
 
             var checkForExistingDrafts = function () {
@@ -156,6 +194,9 @@ angular.module('bahmni.clinical')
                 cleanUpListenerSaveSuccessful();
                 cleanUpListenerSaveStarted();
                 cleanUpListenerPrintDashboard();
+                if (discardSuccessTimeout) {
+                    $timeout.cancel(discardSuccessTimeout);
+                }
             });
 
             var addTabNameToParams = function (board) {

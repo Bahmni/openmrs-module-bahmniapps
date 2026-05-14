@@ -1132,6 +1132,52 @@ describe('ConceptSetPageController', function () {
                 expect(rootScope.draftData).toBeNull();
             });
 
+            it('should reset allTemplates, selectedObsTemplate and observationForms when draftDiscarded flag is set', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                scope.patient = {uuid: 'test-patient-uuid'};
+                rootScope.currentProvider = {uuid: 'test-provider-uuid'};
+                rootScope.draftDiscarded = true;
+                scope.allTemplates = [{uuid: 'stale-template'}];
+                scope.consultation.selectedObsTemplate = [{uuid: 'stale-obs'}];
+                scope.consultation.observationForms = [{formName: 'stale-form'}];
+
+                formDraftService.getDraft.and.returnValue({
+                    then: function (success) {
+                        success({data: {uuid: null}});
+                        return {catch: function () { return this; }};
+                    }
+                });
+
+                createControllerWithTimeoutAndFilter(timeoutMock);
+
+                expect(rootScope.draftDiscarded).toBe(false);
+                expect(_.find(scope.consultation.selectedObsTemplate, function (t) { return t.uuid === 'stale-obs'; })).toBeUndefined();
+            });
+
+            it('should clear stale draftData when getDraft returns a draft that is already markedAsSaved', function () {
+                scope.allTemplates = [{uuid: 'some-template', label: 'T', observations: [],
+                    isDefault: function () { return false; }, alwaysShow: false, isAvailable: function () { return true; }}];
+
+                scope.patient = {uuid: 'test-patient-uuid'};
+                rootScope.currentProvider = {uuid: 'test-provider-uuid'};
+                rootScope.resumeDraftOnLoad = false;
+                rootScope.draftData = {uuid: 'old-draft-uuid', formData: '[]', markedAsSaved: false};
+
+                formDraftService.getDraft.and.returnValue({
+                    then: function (success) {
+                        success({data: {uuid: 'new-draft-uuid', markedAsSaved: true}});
+                        return {catch: function () { return this; }};
+                    }
+                });
+
+                createControllerWithTimeoutAndFilter(timeoutMock);
+
+                expect(rootScope.draftData).toBeNull();
+            });
+
             it('should not clobber draftData when resumeDraftOnLoad is set and getDraft promise catches unhandled error', function () {
                 scope.allTemplates = [{uuid: 'some-template', label: 'T', observations: [],
                     isDefault: function () { return false; }, alwaysShow: false, isAvailable: function () { return true; }}];
