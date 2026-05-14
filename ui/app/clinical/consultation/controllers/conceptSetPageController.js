@@ -12,10 +12,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout', '$filter', 'appService', 'formDraftService', 'formDirtyStateService',
+        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout', '$filter', 'appService', 'formDraftService', 'formDirtyStateService', 'autoSaveService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-              contextChangeHandler, $q, $translate, formService, $timeout, $filter, appService, formDraftService, formDirtyStateService) {
+              contextChangeHandler, $q, $translate, formService, $timeout, $filter, appService, formDraftService, formDirtyStateService, autoSaveService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -456,6 +456,11 @@ angular.module('bahmni.clinical')
                         formDirtyStateService.syncForm2Observations($scope.consultation.observationForms);
                     });
                 });
+
+                autoSaveService.start(
+                    function () { return $scope.enableFormDraftFeature && $scope.formDraft.isDirty && !dirtyTrackingState.isSaving; },
+                    saveFormDraft
+                );
             };
 
             var suppressDirtyTrackingDuringSaveRefresh = function () {
