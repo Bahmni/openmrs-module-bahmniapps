@@ -36,7 +36,10 @@ angular.module('bahmni.registration')
                 var iframe = $document[0].getElementById("extension-popup");
                 iframe.src = getExtensionPoint(identifierType).src + "?action=" + action;
                 $scope.showExtIframe = true;
-                $window.addEventListener("message", function (popupWindowData) {
+
+                function handlePopupMessage(popupWindowData) {
+                    // Remove this one-shot listener immediately so it never fires twice
+                    $window.removeEventListener("message", handlePopupMessage, false);
                     if (popupWindowData.data.patient !== undefined) {
                         $rootScope.extenstionPatient = popupWindowData.data.patient;
                         if ($rootScope.extenstionPatient.id !== undefined) {
@@ -46,12 +49,20 @@ angular.module('bahmni.registration')
                             }
                         } else $window.open(Bahmni.Registration.Constants.newPatient, "_self");
                         $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
+                        $rootScope.extenstionPatient = undefined;
                         $scope.$digest();
                     }
                     if (popupWindowData.data.patientUuid !== undefined) {
                         $window.open(Bahmni.Registration.Constants.existingPatient + popupWindowData.data.patientUuid, "_self");
                     }
-                }, false);
+                }
+
+                $window.addEventListener("message", handlePopupMessage, false);
+
+                // Cleanup if the scope is destroyed before the popup message arrives
+                $scope.$on('$destroy', function () {
+                    $window.removeEventListener("message", handlePopupMessage, false);
+                });
             };
 
             $scope.isDisabledAttribute = function (attribute) {
@@ -435,4 +446,3 @@ angular.module('bahmni.registration')
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
         }]);
-
