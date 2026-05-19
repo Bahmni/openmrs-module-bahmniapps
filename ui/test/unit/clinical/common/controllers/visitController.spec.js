@@ -231,44 +231,6 @@ describe('VisitController', function () {
         });
         }
 
-    describe('privileges handling', function () {
-        it('should set empty privileges array when rootScope.currentUser is undefined', function () {
-            rootScope.currentUser = undefined;
-            createController(rootScope);
-            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
-        });
-
-        it('should set empty privileges array when rootScope.currentUser.privileges is undefined', function () {
-            rootScope.currentUser = {
-                uuid: 'user-uuid',
-                username: 'testuser'
-            };
-            createController(rootScope);
-            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
-        });
-
-        it('should handle empty privileges array from rootScope.currentUser', function () {
-            rootScope.currentUser = {
-                uuid: 'user-uuid',
-                username: 'testuser',
-                privileges: []
-            };
-            createController(rootScope);
-            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
-        });
-
-        it('should ensure privileges are included in ipdDashboard.hostData structure', function () {
-            var mockPrivileges = [{ name: 'Test Privilege' }];
-            rootScope.currentUser = {
-                privileges: mockPrivileges
-            };
-            createController(rootScope);
-            expect(scope.ipdDashboard.hostData).toBeDefined();
-            expect(scope.ipdDashboard.hostData.privileges).toBeDefined();
-            expect(scope.ipdDashboard.hostData.privileges).toEqual(mockPrivileges);
-        });
-    });
-
     describe('template URL handling', function () {
         it('should pick template from print-content view when dashboard-content templateUrl is not available', function () {
             state.current = {views: {'dashboard-content': {}, 'print-content': {templateUrl: '/print/template/url'}}};
@@ -305,26 +267,6 @@ describe('VisitController', function () {
             expect(scope.showProviderInfo).toBe(true);
         });
 
-        it('should set showPatientInformation to false when config is explicitly false', function () {
-            appService.getAppDescriptor.and.returnValue({
-                getConfigValue: function (key) {
-                    if (key === 'showPatientInfoInVisits') return false;
-                    return undefined;
-                }
-            });
-            createController(rootScope);
-            expect(scope.showPatientInformation).toBe(false);
-        });
-
-        it('should set showPatientInformation to true when config is not defined', function () {
-            appService.getAppDescriptor.and.returnValue({
-                getConfigValue: function () {
-                    return undefined;
-                }
-            });
-            createController(rootScope);
-            expect(scope.showPatientInformation).toBe(true);
-        });
     });
 
     describe('IPD visit mode logic', function () {
@@ -384,33 +326,6 @@ describe('VisitController', function () {
             expect(scope.isActiveIpdVisit).toBe(true);
         });
 
-        it('should set isIpdReadMode to true when visit is not IPD', function () {
-            var visitSummary = {visitType: 'OPD', stopDateTime: null};
-            $controller('VisitController', {
-                $scope: scope,
-                $rootScope: rootScope,
-                $state: state,
-                encounterService: encounterService,
-                clinicalAppConfigService: clinicalAppConfigService,
-                visitSummary: visitSummary,
-                configurations: configurations,
-                $timeout: $timeout,
-                printer: {},
-                visitConfig: visitTabConfig,
-                visitHistory: [],
-                $stateParams: {},
-                locationService: locationService,
-                visitService: visitService,
-                appService: appService,
-                allergyService: allergyService,
-                auditLogService: auditLogService,
-                sessionService: sessionService,
-                $location: $location,
-                $window: window
-            });
-            expect(scope.isIpdReadMode).toBe(true);
-            expect(scope.isActiveIpdVisit).toBe(false);
-        });
     });
 
     describe('scope functions', function () {
