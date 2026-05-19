@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
-import { Modal, ComboBox, Checkbox } from "carbon-components-react";
+import { Modal, ComboBox, Toggle, TextInput, TextArea, NumberInput, Checkbox } from "carbon-components-react";
 import { Title, Dropdown as BahmniDropdown, DatePickerCarbon } from "bahmni-carbon-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { I18nProvider } from "../i18n/I18nProvider";
@@ -45,14 +45,25 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
         initialValues.startDate ? new Date(initialValues.startDate) : new Date()
     );
 
+    const [isLoadingDose, setIsLoadingDose] = useState(false);
+    const [loadingDoseValue, setLoadingDoseValue] = useState(0);
+    const [loadingDoseInstructions, setLoadingDoseInstructions] = useState(null);
+    const [loadingDoseRate, setLoadingDoseRate] = useState(0);
+    const [loadingDoseAdditives, setLoadingDoseAdditives] = useState('');
+    const [loadingDoseAdditionalInstructions, setLoadingDoseAdditionalInstructions] = useState('');
+
     const doseUnits = hostData?.doseUnits || [];
     const routes = hostData?.routes || [];
     const dosingRules = hostData?.dosingRules || [];
     const drugFormDefaults = hostData?.drugFormDefaults || {};
     const dosageRuleUnitsMap = hostData?.dosageRuleUnitsMap || {};
 
-    const isNextEnabled = !!(selectedDrug && units && startDate);
-    const isDirty = !!(selectedDrug || dosingRule || units || route);
+    const loadingDoseUnitName = units?.value || 'Units';
+
+    const showRateAndAdditives = dosingRule?.value === 'ml/kg';
+
+    const isNextEnabled = !!(selectedDrug && units && startDate && (!isLoadingDose || loadingDoseValue > 0));
+    const isDirty = !!(selectedDrug || dosingRule || units || route || isLoadingDose);
 
     const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
 
@@ -79,6 +90,13 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
             units: units?.value || "",
             route: route?.value || "",
             startDate,
+            loadingDose: isLoadingDose ? {
+                dose: String(loadingDoseValue),
+                instructions: loadingDoseInstructions?.value || '',
+                rate: String(loadingDoseRate),
+                additives: loadingDoseAdditives,
+                additionalInstructions: loadingDoseAdditionalInstructions,
+            } : null,
         });
     };
 
@@ -130,6 +148,14 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const START_DATE_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_START_DATE_LABEL", defaultMessage: "Start Date" });
     const ROUTE_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_ROUTE_LABEL", defaultMessage: "Route" });
     const SELECT_ROUTE = intl.formatMessage({ id: "VARIABLE_DOSE_SELECT_ROUTE", defaultMessage: "Select Route" });
+    const PROTOCOL_HEADING = intl.formatMessage({ id: "VARIABLE_DOSE_PROTOCOL_HEADING", defaultMessage: "Protocol" });
+    const ADD_LOADING_DOSE_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_ADD_LOADING_DOSE", defaultMessage: "Add Loading Dose" });
+    const LOADING_DOSE_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_LOADING_DOSE_LABEL", defaultMessage: "Loading Dose" });
+    const LOADING_DOSE_INSTRUCTIONS_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_LOADING_DOSE_INSTRUCTIONS", defaultMessage: "Instructions" });
+    const LOADING_DOSE_SELECT_INSTRUCTIONS = intl.formatMessage({ id: "VARIABLE_DOSE_SELECT_INSTRUCTIONS", defaultMessage: "Select Instructions" });
+    const LOADING_DOSE_RATE_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_LOADING_DOSE_RATE", defaultMessage: "Rate (ml/hr)" });
+    const LOADING_DOSE_ADDITIVES_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_LOADING_DOSE_ADDITIVES", defaultMessage: "Additives" });
+    const LOADING_DOSE_ADDITIONAL_INSTRUCTIONS_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_LOADING_DOSE_ADDITIONAL_INSTRUCTIONS", defaultMessage: "Additional Instructions" });
 
     return (
         <>
@@ -256,6 +282,99 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                     width="100%"
                 />
             </div>
+
+            <div className="vdp-protocol-section">
+                <h4 className="vdp-protocol-heading">{PROTOCOL_HEADING}</h4>
+                <div className="vdp-loading-dose-toggle-row">
+                    <Toggle
+                        id="loading-dose-toggle"
+                        size="sm"
+                        labelText=""
+                        labelA=""
+                        labelB=""
+                        toggled={isLoadingDose}
+                        onToggle={(checked) => {
+                            setIsLoadingDose(checked);
+                            if (!checked) {
+                                setLoadingDoseValue(0);
+                                setLoadingDoseInstructions(null);
+                                setLoadingDoseRate(0);
+                                setLoadingDoseAdditives('');
+                                setLoadingDoseAdditionalInstructions('');
+                            }
+                        }}
+                    />
+                    <span className="vdp-loading-dose-toggle-label">{ADD_LOADING_DOSE_LABEL}</span>
+                </div>
+                {isLoadingDose && (
+                    <div className="vdp-loading-dose-fields">
+                        <div className="vdp-loading-dose-dose-row">
+                            <div className="vdp-loading-dose-stepper">
+                                <NumberInput
+                                    id="loading-dose-dose"
+                                    label={<Title text={LOADING_DOSE_LABEL} isRequired={true} />}
+                                    value={loadingDoseValue}
+                                    min={0}
+                                    step={0.5}
+                                    onChange={(e, dirOrObj, legacyVal) => {
+                                        const v = (dirOrObj !== null && typeof dirOrObj === 'object') ? dirOrObj.value : legacyVal;
+                                        setLoadingDoseValue(v !== undefined ? v : Number(e?.target?.value || 0));
+                                    }}
+                                />
+                            </div>
+                            <div className="vdp-loading-dose-unit">
+                                <BahmniDropdown
+                                    id="loading-dose-unit"
+                                    titleText=""
+                                    options={[{ label: loadingDoseUnitName, value: loadingDoseUnitName }]}
+                                    selectedValue={{ label: loadingDoseUnitName, value: loadingDoseUnitName }}
+                                    isDisabled={true}
+                                    width="100%"
+                                />
+                            </div>
+                        </div>
+                        <div className="vdp-loading-dose-details-row">
+                            <BahmniDropdown
+                                id="loading-dose-instructions"
+                                titleText={LOADING_DOSE_INSTRUCTIONS_LABEL}
+                                placeholder={LOADING_DOSE_SELECT_INSTRUCTIONS}
+                                options={(hostData?.dosingInstructions || []).map((instruction) => ({ label: instruction.name, value: instruction.name }))}
+                                selectedValue={loadingDoseInstructions}
+                                onChange={(item) => setLoadingDoseInstructions(item || null)}
+                                width="100%"
+                            />
+                            {showRateAndAdditives && (
+                                <NumberInput
+                                    id="loading-dose-rate"
+                                    label={LOADING_DOSE_RATE_LABEL}
+                                    value={loadingDoseRate}
+                                    min={0}
+                                    onChange={(e, dirOrObj, legacyVal) => {
+                                        const v = (dirOrObj !== null && typeof dirOrObj === 'object') ? dirOrObj.value : legacyVal;
+                                        setLoadingDoseRate(v !== undefined ? v : Number(e?.target?.value || 0));
+                                    }}
+                                />
+                            )}
+                            {showRateAndAdditives && (
+                                <TextInput
+                                    id="loading-dose-additives"
+                                    labelText={LOADING_DOSE_ADDITIVES_LABEL}
+                                    placeholder="Input Text"
+                                    value={loadingDoseAdditives}
+                                    onChange={(e) => setLoadingDoseAdditives(e.target.value)}
+                                />
+                            )}
+                        </div>
+                        <TextArea
+                            id="loading-dose-additional-instructions"
+                            labelText={LOADING_DOSE_ADDITIONAL_INSTRUCTIONS_LABEL}
+                            value={loadingDoseAdditionalInstructions}
+                            onChange={(e) => setLoadingDoseAdditionalInstructions(e.target.value)}
+                            rows={2}
+                        />
+                    </div>
+                )}
+            </div>
         </Modal>
         <Modal
             open={showCloseConfirmation}
@@ -283,15 +402,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     );
 }
 
-export function VariableDoseProtocolModal(props) {
-    return (
-        <I18nProvider>
-            <VariableDoseProtocolModalInner {...props} />
-        </I18nProvider>
-    );
-}
-
-VariableDoseProtocolModal.propTypes = {
+VariableDoseProtocolModalInner.propTypes = {
     hostData: PropTypes.shape({
         doseUnits: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
         routes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
@@ -303,6 +414,7 @@ VariableDoseProtocolModal.propTypes = {
                 route: PropTypes.string,
             })
         ),
+        dosingInstructions: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
     }),
     hostApi: PropTypes.shape({
         onClose: PropTypes.func,
@@ -310,3 +422,13 @@ VariableDoseProtocolModal.propTypes = {
         searchDrugs: PropTypes.func,
     }),
 };
+
+export function VariableDoseProtocolModal(props) {
+    return (
+        <I18nProvider>
+            <VariableDoseProtocolModalInner {...props} />
+        </I18nProvider>
+    );
+}
+
+VariableDoseProtocolModal.propTypes = VariableDoseProtocolModalInner.propTypes;

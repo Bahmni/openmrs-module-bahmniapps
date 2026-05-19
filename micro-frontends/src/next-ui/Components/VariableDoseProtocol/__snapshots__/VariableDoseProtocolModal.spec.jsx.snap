@@ -392,6 +392,61 @@ exports[`VariableDoseProtocolModal should render the modal (open=true is hardcod
             </div>
           </div>
         </div>
+        <div
+          class="vdp-protocol-section"
+        >
+          <h4
+            class="vdp-protocol-heading"
+          >
+            Protocol
+          </h4>
+          <div
+            class="vdp-loading-dose-toggle-row"
+          >
+            <div
+              class="bx--form-item"
+            >
+              <input
+                class="bx--toggle-input bx--toggle-input--small"
+                id="loading-dose-toggle"
+                type="checkbox"
+              />
+              <label
+                class="bx--toggle-input__label"
+                for="loading-dose-toggle"
+              >
+                
+                <span
+                  class="bx--toggle__switch"
+                >
+                  <svg
+                    class="bx--toggle__check"
+                    height="5px"
+                    viewBox="0 0 6 5"
+                    width="6px"
+                  >
+                    <path
+                      d="M2.2 2.7L5 0 6 1 2.2 5 0 2.7 1 1.5z"
+                    />
+                  </svg>
+                  <span
+                    aria-hidden="true"
+                    class="bx--toggle__text--off"
+                  />
+                  <span
+                    aria-hidden="true"
+                    class="bx--toggle__text--on"
+                  />
+                </span>
+              </label>
+            </div>
+            <span
+              class="vdp-loading-dose-toggle-label"
+            >
+              Add Loading Dose
+            </span>
+          </div>
+        </div>
       </div>
       <div
         class="bx--modal-footer bx--btn-set"

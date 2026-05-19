@@ -83,6 +83,7 @@ VariableDoseProtocol.propTypes = {
                 route: PropTypes.string,
             })
         ),
+        dosingInstructions: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
     }),
     hostApi: PropTypes.shape({
         onClose: PropTypes.func,

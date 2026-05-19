@@ -26,6 +26,7 @@ Bahmni.Clinical.DrugOrder = (function () {
             var dosingInstructions = {};
             dosingInstructions.instructions = drugOrderData.instructions && drugOrderData.instructions;
             dosingInstructions.additionalInstructions = drugOrderData.additionalInstructions;
+            dosingInstructions.isLoadingDose = drugOrderData.isLoadingDose || false;
             if (drugOrderData.frequencyType === Bahmni.Clinical.Constants.dosingTypes.variable) {
                 dosingInstructions.morningDose = drugOrderData.variableDosingType.morningDose;
                 dosingInstructions.afternoonDose = drugOrderData.variableDosingType.afternoonDose;

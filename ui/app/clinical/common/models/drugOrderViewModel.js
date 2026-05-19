@@ -111,6 +111,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.instructions = this.instructions || inputOptionsConfig.defaultInstructions;
     this.autoExpireDate = this.autoExpireDate || undefined;
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
+    this.isLoadingDose = this.isLoadingDose || false;
     this.uniformDosingType = this.uniformDosingType || {};
     if (this.uniformDosingType.dose && config.getDoseFractions && !_.isEmpty(config.getDoseFractions())) {
         var destructredNumber = destructureReal(this.uniformDosingType.dose);
@@ -177,6 +178,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         return abscissa ? "" + abscissa + result : "" + result;
     };
 
+    var getDisplayFrequency = function () {
+        return self.isLoadingDose ? 'Loading Dose' : blankIfFalsy(self.uniformDosingType.frequency);
+    };
+
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
         var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
@@ -187,7 +192,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         }
 
         return addDelimiter(blankIfFalsy(doseAndUnits), ", ") +
-            addDelimiter(blankIfFalsy(uniformDosingType.frequency), ", ");
+            addDelimiter(getDisplayFrequency(), ", ");
     };
 
     var numberBasedDoseAndFrequency = function () {
@@ -681,7 +686,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     };
 
     this.getFrequency = function () {
-        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(self.uniformDosingType.frequency) : "";
+        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? getDisplayFrequency() : "";
     };
 
     this.calculateEffectiveStopDate = function () {
@@ -733,6 +738,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     }
     viewModel.instructions = administrationInstructions.instructions;
     viewModel.additionalInstructions = administrationInstructions.additionalInstructions;
+    viewModel.isLoadingDose = administrationInstructions.isLoadingDose || false;
     viewModel.quantity = drugOrderResponse.dosingInstructions.quantity;
     viewModel.quantityUnit = drugOrderResponse.dosingInstructions.quantityUnits;
     viewModel.drug = drugOrderResponse.drug;
