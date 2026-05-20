@@ -16,7 +16,7 @@ const PatientListTitle = ({ noOfDrugs, identifier, name, age, gender, patientUui
       <Link href={getPatientIPDDashboardUrl(patientUuid, visitUuid)} className="patient-id">
         {`(${identifier})`}
       </Link>
-      <span>{`${name} - ${formatGender(gender)}, ${age}`}</span>
+      <span>{name} - {formatGender(gender)}, {age}</span>
     </div>
   </div>
 );

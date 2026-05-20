@@ -72,7 +72,11 @@ exports[`PatientsList Component renders the component without crashing 1`] = `
                 (PID123)
               </a>
               <span>
-                John Doe - Male, 34 years 5 months 8 days
+                John Doe
+                 - 
+                Male
+                , 
+                34 years 5 months 8 days
               </span>
             </div>
           </div>

@@ -84,7 +84,11 @@ exports[`ProviderNotifications Component renders the component without crashing 
                     (PID123)
                   </a>
                   <span>
-                    John Doe - Male, 34 years 4 months 8 days
+                    John Doe
+                     - 
+                    Male
+                    , 
+                    34 years 4 months 8 days
                   </span>
                 </div>
               </div>
