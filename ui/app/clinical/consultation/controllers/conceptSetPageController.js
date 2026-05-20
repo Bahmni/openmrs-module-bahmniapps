@@ -421,6 +421,9 @@ angular.module('bahmni.clinical')
                 $scope.formDraft.statusMessage = null;
                 $scope.formDraft.statusParams = {};
                 $scope.formDraft.statusError = false;
+                if ($scope.consultation) {
+                    $scope.consultation._draftCleanState = undefined;
+                }
             };
 
             var setupDirtyTracking = function () {

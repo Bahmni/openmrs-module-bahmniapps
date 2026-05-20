@@ -196,7 +196,7 @@
     "SAVE_CONFIRMATION_OPTION_CANCEL_KEY": "Cancel",
     "BROWSER_CLOSE_DIALOG_MESSAGE_KEY": "You might lose unsaved data",
     "POP_UP_CLOSE_DIALOG_MESSAGE_KEY": "You might lose unsaved data. Are you sure you want to leave this page?",
-    "ALERT_MESSAGE_ON_EXIT": "There is unsaved consultation data for this patient. Do you wish to Review the data or Proceed to next page?",
+    "ALERT_MESSAGE_ON_EXIT": "There is unsaved consultation data for this patient. Do you wish to Review the data or Proceed to the next page?",
     "MESSAGE_DIALOG_OPTION_COPY": "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "MESSAGE_DIALOG_OPTION_REVIEW": "Review",

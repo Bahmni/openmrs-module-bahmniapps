@@ -12,7 +12,7 @@
                                     </div>
                                     <span class="saving-text">{{::'SAVING_AS_DRAFT' | translate }}</span>
                                 </div>
-                                <div class="draft-feedback-area" ng-show="enableFormDraftFeature && formDraft.hasDrafts">
+                                <div class="draft-feedback-area" ng-show="enableFormDraftFeature && formDraft.hasDrafts && !formDraft.showSpinner">
                                     <span class="draft-status-text" ng-show="!formDraft.showSpinner && formDraft.statusMessage" ng-class="{'draft-status-error': formDraft.statusError}">{{ formDraft.statusMessage | translate: formDraft.statusParams }}</span>
                                 </div>
                                 <button id="save-as-draft-button" class="save-draft-button" ng-click="saveAsDraft()" ng-show="enableFormDraftFeature" ng-disabled="!formDraft.isDirty">{{::'SAVE_AS_DRAFT'  | translate }}</button>
