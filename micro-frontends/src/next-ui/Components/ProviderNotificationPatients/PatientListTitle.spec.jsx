@@ -1,11 +1,19 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import PatientListTitle from "./PatientListTitle";
 import { formatGender } from "../../utils/utils";
 import { getPatientIPDDashboardUrl } from "../../utils/providerNotifications/ProviderNotificationUtils";
 
 const mockWindowOpen = jest.fn();
 global.window.open = mockWindowOpen;
+
+jest.mock('react-intl', () => ({
+    FormattedMessage: ({ id, defaultMessage }) => defaultMessage,
+}));
+
+jest.mock("../../utils/utils", () => ({
+  formatGender: jest.fn((gender) => gender === 'M' ? 'Male' : gender === 'F' ? 'Female' : 'Other'),
+}));
 
 jest.mock("../../utils/providerNotifications/ProviderNotificationUtils", () => ({
   getPatientIPDDashboardUrl: jest.fn(),
@@ -28,6 +36,11 @@ describe("PatientListTitle Component", () => {
     openedWindow: null,
     setOpenedWindow: jest.fn(),
   };
+
+  it("should render correctly", () => {
+    const { queryByText } = render(<PatientListTitle {...props} />);
+    expect(queryByText(`(${props.identifier})`)).toBeTruthy();
+  });
 
   it('should render without crashing', () => {
     const {container} = render(<PatientListTitle {...props} />);
@@ -52,6 +65,11 @@ describe("PatientListTitle Component", () => {
     const { getByText } = render(<PatientListTitle {...props} />);
     const expectedText = `${props.name} - ${formatGender(props.gender)}, ${props.age}`;
     expect(getByText(expectedText)).toBeTruthy();
+  });
+
+  it("should render the warning icon and number of drugs", () => {
+    const { queryByText } = render(<PatientListTitle {...props} />);
+    expect(queryByText(props.noOfDrugs.toString())).toBeTruthy();
   });
 
   it('passes prop types correctly', () => {

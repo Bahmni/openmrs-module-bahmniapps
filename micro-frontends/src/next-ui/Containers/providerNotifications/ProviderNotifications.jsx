@@ -11,18 +11,18 @@ import { MEDICATION_ACKNOWLEDGE_SQL_PROPERTY, verifierFunction } from '../../con
 import { NotificationCarbon } from "bahmni-carbon-ui";
 
 export function ProviderNotifications() {
-    const acknowledgementRequiredText = (<FormattedMessage id="AKNOWLEDGEMENT_REQUIRED_TEXT" defaultMessage="Acknowledgement required" />);
-    const noDrugsToBeAcknowledgedText = (<FormattedMessage id="NO_DRUGS_TO_BE_AKNOWLEDGED_TEXT" defaultMessage="You have no new drugs to be acknowledged." />);
+    const acknowledgementRequiredText = (<FormattedMessage id="ACKNOWLEDGEMENT_REQUIRED_TEXT" defaultMessage="Acknowledgement required" />);
+    const noDrugsToBeAcknowledgedText = (<FormattedMessage id="NO_DRUGS_TO_BE_ACKNOWLEDGED_TEXT" defaultMessage="You have no new drugs to be acknowledged." />);
     const [patientListWithMedications, setPatientListWithMedications] = useState([]);
     const [showNotification, setShowNotification] = useState(false);
     const [notificationTitle, setNotificationTitle] = useState("");
     const [notificationType, setNotificationType] = useState("success");
     const [providerUuid, setProviderUuid] = useState();
-    const cookies = getCookies();
-    const locationUuid = JSON.parse(cookies["bahmni.user.location"]).uuid;
 
     const fetchProviderAndMedications = async () => {
         try {
+            const cookies = getCookies();
+            const locationUuid = JSON.parse(cookies["bahmni.user.location"]).uuid;
             const provider = await getProvider();
             const providerUuid = provider.currentProvider.uuid;
             setProviderUuid(providerUuid);

@@ -45,7 +45,7 @@ export function PatientAlergiesControl(props) {
     reactionData?.setMembers
       ?.filter((reaction) => reaction.display !== "Other non-coded")
       .map((reaction) => {
-        return { name: reaction.names[0].display, uuid: reaction.uuid };
+        return { name: reaction.name.display, uuid: reaction.uuid };
       });
 
   const TransformReactionData = (reactionData) => {
@@ -233,9 +233,9 @@ export function PatientAlergiesControl(props) {
               }}
             />
           )}
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
-        </div>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy saved successfully"/>} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={<FormattedMessage id={"ERROR_SAVING_ALLERGY"} defaultMessage="Error saving allergy"/>} hideCloseButton={true}/>        
+          </div>
       )}
       </I18nProvider>
     </>

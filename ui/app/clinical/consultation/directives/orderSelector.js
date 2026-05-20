@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('bahmni.clinical')
-    .directive('orderSelector', [function () {
+    .directive('orderSelector', ['$rootScope', function ($rootScope) {
         var link = function ($scope) {
             $scope.hasTests = function () {
                 var rootConcept = $scope.tab.leftCategory;
@@ -18,6 +18,11 @@ angular.module('bahmni.clinical')
 
             $scope.filterBySearchString = function (test) {
                 return _.some(test.names, filterBySearchString);
+            };
+
+            $scope.filterNameByLocale = function (test) {
+                return _.find(test.names, {conceptNameType: "SHORT", locale: $rootScope.currentUser.userProperties.defaultLocale }) || _.find(test.names, {conceptNameType: "SHORT"})
+                    || _.find(test.names, {conceptNameType: "FULLY_SPECIFIED"});
             };
         };
 

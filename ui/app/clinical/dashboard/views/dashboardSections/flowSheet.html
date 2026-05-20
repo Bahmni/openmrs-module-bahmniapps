@@ -4,7 +4,7 @@
             ng-dialog-class="ngdialog ngdialog-theme-default ng-dialog-all-details-page"
         ng-dialog-data='{"section": {{section}}, "patient": {{patient}} }'
         class="section-title has-link">
-            <span class="title-link">{{section.title}} </span>
+            <span class="title-link">{{::section | titleTranslate}} </span>
             <i class="fa fa-external-link"></i>
         </h2>
         <pivot-table patient-uuid="patient.uuid" config="section.dashboardConfig" display-name="section.dashboardConfig.label" status="status"></pivot-table>

@@ -4,7 +4,7 @@
             <i class="fa fa-caret-right" ng-show="!expanded"></i>
             <i class="fa fa-caret-down" ng-show="expanded"></i>
             <span class="section-title-text">
-                <span>{{ward.ward.name}} -  </span>
+                <span>{{ward.ward.name|translate}} -  </span>
                 <small>({{ 'TOTAL_BEDS_LABEL'|translate }}: {{ward.totalBeds}} | {{ 'AVAILABLE_BEDS_LABEL'|translate }}: {{ward.totalBeds-ward.occupiedBeds}})</small>
             </span>
         </span>

@@ -40,7 +40,11 @@ exports[`PatientListTitle Component should render without crashing 1`] = `
         (PID123)
       </a>
       <span>
-        John Doe - Male, 30
+        John Doe
+         - 
+        Male
+        , 
+        30
       </span>
     </div>
   </div>

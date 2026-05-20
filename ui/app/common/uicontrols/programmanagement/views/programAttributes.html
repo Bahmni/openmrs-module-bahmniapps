@@ -1,6 +1,6 @@
 <div class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-show="!patientProgram.editing" ng-if="isIncluded(attributeType)">
     <div class="field-attribute">
-        <label>{{attributeType.description}} : </label>
+        <label>{{::getTranslatedAttributeTypes(attributeType.description) | translate}} : </label>
     </div>
     <div class="field-value">
         <span>

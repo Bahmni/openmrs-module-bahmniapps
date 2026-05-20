@@ -7,10 +7,8 @@
                     <a class="grid-row-element button orderBtn ng-binding ng-scope"
                        ng-click="toggleOrderSelection(test)"
                        ng-class="{active:isActiveOrderPresent(test), noteditable:isTestIndirectlyPresent(test)}"
-                       ng-disabled="isTestIndirectlyPresent(test)"
-                       tooltip="{{getName(test)}}"
-                       >
-                        <i class="fa fa-ok" ng-show="isActiveOrderPresent(test)"></i>{{getName(test)}}
+                       ng-disabled="isTestIndirectlyPresent(test)" tooltip="{{filterNameByLocale(test).name}}">
+                        <i class="fa fa-ok" ng-show="isActiveOrderPresent(test)"></i>{{filterNameByLocale(test).name}}
                     </a>
                 </li>
             </ul>

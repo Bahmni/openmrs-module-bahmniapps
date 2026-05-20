@@ -5,14 +5,25 @@ import { getLocale, getTranslations } from "./utils";
 
 export function I18nProvider({ children }) {
   const [messages, setMessages] = useState(undefined);
+  const [error, setError] = useState(null);
   const locale = useMemo(getLocale, []);
 
   useEffect(() => {
-    getTranslations(locale).then(setMessages);
-  }, []);
+    setError(null);
+    getTranslations(locale)
+      .then(setMessages)
+      .catch((err) => {
+        console.error("Error fetching translations:", err);
+        setError(err);
+      });
+  }, [locale]);
+
+  if (error) {
+    return <div>Error loading translations</div>;
+  }
 
   if (!messages) {
-    return <div></div>;
+    return <div>Loading translations...</div>;
   }
 
   return (

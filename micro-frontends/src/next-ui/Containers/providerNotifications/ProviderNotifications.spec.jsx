@@ -4,6 +4,13 @@ import { ProviderNotifications } from './ProviderNotifications';
 import { getCookies } from '../../utils/cookieHandler/cookieHandler';
 import { getProvider, getEmergencyDrugAcknowledgements, sortMedicationList, groupByIdentifier, acknowledgeEmergencyMedication, getPatientIPDDashboardUrl } from '../../utils/providerNotifications/ProviderNotificationUtils';
 
+jest.mock('react-intl', () => ({
+    FormattedMessage: ({ id, defaultMessage }) => defaultMessage,
+    useIntl: () => ({
+        formatMessage: ({ id, defaultMessage }) => defaultMessage,
+    }),
+}));
+
 jest.mock('../../utils/cookieHandler/cookieHandler', () => ({
     getCookies: jest.fn(),
 }));
@@ -15,6 +22,16 @@ jest.mock('../../utils/providerNotifications/ProviderNotificationUtils', () => (
     groupByIdentifier: jest.fn(),
     acknowledgeEmergencyMedication: jest.fn(),
     getPatientIPDDashboardUrl: jest.fn()
+}));
+
+jest.mock('../../utils/utils', () => ({
+    formatGender: jest.fn((gender) => gender === 'M' ? 'Male' : gender === 'F' ? 'Female' : 'Other'),
+    formatArrayDateToDefaultDateFormat: jest.fn((dateArray) => `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`),
+    calculateAgeFromEpochDOB: jest.fn((epoch) => '34 years 4 months 8 days'),
+}));
+
+jest.mock('../../Components/i18n/I18nProvider', () => ({
+    I18nProvider: ({ children }) => <div>{children}</div>,
 }));
 
 describe('ProviderNotifications Component', () => {
@@ -52,6 +69,7 @@ describe('ProviderNotifications Component', () => {
         groupByIdentifier.mockReturnValue(groupedByIdentifierMock);
         sortMedicationList.mockReturnValue(sortedMedicationListMock);
         acknowledgeEmergencyMedication.mockResolvedValue(acknowledgeResponseMock);
+        getPatientIPDDashboardUrl.mockReturnValue('/bahmni/clinical/index.html#/default/patient/patient123/dashboard/visit/ipd/visit123');
     });
 
     it('should render without crashing and display no drugs to be acknowledged message', async () => {

@@ -46,6 +46,10 @@
     "REGISTRATION_LABEL_DATE_DEATH": "Date of death",
     "REGISTRATION_LABEL_TILL": "Till",
     "REGISTRATION_LABEL_SELECT_RELATIONSHIP_TYPE": "Select Relationship Type",
+    "REGISTRATION_HEADER_RELATIONSHIP_LABEL":"Relationship",
+    "REGISTRATION_HEADER_NAME_LABEL":"Name",
+    "REGISTRATION_HEADER_VALIDITY_DATE_LABEL":"Valid Until",
+    "REGISTRATION_LABEL_SELECT_PERSON":"Select Person",
     "REGISTRATION_LABEL_ENTER_NAME_ID": "Enter Name or ID",
     "REGISTRATION_LABEL_VALID_PATIENT_IDENTIFIER": "Please enter a valid patient identifier",
     "REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST": "Please select a provider from the autocomplete list",
@@ -123,5 +127,6 @@
     "PATIENT_ATTRIBUTE_FAMILY_NAME_LOCAL": "Last Name in Arabic",
     "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic",
     "RELATED_PATIENT_IDENTIFIER_LABEL": "Patient",
-    "REGISTRATION_LABEL_SAVE_REDIRECTION": "Saved and Visit Started Successfully"
+    "REGISTRATION_LABEL_SAVE_REDIRECTION": "Saved and Visit Started Successfully",
+    "PRE_REGISTRATION_LABEL": "Patient"
 }
