@@ -1212,6 +1212,31 @@ describe('ConceptSetPageController', function () {
                 expect(rootScope.draftData.uuid).toBe('draft-uuid');
             });
 
+            it('should reset _draftCleanState so Save As Draft button stays disabled when no draft exists after visit close', function () {
+                scope.allTemplates = [{uuid: 'some-template', label: 'T', observations: [],
+                    isDefault: function () { return false; }, alwaysShow: false, isAvailable: function () { return true; }}];
+
+                scope.patient = {uuid: 'test-patient-uuid'};
+                rootScope.currentProvider = {uuid: 'test-provider-uuid'};
+                rootScope.resumeDraftOnLoad = false;
+
+                // Simulate a previously resumed draft: _draftCleanState is set to a non-empty state
+                scope.consultation._draftCleanState = 'some-old-draft-state';
+
+                formDraftService.getDraft.and.returnValue({
+                    then: function (success) {
+                        success({data: {uuid: null}});
+                        return {catch: function () { return this; }};
+                    }
+                });
+
+                createControllerWithTimeoutAndFilter(timeoutMock);
+
+                // _draftCleanState must be cleared so dirty tracking baselines against the empty form
+                expect(scope.consultation._draftCleanState).toBeUndefined();
+                expect(scope.formDraft.isDirty).toBe(false);
+            });
+
             it('should call checkForExistingDrafts when patient and provider become available after controller init', function () {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
                 mockConceptSetService(conceptResponseData);
