@@ -205,7 +205,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 if ($scope.showSaveConfirmDialogConfig) {
-                    if ($rootScope.hasVisitedConsultation && $scope.shouldDisplaySaveConfirmDialogForStateChange(toState, toParams, fromState, fromParams)) {
+                    if ($rootScope.hasVisitedConsultation && !$state.discardChanges && $scope.shouldDisplaySaveConfirmDialogForStateChange(toState, toParams, fromState, fromParams)) {
                         if ($scope.showConfirmationPopUp) {
                             event.preventDefault();
                             spinner.hide(toState.spinnerToken);
