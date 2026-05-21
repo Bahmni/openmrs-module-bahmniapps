@@ -461,7 +461,7 @@ angular.module('bahmni.clinical')
                 });
 
                 autoSaveService.start(
-                    function () { return $scope.enableFormDraftFeature && $scope.formDraft.isDirty && !dirtyTrackingState.isSaving; },
+                    function () { return $scope.enableFormDraftFeature && $scope.formDraft.isDirty && !dirtyTrackingState.isSaving && $scope.visitHistory && $scope.visitHistory.activeVisit; },
                     saveFormDraft
                 );
             };
@@ -504,6 +504,9 @@ angular.module('bahmni.clinical')
 
             var saveFormDraft = function () {
                 if (dirtyTrackingState.isSaving) {
+                    return;
+                }
+                if (!$scope.visitHistory || !$scope.visitHistory.activeVisit) {
                     return;
                 }
 

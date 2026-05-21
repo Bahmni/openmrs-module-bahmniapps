@@ -2,9 +2,10 @@
 
 describe('FormDraftService', function () {
     var formDraftService;
-    var mockHttp = jasmine.createSpyObj('$http', ['get', 'post', 'patch', 'delete']);
+    var mockHttp;
 
     beforeEach(function () {
+        mockHttp = jasmine.createSpyObj('$http', ['get', 'post', 'patch', 'delete']);
         module('bahmni.common.services');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
@@ -93,5 +94,20 @@ describe('FormDraftService', function () {
                 suppressError: true
             }
         );
+    });
+
+    it('should not make DELETE request when patientUuid is null', function () {
+        formDraftService.discardDraft(null, 'provider-uuid-456');
+        expect(mockHttp.delete).not.toHaveBeenCalled();
+    });
+
+    it('should not make DELETE request when providerUuid is null', function () {
+        formDraftService.discardDraft('patient-uuid-123', null);
+        expect(mockHttp.delete).not.toHaveBeenCalled();
+    });
+
+    it('should not make DELETE request when both uuids are null', function () {
+        formDraftService.discardDraft(null, null);
+        expect(mockHttp.delete).not.toHaveBeenCalled();
     });
 });

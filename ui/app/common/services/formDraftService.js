@@ -23,6 +23,9 @@ angular.module('bahmni.common.services')
         };
 
         var discardDraft = function (patientUuid, providerUuid) {
+            if (!patientUuid || !providerUuid) {
+                return;
+            }
             return $http.delete(formDraftUrl, {
                 params: {
                     patientUuid: patientUuid,

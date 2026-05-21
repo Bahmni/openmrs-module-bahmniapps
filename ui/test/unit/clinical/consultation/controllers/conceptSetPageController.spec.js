@@ -625,6 +625,7 @@ describe('ConceptSetPageController', function () {
                     formDraftService: formDraftServiceMock || formDraftService
                 });
             };
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
         }));
 
         it('should set dirty true when form component observation changes', function () {
@@ -809,6 +810,30 @@ describe('ConceptSetPageController', function () {
             saveDraftPromise.callThenCallBack({data: {timestamp: Date.now(), uuid: 'draft-uuid', markedAsSaved: true}});
 
             expect(broadcastSpy).toHaveBeenCalledWith('draft:saved', {draftDate: '08 Apr 2026', draftTime: '10:30 AM'});
+        });
+
+        it('should not save draft when there is no active visit', function () {
+            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+
+            scope.visitHistory = {activeVisit: null};
+            createControllerWithTimeoutAndFilter();
+            scope.saveAsDraft();
+
+            expect(formDraftService.saveDraft).not.toHaveBeenCalled();
+        });
+
+        it('should not save draft when visitHistory is absent', function () {
+            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+
+            scope.visitHistory = null;
+            createControllerWithTimeoutAndFilter();
+            scope.saveAsDraft();
+
+            expect(formDraftService.saveDraft).not.toHaveBeenCalled();
         });
 
         it('should disable Save as Draft button (isDirty = false) when post-save handler is executed', function () {
@@ -1998,7 +2023,7 @@ describe('ConceptSetPageController', function () {
                 expect(autoSaveService.start).toHaveBeenCalled();
             });
 
-            it('should pass a shouldSaveFn that returns true when isDirty is true and feature is enabled', function () {
+            it('should pass a shouldSaveFn that returns true when isDirty is true and feature is enabled and active visit exists', function () {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
@@ -2006,12 +2031,13 @@ describe('ConceptSetPageController', function () {
 
                 scope.patient = {uuid: 'patient-uuid'};
                 rootScope.currentProvider = {uuid: 'provider-uuid'};
+                scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
 
                 createControllerWithAutoSave();
 
                 var shouldSaveFn = autoSaveService.start.calls.mostRecent().args[0];
                 scope.formDraft.isDirty = true;
-                expect(shouldSaveFn()).toBe(true);
+                expect(shouldSaveFn()).toBeTruthy();
             });
 
             it('should pass a shouldSaveFn that returns false when isDirty is false', function () {

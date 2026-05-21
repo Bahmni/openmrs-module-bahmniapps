@@ -12,10 +12,10 @@
 angular.module('bahmni.adt')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService',
         'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
-        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter', 'auditLogService', '$translate',
+        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter', 'auditLogService', '$translate', 'formDraftService',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService,
                   appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll,
-                  $stateParams, ngDialog, $filter, auditLogService, $translate) {
+                  $stateParams, ngDialog, $filter, auditLogService, $translate, formDraftService) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -160,6 +160,9 @@ angular.module('bahmni.adt')
             $scope.startNewVisit = function (visitTypeUuid) {
                 if ($scope.visitSummary) {
                     visitService.endVisit($scope.visitSummary.uuid).then(function () {
+                        var patientUuid = $scope.patient ? $scope.patient.uuid : null;
+                        var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                        formDraftService.discardDraft(patientUuid, providerUuid);
                         $scope.admit(visitTypeUuid);
                     });
                 } else {
@@ -269,6 +272,8 @@ angular.module('bahmni.adt')
                 if (defaultVisitTypeUuid !== null) {
                     var encounter = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
                     visitService.endVisitAndCreateEncounter($scope.visitSummary.uuid, encounterService.buildEncounter(encounter)).success(function (response) {
+                        var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                        formDraftService.discardDraft(encounter.patientUuid, providerUuid);
                         logVisit(encounter.patientUuid, "CLOSE_VISIT").then(function () {
                             return visitService.getVisitSummary(response.visitUuid).then(function (response) {
                                 $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
@@ -305,6 +310,8 @@ angular.module('bahmni.adt')
             $scope.discharge = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
                 return spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
+                    var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
+                    formDraftService.discardDraft(response.data.patientUuid, providerUuid);
                     logEncounter(response.data.patientUuid, response.data.encounterUuid, response.data.encounterType);
                     forwardUrl(response.data, "onDischargeForwardTo");
                 }));

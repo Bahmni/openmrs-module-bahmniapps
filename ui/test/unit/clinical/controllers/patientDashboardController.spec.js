@@ -93,7 +93,7 @@ describe("patient dashboard controller", function () {
         inject(function ($controller, $rootScope, $filter, formDraftService, ngDialog, $timeout) {
             scope = $rootScope.$new();
             scope.patient = {};
-            scope.visitHistory = {};
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
             _rootScope = $rootScope;
             _formDraftService = formDraftService;
             _ngDialog = ngDialog;
@@ -613,6 +613,42 @@ describe("patient dashboard controller", function () {
                 scope.$destroy();
                 try { _timeout.flush(5000); } catch (e) {}
                 expect(scope.formDraft.discardSuccess).toBe(true);
+            });
+        });
+
+        describe("draft discard when visit is closed", function () {
+            it("should auto-discard draft when there is no active visit", function () {
+                scope.visitHistory = {};
+                _formDraftService.discardDraft.and.returnValue({then: function (success) { success(); return this; }});
+                _formDraftService.getDraft.and.returnValue({
+                    then: function (success) {
+                        success({data: {uuid: 'draft-uuid', timestamp: Date.now(), markedAsSaved: false}});
+                        return this;
+                    },
+                    catch: function () { return this; }
+                });
+
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+                expect(_formDraftService.discardDraft).toHaveBeenCalledWith('patient-uuid', 'provider-uuid');
+                expect(scope.formDraft.hasDrafts).toBe(false);
+                expect(_rootScope.draftData).toBeNull();
+            });
+
+            it("should show draft banner when active visit exists", function () {
+                _formDraftService.getDraft.and.returnValue({
+                    then: function (success) {
+                        success({data: {uuid: 'draft-uuid', timestamp: Date.now(), markedAsSaved: false}});
+                        return this;
+                    },
+                    catch: function () { return this; }
+                });
+
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+
+                expect(_formDraftService.discardDraft).not.toHaveBeenCalled();
+                expect(scope.formDraft.hasDrafts).toBe(true);
+                expect(_rootScope.draftData.uuid).toBe('draft-uuid');
             });
         });
 
