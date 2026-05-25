@@ -120,7 +120,7 @@
                 <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}">
                     <i class="fa fa-bars fa-white fa-large"></i>
                 </button>
-                <mfe-ipd-draft-indicator show-if-has-privilege="app:clinical:observationTab"></mfe-ipd-draft-indicator>
+                <mfe-ipd-draft-indicator provider-uuid="currentProvider.uuid" show-if-has-privilege="app:clinical:observationTab"></mfe-ipd-draft-indicator>
             </div>
         </div>
         <ng-include src="'common/views/mobileHeader.html'"></ng-include>
