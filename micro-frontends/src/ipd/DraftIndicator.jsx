@@ -4,15 +4,14 @@ import "./DraftIndicator.scss";
 
 const LazyDraftIndicator = lazy(() => import("@openmrs-mf/ipd/DraftIndicator"));
 
-export function DraftIndicator() {
+export function DraftIndicator({ providerUuid }) {
     return (
         <Suspense fallback={<div />}>
-            <LazyDraftIndicator />
+            <LazyDraftIndicator providerUuid={providerUuid} />
         </Suspense>
     );
 }
 
 DraftIndicator.propTypes = {
-    hostData: PropTypes.object,
-    hostApi: PropTypes.object,
+    providerUuid: PropTypes.string,
 };

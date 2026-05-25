@@ -3,12 +3,20 @@
 describe('FormDraftService', function () {
     var formDraftService;
     var mockHttp;
+    var mockChannel;
+    var mockWindow;
 
     beforeEach(function () {
         mockHttp = jasmine.createSpyObj('$http', ['get', 'post', 'patch', 'delete']);
+        mockChannel = jasmine.createSpyObj('BroadcastChannel', ['postMessage', 'close']);
+        mockWindow = {
+            BroadcastChannel: jasmine.createSpy('BroadcastChannel').and.returnValue(mockChannel)
+        };
+
         module('bahmni.common.services');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
+            $provide.value('$window', mockWindow);
         });
 
         inject(['formDraftService', function (formDraftServiceInjected) {
@@ -109,5 +117,41 @@ describe('FormDraftService', function () {
     it('should not make DELETE request when both uuids are null', function () {
         formDraftService.discardDraft(null, null);
         expect(mockHttp.delete).not.toHaveBeenCalled();
+    });
+
+    it('should broadcast drafts-changed after saveDraft succeeds', function (done) {
+        var mockResponse = {data: {uuid: 'draft-uuid'}};
+        mockHttp.post.and.returnValue(specUtil.respondWith(mockResponse));
+
+        formDraftService.saveDraft('patient-uuid-123', 'provider-uuid-456', '{}').then(function () {
+            expect(mockWindow.BroadcastChannel).toHaveBeenCalledWith('bahmni-draft-indicator-update');
+            expect(mockChannel.postMessage).toHaveBeenCalledWith({type: 'drafts-changed'});
+            expect(mockChannel.close).toHaveBeenCalled();
+            done();
+        });
+    });
+
+    it('should broadcast drafts-changed after discardDraft succeeds', function (done) {
+        var mockResponse = {data: {success: true}};
+        mockHttp.delete.and.returnValue(specUtil.respondWith(mockResponse));
+
+        formDraftService.discardDraft('patient-uuid-123', 'provider-uuid-456').then(function () {
+            expect(mockWindow.BroadcastChannel).toHaveBeenCalledWith('bahmni-draft-indicator-update');
+            expect(mockChannel.postMessage).toHaveBeenCalledWith({type: 'drafts-changed'});
+            expect(mockChannel.close).toHaveBeenCalled();
+            done();
+        });
+    });
+
+    it('should broadcast drafts-changed after markDraftAsSaved succeeds', function (done) {
+        var mockResponse = {data: {uuid: 'draft-uuid', markedAsSaved: true}};
+        mockHttp.patch.and.returnValue(specUtil.respondWith(mockResponse));
+
+        formDraftService.markDraftAsSaved('patient-uuid-123', 'provider-uuid-456').then(function () {
+            expect(mockWindow.BroadcastChannel).toHaveBeenCalledWith('bahmni-draft-indicator-update');
+            expect(mockChannel.postMessage).toHaveBeenCalledWith({type: 'drafts-changed'});
+            expect(mockChannel.close).toHaveBeenCalled();
+            done();
+        });
     });
 });
