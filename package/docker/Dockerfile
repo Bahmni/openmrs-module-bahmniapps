@@ -1,5 +1,7 @@
 FROM httpd:2.4-alpine
 
+RUN apk --no-cache upgrade
+
 EXPOSE 8091
 COPY package/docker/httpd.conf /usr/local/apache2/conf
 COPY package/docker/systemdate.sh /usr/local/apache2/cgi-bin/systemdate
