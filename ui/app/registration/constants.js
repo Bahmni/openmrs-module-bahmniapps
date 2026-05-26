@@ -14,15 +14,15 @@ Bahmni.Registration.Constants = {
     webServiceRestBaseURL: hostUrl + "/openmrs/ws/rest/v1",
     basePatientUrl: RESTWS_V1 + "/patient/",
     patientSearchURL: "/search",
-    existingPatient: "/bahmni/registration/index.html#/patient/",
-    newPatient: "/bahmni/registration/index.html#/patient/new",
+    existingPatient: "/bahmni/v1/registration/index.html#/patient/",
+    newPatient: "/bahmni/v1/registration/index.html#/patient/new",
     allAddressFileds: ["uuid", "preferred", "address1", "address2", "address3", "address4", "address5", "address6", "cityVillage", "countyDistrict", "stateProvince", "postalCode", "country", "latitude", "longitude"],
     nextStepConfigId: "org.bahmni.registration.patient.next",
     patientNameDisplayOrder: ["firstName", "middleName", "lastName"],
     registrationMessage: "REGISTRATION_MESSAGE",
     enableWhatsAppButton: false,
     enableDashboardRedirect: false,
-    dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard",
+    dashboardUrl: "/bahmni/v1/clinical/index.html#/default/patient/{{patientUuid}}/dashboard",
     certificateHeader: "Print Header"
 };
 
