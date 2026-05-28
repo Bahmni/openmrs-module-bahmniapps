@@ -1,3 +1,12 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://www.bahmni.org/license/mplv2hd.
+ *
+ * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+ * graphic logo is a trademark of OpenMRS Inc.
+ */
+
 /*doc
 ---
 title: Buttons
@@ -18,8 +27,6 @@ use either a `<button>` or an `<a>` element:
 ```
 
 */
-
-
 
 /*doc
 ---
@@ -63,8 +70,6 @@ category: Layout - Button
 
 */
 
-
-
 /*doc
 ---
 title: Button Groups
@@ -95,8 +100,6 @@ category: Layout - Button
 ```
 
 */
-
-
 
 /*doc
 ---
@@ -131,9 +134,6 @@ category: Layout - Button
 
 
 */
-
-
-
 
 @mixin button($tcolor: #FFF, $bcolor: #DDD, $font: $text) {
   border-radius: 3px;
@@ -606,7 +606,6 @@ input[type="submit"].secondary-button:hover  {
 }
 
 /* split button - seperate scss file */
-
 
 .refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: $mediumGray; }
 .refill-btn .fa-play { font-size: 1em!important; }

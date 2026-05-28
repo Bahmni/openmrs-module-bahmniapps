@@ -1,9 +1,17 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://www.bahmni.org/license/mplv2hd.
+ *
+ * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+ * graphic logo is a trademark of OpenMRS Inc.
+ */
+
 html.no-touch {
 	@media screen and (min-width: 1024px) {
 		/*//all global no-touch styles goes here...
 		//i.e., 1024px and above desktop only styles
 		//(this is to differentiate from 1024px touch devices)*/
-
 
 		/*form input, form .input-prepend .add-on, form .form .input-prepend .add-on,
 		.form .input-prepend form .add-on, form select, form textarea, form ul.select,
