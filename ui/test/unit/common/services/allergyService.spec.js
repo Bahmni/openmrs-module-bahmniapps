@@ -543,9 +543,9 @@ describe('allergyService', function() {
         });
 
         it('should filter out no known allergy entry by UUID when other specific allergies exist', function() {
-            var noKnownAllergyUuid = 'no-known-uuid-123';
-            var callCount = 0;
-            var result;
+            const noKnownAllergyUuid = 'no-known-uuid-123';
+            let callCount = 0;
+            let result;
             _$http.get.and.callFake(function () {
                 callCount++;
                 if (callCount === 1) {
@@ -569,9 +569,9 @@ describe('allergyService', function() {
         });
 
         it('should keep no known allergy entry when it is the only allergy', function() {
-            var noKnownAllergyUuid = 'no-known-uuid-123';
-            var callCount = 0;
-            var result;
+            const noKnownAllergyUuid = 'no-known-uuid-123';
+            let callCount = 0;
+            let result;
             _$http.get.and.callFake(function () {
                 callCount++;
                 if (callCount === 1) {

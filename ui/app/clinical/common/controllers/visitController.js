@@ -157,35 +157,10 @@ angular.module('bahmni.clinical')
                     }
 
                     $scope.allergies = "";
-                    var allergyPromise = $q.all([
-                        allergyService.getAllergyForPatient($scope.patient.uuid),
-                        allergyService.getNoKnownAllergyUuid()
-                    ]).then(function (responses) {
-                        var allergies = responses[0].data;
-                        var noKnownAllergyUuid = responses[1];
-                        var allergiesList = [];
-
-                        if (responses[0].status === 200 && allergies.entry) {
-                            allergies.entry.forEach(function (allergy) {
-                                if (allergy.resource.code.coding) {
-                                    allergiesList.push({
-                                        display: allergy.resource.code.coding[0].display,
-                                        allergenCode: allergy.resource.code.coding[0].code
-                                    });
-                                }
-                            });
-                        }
-
-                        if (allergiesList.length > 1) {
-                            allergiesList = allergiesList.filter(function (allergy) {
-                                return allergy.allergenCode !== noKnownAllergyUuid;
-                            });
-                        }
-
-                        $scope.allergies = allergiesList.map(function (allergy) {
-                            return allergy.display;
-                        }).join(", ");
-                    });
+                    var allergyPromise = allergyService.fetchAndProcessAllergies($scope.patient.uuid)
+                        .then(function (allergiesDisplay) {
+                            $scope.allergies = allergiesDisplay;
+                        });
                     promises.push(allergyPromise);
 
                     Promise.all(promises).then(function () {

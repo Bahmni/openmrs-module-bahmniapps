@@ -20,14 +20,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { ArrowLeft } from "@carbon/icons-react/next";
 import propTypes from "prop-types";
 import React, { Fragment, useEffect } from "react";
-import "../../../styles/common.scss";
 import {
   saveAllergiesAPICall
 } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
 import SaveAndCloseButtons from "../SaveAndCloseButtons/SaveAndCloseButtons.jsx";
 import { SearchAllergen } from "../SearchAllergen/SearchAllergen.jsx";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
-import "./AddAllergy.scss";
 
 
   export function AddAllergy(props) {
