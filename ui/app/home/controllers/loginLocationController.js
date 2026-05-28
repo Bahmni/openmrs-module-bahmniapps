@@ -4,7 +4,7 @@ angular.module('bahmni.home')
     .controller('LoginLocationController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService',
         function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService) {
             var redirectUrl = $location.search()['from'];
-            var landingPagePath = "/dashboard";
+            var landingPagePath = "/bahmni/home";
             var loginPagePath = "/login";
             const LOGIN_LOCATIONS = "Login Locations";
             $scope.loginInfo = {};
@@ -103,7 +103,7 @@ angular.module('bahmni.home')
             var redirectToLandingPageIfAlreadyAuthenticated = function () {
                 sessionService.get().then(function (data) {
                     if (data.authenticated) {
-                        $location.path(landingPagePath);
+                        $window.location.href = landingPagePath;
                     }
                 });
             };
@@ -138,7 +138,7 @@ angular.module('bahmni.home')
                 spinner.forPromise(deferrable.promise).then(
                     function (data) {
                         if (data) return;
-                        $location.url(landingPagePath);
+                        $window.location.href = landingPagePath;
                     }
                 );
             };

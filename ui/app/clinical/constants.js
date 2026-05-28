@@ -70,7 +70,7 @@ Bahmni.Clinical.Constants = (function () {
         otherActiveDrugOrders: "Other Active DrugOrders",
         dispensePrivilege: "bahmni:clinical:dispense",
         mandatoryVisitConfigUrl: "config/visitMandatoryTab.json",
-        defaultExtensionName: "default",
+        defaultExtensionName: "v2",
         bacteriologyConstants: bacteriologyConstants,
         globalPropertyToFetchActivePatients: 'emrapi.sqlSearch.activePatients',
         adtPrivilege: "app:adt",

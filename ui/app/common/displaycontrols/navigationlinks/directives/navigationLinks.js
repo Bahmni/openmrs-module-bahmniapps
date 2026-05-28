@@ -13,7 +13,7 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 {
                     "name": "home",
                     "translationKey": "HOME_DASHBOARD_KEY",
-                    "url": "../home/#/dashboard",
+                    "url": "/bahmni/home/#/dashboard",
                     "title": "Home"
                 },
                 {

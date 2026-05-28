@@ -5,7 +5,7 @@ angular.module('bahmni.home')
         $scope.passwordDoesNotMatch = false;
         $scope.passwordPolicies = [];
         $scope.redirectToHomePage = function () {
-            $state.go('dashboard');
+            $window.location = '/bahmni/home/';
         };
         var checkPasswordMatches = function () {
             return $scope.loginInfo.newPassword == $scope.loginInfo.confirmPassword;
@@ -65,7 +65,7 @@ angular.module('bahmni.home')
                 sessionService.loadCredentials().then(function (data) {
                 });
             }, function () {
-                $window.location = "../home/index.html#/login";
+                $window.location = "/bahmni/home/index.html#/login";
             });
         };
         init();

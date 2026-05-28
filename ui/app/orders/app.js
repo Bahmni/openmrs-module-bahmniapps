@@ -9,7 +9,7 @@ angular
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
             $urlRouterProvider.otherwise('/search');
-            var homeBacklink = {label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"};
+            var homeBacklink = {label: "Home", url: "/bahmni/home/", accessKey: "h", icon: "fa-home"};
             var searchBacklink = {label: "Search", state: "search", accessKey: "p", icon: "fa-users"};
 
         // @if DEBUG='production'
@@ -76,6 +76,6 @@ angular
 
 ).run(['backlinkService', '$window', function (backlinkService, $window) {
     moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
-    backlinkService.addUrl({label: "Patient Search", url: "../home/"});
+    backlinkService.addUrl({label: "Patient Search", url: "/bahmni/home/"});
 }]);
 
