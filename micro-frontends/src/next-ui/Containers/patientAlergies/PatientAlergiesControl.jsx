@@ -128,8 +128,8 @@ export function PatientAlergiesControl(props) {
     const allergies = allergiesAndReactions.entry;
     const allergiesData = allergies?.map((allergy) => {
       const { resource } = allergy;
-      const allergen = resource.reaction[0]?.substance?.coding?.[0]?.display;
-      const allergenCode = resource.reaction[0]?.substance?.coding?.[0]?.code;
+      const allergen = resource.code?.coding?.[0]?.display;
+      const allergenCode = resource.code?.coding?.[0]?.code;
       const severity = resource.reaction[0]?.severity;
       const severityRank =  SEVERITY_RANK[severity] ?? DEFAULT_SEVERITY_RANK;
       const note = resource.note && resource.note[0].text;
