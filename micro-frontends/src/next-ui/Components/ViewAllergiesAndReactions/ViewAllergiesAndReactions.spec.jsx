@@ -10,8 +10,9 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { ViewAllergiesAndReactions } from './ViewAllergiesAndReactions';
-import {NO_KNOWN_ALLERGY_CODE} from "../../constants";
 import { IntlProvider } from "react-intl";
+
+const NO_KNOWN_ALLERGY_CODE = "no-known-allergy-uuid";
 
 describe("ViewAllergiesAndReactions", () => {
     const allergiesMock = [
