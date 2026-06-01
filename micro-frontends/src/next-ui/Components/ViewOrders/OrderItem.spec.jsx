@@ -71,4 +71,34 @@ describe("OrderItemContainer", () => {
         expect(container.querySelector(".accordion")).toBeTruthy();
         expect(screen.getByText("01 Jan 2024 10:00 AM")).toBeTruthy();
     });
+
+    it("should display New for null orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus={null} />);
+        expect(screen.getByText("New")).toBeTruthy();
+    });
+
+    it("should display New for DRAFT orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="DRAFT" />);
+        expect(screen.getByText("New")).toBeTruthy();
+    });
+
+    it("should display New for UNKNOWN orderStatus (backward compat)", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="UNKNOWN" />);
+        expect(screen.getByText("New")).toBeTruthy();
+    });
+
+it("should display Acknowledged for REQUESTED orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="REQUESTED" />);
+        expect(screen.getByText("Acknowledged")).toBeTruthy();
+    });
+
+    it("should display In Progress for ACCEPTED orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="ACCEPTED" />);
+        expect(screen.getByText("In Progress")).toBeTruthy();
+    });
+
+    it("should display Completed for COMPLETED orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="COMPLETED" />);
+        expect(screen.getByText("Completed")).toBeTruthy();
+    });
 });

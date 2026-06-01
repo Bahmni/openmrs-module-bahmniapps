@@ -51,9 +51,9 @@ export const FHIR_EXT_TASK_NOTE = "task-note"
 export const FHIR_EXT_CREATED_BY = "created-by"
 export const FHIR_URL = "/openmrs/ws/fhir2/R4/Task";
 export const FHIR_EXT_ORDER_SHORT_NAME = "order-short-name"
-export const DB_FULFILLER_STATUS_TO_UI_STATUS = {
-    RECEIVED: 'Acknowledged',
-    IN_PROGRESS: 'In Progress',
+export const FHIR_TASK_STATUS_TO_UI_STATUS = {
+    DRAFT: 'New',
+    REQUESTED: 'Acknowledged',
+    ACCEPTED: 'In Progress',
     COMPLETED: 'Completed',
-    EXCEPTION: 'New',
 };
