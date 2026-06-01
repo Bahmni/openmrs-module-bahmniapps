@@ -18,7 +18,7 @@ angular.module('bahmni.registration')
                 $rootScope.errorMessage = null;
                 sessionService.destroy().then(
                     function () {
-                        $window.location = "../home/";
+                        $window.location = "../home/index.html#/login";
                     }
                 );
             };
