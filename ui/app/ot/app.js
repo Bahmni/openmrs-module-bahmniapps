@@ -9,7 +9,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
     function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/home');
 
-        var homeBackLink = {type: "link", name: "Home", value: Bahmni.Common.Constants.newHomeURL, accessKey: "h", icon: "fa-home"};
+        var homeBackLink = {type: "link", name: "Home", value: "../home/", accessKey: "h", icon: "fa-home"};
         var otSchedulingLink = {type: "state", name: "OT_SCHEDULING_KEY", value: "otScheduling", accessKey: "b"};
         var queuesLink = {type: "state", name: "OT_SURGICAL_QUEUES_KEY", value: "home", accessKey: "b"};
         var navigationLinks = [queuesLink, otSchedulingLink];

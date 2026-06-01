@@ -106,7 +106,7 @@ angular.module('bahmni.home')
             var redirectToLandingPageIfAlreadyAuthenticated = function () {
                 sessionService.get().then(function (data) {
                     if (data.authenticated) {
-                        $window.location.href = Bahmni.Common.Constants.newHomeURL;
+                        $location.path(landingPagePath);
                     }
                 });
             };
@@ -236,7 +236,7 @@ angular.module('bahmni.home')
                                 if (res) {
                                     $window.location.replace(redirectUrl);
                                 } else {
-                                    $window.location.href = Bahmni.Common.Constants.newHomeURL;
+                                    $location.url(landingPagePath);
                                 }
                             });
                         } else {
