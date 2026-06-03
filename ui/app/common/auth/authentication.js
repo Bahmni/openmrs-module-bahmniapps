@@ -32,7 +32,7 @@ angular.module('authentication')
     }]).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
         $rootScope.$on('event:auth-loginRequired', function () {
             $timeout(function () {
-                $window.location = "../home/index.html#/login";
+                $window.location = "/bahmni/home/index.html#/login";
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', '$window', function ($rootScope, $http, $q, $bahmniCookieStore, userService, $window) {
@@ -240,7 +240,7 @@ angular.module('authentication')
         function logoutUser () {
             auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
                 sessionService.destroy().then(function () {
-                    $window.location = "../home/index.html#/login";
+                    $window.location = "/bahmni/home/index.html#/login";
                 });
             });
         }

@@ -37,7 +37,7 @@ angular.module('consultation')
                 id: "patients-link",
                 icon: "fa-users"
             };
-            var homeBackLink = {label: "", url: "../home/index.html", accessKey: "h", icon: "fa-home"};
+            var homeBackLink = {label: "", url: "/bahmni/home/index.html", accessKey: "h", icon: "fa-home"};
 
         // @if DEBUG='production'
             $compileProvider.debugInfoEnabled(false);
@@ -78,7 +78,7 @@ angular.module('consultation')
                 },
                 resolve: {
                     initializeConfigs: function (initialization, $stateParams) {
-                        $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
+                        $stateParams.configName = ($stateParams.configName && $stateParams.configName !== 'default') ? $stateParams.configName : Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
                         return initialization($stateParams.configName);
                     }
@@ -100,7 +100,7 @@ angular.module('consultation')
                 },
                 resolve: {
                     initialization: function (initialization, $stateParams) {
-                        $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
+                        $stateParams.configName = ($stateParams.configName && $stateParams.configName !== 'default') ? $stateParams.configName : Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
                         return initialization($stateParams.configName);
                     },

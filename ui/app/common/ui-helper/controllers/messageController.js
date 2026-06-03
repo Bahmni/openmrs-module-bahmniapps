@@ -44,7 +44,7 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$sco
         $scope.discardChanges = function (level) {
             $state.discardChanges = true;
             $scope.hideMessage(level);
-            return $state.isPatientSearch ? $location.path('/default/patient/search') : $location.path('/default/patient/' + $state.newPatientUuid + "/dashboard");
+            return $state.isPatientSearch ? $location.path('/v2/patient/search') : $location.path('/default/patient/' + $state.newPatientUuid + "/dashboard");
         };
     }
 ]);
