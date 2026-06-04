@@ -56,6 +56,7 @@ export function PatientAlergiesControl(props) {
   const { patient, provider, activeVisit, allergyControlConceptIdMap } = hostData;
 
   const isAddButtonEnabled = activeVisit && activeVisit.uuid;
+  const enableNoKnownAllergy = appService.getAppDescriptor().getConfigValue("enableNoKnownAllergy") || false;
 
   const extractAllergenData = (allergenData, allergenKind) =>
     allergenData?.setMembers
@@ -223,6 +224,7 @@ export function PatientAlergiesControl(props) {
   }, []);
 
   useEffect(() => {
+    if (!enableNoKnownAllergy) return;
     getNoKnownAllergyUuid().then((code) => {
       setNoKnownAllergyUuid(code);
     });

@@ -110,7 +110,7 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     };
 
 
-    const showKnownAllergySelector = existingAllergies?.length === 0
+    const showKnownAllergySelector = existingAllergies?.length === 0 && !!noKnownAllergyUuid
 
     return (
         <div className={"next-ui"}>
