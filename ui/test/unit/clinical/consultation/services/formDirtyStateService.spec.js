@@ -24,7 +24,7 @@ describe('formDirtyStateService', function () {
             expect(values).toEqual([]);
         });
 
-        it('should collect multiSelect observation values', function () {
+        it('should collect multiSelect observation values as sorted keys', function () {
             var values = [];
             var obs = {
                 isMultiSelect: true,
@@ -32,7 +32,7 @@ describe('formDirtyStateService', function () {
             };
             formDirtyStateService.collectObsValues(obs, values);
             expect(values.length).toBe(1);
-            expect(values[0]).toEqual({option1: true, option2: false});
+            expect(values[0]).toEqual(['option1', 'option2']);
         });
 
         it('should ignore Angular $ prefixed keys in multiSelect', function () {
@@ -43,7 +43,7 @@ describe('formDirtyStateService', function () {
             };
             formDirtyStateService.collectObsValues(obs, values);
             expect(values.length).toBe(1);
-            expect(values[0]).toEqual({option1: true, $special: 'ignore'});
+            expect(values[0]).toEqual(['option1']);
         });
 
         it('should not collect multiSelect with no selected keys', function () {

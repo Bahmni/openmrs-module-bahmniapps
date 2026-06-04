@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
                     return k.indexOf('$') !== 0;
                 });
                 if (selectedKeys.length > 0) {
-                    values.push(obs.selectedObs);
+                    values.push(selectedKeys.sort());
                 }
                 return;
             }
@@ -27,7 +27,12 @@ angular.module('bahmni.clinical')
                 return;
             }
             if (obs.value !== null && obs.value !== undefined) {
-                values.push(obs.value);
+                var val = obs.value;
+                if (val && typeof val === 'object' && val.uuid) {
+                    values.push(val.uuid);
+                } else {
+                    values.push(val);
+                }
             }
         };
 
