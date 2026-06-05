@@ -1,5 +1,47 @@
 mfe-next-ui-variable-dose-protocol-table {
     display: block;
+    width: 100%;
     margin-top: 8px;
     clear: both;
+}
+
+mfe-next-ui-variable-dose-protocol-table .next-ui {
+    width: 100%;
+}
+
+.drug-orders-history mfe-next-ui-variable-dose-protocol-table .vdp-section,
+.treatment-section mfe-next-ui-variable-dose-protocol-table .vdp-section {
+    padding: 0;
+    margin-top: 8px;
+}
+
+.variable-dosage-badge {
+    display: inline-block;
+    background-color: #007d79;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.variable-dosage-group-header-row td.variable-dosage-group-label {
+    font-weight: bold;
+    color: #264478;
+    font-size: 14px;
+    padding: 8px 5px;
+    background-color: #f4f4f4;
+}
+
+.variable-dose-stage-drug {
+    padding-left: 30px !important;
+}
+
+.variable-dosage-table-cell {
+    padding: 0 !important;
+}
+
+.variable-dosage-group-header-row td {
+    border-bottom: none !important;
 }

@@ -40,12 +40,10 @@
     color: #161616 !important;
   }
 
-  /* bahmni-carbon-ui sets max-width: 250px on bx--list-box__wrapper */
   .bx--list-box__wrapper {
     max-width: 100% !important;
   }
 
-  /* AngularJS global input CSS overrides Carbon's visually-hidden native checkboxes */
   input.bx--checkbox[type="checkbox"],
   input.bx--toggle-input[type="checkbox"] {
     position: absolute !important;
@@ -59,12 +57,10 @@
     appearance: none !important;
   }
 
-  /* Carbon default is justify-content: space-between, which gaps label from field */
   .bx--date-picker-container {
     justify-content: flex-start !important;
   }
 
-  /* Carbon modal SCSS sets $field-02 (#fff) on date picker inputs inside .bx--modal-container */
   .bx--date-picker,
   .bx--date-picker-container,
   .bx--date-picker-input__wrapper,
@@ -114,7 +110,6 @@
   color: #da1e28;
 }
 
-/* ── Protocol section ── */
 .vdp-protocol-section {
   width: 100%;
   margin-top: 1.5rem;
@@ -137,7 +132,6 @@
   margin-bottom: 8px;
 }
 
-/* Toggle row: switch + inline label side by side */
 .vdp-loading-dose-toggle-row {
   display: flex;
   align-items: center;
@@ -172,7 +166,6 @@
   letter-spacing: 0.16px;
 }
 
-/* ── Loading dose expanded fields ── */
 .vdp-loading-dose-fields {
   margin-top: 1rem;
   width: 100%;
@@ -205,12 +198,6 @@
   box-sizing: border-box;
 }
 
-/* Lock input wrapper height so AngularJS hover borders (content-box) don't shift layout */
-.vdp-loading-dose-stepper .bx--number__input-wrapper {
-  box-sizing: border-box !important;
-  height: 40px !important;
-  min-height: 40px !important;
-}
 
 .vdp-loading-dose-unit .bx--list-box__wrapper,
 .vdp-loading-dose-unit .bx--form-item,
@@ -221,39 +208,13 @@
   box-sizing: border-box;
 }
 
-/* Lock dropdown field height for same reason */
 .vdp-loading-dose-unit .bx--list-box__field {
   box-sizing: border-box !important;
   height: 40px !important;
   min-height: 40px !important;
 }
 
-/* clinical.css adds a global border to button elements — remove it from all NumberInput steppers */
-.vdp-loading-dose-stepper .bx--number__control-btn,
-.vdp-loading-dose-details-row .bx--number__control-btn {
-  border: none !important;
-}
 
-/*
- * Carbon draws the focus ring as outline on the <input> element. clinical.css button borders
- * and Carbon's own ::before/::after divider pseudo-elements overlap the input's top edge at
- * the button positions, creating visible breaks. Fix: suppress per-element outlines and draw
- * a single clean focus ring on the wrapper via :focus-within instead.
- */
-.vdp-loading-dose-stepper .bx--number input[type='number']:focus,
-.vdp-loading-dose-stepper .bx--number__control-btn:focus,
-.vdp-loading-dose-details-row .bx--number input[type='number']:focus,
-.vdp-loading-dose-details-row .bx--number__control-btn:focus {
-  outline: none !important;
-}
-
-.vdp-loading-dose-stepper .bx--number__input-wrapper:has(input:focus),
-.vdp-loading-dose-details-row .bx--number__input-wrapper:has(input:focus) {
-  outline: 2px solid #0f62fe !important;
-  outline-offset: 0 !important;
-}
-
-/* clinical.css adds a border to button elements — remove it from the chevron */
 .vdp-loading-dose-unit .bx--list-box__menu-icon {
   border: none !important;
   background-color: transparent !important;
@@ -283,15 +244,161 @@
   width: 100%;
 }
 
-/* clinical.css sets .treatment-section-left textarea { width: 185px } — override both background and width */
 .variable-dose-modal .bx--text-area {
   background-color: #f4f4f4 !important;
   width: 100% !important;
   height: 52px;
 }
 
-/* Carbon sets $field-02 (#fff) on inputs inside .bx--modal-container — restore field-01 gray */
 .variable-dose-modal .bx--number input[type='number'],
 .variable-dose-modal .bx--text-input {
   background-color: #f4f4f4 !important;
+}
+
+.variable-dose-modal .bx--number__input-wrapper {
+  position: relative !important;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  overflow: hidden;
+  border-bottom: 1px solid #8d8d8d;
+}
+
+.variable-dose-modal .bx--number__input-wrapper:has(input[type='number']:focus) {
+  border-bottom: 2px solid #0f62fe;
+}
+
+.variable-dose-modal .bx--number input[type='number'] {
+  border-bottom: none !important;
+  box-sizing: border-box !important;
+  min-width: 0;
+}
+
+.variable-dose-modal .bx--number__controls {
+  top: 0 !important;
+  transform: none !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.variable-dose-modal .bx--number__control-btn {
+  border: none !important;
+  box-sizing: border-box !important;
+}
+
+.variable-dose-modal .bx--number__control-btn:hover:not(:active):not(:focus) {
+  outline: none !important;
+}
+
+.variable-dose-modal .bx--number__control-btn::before,
+.variable-dose-modal .bx--number__control-btn::after {
+  background-color: transparent !important;
+}
+
+.vdp-stage-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 16px;
+  margin-top: 16px;
+  background-color: #ffffff;
+}
+
+.vdp-stage-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.vdp-stage-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #161616;
+  margin: 0;
+}
+
+.vdp-stage-main-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.vdp-stage-instructions-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.vdp-stage-additives {
+  grid-column: span 2;
+  width: 100%;
+}
+
+.vdp-stage-main-row .bx--form-item,
+.vdp-stage-main-row .bx--number,
+.vdp-stage-instructions-row .bx--form-item,
+.vdp-stage-instructions-row .bx--number,
+.vdp-stage-additives .bx--text-input-wrapper,
+.vdp-stage-additives .bx--form-item {
+  width: 100%;
+}
+
+
+.vdp-toggle-instructions-btn.bx--btn--ghost {
+  color: #0f62fe;
+  padding: 6px 12px;
+  min-height: unset;
+  margin-top: 8px;
+  border-radius: 0;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    background-color: #e5e5e5;
+    opacity: 1;  /* override clinical.css button:hover { opacity: 0.8 } */
+    text-decoration: none;
+    color: #0f62fe;
+  }
+
+  &:active {
+    background-color: #c6c6c6;
+    opacity: 1;
+    color: #0f62fe;
+  }
+}
+
+.vdp-stage-delete-btn.bx--btn--ghost {
+  color: #525252;
+  padding: 6px;
+  min-height: unset;
+
+  &:hover { opacity: 1; color: #525252; }
+  &:active { opacity: 1; color: #525252; }
+}
+
+.vdp-stages-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 8px;
+}
+
+.vdp-add-stage-btn.bx--btn--tertiary {
+  border: 1px solid #0f62fe;
+  color: #0f62fe;
+  background-color: transparent;
+
+  &:hover {
+    background-color: #e8f0fe;
+  }
+}
+
+.vdp-totals {
+  font-size: 13px;
+  color: #525252;
+  white-space: nowrap;
 }

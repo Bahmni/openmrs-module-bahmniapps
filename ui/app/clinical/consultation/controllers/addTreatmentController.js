@@ -9,21 +9,8 @@
 
 'use strict';
 
-var VARIABLE_DOSE_MOCK_STAGE_COUNT = 5;
-var VARIABLE_DOSE_MOCK_TOTAL_DAYS = 13;
 var LOADING_DOSE_STAGE_NAME = 'Loading Dose';
-var LOADING_DOSE_FREQUENCY_DISPLAY = 'Loading Dose';
-var LOADING_DOSE_DURATION_DISPLAY = '1 Occurrence';
-
-var buildVariableDoseMockStages = function (unit) {
-    return [
-        { stageName: 'Loading Dose', dose: '2', unit: unit, frequency: 'Once', duration: '1 Occurrence', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
-        { stageName: '1', dose: '10', unit: unit, frequency: 'Three times a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
-        { stageName: '2', dose: '8', unit: unit, frequency: 'Two times a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
-        { stageName: '3', dose: '5', unit: unit, frequency: 'Two times a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' },
-        { stageName: '4', dose: '5', unit: unit, frequency: 'Once a day', duration: '3 Days', instructions: 'As directed', rate: '100 ml/hr', additives: 'Diluted in 0.9% Normal Saline', additionalInstructions: '' }
-    ];
-};
+var LOADING_DOSE_FREQUENCY_DISPLAY = 'Once';
 
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
@@ -730,16 +717,7 @@ angular.module('bahmni.clinical')
                 var includedOrderSetTreatments = _.filter(orderSetTreatmentsAcrossTabs, function (treatment) {
                     return treatment.orderSetUuid ? treatment.include : true;
                 });
-                var loadingDoseTreatments = ($scope.consultation.newlyAddedTreatments || []).filter(function (treatment) { return treatment.isLoadingDose; });
-                loadingDoseTreatments.forEach(function (loadingDoseTreatment) {
-                    var variableDoseEntry = _.find($scope.consultation.variableDoseTreatments || [], function (variableDoseTreatment) {
-                        return variableDoseTreatment.drug && loadingDoseTreatment.drug && variableDoseTreatment.drug.uuid === loadingDoseTreatment.drug.uuid;
-                    });
-                    if (variableDoseEntry && variableDoseEntry.careSetting) {
-                        loadingDoseTreatment.careSetting = variableDoseEntry.careSetting;
-                    }
-                });
-                $scope.consultation.newlyAddedTreatments = allTreatmentsAcrossTabs.concat(includedOrderSetTreatments).concat(loadingDoseTreatments);
+                $scope.consultation.newlyAddedTreatments = allTreatmentsAcrossTabs.concat(includedOrderSetTreatments);
                 if ($scope.consultation.discontinuedDrugs) {
                     $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
                         var removableOrder = _.find(activeDrugOrders, { uuid: discontinuedDrug.uuid });
@@ -990,6 +968,7 @@ angular.module('bahmni.clinical')
                         $scope.obs = response.data;
                     });
                 }
+
                 if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order')) {
                     diagnosisService.getPatientDiagnosis($scope.patient.uuid).then(function (response) {
                         $scope.currentEpoch = Math.floor(new Date().getTime() / 1000) * 1000;
@@ -1015,100 +994,144 @@ angular.module('bahmni.clinical')
                         dosingRules: treatmentConfig.dosingRules || [],
                         drugFormDefaults: treatmentConfig.inputOptionsConfig.drugFormDefaults || {},
                         dosageRuleUnitsMap: (orderSetConfig && orderSetConfig.dosageRuleUnitsMap) || {},
-                        dosingInstructions: treatmentConfig.getDosingInstructions()
+                        dosingInstructions: treatmentConfig.getDosingInstructions(),
+                        frequencies: treatmentConfig.getFrequencies(),
+                        durationUnits: treatmentConfig.getDurationUnits()
                     };
-                    var _openVariableDoseModal = null;
-                    $scope.$on('openVariableDoseModal', function (event, payload) {
-                        if (!_openVariableDoseModal) { return; }
-                        var initialValues = null;
-                        if (payload && payload.treatment) {
-                            var t = payload.treatment;
-                            initialValues = {
-                                drug: t.drug || null,
-                                units: t.units || '',
-                                route: t.route || '',
-                                startDate: t.startDate || new Date()
-                            };
-                        }
-                        _openVariableDoseModal(payload ? payload.editIndex : null, initialValues);
-                    });
                     $scope.variableDoseHostApi = {
-                        register: function (openFn) { _openVariableDoseModal = openFn; },
                         onClose: function () {},
                         onSave: function (data) {
-                            $timeout(function () {
-                                if (data.loadingDose) {
-                                    var occurrenceUnit = _.find(treatmentConfig.getDurationUnits(), function (durationUnit) {
-                                        return durationUnit.name.toLowerCase().indexOf('occurrence') !== -1;
-                                    });
-                                    var loadingDoseOrder = new DrugOrderViewModel(treatmentConfig, {
-                                        drug: data.drug || null,
-                                        uniformDosingType: {
-                                            dose: parseFloat(data.loadingDose.dose) || 0,
-                                            frequency: 'STAT (Immediately)', // Temporary: stored as STAT until "Loading Dose" frequency concept is added to OpenMRS
-                                            doseUnits: data.units || ''
-                                        },
-                                        frequencyType: Bahmni.Clinical.Constants.dosingTypes.uniform,
-                                        duration: 1,
-                                        durationUnit: occurrenceUnit ? occurrenceUnit.name : 'Occurrence(s)',
-                                        route: data.route || '',
-                                        instructions: data.loadingDose.instructions || '',
-                                        rate: data.loadingDose.rate ? parseFloat(data.loadingDose.rate) : null,
-                                        additives: data.loadingDose.additives || '',
-                                        additionalInstructions: data.loadingDose.additionalInstructions || '',
-                                        careSetting: ($scope.allMedicinesInPrescriptionAvailableForIPD && currentVisitType === 'IPD')
-                                            ? Bahmni.Clinical.Constants.careSetting.inPatient
-                                            : Bahmni.Clinical.Constants.careSetting.outPatient,
-                                        scheduledDate: data.startDate,
-                                        asNeeded: false,
-                                        isLoadingDose: true,
-                                        quantity: parseFloat(data.loadingDose.dose) || 0,
-                                        quantityUnit: data.units || 'Unit(s)'
-                                    });
-                                    $scope.consultation.newlyAddedTreatments = $scope.consultation.newlyAddedTreatments || [];
-                                    $scope.consultation.newlyAddedTreatments.push(loadingDoseOrder);
+                            if (($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') &&
+                                    ($scope.obs.length === 0 ||
+                                     (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
+                                ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order') && $scope.confirmedDiagnoses.length === 0)) {
+                                return;
+                            }
+                            var vdpDrugName = data.drug ? data.drug.name : '';
+                            var vdpCareSetting = (currentVisitType === 'IPD')
+                                ? Bahmni.Clinical.Constants.careSetting.inPatient
+                                : Bahmni.Clinical.Constants.careSetting.outPatient;
+                            var conflictingActiveOrder = _.find(
+                                ($scope.consultation.activeAndScheduledDrugOrders || []).concat($scope.treatments || []),
+                                function (order) {
+                                    return order.getDisplayName && order.getDisplayName() === vdpDrugName &&
+                                           order.careSetting === vdpCareSetting;
                                 }
-
+                            );
+                            if (conflictingActiveOrder) {
+                                $scope.alreadyActiveSimilarOrder = conflictingActiveOrder;
+                                ngDialog.open({
+                                    template: 'consultation/views/treatmentSections/conflictingDrugOrderModal.html',
+                                    scope: $scope
+                                });
+                                $scope.popupActive = true;
+                                return;
+                            }
+                            $timeout(function () {
                                 $scope.consultation.variableDoseTreatments = $scope.consultation.variableDoseTreatments || [];
                                 var unit = data.units || '';
-                                var entry = {
-                                    drug: data.drug || null,
-                                    drugName: data.drug ? data.drug.name : '',
-                                    drugForm: data.drug && data.drug.dosageForm ? data.drug.dosageForm.display : '',
-                                    units: unit,
-                                    route: data.route || '',
-                                    quantity: 432,
-                                    quantityUnit: 'Tablets',
-                                    careSetting: ($scope.allMedicinesInPrescriptionAvailableForIPD && currentVisitType === 'IPD')
-                                        ? Bahmni.Clinical.Constants.careSetting.inPatient
-                                        : Bahmni.Clinical.Constants.careSetting.outPatient,
-                                    startDate: data.startDate,
-                                    stageCount: VARIABLE_DOSE_MOCK_STAGE_COUNT,
-                                    totalDays: VARIABLE_DOSE_MOCK_TOTAL_DAYS,
-                                    stages: (function () {
-                                        if (data.loadingDose) {
-                                            var loadingDoseStage = {
-                                                stageName: LOADING_DOSE_STAGE_NAME,
-                                                dose: data.loadingDose.dose || '',
-                                                unit: unit,
-                                                frequency: LOADING_DOSE_FREQUENCY_DISPLAY,
-                                                duration: LOADING_DOSE_DURATION_DISPLAY,
-                                                instructions: data.loadingDose.instructions || '',
-                                                rate: data.loadingDose.rate || '',
-                                                additives: data.loadingDose.additives || '',
-                                                additionalInstructions: data.loadingDose.additionalInstructions || ''
-                                            };
-                                            var mockStages = buildVariableDoseMockStages(unit);
-                                            return [loadingDoseStage].concat(mockStages.slice(1));
-                                        }
-                                        return buildVariableDoseMockStages(unit);
-                                    }())
+                                var realStages = data.stages || [];
+                                var dosingRule = data.dosingRule || '';
+                                var drugName = data.drug ? data.drug.name : '';
+                                var careSetting = (currentVisitType === 'IPD')
+                                    ? Bahmni.Clinical.Constants.careSetting.inPatient
+                                    : Bahmni.Clinical.Constants.careSetting.outPatient;
+
+                                var calcDose = function (baseDose) {
+                                    if (!dosingRule || !baseDose) { return $q.resolve({ dose: baseDose, doseUnit: unit }); }
+                                    return orderSetService.getCalculatedDose(
+                                        $scope.patient.uuid, drugName, baseDose, unit, '', dosingRule, undefined
+                                    ).catch(function () { return { dose: baseDose, doseUnit: unit }; });
                                 };
-                                if (data.editIndex != null) {
-                                    $scope.consultation.variableDoseTreatments[data.editIndex] = entry;
-                                } else {
+
+                                var loadingDosePromise = data.loadingDose
+                                    ? calcDose(data.loadingDose.dose)
+                                    : $q.resolve(null);
+
+                                var stagePromises = realStages.map(function (s) {
+                                    return calcDose(s.dose).then(function (result) {
+                                        return { stageName: s.stageName, calculatedDose: String(result.dose), doseUnit: result.doseUnit || unit, original: s };
+                                    });
+                                });
+
+                                $q.all([loadingDosePromise].concat(stagePromises)).then(function (results) {
+                                    var calculatedLoadingDose = results[0];
+                                    var calculatedStages = results.slice(1);
+
+                                    var totalDays = realStages.reduce(function (sum, s) {
+                                        return sum + Bahmni.Clinical.FhirDosingUtils.normalizeToDays(s.duration, s.durationUnit);
+                                    }, 0);
+
+                                    var stageCount = realStages.length;
+
+                                    var stages = [];
+                                    var cumulativeDate = data.startDate ? new Date(data.startDate) : new Date();
+
+                                    var sequenceOffset = data.loadingDose && calculatedLoadingDose ? 1 : 0;
+
+                                    if (data.loadingDose && calculatedLoadingDose) {
+                                        stages.push({
+                                            stageName: LOADING_DOSE_STAGE_NAME,
+                                            sequence: 1,
+                                            isLoadingDose: true,
+                                            dose: String(calculatedLoadingDose.dose || data.loadingDose.dose || ''),
+                                            unit: calculatedLoadingDose.doseUnit || unit,
+                                            frequency: LOADING_DOSE_FREQUENCY_DISPLAY,
+                                            duration: '1',
+                                            durationUnit: 'Occurrence(s)',
+                                            instructions: data.loadingDose.instructions || '',
+                                            rate: data.loadingDose.rate || '',
+                                            additives: data.loadingDose.additives || '',
+                                            additionalInstructions: data.loadingDose.additionalInstructions || '',
+                                            startDate: new Date(cumulativeDate)
+                                        });
+                                    }
+
+                                    calculatedStages.forEach(function (cs, idx) {
+                                        var s = cs.original;
+                                        var stageDays = Bahmni.Clinical.FhirDosingUtils.normalizeToDays(s.duration, s.durationUnit);
+                                        stages.push({
+                                            stageName: s.stageName,
+                                            sequence: sequenceOffset + idx + 1,
+                                            isLoadingDose: false,
+                                            dose: cs.calculatedDose,
+                                            unit: cs.doseUnit,
+                                            frequency: s.frequency || '',
+                                            duration: s.duration,
+                                            durationUnit: s.durationUnit || '',
+                                            instructions: s.instructions || '',
+                                            rate: s.rate || '',
+                                            additives: s.additives || '',
+                                            additionalInstructions: s.additionalInstructions || '',
+                                            startDate: new Date(cumulativeDate)
+                                        });
+                                        cumulativeDate = new Date(cumulativeDate.getTime() + stageDays * 86400000);
+                                    });
+
+                                    var totalDosage = calculatedStages.reduce(function (sum, cs) {
+                                        var s = cs.original;
+                                        return sum + (parseFloat(cs.calculatedDose) || 0) * Bahmni.Clinical.FhirDosingUtils.normalizeToDays(s.duration, s.durationUnit);
+                                    }, 0);
+                                    if (data.loadingDose && calculatedLoadingDose) {
+                                        totalDosage += parseFloat(calculatedLoadingDose.dose || 0);
+                                    }
+
+                                    var entry = {
+                                        drug: data.drug || null,
+                                        drugName: data.drug ? data.drug.name : '',
+                                        drugForm: data.drug && data.drug.dosageForm ? data.drug.dosageForm.display : '',
+                                        units: unit,
+                                        route: data.route || '',
+                                        quantity: totalDosage,
+                                        quantityUnit: unit,
+                                        careSetting: careSetting,
+                                        startDate: data.startDate,
+                                        stageCount: stageCount,
+                                        totalDays: totalDays,
+                                        stages: stages
+                                    };
                                     $scope.consultation.variableDoseTreatments.push(entry);
-                                }
+                                });
                             });
                         },
                         searchDrugs: function (term) {

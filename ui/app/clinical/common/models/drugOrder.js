@@ -81,6 +81,44 @@ Bahmni.Clinical.DrugOrder = (function () {
         return drugOrder;
     };
 
+    DrugOrder.createFhirDrugOrder = function (vdt) {
+        var utils = Bahmni.Clinical.FhirDosingUtils;
+        var stages = vdt.stages || [];
+        var fhirDosages = utils.buildFhirDosageArray(stages, vdt.units, vdt.route);
+
+        var totalDays = stages.reduce(function (sum, s) {
+            if (s.stageName === utils.LOADING_DOSE_STAGE_NAME) { return sum; }
+            return sum + utils.normalizeToDays(s.duration, s.durationUnit);
+        }, 0);
+
+        var totalDosage = stages.reduce(function (sum, s) {
+            if (s.stageName === utils.LOADING_DOSE_STAGE_NAME) {
+                return sum + (parseFloat(s.dose) || 0);
+            }
+            return sum + (parseFloat(s.dose) || 0) * utils.normalizeToDays(s.duration, s.durationUnit);
+        }, 0);
+
+        return new DrugOrder({
+            drug: vdt.drug,
+            orderType: 'Drug Order',
+            action: Bahmni.Clinical.Constants.orderActions.new,
+            dosingInstructionType: utils.FHIR_DOSING_INSTRUCTION_TYPE,
+            duration: totalDays,
+            durationUnits: 'Day(s)',
+            scheduledDate: vdt.startDate,
+            careSetting: vdt.careSetting || 'OUTPATIENT',
+            dosingInstructions: {
+                administrationInstructions: JSON.stringify(fhirDosages),
+                doseUnits: vdt.units || '',
+                route: vdt.route || '',
+                asNeeded: false,
+                quantity: totalDosage,
+                quantityUnits: vdt.units || 'Unit(s)',
+                numberOfRefills: 0
+            }
+        });
+    };
+
     DrugOrder.prototype = {
         isActiveOnDate: function (date) {
             return date >= DateUtil.getDate(this.effectiveStartDate) && date <= DateUtil.getDate(this.effectiveStopDate);

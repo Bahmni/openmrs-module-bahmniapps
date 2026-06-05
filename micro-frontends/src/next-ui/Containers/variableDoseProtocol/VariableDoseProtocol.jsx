@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "carbon-components-react";
 import { Add16 } from "@carbon/icons-react";
@@ -8,33 +8,18 @@ import { VariableDoseProtocolModalInner } from "../../Components/VariableDosePro
 
 function VariableDoseProtocolInner({ hostData, hostApi }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [editInitialValues, setEditInitialValues] = useState(null);
-    const editIndexRef = useRef(null);
-
-    useEffect(() => {
-        hostApi?.register?.((editIndex, initialValues) => {
-            editIndexRef.current = editIndex ?? null;
-            setEditInitialValues(initialValues || null);
-            setIsOpen(true);
-        });
-    }, [hostApi]);
 
     const handleClose = () => {
         setIsOpen(false);
-        setEditInitialValues(null);
-        editIndexRef.current = null;
         hostApi?.onClose?.();
     };
 
     const handleSave = (data) => {
         setIsOpen(false);
-        setEditInitialValues(null);
-        hostApi?.onSave?.({ ...data, editIndex: editIndexRef.current });
-        editIndexRef.current = null;
+        hostApi?.onSave?.(data);
     };
 
     const augmentedHostApi = { ...hostApi, onClose: handleClose, onSave: handleSave };
-    const augmentedHostData = { ...hostData, initialValues: editInitialValues };
 
     return (
         <>
@@ -44,16 +29,16 @@ function VariableDoseProtocolInner({ hostData, hostApi }) {
                 renderIcon={Add16}
                 onClick={() => setIsOpen(true)}
                 className="variable-dose-trigger-btn"
-                style={{ width: "98%", fontSize: "1.2rem", lineHeight: "1em" }}
+                style={{ width: "98%", fontSize: "1.1rem", lineHeight: "1em", whiteSpace: "nowrap" }}
             >
                 <FormattedMessage
                     id="VARIABLE_DOSE_PROTOCOL_BUTTON_LABEL"
-                    defaultMessage="Variable Dose Protocol"
+                    defaultMessage="Variable Dosage Protocol"
                 />
             </Button>
             {isOpen && (
                 <VariableDoseProtocolModalInner
-                    hostData={augmentedHostData}
+                    hostData={hostData}
                     hostApi={augmentedHostApi}
                 />
             )}
@@ -84,11 +69,12 @@ VariableDoseProtocol.propTypes = {
             })
         ),
         dosingInstructions: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
+        frequencies: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
+        durationUnits: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
     }),
     hostApi: PropTypes.shape({
         onClose: PropTypes.func,
         onSave: PropTypes.func,
         searchDrugs: PropTypes.func,
-        register: PropTypes.func,
     }),
 };

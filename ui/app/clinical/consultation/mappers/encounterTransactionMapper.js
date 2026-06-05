@@ -99,10 +99,13 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
             consultation.drugOrders = consultation.drugOrders.concat(consultation.removableDrugs);
         }
 
-        var loadingDoseOrders = consultation.drugOrders.filter(function (drugOrder) {
-            if (!drugOrder.dosingInstructions || !drugOrder.dosingInstructions.administrationInstructions) { return false; }
-            try { return JSON.parse(drugOrder.dosingInstructions.administrationInstructions).isLoadingDose; } catch (error) { return false; }
-        });
+        var variableDoseTreatments = consultation.variableDoseTreatments;
+        if (variableDoseTreatments && variableDoseTreatments.length > 0) {
+            variableDoseTreatments.forEach(function (vdt) {
+                consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt));
+            });
+        }
+
         encounterData.drugOrders = consultation.drugOrders;
 
         encounterData.disposition = consultation.disposition;

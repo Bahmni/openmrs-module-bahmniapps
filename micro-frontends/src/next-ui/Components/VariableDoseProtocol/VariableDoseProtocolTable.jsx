@@ -17,10 +17,21 @@ import "./VariableDoseProtocolTable.scss";
 
 var vdpHeaders = [
     { key: "stageName", id: "VARIABLE_DOSE_TABLE_HEADER_STAGE", defaultMessage: "Stage" },
+    { key: "startDate", id: "VARIABLE_DOSE_TABLE_HEADER_START_DATE", defaultMessage: "Start Date" },
     { key: "dose", id: "VARIABLE_DOSE_TABLE_HEADER_DOSE", defaultMessage: "Dose" },
     { key: "frequency", id: "VARIABLE_DOSE_TABLE_HEADER_FREQUENCY", defaultMessage: "Frequency" },
     { key: "duration", id: "VARIABLE_DOSE_TABLE_HEADER_DURATION", defaultMessage: "Duration" },
 ];
+
+function formatStageDate(date, intl) {
+    if (!date) return "";
+    var d = new Date(date);
+    if (isNaN(d.getTime())) return "";
+    var day = intl.formatDate(d, { day: "2-digit" });
+    var month = intl.formatDate(d, { month: "short" });
+    var year = intl.formatDate(d, { year: "numeric" });
+    return day + " " + month + " " + year;
+}
 
 var detailFields = [
     { key: "instructions", id: "VARIABLE_DOSE_TABLE_DETAIL_INSTRUCTIONS", defaultMessage: "Instructions" },
@@ -63,6 +74,15 @@ function VariableDoseProtocolTableInner(props) {
     if (!hostData || !hostData.stages || hostData.stages.length === 0) {
         return null;
     }
+
+    var loadingDoseCount = hostData.stages.filter(function (s) { return s.isLoadingDose; }).length;
+    var LOADING_DOSE_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_LOADING_DOSE_LABEL", defaultMessage: "Loading Dose" });
+
+    var getStageDisplay = function (stage) {
+        if (stage.isLoadingDose) { return LOADING_DOSE_LABEL; }
+        if (stage.sequence != null) { return String(stage.sequence - loadingDoseCount); }
+        return stage.stageName || '';
+    };
 
     var allExpanded = hostData.stages.every(function (_, i) { return !!expandedRows[i]; });
 
@@ -131,15 +151,16 @@ function VariableDoseProtocolTableInner(props) {
                                             </button>
                                         )}
                                     </TableCell>
-                                    <TableCell>{stage.stageName}</TableCell>
+                                    <TableCell>{getStageDisplay(stage)}</TableCell>
+                                    <TableCell>{formatStageDate(stage.startDate, intl)}</TableCell>
                                     <TableCell>{stage.dose} {stage.unit}</TableCell>
                                     <TableCell>{stage.frequency}</TableCell>
-                                    <TableCell>{stage.duration}</TableCell>
+                                    <TableCell>{stage.duration}{stage.durationUnit ? ` ${stage.durationUnit}` : ''}</TableCell>
                                 </TableRow>
                                 {isExpanded && hasDetails && (
                                     <TableRow className="vdp-expanded-content-row">
                                         <TableCell />
-                                        <TableCell colSpan={4} className="vdp-expanded-cell">
+                                        <TableCell colSpan={5} className="vdp-expanded-cell">
                                             <ExpandedDetails stage={stage} />
                                         </TableCell>
                                     </TableRow>
@@ -170,6 +191,7 @@ VariableDoseProtocolTable.propTypes = {
                 unit: PropTypes.string,
                 frequency: PropTypes.string,
                 duration: PropTypes.string,
+                startDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
                 instructions: PropTypes.string,
                 rate: PropTypes.string,
                 additives: PropTypes.string,

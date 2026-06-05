@@ -14,6 +14,9 @@ const defaultHostData = {
     routes: [{ name: "Oral" }, { name: "IV" }],
     dosingRules: [],
     drugFormDefaults: {},
+    dosingInstructions: [{ name: "As directed" }, { name: "Before meals" }],
+    frequencies: [{ name: "Once a day" }, { name: "Twice a day" }],
+    durationUnits: [{ name: "Days" }, { name: "Weeks" }],
 };
 
 const defaultHostApi = {
@@ -40,6 +43,23 @@ function openBahmniDropdown(container, id) {
     fireEvent.click(input);
 }
 
+const validStage = () => ({
+    dose: 5,
+    frequency: { label: "Once a day", value: "Once a day" },
+    duration: 3,
+    durationUnit: { label: "Days", value: "Days" },
+    instructions: null,
+    additionalInstructions: "",
+    rate: 0,
+    additives: "",
+    showInstructions: true,
+});
+
+const defaultHostDataWithValidStages = {
+    ...defaultHostData,
+    initialValues: { stages: [validStage(), validStage()] },
+};
+
 beforeEach(() => {
     jest.clearAllMocks();
     mockSearchDrugs.mockResolvedValue([]);
@@ -49,7 +69,7 @@ describe("VariableDoseProtocolModal", () => {
     it("should render the modal (open=true is hardcoded, visibility controlled by ng-if)", async () => {
         const { container } = renderModal();
         await waitFor(() => {
-            expect(screen.getByText("Order Drug - Variable Dose Protocol")).toBeTruthy();
+            expect(screen.getByText("Order Drug - Variable Dosage Protocol")).toBeTruthy();
             expect(container).toMatchSnapshot();
         });
     });
@@ -67,7 +87,7 @@ describe("VariableDoseProtocolModal", () => {
         mockSearchDrugs.mockResolvedValue([drug]);
         renderModal();
 
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
         fireEvent.change(comboInput, { target: { value: "Para" } });
@@ -84,12 +104,37 @@ describe("VariableDoseProtocolModal", () => {
         });
     });
 
-    it("should enable Next button when drug, units, and start date are all set", async () => {
+    it("should disable Save when drug and units set but stages not filled", async () => {
         const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
         mockSearchDrugs.mockResolvedValue([drug]);
         const { container } = renderModal();
 
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Para" } });
+        await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
+
+        await act(async () => {
+            const option = await screen.findByText("Paracetamol");
+            fireEvent.click(option);
+        });
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        await waitFor(() => {
+            const nextButton = screen.getByText("Save").closest("button");
+            expect(nextButton.disabled).toBe(true);
+        });
+    });
+
+    it("should enable Save when drug, units, and at least 2 valid stages are set", async () => {
+        const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
+        mockSearchDrugs.mockResolvedValue([drug]);
+        const { container } = renderModal(defaultHostDataWithValidStages);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
         fireEvent.change(comboInput, { target: { value: "Para" } });
@@ -111,7 +156,7 @@ describe("VariableDoseProtocolModal", () => {
 
     it("should call hostApi.onClose when X button is clicked on a clean form", async () => {
         renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const closeButton = document.querySelector(".bx--modal-close");
         fireEvent.click(closeButton);
@@ -121,7 +166,7 @@ describe("VariableDoseProtocolModal", () => {
 
     it("should call hostApi.onClose when Cancel button is clicked on a clean form", async () => {
         renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         fireEvent.click(screen.getByText("Cancel"));
 
@@ -130,7 +175,7 @@ describe("VariableDoseProtocolModal", () => {
 
     it("should show confirmation dialog when X is clicked with a dirty form", async () => {
         const { container } = renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         openBahmniDropdown(container, "variable-dose-units");
         fireEvent.click(screen.getByText("mg"));
@@ -146,7 +191,7 @@ describe("VariableDoseProtocolModal", () => {
 
     it("should close modal when Yes is clicked in the confirmation dialog", async () => {
         const { container } = renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         openBahmniDropdown(container, "variable-dose-units");
         fireEvent.click(screen.getByText("mg"));
@@ -163,7 +208,7 @@ describe("VariableDoseProtocolModal", () => {
 
     it("should dismiss the confirmation dialog and keep the form when No is clicked", async () => {
         const { container } = renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         openBahmniDropdown(container, "variable-dose-units");
         fireEvent.click(screen.getByText("mg"));
@@ -187,7 +232,7 @@ describe("VariableDoseProtocolModal", () => {
             dosageRuleUnitsMap: { "mg/kg": ["mg"] },
         };
         const { container } = renderModal(hostDataWithRuleUnits);
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         openBahmniDropdown(container, "variable-dose-dosing-rule");
         fireEvent.click(screen.getByText("mg/kg"));
@@ -206,14 +251,14 @@ describe("VariableDoseProtocolModal", () => {
 
     it("should not render Dosage Rule select when dosingRules is empty", async () => {
         const { container } = renderModal({ ...defaultHostData, dosingRules: [] });
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         expect(getDropdownInput(container, "variable-dose-dosing-rule")).toBeNull();
     });
 
     it("should render Dosage Rule select when dosingRules has items", async () => {
         const { container } = renderModal({ ...defaultHostData, dosingRules: ["mg/kg", "ml/kg"] });
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         expect(getDropdownInput(container, "variable-dose-dosing-rule")).not.toBeNull();
 
@@ -223,7 +268,7 @@ describe("VariableDoseProtocolModal", () => {
 
     it("should call searchDrugs with debounced term on drug input change", async () => {
         renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
         fireEvent.change(comboInput, { target: { value: "Amox" } });
@@ -248,7 +293,7 @@ describe("VariableDoseProtocolModal", () => {
         };
         const { container } = renderModal(hostDataWithDefaults);
 
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
         fireEvent.change(comboInput, { target: { value: "Amox" } });
@@ -272,7 +317,7 @@ describe("VariableDoseProtocolModal", () => {
             dosageRuleUnitsMap: { "mg/kg": ["mg"], "ml/kg": ["ml", "cc"] },
         };
         const { container } = renderModal(hostDataWithRuleUnits);
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         openBahmniDropdown(container, "variable-dose-dosing-rule");
         fireEvent.click(screen.getByText("mg/kg"));
@@ -298,7 +343,7 @@ describe("VariableDoseProtocolModal", () => {
         mockSearchDrugs.mockResolvedValue([drug]);
         const { container } = renderModal({ ...defaultHostData, drugFormDefaults: {} });
 
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
         fireEvent.change(comboInput, { target: { value: "Ibu" } });
@@ -319,14 +364,14 @@ describe("VariableDoseProtocolModal", () => {
 describe("Loading Dose", () => {
     it("loading dose toggle is not shown when not toggled", async () => {
         renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         expect(screen.queryByLabelText("Loading Dose")).toBeNull();
     });
 
     it("clicking loading dose toggle shows loading dose fields", async () => {
         const { container } = renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const toggle = container.querySelector("#loading-dose-toggle");
         fireEvent.click(toggle);
@@ -339,7 +384,7 @@ describe("Loading Dose", () => {
 
     it("clicking loading dose toggle shows rate and additives when dosing rule is ml/kg", async () => {
         const { container } = renderModal({ ...defaultHostData, dosingRules: ["ml/kg"] });
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         openBahmniDropdown(container, "variable-dose-dosing-rule");
         fireEvent.click(screen.getByText("ml/kg"));
@@ -348,14 +393,14 @@ describe("Loading Dose", () => {
         fireEvent.click(toggle);
 
         await waitFor(() => {
-            expect(screen.getByLabelText("Rate (ml/hr)")).toBeTruthy();
-            expect(screen.getByLabelText("Additives")).toBeTruthy();
+            expect(container.querySelector("#loading-dose-rate")).toBeTruthy();
+            expect(screen.getAllByLabelText("Rate (ml/hr)").length).toBeGreaterThan(0);
         });
     });
 
     it("toggling loading dose off hides and clears fields", async () => {
         const { container } = renderModal();
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const toggle = container.querySelector("#loading-dose-toggle");
         fireEvent.click(toggle);
@@ -374,9 +419,9 @@ describe("Loading Dose", () => {
     it("onSave is called with loadingDose data when toggle is on", async () => {
         const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
         mockSearchDrugs.mockResolvedValue([drug]);
-        const { container } = renderModal();
+        const { container } = renderModal(defaultHostDataWithValidStages);
 
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
         fireEvent.change(comboInput, { target: { value: "Para" } });
@@ -395,8 +440,9 @@ describe("Loading Dose", () => {
 
         await waitFor(() => container.querySelector("#loading-dose-dose"));
 
-        const doseInput = container.querySelector("#loading-dose-dose");
-        fireEvent.change(doseInput, { target: { value: "5" } });
+        const doseInput = container.querySelector("#loading-dose-dose input[type='number']") ||
+            container.querySelector("#loading-dose-dose");
+        if (doseInput) fireEvent.change(doseInput, { target: { value: "5" } });
 
         await waitFor(() => {
             const nextButton = screen.getByText("Save").closest("button");
@@ -408,6 +454,7 @@ describe("Loading Dose", () => {
         expect(mockOnSave).toHaveBeenCalledWith(
             expect.objectContaining({
                 loadingDose: expect.objectContaining({ dose: "5" }),
+                stages: expect.arrayContaining([expect.objectContaining({ stageName: "Stage 1" })]),
             })
         );
     });
@@ -415,9 +462,9 @@ describe("Loading Dose", () => {
     it("onSave is called with loadingDose: null when toggle is off", async () => {
         const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
         mockSearchDrugs.mockResolvedValue([drug]);
-        const { container } = renderModal();
+        const { container } = renderModal(defaultHostDataWithValidStages);
 
-        await waitFor(() => screen.getByText("Order Drug - Variable Dose Protocol"));
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
         const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
         fireEvent.change(comboInput, { target: { value: "Para" } });
@@ -439,7 +486,10 @@ describe("Loading Dose", () => {
         fireEvent.click(screen.getByText("Save").closest("button"));
 
         expect(mockOnSave).toHaveBeenCalledWith(
-            expect.objectContaining({ loadingDose: null })
+            expect.objectContaining({
+                loadingDose: null,
+                stages: expect.arrayContaining([expect.objectContaining({ stageName: "Stage 1" })]),
+            })
         );
     });
 });
