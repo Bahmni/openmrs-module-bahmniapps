@@ -101,4 +101,9 @@ it("should display Acknowledged for REQUESTED orderStatus", () => {
         render(<OrderItemContainer {...mockProps} orderStatus="COMPLETED" />);
         expect(screen.getByText("Completed")).toBeTruthy();
     });
+
+    it("should display On Hold for ONHOLD orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="ONHOLD" />);
+        expect(screen.getByText("On Hold")).toBeTruthy();
+    });
 });
