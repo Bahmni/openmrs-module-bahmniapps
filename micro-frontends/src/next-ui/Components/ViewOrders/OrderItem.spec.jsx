@@ -87,7 +87,7 @@ describe("OrderItemContainer", () => {
         expect(screen.getByText("New")).toBeTruthy();
     });
 
-it("should display Acknowledged for REQUESTED orderStatus", () => {
+    it("should display Acknowledged for REQUESTED orderStatus", () => {
         render(<OrderItemContainer {...mockProps} orderStatus="REQUESTED" />);
         expect(screen.getByText("Acknowledged")).toBeTruthy();
     });
@@ -105,5 +105,10 @@ it("should display Acknowledged for REQUESTED orderStatus", () => {
     it("should display On Hold for ONHOLD orderStatus", () => {
         render(<OrderItemContainer {...mockProps} orderStatus="ONHOLD" />);
         expect(screen.getByText("On Hold")).toBeTruthy();
+    });
+
+    it("should display Ready for Pickup for READY orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="READY" />);
+        expect(screen.getByText("Ready for Pickup")).toBeTruthy();
     });
 });

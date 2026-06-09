@@ -57,4 +57,5 @@ export const FHIR_TASK_STATUS_TO_UI_STATUS = {
     ACCEPTED: 'In Progress',
     ONHOLD: 'On Hold',
     COMPLETED: 'Completed',
+    READY: 'Ready for Pickup',
 };
