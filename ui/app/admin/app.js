@@ -27,7 +27,7 @@ angular.module('admin')
                 templateUrl: 'views/adminDashboard.html',
                 controller: 'AdminDashboardController',
                 data: {
-                    backLinks: [{label: "Home", accessKey: "h", url: "../home/", icon: "fa-home"}],
+                    backLinks: [{label: "Home", accessKey: "h", url: Bahmni.Common.Constants.newHomeURL, icon: "fa-home"}],
                     extensionPointId: 'org.bahmni.admin.dashboard'
                 }
             }).state('admin.csv', {

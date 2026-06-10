@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <script>
+            (function () {
+                if (!globalThis.location.hash) {
+                    globalThis.location.replace('/bahmni-v2/home');
+                }
+            }());
+        </script>
         <title>Bahmni Home</title>
 
         <meta charset="utf-8">
