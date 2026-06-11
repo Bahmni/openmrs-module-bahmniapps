@@ -118,6 +118,43 @@ describe('formDirtyStateService', function () {
         });
     });
 
+    describe('getObsValuesForTemplate', function () {
+        it('should return JSON string of observation values for a single template', function () {
+            var template = {
+                observations: [{value: 'obs1'}, {value: 'obs2'}]
+            };
+            var result = formDirtyStateService.getObsValuesForTemplate(template);
+            var parsed = JSON.parse(result);
+            expect(parsed).toEqual(['obs1', 'obs2']);
+        });
+
+        it('should return empty JSON array for a template with no observations', function () {
+            var template = {observations: []};
+            var result = formDirtyStateService.getObsValuesForTemplate(template);
+            expect(result).toBe('[]');
+        });
+
+        it('should use component.getValue for Form2 templates', function () {
+            var mockComponent = {
+                getValue: jasmine.createSpy('getValue').and.returnValue({
+                    observations: [{value: 'form2-val'}]
+                })
+            };
+            var template = {component: mockComponent, observations: []};
+            var result = formDirtyStateService.getObsValuesForTemplate(template);
+            var parsed = JSON.parse(result);
+            expect(parsed).toEqual(['form2-val']);
+        });
+
+        it('should return different values for two templates with different data', function () {
+            var template1 = {observations: [{value: 'val1'}]};
+            var template2 = {observations: [{value: 'val2'}]};
+            var result1 = formDirtyStateService.getObsValuesForTemplate(template1);
+            var result2 = formDirtyStateService.getObsValuesForTemplate(template2);
+            expect(result1).not.toEqual(result2);
+        });
+    });
+
     describe('getObsValues', function () {
         it('should return JSON string of all observation values', function () {
             var templates = [
@@ -414,6 +451,29 @@ describe('formDirtyStateService', function () {
             expect(result.success).toBe(true);
             expect(templates[0].observations[0].value).toBe('draft1');
             expect(templates[0].observations[0].comment).toBe('test');
+        });
+
+        it('should return updatedTemplates with templates that received draft data', function () {
+            var template1 = {observations: [{concept: {uuid: 'uuid-1'}, value: 'old'}]};
+            var template2 = {observations: [{concept: {uuid: 'uuid-2'}, value: 'old'}]};
+            var templates = [template1, template2];
+            var draftData = JSON.stringify([{concept: {uuid: 'uuid-1'}, value: 'new'}]);
+
+            var result = formDirtyStateService.populateFormWithDraftData(draftData, templates);
+
+            expect(result.success).toBe(true);
+            expect(result.updatedTemplates.length).toBe(1);
+            expect(result.updatedTemplates[0]).toBe(template1);
+        });
+
+        it('should return empty updatedTemplates when no obs matched draft data', function () {
+            var templates = [{observations: [{concept: {uuid: 'uuid-X'}, value: 'old'}]}];
+            var draftData = JSON.stringify([{concept: {uuid: 'uuid-not-found'}, value: 'new'}]);
+
+            var result = formDirtyStateService.populateFormWithDraftData(draftData, templates);
+
+            expect(result.success).toBe(true);
+            expect(result.updatedTemplates.length).toBe(0);
         });
 
         it('should return success: false for invalid JSON', function () {

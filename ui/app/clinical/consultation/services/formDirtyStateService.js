@@ -50,6 +50,15 @@ angular.module('bahmni.clinical')
             return template.observations || [];
         };
 
+        var getObsValuesForTemplate = function (template) {
+            var values = [];
+            var observations = getTemplateObservationsForDirtyTracking(template);
+            _.each(observations, function (obs) {
+                collectObsValues(obs, values);
+            });
+            return angular.toJson(values);
+        };
+
         /**
          * Returns a JSON string representing all observation values across all templates.
          * This is the "clean state" baseline for dirty tracking.
@@ -187,21 +196,27 @@ angular.module('bahmni.clinical')
                     return {success: false, error: 'Missing data'};
                 }
 
+                var updatedTemplates = [];
                 _.each(draftData, function (draftObs) {
                     _.each(selectedObsTemplates, function (template) {
                         var templateObs = getTemplateObservationsForDirtyTracking(template);
                         if (templateObs && templateObs.length > 0) {
+                            var templateUpdated = false;
                             _.each(templateObs, function (templateMember) {
                                 if (templateMember.concept && draftObs.concept &&
                                     templateMember.concept.uuid === draftObs.concept.uuid) {
                                     populateObservationValues(templateMember, draftObs);
+                                    templateUpdated = true;
                                 }
                             });
+                            if (templateUpdated && updatedTemplates.indexOf(template) === -1) {
+                                updatedTemplates.push(template);
+                            }
                         }
                     });
                 });
 
-                return {success: true};
+                return {success: true, updatedTemplates: updatedTemplates};
             } catch (e) {
                 return {success: false, error: e.message};
             }
@@ -210,6 +225,7 @@ angular.module('bahmni.clinical')
         return {
             collectObsValues: collectObsValues,
             getObsValues: getObsValues,
+            getObsValuesForTemplate: getObsValuesForTemplate,
             getTemplateObservationsForDirtyTracking: getTemplateObservationsForDirtyTracking,
             syncForm2Observations: syncForm2Observations,
             registerForm2SyncListeners: registerForm2SyncListeners,
