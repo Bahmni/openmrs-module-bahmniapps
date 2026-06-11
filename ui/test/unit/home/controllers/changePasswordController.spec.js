@@ -10,14 +10,14 @@
 'use strict';
 
 describe('ChangePasswordController', function () {
-  var $aController, rootScopeMock, window, scopeMock, state, mockSessionService, mockAuthenticator, mockUserService, mockMessagingService;
+  var $aController, rootScopeMock, mockWindow, scopeMock, state, mockSessionService, mockAuthenticator, mockUserService, mockMessagingService;
 
   beforeEach(module('bahmni.home'));
 
-  beforeEach(inject(function ($controller, $rootScope, $window, $state) {
+  beforeEach(inject(function ($controller, $rootScope, $state) {
       $aController = $controller;
       rootScopeMock = $rootScope;
-      window = $window;
+      mockWindow = {location: {replace: jasmine.createSpy('replace')}};
       scopeMock = rootScopeMock.$new();
       state = jasmine.createSpyObj('$state',['go']);
       mockAuthenticator = jasmine.createSpyObj('authenticator',['authenticateUser']);
@@ -44,7 +44,7 @@ describe('ChangePasswordController', function () {
       sessionService : mockSessionService,
       $rootScope: rootScopeMock,
       authenticator : mockAuthenticator,
-      $window: window,
+      $window: mockWindow,
       userService : mockUserService,
       messagingService: mockMessagingService
     });
@@ -82,10 +82,10 @@ describe('ChangePasswordController', function () {
     expect(mockSessionService.changePassword).not.toHaveBeenCalled();
   });
 
-  it("should redirect to dashboard", function(){
+  it("should redirect to home page", function(){
     scopeMock.redirectToHomePage();
 
-    expect(state.go).toHaveBeenCalledWith('dashboard');
+    expect(mockWindow.location.replace).toHaveBeenCalledWith(Bahmni.Common.Constants.newHomeURL);
   });
 
   describe("change password", function(){
