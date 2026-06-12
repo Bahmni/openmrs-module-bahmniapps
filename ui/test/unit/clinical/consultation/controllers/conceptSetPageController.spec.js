@@ -2618,6 +2618,43 @@ describe('ConceptSetPageController', function () {
 
                 expect(scope.consultation.selectedObsTemplate[0].hasUnsavedFormObservations).toBe(true);
             });
+
+            it('should only serialize dirty templates when saving as draft, not already-saved forms', function () {
+                var savedConceptUuid = 'concept-uuid-already-saved';
+                var newConceptUuid = 'concept-uuid-new-form';
+                mockConceptSetService({results: [{setMembers: [{name: {name: 'Saved Form'}, uuid: savedConceptUuid}]}]});
+                mockformService({});
+
+                var filterMock = function () { return function () { return 'mocked-time'; }; };
+                var capturedFormData;
+                formDraftService.saveDraft.and.callFake(function (patientUuid, providerUuid, formData) {
+                    capturedFormData = formData;
+                    return {
+                        then: function (success) {
+                            success({data: {timestamp: Date.now()}});
+                            return {finally: function (cb) { cb(); return this; }};
+                        }
+                    };
+                });
+
+                createControllerWithTimeoutAndFilter(timeoutMock, filterMock);
+
+                scope.visitHistory = {activeVisit: {uuid: 'visit-uuid'}};
+                var savedObs = {concept: {uuid: savedConceptUuid}, value: 'already-saved-value'};
+                var newObs = {concept: {uuid: newConceptUuid}, value: 'new-unsaved-value'};
+                scope.consultation.selectedObsTemplate = [
+                    {uuid: savedConceptUuid, observations: [savedObs], hasUnsavedFormObservations: false},
+                    {uuid: newConceptUuid, observations: [newObs], hasUnsavedFormObservations: true}
+                ];
+
+                scope.saveAsDraft();
+
+                var parsed = angular.fromJson(capturedFormData);
+                var savedObsIncluded = _.some(parsed, function (obs) { return obs.concept && obs.concept.uuid === savedConceptUuid; });
+                var newObsIncluded = _.some(parsed, function (obs) { return obs.concept && obs.concept.uuid === newConceptUuid; });
+                expect(savedObsIncluded).toBe(false);
+                expect(newObsIncluded).toBe(true);
+            });
         });
     });
 });

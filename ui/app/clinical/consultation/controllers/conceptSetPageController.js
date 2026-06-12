@@ -337,6 +337,9 @@ angular.module('bahmni.clinical')
                 }
                 $scope.consultation.searchParameter = "";
                 messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: template.label}));
+                if (dirtyTrackingState.initialized) {
+                    captureTemplateCleanStates();
+                }
             };
 
             $scope.getNormalized = function (conceptName) {
@@ -552,7 +555,10 @@ angular.module('bahmni.clinical')
 
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
                 var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                var formData = formDirtyStateService.serializeFormData($scope.consultation.selectedObsTemplate);
+                var dirtyTemplates = _.filter($scope.consultation.selectedObsTemplate, function (t) {
+                    return t.hasUnsavedFormObservations;
+                });
+                var formData = formDirtyStateService.serializeFormData(dirtyTemplates);
 
                 return formDraftService.saveDraft(patientUuid, providerUuid, formData).then(function (response) {
                     var serverTimestamp = response.data.timestamp;
