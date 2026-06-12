@@ -85,7 +85,7 @@ describe('ChangePasswordController', function () {
   it("should redirect to home page", function(){
     scopeMock.redirectToHomePage();
 
-    expect(mockWindow.location.replace).toHaveBeenCalledWith(Bahmni.Common.Constants.newHomeURL);
+    expect(mockWindow.location.replace).toHaveBeenCalledWith(Bahmni.Common.Constants.homeURL);
   });
 
   describe("change password", function(){

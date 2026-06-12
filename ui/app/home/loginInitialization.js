@@ -10,16 +10,16 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner', 'messagingService',
-        function ($rootScope, $q, locationService, spinner, messagingService) {
+    .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner', 'messagingService', 'loadConfigService',
+        function ($rootScope, $q, locationService, spinner, messagingService, loadConfigService) {
             var init = function () {
-                var deferrable = $q.defer();
+                var locationsDeferred = $q.defer();
                 locationService.getAllByTag("Login Location").then(
                     function (response) {
-                        deferrable.resolve({locations: response.data.results});
+                        locationsDeferred.resolve({locations: response.data.results});
                     },
                     function (response) {
-                        deferrable.reject();
+                        locationsDeferred.reject();
                         if (response.status) {
                         // This block checks if status code is 401 and reloads the page instead of throwing a pop up error message
                         // Refer BAH-2407 Clinical Module homepage is throwing error on Login Page issue.
@@ -33,7 +33,22 @@ angular.module('bahmni.home')
                     }
                 );
 
-                return deferrable.promise;
+                var configDeferred = $q.defer();
+                loadConfigService.loadConfig(Bahmni.Common.Constants.baseUrl + "home/app.json").then(
+                    function (response) {
+                        var config = response.data && response.data.config;
+                        $rootScope.homeURL = (config && config.homeURL) || Bahmni.Common.Constants.homeURL;
+                        configDeferred.resolve();
+                    },
+                    function () {
+                        $rootScope.homeURL = Bahmni.Common.Constants.homeURL;
+                        configDeferred.resolve();
+                    }
+                );
+
+                return $q.all([locationsDeferred.promise, configDeferred.promise]).then(function (results) {
+                    return results[0];
+                });
             };
 
             return function () {

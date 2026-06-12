@@ -14,7 +14,7 @@ angular.module('bahmni.home')
         $scope.passwordDoesNotMatch = false;
         $scope.passwordPolicies = [];
         $scope.redirectToHomePage = function () {
-            $window.location.replace(Bahmni.Common.Constants.newHomeURL);
+            $window.location.replace($rootScope.homeURL || Bahmni.Common.Constants.homeURL);
         };
         var checkPasswordMatches = function () {
             return $scope.loginInfo.newPassword == $scope.loginInfo.confirmPassword;

@@ -28,13 +28,23 @@ angular.module('bahmni.common.uiHelper')
         '        </a>' +
                         '</li>' +
                     '</ul>',
-         controller: function ($scope, backlinkService) {
-             $scope.backLinks = backlinkService.getAllUrls();
+         controller: function ($scope, $rootScope, backlinkService) {
+             var withHomeUrl = function (links) {
+                 return _.map(links, function (link) {
+                     return (link.id === 'homeBackLink' || link.url === Bahmni.Common.Constants.homeURL)
+                         ? angular.extend({}, link, {url: $rootScope.homeURL || link.url})
+                         : link;
+                 });
+             };
+             $scope.backLinks = withHomeUrl(backlinkService.getAllUrls());
              $scope.$on('$stateChangeSuccess', function (event, state) {
                  if (state.data && state.data.backLinks) {
                      backlinkService.setUrls(state.data.backLinks);
-                     $scope.backLinks = backlinkService.getAllUrls();
+                     $scope.backLinks = withHomeUrl(backlinkService.getAllUrls());
                  }
+             });
+             $scope.$watch(function () { return $rootScope.homeURL; }, function () {
+                 $scope.backLinks = withHomeUrl(backlinkService.getAllUrls());
              });
 
              $scope.$on("$destroy", function () {

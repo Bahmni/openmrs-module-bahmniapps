@@ -29,8 +29,16 @@ angular.module('authentication')
             };
         }];
         $httpProvider.interceptors.push(interceptor);
-    }]).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
-        $rootScope.newHomeURL = Bahmni.Common.Constants.newHomeURL;
+    }]).run(['$rootScope', '$window', '$timeout', '$http', function ($rootScope, $window, $timeout, $http) {
+        $http.get(Bahmni.Common.Constants.baseUrl + "home/app.json", {withCredentials: true}).then(
+            function (response) {
+                var config = response.data && response.data.config;
+                $rootScope.homeURL = (config && config.homeURL) || Bahmni.Common.Constants.homeURL;
+            },
+            function () {
+                $rootScope.homeURL = Bahmni.Common.Constants.homeURL;
+            }
+        );
         $rootScope.$on('event:auth-loginRequired', function () {
             $timeout(function () {
                 $window.location = "../home/index.html#/login";
