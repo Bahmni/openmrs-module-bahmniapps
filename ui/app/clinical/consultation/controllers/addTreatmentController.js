@@ -467,6 +467,25 @@ angular.module('bahmni.clinical')
                 return cdssService.getAlerts($scope.cdssEnabled, $scope.consultation, $scope.patient);
             };
 
+            var buildVdpOrdersForConflictCheck = function (variableDoseTreatments) {
+                return (variableDoseTreatments || []).map(function (vdp) {
+                    var start = vdp.startDate ? new Date(vdp.startDate) : new Date();
+                    var stop = vdp.totalDays > 0 ? new Date(start.getTime() + vdp.totalDays * 86400000) : null;
+                    return {
+                        getDisplayName: function () { return vdp.drugName; },
+                        effectiveStartDate: start,
+                        effectiveStopDate: stop,
+                        careSetting: vdp.careSetting,
+                        overlappingScheduledWith: function (other) {
+                            if (!other.effectiveStopDate && !stop) { return true; }
+                            if (!other.effectiveStopDate) { return DateUtil.diffInSeconds(stop, other.effectiveStartDate) > -1; }
+                            if (!stop) { return DateUtil.diffInSeconds(start, other.effectiveStartDate) > -1 && DateUtil.diffInSeconds(start, other.effectiveStopDate) < 1; }
+                            return DateUtil.diffInSeconds(start, other.effectiveStopDate) <= 0 && DateUtil.diffInSeconds(stop, other.effectiveStartDate) > -1;
+                        }
+                    };
+                });
+            };
+
             var getConflictingDrugOrder = function (newDrugOrder) {
                 var allDrugOrders = $scope.treatments.concat($scope.orderSetTreatments);
                 allDrugOrders = _.reject(allDrugOrders, newDrugOrder);
@@ -478,6 +497,8 @@ angular.module('bahmni.clinical')
                     existingDrugOrders = $scope.consultation.activeAndScheduledDrugOrders;
                 }
                 existingDrugOrders = existingDrugOrders.concat(unsavedNotBeingEditedOrders);
+
+                existingDrugOrders = existingDrugOrders.concat(buildVdpOrdersForConflictCheck($scope.consultation.variableDoseTreatments));
 
                 var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
                     return (drugOrder.getDisplayName() === newDrugOrder.getDisplayName() && drugOrder.overlappingScheduledWith(newDrugOrder) && newDrugOrder.careSetting === drugOrder.careSetting);
@@ -1011,11 +1032,21 @@ angular.module('bahmni.clinical')
                             var vdpCareSetting = (currentVisitType === 'IPD')
                                 ? Bahmni.Clinical.Constants.careSetting.inPatient
                                 : Bahmni.Clinical.Constants.careSetting.outPatient;
+                            var newVdpStart = data.startDate ? new Date(data.startDate) : new Date();
+                            var loadingDoseDays = (data.loadingDose && data.loadingDose.dose) ? 1 : 0;
+                            var newVdpTotalDays = loadingDoseDays + (data.stages || []).reduce(function (sum, s) {
+                                return sum + Bahmni.Clinical.FhirDosingUtils.normalizeToDays(s.duration, s.durationUnit);
+                            }, 0);
+                            var newVdpOrder = {
+                                effectiveStartDate: newVdpStart,
+                                effectiveStopDate: newVdpTotalDays > 0 ? new Date(newVdpStart.getTime() + newVdpTotalDays * 86400000) : null
+                            };
                             var conflictingActiveOrder = _.find(
-                                ($scope.consultation.activeAndScheduledDrugOrders || []).concat($scope.treatments || []),
+                                ($scope.consultation.activeAndScheduledDrugOrders || []).concat($scope.treatments || []).concat(buildVdpOrdersForConflictCheck($scope.consultation.variableDoseTreatments)),
                                 function (order) {
                                     return order.getDisplayName && order.getDisplayName() === vdpDrugName &&
-                                           order.careSetting === vdpCareSetting;
+                                           order.careSetting === vdpCareSetting &&
+                                           order.overlappingScheduledWith(newVdpOrder);
                                 }
                             );
                             if (conflictingActiveOrder) {
@@ -1087,6 +1118,11 @@ angular.module('bahmni.clinical')
                                         });
                                     }
 
+                                    var stageFrequencyPerDay = function (frequencyName) {
+                                        var freq = _.find(treatmentConfig.getFrequencies(), function (f) { return f.name === frequencyName; });
+                                        return freq ? (freq.frequencyPerDay || 1) : 1;
+                                    };
+
                                     calculatedStages.forEach(function (cs, idx) {
                                         var s = cs.original;
                                         var stageDays = Bahmni.Clinical.FhirDosingUtils.normalizeToDays(s.duration, s.durationUnit);
@@ -1097,6 +1133,7 @@ angular.module('bahmni.clinical')
                                             dose: cs.calculatedDose,
                                             unit: cs.doseUnit,
                                             frequency: s.frequency || '',
+                                            frequencyPerDay: stageFrequencyPerDay(s.frequency),
                                             duration: s.duration,
                                             durationUnit: s.durationUnit || '',
                                             instructions: s.instructions || '',
@@ -1110,7 +1147,7 @@ angular.module('bahmni.clinical')
 
                                     var totalDosage = calculatedStages.reduce(function (sum, cs) {
                                         var s = cs.original;
-                                        return sum + (parseFloat(cs.calculatedDose) || 0) * Bahmni.Clinical.FhirDosingUtils.normalizeToDays(s.duration, s.durationUnit);
+                                        return sum + (parseFloat(cs.calculatedDose) || 0) * stageFrequencyPerDay(s.frequency) * Bahmni.Clinical.FhirDosingUtils.normalizeToDays(s.duration, s.durationUnit);
                                     }, 0);
                                     if (data.loadingDose && calculatedLoadingDose) {
                                         totalDosage += parseFloat(calculatedLoadingDose.dose || 0);
@@ -1127,6 +1164,7 @@ angular.module('bahmni.clinical')
                                         careSetting: careSetting,
                                         startDate: data.startDate,
                                         stageCount: stageCount,
+                                        hasLoadingDose: !!(data.loadingDose && calculatedLoadingDose),
                                         totalDays: totalDays,
                                         stages: stages
                                     };

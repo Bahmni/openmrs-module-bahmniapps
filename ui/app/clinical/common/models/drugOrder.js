@@ -95,7 +95,7 @@ Bahmni.Clinical.DrugOrder = (function () {
             if (s.stageName === utils.LOADING_DOSE_STAGE_NAME) {
                 return sum + (parseFloat(s.dose) || 0);
             }
-            return sum + (parseFloat(s.dose) || 0) * utils.normalizeToDays(s.duration, s.durationUnit);
+            return sum + (parseFloat(s.dose) || 0) * (s.frequencyPerDay || 1) * utils.normalizeToDays(s.duration, s.durationUnit);
         }, 0);
 
         return new DrugOrder({

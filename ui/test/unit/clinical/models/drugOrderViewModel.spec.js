@@ -805,6 +805,58 @@ describe("drugOrderViewModel", function () {
         });
     });
 
+    describe("createFromContract - hasLoadingDose", function () {
+        var fhirDosingInstructionType = 'org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FhirDosingInstructions';
+
+        var buildVdpContract = function (dosages) {
+            return {
+                uuid: 'vdp-uuid',
+                action: 'NEW',
+                careSetting: 'Inpatient',
+                dosingInstructionType: fhirDosingInstructionType,
+                effectiveStartDate: DateUtil.parse('2026-01-01').getTime(),
+                duration: 7,
+                durationUnits: 'Days',
+                dosingInstructions: {
+                    quantity: 10,
+                    quantityUnits: 'Tablet(s)',
+                    administrationInstructions: JSON.stringify(dosages)
+                },
+                drug: { name: 'Prednisolone', uuid: 'drug-uuid' },
+                provider: { name: 'Dr. Test' }
+            };
+        };
+
+        it("should set hasLoadingDose to true when one stage is a loading dose", function () {
+            var dosages = [
+                { sequence: 1, text: 'Loading Dose', timing: { code: { text: 'Once' } }, doseAndRate: [{ doseQuantity: { value: 10, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: true }], additionalInstruction: [], patientInstruction: '' },
+                { sequence: 2, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 3, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContract(dosages));
+            expect(viewModel.hasLoadingDose).toBe(true);
+        });
+
+        it("should set hasLoadingDose to false when no stage is a loading dose", function () {
+            var dosages = [
+                { sequence: 1, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 3, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' },
+                { sequence: 2, text: 'Stage 2', timing: { code: { text: 'Once a day' }, repeat: { duration: 4, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 3, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContract(dosages));
+            expect(viewModel.hasLoadingDose).toBe(false);
+        });
+
+        it("should set stageCount to count only non-loading-dose stages", function () {
+            var dosages = [
+                { sequence: 1, text: 'Loading Dose', timing: { code: { text: 'Once' } }, doseAndRate: [{ doseQuantity: { value: 10, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: true }], additionalInstruction: [], patientInstruction: '' },
+                { sequence: 2, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 3, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' },
+                { sequence: 3, text: 'Stage 2', timing: { code: { text: 'Once a day' }, repeat: { duration: 4, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 3, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContract(dosages));
+            expect(viewModel.stageCount).toBe(2);
+            expect(viewModel.hasLoadingDose).toBe(true);
+        });
+    });
+
     describe("revise", function () {
         it("should create a new object that can be used for revision", function () {
             var treatment = sampleTreatment({}, [], {}, Bahmni.Common.Util.DateUtil.now());

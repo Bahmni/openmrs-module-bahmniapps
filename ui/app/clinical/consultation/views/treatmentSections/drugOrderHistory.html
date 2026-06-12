@@ -35,7 +35,7 @@
                                             <cdss-popover alerts="drugOrder.alerts"></cdss-popover>
                                         </div>
                                         <div class="dosage-frequency">
-                                            <span ng-if="drugOrder.isVariableDoseOrder">Variable Dosage | {{drugOrder.stageCount}} {{drugOrder.stageCount == 1 ? 'Stage' : 'Stages'}} | {{drugOrder.totalDays}} Day(s)</span>
+                                            <span ng-if="drugOrder.isVariableDoseOrder">Variable Dosage | {{drugOrder.hasLoadingDose ? 'Loading Dose + ' : ''}}{{drugOrder.stageCount}} {{drugOrder.stageCount == 1 ? 'Stage' : 'Stages'}} | {{drugOrder.totalDays}} Day(s)</span>
                                             <span ng-if="!drugOrder.isVariableDoseOrder && drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}}</span>
                                             <span ng-if="!drugOrder.isVariableDoseOrder && drugOrder.getFrequency() && drugOrder.getFrequency().length"> | {{drugOrder.getFrequency()}}</span>
                                             <span ng-if="!drugOrder.isVariableDoseOrder && drugOrder.getDurationAndDurationUnits()"> | {{drugOrder.getDurationAndDurationUnits()}}</span>

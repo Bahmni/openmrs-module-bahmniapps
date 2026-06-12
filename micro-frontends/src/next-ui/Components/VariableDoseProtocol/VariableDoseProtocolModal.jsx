@@ -132,7 +132,11 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
         0
     );
     const totalDosage = stages.reduce(
-        (sum, s) => sum + (parseFloat(s.dose) || 0) * normalizeToDays(s.duration, s.durationUnit?.value),
+        (sum, s) => {
+            const freq = frequencies.find((f) => f.name === s.frequency?.value);
+            const freqPerDay = freq?.frequencyPerDay || 1;
+            return sum + (parseFloat(s.dose) || 0) * freqPerDay * normalizeToDays(s.duration, s.durationUnit?.value);
+        },
         isLoadingDose && loadingDoseValue > 0 ? parseFloat(loadingDoseValue) : 0
     );
 

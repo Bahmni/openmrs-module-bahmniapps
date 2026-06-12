@@ -7,6 +7,14 @@
 }
 
 .variable-dose-modal {
+  [class*="bx--"]:disabled {
+    -webkit-text-fill-color: #6F6F6F;
+  }
+
+  .bx--list-box--disabled .bx--list-box__label {
+    color: #6F6F6F;
+  }
+
   .bx--modal-container {
     width: 55%;
     height: 84%;

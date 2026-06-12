@@ -96,7 +96,7 @@
                             {{treatment.drugName}}<span ng-if="treatment.drugForm"> ({{treatment.drugForm}})</span>
                         </strong>
                         <div class="dosage-frequency">
-                            Variable Dosage | {{treatment.stageCount}} {{treatment.stageCount == 1 ? 'Stage' : 'Stages'}} | {{treatment.totalDays}} Day(s)
+                            Variable Dosage | {{treatment.hasLoadingDose ? 'Loading Dose + ' : ''}}{{treatment.stageCount}} {{treatment.stageCount == 1 ? 'Stage' : 'Stages'}} | {{treatment.totalDays}} Day(s)
                         </div>
                     </div>
                 </div>
