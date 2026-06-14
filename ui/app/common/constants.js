@@ -304,7 +304,7 @@ Bahmni.Common = Bahmni.Common || {};
         defaultImageUploadSize: 500000, // Default patient profile photo size
         maxImageUploadSize: 9000000, // to ensure, extreme max size and prevent choking up server capacity (max size is 9MB)
         adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink",
-        homeURL: "../home"
+        homeUrl: "../home"
     };
 })();
 

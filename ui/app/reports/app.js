@@ -73,6 +73,7 @@ angular
             $bahmniTranslateProvider.init({app: getAppName(), shouldMerge: true});
         }]).run(['$rootScope', '$templateCache', '$window', function ($rootScope, $templateCache, $window) {
             moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+            $rootScope.homeURL = localStorage.getItem('homeUrl') || Bahmni.Common.Constants.homeUrl;
             $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();
             }

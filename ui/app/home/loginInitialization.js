@@ -37,11 +37,12 @@ angular.module('bahmni.home')
                 loadConfigService.loadConfig(Bahmni.Common.Constants.baseUrl + "home/app.json").then(
                     function (response) {
                         var config = response.data && response.data.config;
-                        $rootScope.homeURL = (config && config.homeURL) || Bahmni.Common.Constants.homeURL;
+                        $rootScope.homeURL = (config && config.homeUrl) || Bahmni.Common.Constants.homeUrl;
+                        localStorage.setItem('homeUrl', $rootScope.homeURL);
                         configDeferred.resolve();
                     },
                     function () {
-                        $rootScope.homeURL = Bahmni.Common.Constants.homeURL;
+                        $rootScope.homeURL = Bahmni.Common.Constants.homeUrl;
                         configDeferred.resolve();
                     }
                 );

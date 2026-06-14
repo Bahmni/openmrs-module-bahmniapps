@@ -31,7 +31,7 @@ angular.module('bahmni.common.uiHelper')
          controller: function ($scope, $rootScope, backlinkService) {
              var withHomeUrl = function (links) {
                  return _.map(links, function (link) {
-                     return (link.id === 'homeBackLink' || link.url === Bahmni.Common.Constants.homeURL)
+                     return (link.id === 'homeBackLink' || link.url === Bahmni.Common.Constants.homeUrl)
                          ? angular.extend({}, link, {url: $rootScope.homeURL || link.url})
                          : link;
                  });

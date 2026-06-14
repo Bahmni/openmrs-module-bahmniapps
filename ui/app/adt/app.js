@@ -17,7 +17,7 @@ angular.module('adt', ['bahmni.common.patient', 'bahmni.common.patientSearch', '
 angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
     function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/home');
-        var homeBackLink = {label: "", url: Bahmni.Common.Constants.homeURL, accessKey: "h", icon: "fa-home", id: "homeBackLink"};
+        var homeBackLink = {label: "", url: Bahmni.Common.Constants.homeUrl, accessKey: "h", icon: "fa-home", id: "homeBackLink"};
         var adtHomeBackLink = {label: "", url: "#/home", accessKey: "p", icon: "fa-users", id: "adtHomeBackLink" };
 
     // @if DEBUG='production'
