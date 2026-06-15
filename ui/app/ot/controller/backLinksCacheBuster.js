@@ -10,10 +10,13 @@
 "use strict";
 
 angular.module('bahmni.ot')
-    .directive('backLinksCacheBuster', ['$state', '$window', function ($state, $window) {
-        var controller = function ($scope, $state, $window) {
+    .directive('backLinksCacheBuster', ['$state', '$window', '$rootScope', function ($state, $window, $rootScope) {
+        var controller = function ($scope, $state, $window, $rootScope) {
             $scope.navigationLinks = $state.current.data.navigationLinks;
-            $scope.homeBackLink = $state.current.data.homeBackLink;
+            var rawHomeBackLink = $state.current.data.homeBackLink;
+            $scope.homeBackLink = angular.extend({}, rawHomeBackLink, {
+                value: $rootScope.homeURL || rawHomeBackLink.value
+            });
             $scope.isCurrentState = function (link) {
                 if ($state.current.name === link.value) {
                     return true;
