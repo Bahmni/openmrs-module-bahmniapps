@@ -122,6 +122,6 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
 
         $bahmniTranslateProvider.init({app: 'ot', shouldMerge: true});
     }]).run(['$rootScope', '$window', function ($rootScope, $window) {
-    moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
-    $rootScope.homeURL = localStorage.getItem('homeUrl') || Bahmni.Common.Constants.homeUrl;
-}]);
+        moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        $rootScope.homeURL = localStorage.getItem('homeUrl') || Bahmni.Common.Constants.homeUrl;
+    }]);
