@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import PropTypes from "prop-types";
 import { Button } from "carbon-components-react";
 import { Add16 } from "@carbon/icons-react";
@@ -8,18 +8,40 @@ import { VariableDoseProtocolModalInner } from "../../Components/VariableDosePro
 
 function VariableDoseProtocolInner({ hostData, hostApi }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [editInitialValues, setEditInitialValues] = useState(null);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [isSavedOrder, setIsSavedOrder] = useState(false);
 
     const handleClose = () => {
         setIsOpen(false);
+        setEditInitialValues(null);
+        setIsEditMode(false);
+        setIsSavedOrder(false);
         hostApi?.onClose?.();
     };
 
     const handleSave = (data) => {
         setIsOpen(false);
-        hostApi?.onSave?.(data);
+        hostApi?.onSave?.(data, isSavedOrder);
     };
 
-    const augmentedHostApi = { ...hostApi, onClose: handleClose, onSave: handleSave };
+    const augmentedHostApi = {
+        ...hostApi,
+        onClose: handleClose,
+        onSave: handleSave,
+        openModal: (initialValues, isSavedOrder, editMode) => {
+            setEditInitialValues(initialValues || null);
+            setIsEditMode(editMode || false);
+            setIsSavedOrder(isSavedOrder || false);
+            setIsOpen(true);
+        }
+    };
+
+    useLayoutEffect(() => {
+        if (hostApi) {
+            hostApi.openModal = augmentedHostApi.openModal;
+        }
+    }, []);
 
     return (
         <>
@@ -27,7 +49,7 @@ function VariableDoseProtocolInner({ hostData, hostApi }) {
                 kind="tertiary"
                 size="md"
                 renderIcon={Add16}
-                onClick={() => setIsOpen(true)}
+                onClick={() => { setEditInitialValues(null); setIsEditMode(false); setIsOpen(true); }}
                 className="variable-dose-trigger-btn"
                 style={{ width: "98%", fontSize: "1.1rem", lineHeight: "1em", whiteSpace: "nowrap" }}
             >
@@ -38,7 +60,7 @@ function VariableDoseProtocolInner({ hostData, hostApi }) {
             </Button>
             {isOpen && (
                 <VariableDoseProtocolModalInner
-                    hostData={hostData}
+                    hostData={{ ...hostData, initialValues: editInitialValues, editMode: isEditMode }}
                     hostApi={augmentedHostApi}
                 />
             )}

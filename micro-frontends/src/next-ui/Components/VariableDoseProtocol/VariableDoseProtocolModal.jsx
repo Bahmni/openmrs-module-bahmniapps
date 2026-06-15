@@ -54,7 +54,9 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const [searchResults, setSearchResults] = useState(
         initialValues.drug ? [initialValues.drug] : []
     );
-    const [dosingRule, setDosingRule] = useState(null);
+    const [dosingRule, setDosingRule] = useState(
+        initialValues.dosingRule ? { label: initialValues.dosingRule, value: initialValues.dosingRule } : null
+    );
     const [units, setUnits] = useState(
         initialValues.units ? { label: initialValues.units, value: initialValues.units } : null
     );
@@ -66,15 +68,31 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
         initialValues.startDate ? new Date(initialValues.startDate) : new Date()
     );
 
-    const [isLoadingDose, setIsLoadingDose] = useState(false);
-    const [loadingDoseValue, setLoadingDoseValue] = useState(0);
-    const [loadingDoseInstructions, setLoadingDoseInstructions] = useState(null);
-    const [loadingDoseRate, setLoadingDoseRate] = useState(0);
-    const [loadingDoseAdditives, setLoadingDoseAdditives] = useState("");
-    const [loadingDoseAdditionalInstructions, setLoadingDoseAdditionalInstructions] = useState("");
+    const isEditMode = !!(hostData?.editMode);
+
+    const loadingDoseInstructionsValue = initialValues.loadingDose?.instructions?.value || initialValues.loadingDose?.instructions;
+
+    const [isLoadingDose, setIsLoadingDose] = useState(!!(initialValues.isLoadingDose));
+    const [loadingDoseValue, setLoadingDoseValue] = useState(
+        initialValues.loadingDose ? (parseFloat(initialValues.loadingDose.dose) || 0) : 0
+    );
+    const [loadingDoseInstructions, setLoadingDoseInstructions] = useState(
+        initialValues.loadingDose && initialValues.loadingDose.instructions
+            ? { label: loadingDoseInstructionsValue, value: loadingDoseInstructionsValue }
+            : null
+    );
+    const [loadingDoseRate, setLoadingDoseRate] = useState(
+        initialValues.loadingDose ? (parseFloat(initialValues.loadingDose.rate) || 0) : 0
+    );
+    const [loadingDoseAdditives, setLoadingDoseAdditives] = useState(
+        initialValues.loadingDose ? (initialValues.loadingDose.additives || "") : ""
+    );
+    const [loadingDoseAdditionalInstructions, setLoadingDoseAdditionalInstructions] = useState(
+        initialValues.loadingDose ? (initialValues.loadingDose.additionalInstructions || "") : ""
+    );
 
     const [stages, setStages] = useState(
-        initialValues.stages && initialValues.stages.length >= 2
+        initialValues.stages && (isEditMode ? initialValues.stages.length >= 1 : initialValues.stages.length >= 2)
             ? initialValues.stages
             : [defaultStage()]
     );
@@ -263,14 +281,13 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
             <Modal
                 open={true}
                 className="next-ui variable-dose-modal"
-                modalHeading={
-                    <FormattedMessage
-                        id="VARIABLE_DOSE_MODAL_TITLE"
-                        defaultMessage="Order Drug - Variable Dosage Protocol"
-                    />
+                modalHeading={isEditMode
+                    ? <FormattedMessage id="VARIABLE_DOSE_MODAL_EDIT_TITLE" defaultMessage="Edit Drug - Variable Dosage Protocol" />
+                    : <FormattedMessage id="VARIABLE_DOSE_MODAL_TITLE" defaultMessage="Order Drug - Variable Dosage Protocol" />
                 }
-                primaryButtonText={
-                    <FormattedMessage id="VARIABLE_DOSE_SAVE_BUTTON" defaultMessage="Save" />
+                primaryButtonText={isEditMode
+                    ? <FormattedMessage id="VARIABLE_DOSE_SAVE_CHANGES_BUTTON" defaultMessage="Save Changes" />
+                    : <FormattedMessage id="VARIABLE_DOSE_SAVE_BUTTON" defaultMessage="Save" />
                 }
                 secondaryButtonText={
                     <FormattedMessage id="VARIABLE_DOSE_CANCEL_BUTTON" defaultMessage="Cancel" />
@@ -293,6 +310,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                         onInputChange={(value) => handleDrugInputChange({ value })}
                         onChange={handleDrugChange}
                         selectedItem={selectedDrug}
+                        disabled={isEditMode}
                     />
                     <div className="variable-dose-accept-wrapper">
                         <Checkbox
@@ -329,6 +347,9 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                                     if (!rule) {
                                         setUnits(null);
                                         setIsUnitsAutoPopulated(false);
+                                        setLoadingDoseRate(0);
+                                        setLoadingDoseAdditives("");
+                                        setStages((prev) => prev.map((s) => ({ ...s, rate: 0, additives: "" })));
                                         return;
                                     }
                                     const ruleUnits = dosageRuleUnitsMap[rule.value || ""];

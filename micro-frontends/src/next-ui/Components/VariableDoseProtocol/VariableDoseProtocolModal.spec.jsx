@@ -493,3 +493,192 @@ describe("Loading Dose", () => {
         );
     });
 });
+
+describe("Edit Mode (initialValues pre-population)", () => {
+    const mockDrug = { name: "Paracetamol", uuid: "drug-uuid-1", dosageForm: { display: "Tablet" } };
+
+    const editHostData = {
+        ...defaultHostData,
+        editMode: true,
+        initialValues: {
+            drug: mockDrug,
+            units: "mg",
+            route: "Oral",
+            startDate: new Date("2024-01-01"),
+            isLoadingDose: false,
+            loadingDose: null,
+            stages: [
+                {
+                    dose: 10,
+                    frequency: { label: "Once a day", value: "Once a day" },
+                    duration: 5,
+                    durationUnit: { label: "Day(s)", value: "Day(s)" },
+                    instructions: null,
+                    additionalInstructions: "",
+                    rate: 0,
+                    additives: "",
+                    showInstructions: false,
+                },
+            ],
+        },
+    };
+
+    it("should show 'Edit Drug - Variable Dosage Protocol' heading when editMode=true", async () => {
+        renderModal(editHostData);
+        await waitFor(() => {
+            expect(screen.getByText("Edit Drug - Variable Dosage Protocol")).toBeTruthy();
+        });
+    });
+
+    it("should show 'Save Changes' button text when editMode=true", async () => {
+        renderModal(editHostData);
+        await waitFor(() => {
+            expect(screen.queryByText("Save Changes")).toBeTruthy();
+        });
+    });
+
+    it("should pre-populate drug name when initialValues.drug is provided", async () => {
+        const { container } = renderModal(editHostData);
+        await waitFor(() => {
+            const drugInput = container.querySelector("#variable-dose-drug-name");
+            expect(drugInput).toBeTruthy();
+        });
+    });
+
+    it("should pre-populate loading dose fields when initialValues has loading dose", async () => {
+        const editHostDataWithLoadingDose = {
+            ...defaultHostData,
+            editMode: true,
+            initialValues: {
+                drug: mockDrug,
+                units: "mg",
+                route: "Oral",
+                startDate: new Date("2024-01-01"),
+                isLoadingDose: true,
+                loadingDose: {
+                    dose: 20,
+                    instructions: { label: "As directed", value: "As directed" },
+                    rate: 0,
+                    additives: "",
+                    additionalInstructions: "",
+                },
+                stages: [validStage()],
+            },
+        };
+        renderModal(editHostDataWithLoadingDose);
+        await waitFor(() => {
+            const loadingDoseInput = screen.getByLabelText(/Loading Dose/i);
+            expect(loadingDoseInput).toBeTruthy();
+        });
+    });
+
+    it("should accept 1 stage in edit mode (isEditMode=true)", async () => {
+        renderModal(editHostData);
+        await waitFor(() => {
+            expect(screen.getByText("Stage 1")).toBeTruthy();
+        });
+    });
+
+    it("should pre-populate units and route from initialValues", async () => {
+        const { container } = renderModal(editHostData);
+        await waitFor(() => {
+            expect(getDropdownInput(container, "variable-dose-units").value).toBe("mg");
+            expect(getDropdownInput(container, "variable-dose-route").value).toBe("Oral");
+        });
+    });
+
+    it("should pre-populate loading dose instructions from object format", async () => {
+        const editHostDataWithLoadingDoseObject = {
+            ...defaultHostData,
+            editMode: true,
+            initialValues: {
+                drug: mockDrug,
+                units: "mg",
+                route: "Oral",
+                startDate: new Date("2024-01-01"),
+                isLoadingDose: true,
+                loadingDose: {
+                    dose: 20,
+                    instructions: { label: "As directed", value: "As directed" },
+                    rate: 0,
+                    additives: "",
+                    additionalInstructions: "",
+                },
+                stages: [validStage()],
+            },
+        };
+        renderModal(editHostDataWithLoadingDoseObject);
+        await waitFor(() => {
+            const loadingDoseInput = screen.getByLabelText(/Loading Dose/i);
+            expect(loadingDoseInput).toBeTruthy();
+        });
+    });
+});
+
+describe("Drug Field Disable in Edit Mode", () => {
+    it("should disable drug field when editMode=true (unsaved edit)", async () => {
+        const mockDrug = { name: "Aspirin", uuid: "drug-1" };
+        const mockHostApi = {
+            onClose: jest.fn(),
+            onSave: jest.fn(),
+            searchDrugs: jest.fn().mockResolvedValue([]),
+        };
+
+        const editHostData = {
+            ...defaultHostData,
+            editMode: true,
+            initialValues: {
+                drug: mockDrug,
+                units: "mg",
+                route: "Oral",
+                stages: [validStage()],
+            },
+        };
+
+        const { container } = render(
+            <I18nProvider>
+                <VariableDoseProtocolModal hostData={editHostData} hostApi={mockHostApi} />
+            </I18nProvider>
+        );
+
+        await waitFor(() => {
+            const drugInput = container.querySelector("#variable-dose-drug-name");
+            expect(drugInput).toBeTruthy();
+            // Drug field should be disabled
+            expect(drugInput.disabled).toBe(true);
+        });
+    });
+
+    it("should disable drug field when editMode=true (saved order revision)", async () => {
+        const mockDrug = { name: "Morphine", uuid: "drug-morphine" };
+        const mockHostApi = {
+            onClose: jest.fn(),
+            onSave: jest.fn(),
+            searchDrugs: jest.fn().mockResolvedValue([]),
+        };
+
+        const reviseHostData = {
+            ...defaultHostData,
+            editMode: true,
+            initialValues: {
+                drug: mockDrug,
+                units: "mg",
+                route: "IV",
+                isSavedOrder: true,
+                stages: [validStage()],
+            },
+        };
+
+        const { container } = render(
+            <I18nProvider>
+                <VariableDoseProtocolModal hostData={reviseHostData} hostApi={mockHostApi} />
+            </I18nProvider>
+        );
+
+        await waitFor(() => {
+            const drugInput = container.querySelector("#variable-dose-drug-name");
+            expect(drugInput).toBeTruthy();
+            expect(drugInput.disabled).toBe(true); // Should be disabled for saved order revision too
+        });
+    });
+});

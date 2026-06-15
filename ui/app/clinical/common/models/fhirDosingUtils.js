@@ -142,6 +142,69 @@ var fhirDosageToStage = function (dosage) {
     };
 };
 
+var toVariableDoseModalInitialValues = function (entry) {
+    if (!entry) { return {}; }
+
+    var toLabelValueObject = function (str) {
+        if (!str) { return null; }
+        return { label: str, value: str };
+    };
+
+    var parseDuration = function (durationRaw, durationUnitRaw) {
+        if (durationUnitRaw) {
+            return { duration: parseFloat(durationRaw) || 0, durationUnit: durationUnitRaw };
+        }
+        var str = String(durationRaw || '').trim();
+        var match = str.match(/^(\d+(?:\.\d+)?)\s+(.+)$/);
+        if (match) {
+            return { duration: parseFloat(match[1]) || 0, durationUnit: match[2] };
+        }
+        return { duration: parseFloat(str) || 0, durationUnit: '' };
+    };
+
+    var allStages = entry.stages || [];
+    var loadingStage = allStages.filter(function (s) { return s.isLoadingDose; })[0] || null;
+    var regularStages = allStages.filter(function (s) { return !s.isLoadingDose; });
+
+    var formStages = regularStages.map(function (s) {
+        var hasInstructions = !!(s.instructions || s.additionalInstructions || s.rate || s.additives);
+        var parsed = parseDuration(s.duration, s.durationUnit);
+        return {
+            dose: parseFloat(s.dose) || 0,
+            frequency: toLabelValueObject(s.frequency),
+            duration: parsed.duration,
+            durationUnit: toLabelValueObject(parsed.durationUnit),
+            instructions: toLabelValueObject(s.instructions),
+            additionalInstructions: s.additionalInstructions || '',
+            rate: parseFloat(s.rate) || 0,
+            additives: s.additives || '',
+            showInstructions: hasInstructions
+        };
+    });
+
+    var units = (entry.dosingInstructions && (entry.dosingInstructions.quantityUnits || entry.dosingInstructions.doseUnits))
+        || entry.units || entry.quantityUnit || entry.totalDosageUnits || '';
+
+    var route = (entry.dosingInstructions && entry.dosingInstructions.route)
+        || entry.route || '';
+
+    return {
+        drug: entry.drug || null,
+        units: units,
+        route: route,
+        startDate: entry.startDate || null,
+        isLoadingDose: !!loadingStage,
+        loadingDose: loadingStage ? {
+            dose: parseFloat(loadingStage.dose) || 0,
+            instructions: toLabelValueObject(loadingStage.instructions),
+            rate: parseFloat(loadingStage.rate) || 0,
+            additives: loadingStage.additives || '',
+            additionalInstructions: loadingStage.additionalInstructions || ''
+        } : null,
+        stages: formStages
+    };
+};
+
 Bahmni.Clinical.FhirDosingUtils = {
     FHIR_DOSING_INSTRUCTION_TYPE: FHIR_DOSING_INSTRUCTION_TYPE,
     LOADING_DOSE_STAGE_NAME: LOADING_DOSE_STAGE_NAME,
@@ -152,5 +215,6 @@ Bahmni.Clinical.FhirDosingUtils = {
     parseFlatAdminInstructions: parseFlatAdminInstructions,
     isLoadingDoseOrder: isLoadingDoseOrder,
     buildFhirDosageArray: buildFhirDosageArray,
-    fhirDosageToStage: fhirDosageToStage
+    fhirDosageToStage: fhirDosageToStage,
+    toVariableDoseModalInitialValues: toVariableDoseModalInitialValues
 };

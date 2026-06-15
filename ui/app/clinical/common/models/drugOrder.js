@@ -119,6 +119,13 @@ Bahmni.Clinical.DrugOrder = (function () {
         });
     };
 
+    DrugOrder.createFhirDrugOrderRevise = function (vdt) {
+        var order = DrugOrder.createFhirDrugOrder(vdt);
+        order.action = Bahmni.Clinical.Constants.orderActions.revise;
+        order.previousOrderUuid = vdt.previousOrderUuid;
+        return order;
+    };
+
     DrugOrder.prototype = {
         isActiveOnDate: function (date) {
             return date >= DateUtil.getDate(this.effectiveStartDate) && date <= DateUtil.getDate(this.effectiveStopDate);

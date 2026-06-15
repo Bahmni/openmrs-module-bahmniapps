@@ -106,6 +106,8 @@
                     <button ng-show="!allMedicinesInPrescriptionAvailableForIPD" class="ipd-btn" ng-click="toggleCareSetting(treatment)">
                         <i class="fa fa-check" ng-show="treatment.careSetting === 'INPATIENT'"></i>
                         {{ ::'IPD_BUTTON' | translate }}
+                    <button ng-click="editVariableDose($index)">
+                        <i class="fa fa-edit"></i>
                     </button>
                     <button ng-confirm-click="removeVariableDose($index)"
                             confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}">

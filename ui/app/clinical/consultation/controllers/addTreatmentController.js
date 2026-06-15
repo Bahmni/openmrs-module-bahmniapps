@@ -467,23 +467,27 @@ angular.module('bahmni.clinical')
                 return cdssService.getAlerts($scope.cdssEnabled, $scope.consultation, $scope.patient);
             };
 
-            var buildVdpOrdersForConflictCheck = function (variableDoseTreatments) {
-                return (variableDoseTreatments || []).map(function (vdp) {
-                    var start = vdp.startDate ? new Date(vdp.startDate) : new Date();
-                    var stop = vdp.totalDays > 0 ? new Date(start.getTime() + vdp.totalDays * 86400000) : null;
-                    return {
-                        getDisplayName: function () { return vdp.drugName; },
-                        effectiveStartDate: start,
-                        effectiveStopDate: stop,
-                        careSetting: vdp.careSetting,
-                        overlappingScheduledWith: function (other) {
-                            if (!other.effectiveStopDate && !stop) { return true; }
-                            if (!other.effectiveStopDate) { return DateUtil.diffInSeconds(stop, other.effectiveStartDate) > -1; }
-                            if (!stop) { return DateUtil.diffInSeconds(start, other.effectiveStartDate) > -1 && DateUtil.diffInSeconds(start, other.effectiveStopDate) < 1; }
-                            return DateUtil.diffInSeconds(start, other.effectiveStopDate) <= 0 && DateUtil.diffInSeconds(stop, other.effectiveStartDate) > -1;
-                        }
-                    };
-                });
+            var buildVdpOrdersForConflictCheck = function (variableDoseTreatments, excludeIndex) {
+                return (variableDoseTreatments || [])
+                    .filter(function (vdp, index) {
+                        return excludeIndex === undefined || index !== excludeIndex;
+                    })
+                    .map(function (vdp) {
+                        var start = vdp.startDate ? new Date(vdp.startDate) : new Date();
+                        var stop = vdp.totalDays > 0 ? new Date(start.getTime() + vdp.totalDays * 86400000) : null;
+                        return {
+                            getDisplayName: function () { return vdp.drugName; },
+                            effectiveStartDate: start,
+                            effectiveStopDate: stop,
+                            careSetting: vdp.careSetting,
+                            overlappingScheduledWith: function (other) {
+                                if (!other.effectiveStopDate && !stop) { return true; }
+                                if (!other.effectiveStopDate) { return DateUtil.diffInSeconds(stop, other.effectiveStartDate) > -1; }
+                                if (!stop) { return DateUtil.diffInSeconds(start, other.effectiveStartDate) > -1 && DateUtil.diffInSeconds(start, other.effectiveStopDate) < 1; }
+                                return DateUtil.diffInSeconds(start, other.effectiveStopDate) <= 0 && DateUtil.diffInSeconds(stop, other.effectiveStartDate) > -1;
+                            }
+                        };
+                    });
             };
 
             var getConflictingDrugOrder = function (newDrugOrder) {
@@ -1009,19 +1013,62 @@ angular.module('bahmni.clinical')
                     var orderSetConfig = medicationConfig && medicationConfig.tabConfig &&
                         medicationConfig.tabConfig.allMedicationTabConfig &&
                         medicationConfig.tabConfig.allMedicationTabConfig.orderSet;
-                    $scope.variableDoseHostData = {
-                        doseUnits: treatmentConfig.getDoseUnits(),
-                        routes: treatmentConfig.getRoutes(),
-                        dosingRules: treatmentConfig.dosingRules || [],
-                        drugFormDefaults: treatmentConfig.inputOptionsConfig.drugFormDefaults || {},
-                        dosageRuleUnitsMap: (orderSetConfig && orderSetConfig.dosageRuleUnitsMap) || {},
-                        dosingInstructions: treatmentConfig.getDosingInstructions(),
-                        frequencies: treatmentConfig.getFrequencies(),
-                        durationUnits: treatmentConfig.getDurationUnits()
+
+                    var buildVariableDoseHostData = function (overrides) {
+                        return angular.extend({
+                            doseUnits: treatmentConfig.getDoseUnits(),
+                            routes: treatmentConfig.getRoutes(),
+                            dosingRules: treatmentConfig.dosingRules || [],
+                            drugFormDefaults: treatmentConfig.inputOptionsConfig.drugFormDefaults || {},
+                            dosageRuleUnitsMap: (orderSetConfig && orderSetConfig.dosageRuleUnitsMap) || {},
+                            dosingInstructions: treatmentConfig.getDosingInstructions(),
+                            frequencies: treatmentConfig.getFrequencies(),
+                            durationUnits: treatmentConfig.getDurationUnits()
+                        }, overrides || {});
                     };
+
+                    $scope.variableDoseHostData = buildVariableDoseHostData();
+                    var editingVariableDoseIndex = -1;
+                    var revisingVariableDoseDrugOrder = null;
+
+                    $scope.$on('event:editVariableDoseOrder', function (event, index) {
+                        editingVariableDoseIndex = index;
+                        revisingVariableDoseDrugOrder = null;
+                        var entry = $scope.consultation.variableDoseTreatments[index];
+                        var initialValues = Bahmni.Clinical.FhirDosingUtils.toVariableDoseModalInitialValues(entry);
+                        if (entry && entry.dosingRule) {
+                            initialValues.dosingRule = entry.dosingRule;
+                        }
+                        $scope.variableDoseHostData = buildVariableDoseHostData({ editMode: true, initialValues: initialValues });
+                        $scope.variableDoseHostApi.openModal(initialValues, false, true);
+                    });
+
+                    $scope.$on('event:reviseVariableDoseOrder', function (event, drugOrder) {
+                        editingVariableDoseIndex = -1;
+                        revisingVariableDoseDrugOrder = drugOrder;
+                        var initialValues = Bahmni.Clinical.FhirDosingUtils.toVariableDoseModalInitialValues({
+                            drug: drugOrder.drug,
+                            units: (drugOrder.dosingInstructions && drugOrder.dosingInstructions.doseUnits) || drugOrder.quantityUnit || '',
+                            route: (drugOrder.dosingInstructions && drugOrder.dosingInstructions.route) || drugOrder.route || '',
+                            startDate: drugOrder.effectiveStartDate,
+                            dosingRule: drugOrder.dosingRule || '',
+                            stages: drugOrder.stages || []
+                        });
+                        $scope.variableDoseHostData = buildVariableDoseHostData({ editMode: true, initialValues: initialValues });
+                        $scope.variableDoseHostApi.openModal(initialValues, true, true);
+                        drugOrder.isBeingEdited = true;
+                    });
+
                     $scope.variableDoseHostApi = {
-                        onClose: function () {},
-                        onSave: function (data) {
+                        onClose: function () {
+                            $scope.variableDoseHostData = buildVariableDoseHostData();
+                            editingVariableDoseIndex = -1;
+                            if (revisingVariableDoseDrugOrder) {
+                                revisingVariableDoseDrugOrder.isBeingEdited = false;
+                                revisingVariableDoseDrugOrder = null;
+                            }
+                        },
+                        onSave: function (data, isSavedOrder) {
                             if (($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') &&
                                     ($scope.obs.length === 0 ||
                                      (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
@@ -1042,7 +1089,7 @@ angular.module('bahmni.clinical')
                                 effectiveStopDate: newVdpTotalDays > 0 ? new Date(newVdpStart.getTime() + newVdpTotalDays * 86400000) : null
                             };
                             var conflictingActiveOrder = _.find(
-                                ($scope.consultation.activeAndScheduledDrugOrders || []).concat($scope.treatments || []).concat(buildVdpOrdersForConflictCheck($scope.consultation.variableDoseTreatments)),
+                                ($scope.consultation.activeAndScheduledDrugOrders || []).concat($scope.treatments || []).concat(buildVdpOrdersForConflictCheck($scope.consultation.variableDoseTreatments, editingVariableDoseIndex >= 0 ? editingVariableDoseIndex : undefined)),
                                 function (order) {
                                     return order.getDisplayName && order.getDisplayName() === vdpDrugName &&
                                            order.careSetting === vdpCareSetting &&
@@ -1159,6 +1206,7 @@ angular.module('bahmni.clinical')
                                         drugForm: data.drug && data.drug.dosageForm ? data.drug.dosageForm.display : '',
                                         units: unit,
                                         route: data.route || '',
+                                        dosingRule: dosingRule,
                                         quantity: totalDosage,
                                         quantityUnit: unit,
                                         careSetting: careSetting,
@@ -1168,7 +1216,20 @@ angular.module('bahmni.clinical')
                                         totalDays: totalDays,
                                         stages: stages
                                     };
-                                    $scope.consultation.variableDoseTreatments.push(entry);
+                                    $scope.consultation.variableDoseTreatments = $scope.consultation.variableDoseTreatments || [];
+                                    if (editingVariableDoseIndex >= 0) {
+                                        $scope.consultation.variableDoseTreatments.splice(editingVariableDoseIndex, 1, entry);
+                                        editingVariableDoseIndex = -1;
+                                    } else if (isSavedOrder) {
+                                        entry.previousOrderUuid = revisingVariableDoseDrugOrder.uuid;
+                                        entry.action = Bahmni.Clinical.Constants.orderActions.revise;
+                                        revisingVariableDoseDrugOrder.isBeingEdited = false;
+                                        revisingVariableDoseDrugOrder = null;
+                                        $scope.consultation.variableDoseTreatments.push(entry);
+                                    } else {
+                                        $scope.consultation.variableDoseTreatments.push(entry);
+                                    }
+                                    $scope.variableDoseHostData = buildVariableDoseHostData();
                                 });
                             });
                         },

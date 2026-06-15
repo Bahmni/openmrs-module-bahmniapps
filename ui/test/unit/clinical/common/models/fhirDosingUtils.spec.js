@@ -126,6 +126,128 @@ describe('FhirDosingUtils', function () {
         });
     });
 
+    describe('toVariableDoseModalInitialValues', function () {
+        it('should return empty object for null input', function () {
+            expect(utils.toVariableDoseModalInitialValues(null)).toEqual({});
+        });
+
+        it('should map basic entry fields to initialValues', function () {
+            var drug = { name: 'Amoxicillin', uuid: 'drug-1' };
+            var entry = {
+                drug: drug,
+                units: 'mg',
+                route: 'Oral',
+                startDate: new Date('2024-01-01'),
+                stages: [
+                    { stageName: 'Stage 1', isLoadingDose: false, dose: '10', frequency: 'Once a day', duration: '5', durationUnit: 'Day(s)', instructions: '', additionalInstructions: '', rate: '', additives: '' },
+                    { stageName: 'Stage 2', isLoadingDose: false, dose: '5', frequency: 'Twice a day', duration: '3', durationUnit: 'Day(s)', instructions: '', additionalInstructions: '', rate: '', additives: '' }
+                ]
+            };
+            var result = utils.toVariableDoseModalInitialValues(entry);
+            expect(result.drug).toBe(drug);
+            expect(result.units).toBe('mg');
+            expect(result.route).toBe('Oral');
+            expect(result.isLoadingDose).toBe(false);
+            expect(result.loadingDose).toBeNull();
+            expect(result.stages.length).toBe(2);
+            expect(result.stages[0].dose).toBe(10);
+            expect(result.stages[0].frequency).toEqual({ label: 'Once a day', value: 'Once a day' });
+            expect(result.stages[0].duration).toBe(5);
+            expect(result.stages[0].durationUnit).toEqual({ label: 'Day(s)', value: 'Day(s)' });
+        });
+
+        it('should extract loading dose stage and map it separately', function () {
+            var entry = {
+                drug: { name: 'Drug X', uuid: 'x' },
+                units: 'ml',
+                route: 'IV',
+                startDate: null,
+                stages: [
+                    { stageName: 'Loading Dose', isLoadingDose: true, dose: '20', frequency: 'Once', duration: '1', durationUnit: 'Occurrence(s)', instructions: 'As directed', additionalInstructions: '', rate: '100', additives: 'NS 50ml' },
+                    { stageName: 'Stage 1', isLoadingDose: false, dose: '10', frequency: 'Once a day', duration: '7', durationUnit: 'Day(s)', instructions: '', additionalInstructions: '', rate: '', additives: '' }
+                ]
+            };
+            var result = utils.toVariableDoseModalInitialValues(entry);
+            expect(result.isLoadingDose).toBe(true);
+            expect(result.loadingDose).toBeDefined();
+            expect(result.loadingDose.dose).toBe(20);
+            expect(result.loadingDose.rate).toBe(100);
+            expect(result.loadingDose.additives).toBe('NS 50ml');
+            expect(result.stages.length).toBe(1);
+        });
+
+        it('should parse combined duration string like "5 Day(s)"', function () {
+            var entry = {
+                drug: { name: 'Drug Y', uuid: 'y' },
+                units: 'mg',
+                route: '',
+                startDate: null,
+                stages: [
+                    { stageName: 'Stage 1', isLoadingDose: false, dose: '5', frequency: 'Once', duration: '5 Day(s)', durationUnit: undefined, instructions: '', additionalInstructions: '', rate: '', additives: '' }
+                ]
+            };
+            var result = utils.toVariableDoseModalInitialValues(entry);
+            expect(result.stages[0].duration).toBe(5);
+            expect(result.stages[0].durationUnit).toEqual({ label: 'Day(s)', value: 'Day(s)' });
+        });
+
+        it('should extract units and route from dosingInstructions.quantityUnits and dosingInstructions.route for saved DrugOrderViewModel', function () {
+            var entry = {
+                drug: { name: 'Morphine', uuid: 'drug-2' },
+                dosingInstructions: {
+                    quantityUnits: 'Tablet(s)',
+                    route: 'Intravenous'
+                },
+                effectiveStartDate: new Date('2024-03-01'),
+                stages: [
+                    { stageName: 'Stage 1', isLoadingDose: false, dose: '5', frequency: 'Once a day', duration: '3 Day(s)', durationUnit: undefined, instructions: '', additionalInstructions: '', rate: '', additives: '' }
+                ]
+            };
+            var result = utils.toVariableDoseModalInitialValues(entry);
+            expect(result.units).toBe('Tablet(s)');
+            expect(result.route).toBe('Intravenous');
+        });
+
+        it('should fall back to dosingInstructions.doseUnits when quantityUnits is absent', function () {
+            var entry = {
+                drug: { name: 'Drug Z', uuid: 'drug-3' },
+                dosingInstructions: {
+                    doseUnits: 'mg',
+                    route: 'Oral'
+                },
+                stages: []
+            };
+            var result = utils.toVariableDoseModalInitialValues(entry);
+            expect(result.units).toBe('mg');
+            expect(result.route).toBe('Oral');
+        });
+
+        it('should prefer top-level units and route when dosingInstructions is absent', function () {
+            var entry = {
+                drug: { name: 'Drug A', uuid: 'drug-4' },
+                units: 'ml',
+                quantityUnit: 'Capsule(s)',
+                route: 'IV',
+                stages: []
+            };
+            var result = utils.toVariableDoseModalInitialValues(entry);
+            expect(result.units).toBe('ml');
+            expect(result.route).toBe('IV');
+        });
+
+        it('should fall back to quantityUnit when top-level units is absent and dosingInstructions is absent', function () {
+            var entry = {
+                drug: { name: 'Drug B', uuid: 'drug-5' },
+                quantityUnit: 'Capsule(s)',
+                route: 'Oral',
+                stages: []
+            };
+            var result = utils.toVariableDoseModalInitialValues(entry);
+            expect(result.units).toBe('Capsule(s)');
+            expect(result.route).toBe('Oral');
+        });
+    });
+
     describe('fhirDosageToStage', function () {
         it('should return loading dose duration from constant', function () {
             var dosage = {

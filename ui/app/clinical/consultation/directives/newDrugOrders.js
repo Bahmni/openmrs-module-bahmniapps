@@ -31,6 +31,9 @@ angular.module('bahmni.clinical')
             $scope.removeVariableDose = function (index) {
                 $scope.variableDoseTreatments.splice(index, 1);
             };
+            $scope.editVariableDose = function (index) {
+                $rootScope.$broadcast('event:editVariableDoseOrder', index);
+            };
             var defaultBulkDuration = function () {
                 return {
                     bulkDurationUnit: $scope.treatmentConfig.durationUnits ? $scope.treatmentConfig.durationUnits[0].name : ""
