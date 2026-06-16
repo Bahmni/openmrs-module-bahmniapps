@@ -60,16 +60,38 @@ angular.module('bahmni.clinical')
                     }));
                 }
             };
+            var clearStaleObsFromTemplates = function () {
+                $scope.consultation.selectedObsTemplate = [];
+                _.each($scope.consultation.observationForms, function (form) {
+                    if (form.hasUnsavedFormObservations) {
+                        form.observations = [];
+                        form.hasUnsavedFormObservations = false;
+                    }
+                });
+            };
+
+            var clearDraftObsFromTemplates = function () {
+                $rootScope.draftData = null;
+                $rootScope.resumeDraftOnLoad = false;
+                $rootScope.resumeDraftPatientUuid = null;
+                clearStaleObsFromTemplates();
+            };
+
             var loadDraftThenConcat = function () {
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
                 var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                if ($scope.enableFormDraftFeature && !$rootScope.resumeDraftOnLoad && patientUuid && providerUuid) {
+                if ($scope.enableFormDraftFeature && !$rootScope.resumeDraftOnLoad && patientUuid && providerUuid && $scope.visitHistory && $scope.visitHistory.activeVisit) {
                     var promise = formDraftService.getDraft(patientUuid, providerUuid);
                     promise.then(function (response) {
-                        if (response && response.data && response.data.uuid && !response.data.markedAsSaved) {
+                        var visitClosed = !($scope.visitHistory && $scope.visitHistory.activeVisit);
+                        if (!visitClosed && response && response.data && response.data.uuid && !response.data.markedAsSaved) {
                             $rootScope.draftData = response.data;
+                        } else if (visitClosed) {
+                            clearDraftObsFromTemplates();
                         } else {
                             $rootScope.draftData = null;
+                            $rootScope.resumeDraftOnLoad = false;
+                            $rootScope.resumeDraftPatientUuid = null;
                         }
                         if ($rootScope.draftData && $rootScope.draftData.uuid && !$rootScope.draftData.markedAsSaved) {
                             $rootScope.resumeDraftOnLoad = true;
@@ -80,6 +102,9 @@ angular.module('bahmni.clinical')
                         concatObservationForms();
                     });
                 } else {
+                    if ($scope.visitHistory && !$scope.visitHistory.activeVisit) {
+                        clearDraftObsFromTemplates();
+                    }
                     concatObservationForms();
                 }
             };
@@ -93,6 +118,18 @@ angular.module('bahmni.clinical')
                 var isDraftResumeValid = $rootScope.resumeDraftOnLoad &&
                     $rootScope.draftData &&
                     (!$rootScope.resumeDraftPatientUuid || $rootScope.resumeDraftPatientUuid === currentPatientUuid);
+
+                if (!isDraftResumeValid) {
+                    var hasStaleUnsavedObs = _.some($scope.consultation.selectedObsTemplate, function (t) {
+                        return t.hasUnsavedFormObservations;
+                    }) || _.some($scope.consultation.observationForms, function (f) {
+                        return f.hasUnsavedFormObservations;
+                    });
+                    if (hasStaleUnsavedObs) {
+                        clearStaleObsFromTemplates();
+                    }
+                }
+
                 var draftFormData = isDraftResumeValid && $rootScope.draftData.formData ? $rootScope.draftData.formData : null;
 
                 var parsedDraftObs = null;
@@ -627,7 +664,7 @@ angular.module('bahmni.clinical')
                 draftCheckPromise = formDraftService.getDraft(patientUuid, providerUuid);
                 draftCheckPromise.then(
                     function (response) {
-                        if (response.data && response.data.uuid && !response.data.markedAsSaved) {
+                        if (response.data && response.data.uuid && !response.data.markedAsSaved && $scope.visitHistory && $scope.visitHistory.activeVisit) {
                             $scope.formDraft.hasDrafts = true;
                             $rootScope.draftData = response.data;
                             var serverTimestamp = response.data.timestamp;

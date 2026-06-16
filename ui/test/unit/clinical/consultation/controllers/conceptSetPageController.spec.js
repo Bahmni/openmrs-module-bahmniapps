@@ -2657,5 +2657,129 @@ describe('ConceptSetPageController', function () {
             });
         });
     });
+
+    describe('Draft loading when visit is closed', function () {
+        var conceptResponseData;
+
+        beforeEach(function () {
+            var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appDescriptor.getConfigValue.and.returnValue(true);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+
+            scope.patient = {uuid: 'test-patient-uuid'};
+            rootScope.currentProvider = {uuid: 'test-provider-uuid'};
+
+            conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 'obs-uuid'}]}]};
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+        });
+
+        it('should clear stale rootScope draft state and draft obs from templates when visit is closed (else branch)', function () {
+            rootScope.draftData = {uuid: 'stale-draft', formData: 'stale-data', markedAsSaved: false};
+            rootScope.resumeDraftOnLoad = false;
+            scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', hasUnsavedFormObservations: true, observations: [{value: 'draft-val'}]}];
+            scope.visitHistory = {activeVisit: null};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBe(false);
+            var hasAnyUnsaved = _.some(scope.consultation.selectedObsTemplate, function (t) { return t.hasUnsavedFormObservations; });
+            expect(hasAnyUnsaved).toBe(false);
+        });
+
+        it('should not pre-populate the form when visit is closed even if GET returns valid draft', function () {
+            formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: 'draft-uuid', formData: angular.toJson([{concept: {uuid: 'obs-uuid'}, value: 'draft-value'}]), markedAsSaved: false, timestamp: Date.now()}});
+                    return {catch: function () { return this; }};
+                }
+            });
+
+            scope.visitHistory = {activeVisit: null};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBeFalsy();
+        });
+
+        it('should reset resumeDraftOnLoad and clear draftData when GET returns null draft', function () {
+            formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: null, formData: null, markedAsSaved: null, timestamp: null}});
+                    return {catch: function () { return this; }};
+                }
+            });
+
+            rootScope.draftData = {uuid: 'stale-draft', formData: 'stale-data', markedAsSaved: false};
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBe(false);
+        });
+
+        it('should clear draft obs from templates when visit closes between GET condition check and response', function () {
+            formDraftService.getDraft.and.callFake(function () {
+                return {
+                    then: function (success) {
+                        scope.visitHistory = {activeVisit: null};
+                        success({data: {uuid: 'draft-uuid', formData: angular.toJson([{concept: {uuid: 'obs-uuid'}, value: 'draft-value'}]), markedAsSaved: false, timestamp: Date.now()}});
+                        return {catch: function () { return this; }};
+                    }
+                };
+            });
+
+            scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', hasUnsavedFormObservations: true, observations: [{value: 'stale-draft-val'}]}];
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBeFalsy();
+            var hasAnyUnsaved = _.some(scope.consultation.selectedObsTemplate, function (t) { return t.hasUnsavedFormObservations; });
+            expect(hasAnyUnsaved).toBe(false);
+        });
+
+        it('should not set draftData from checkForExistingDrafts when visit is closed', function () {
+            formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: 'draft-uuid', formData: 'some-data', markedAsSaved: false, timestamp: Date.now()}});
+                    return {catch: function () { return this; }};
+                }
+            });
+
+            scope.visitHistory = {activeVisit: null};
+
+            createController();
+
+            expect(scope.formDraft.hasDrafts).toBeFalsy();
+            expect(rootScope.draftData).toBeNull();
+        });
+
+        it('should clear stale hasUnsavedFormObservations in concatObservationForms when isDraftResumeValid is false and activeVisit is present', function () {
+            rootScope.resumeDraftOnLoad = false;
+            rootScope.draftData = null;
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+            // Pre-populate selectedObsTemplate so initializeDefaultTemplates is skipped,
+            // and set a stale unsaved form obs on observationForms to exercise the stale-obs guard
+            scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', label: 'Template 1'}];
+            scope.consultation.observationForms = [{
+                formName: 'Form1',
+                hasUnsavedFormObservations: true,
+                observations: [{value: 'stale-form-val'}],
+                privileges: [],
+                isDefault: function () { return false; }
+            }];
+
+            createController();
+
+            var hasAnyFormUnsaved = _.some(scope.consultation.observationForms, function (f) { return f.hasUnsavedFormObservations; });
+            expect(hasAnyFormUnsaved).toBe(false);
+            expect(scope.consultation.observationForms[0].observations.length).toBe(0);
+        });
+    });
 });
 
