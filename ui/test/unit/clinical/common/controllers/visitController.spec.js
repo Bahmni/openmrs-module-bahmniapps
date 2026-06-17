@@ -413,4 +413,66 @@ describe('VisitController', function () {
         });
     });
 
+    function createController(rootScope) {
+        return $controller('VisitController', {
+            $scope: scope,
+            $rootScope: rootScope,
+            $state: state,
+            encounterService: encounterService,
+            clinicalAppConfigService: clinicalAppConfigService,
+            visitSummary: {},
+            configurations: configurations,
+            $timeout: $timeout,
+            printer: {},
+            visitConfig: visitTabConfig,
+            visitHistory: [],
+            $stateParams: {},
+            locationService: locationService,
+            appService: appService,
+            allergyService: allergyService,
+            auditLogService: auditLogService,
+            sessionService: sessionService,
+            $location: $location,
+            $window: window
+        });
+        }
+
+    describe('privileges handling', function () {
+        it('should set empty privileges array when rootScope.currentUser is undefined', function () {
+            rootScope.currentUser = undefined;
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
+        });
+
+        it('should set empty privileges array when rootScope.currentUser.privileges is undefined', function () {
+            rootScope.currentUser = {
+                uuid: 'user-uuid',
+                username: 'testuser'
+            };
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
+        });
+
+        it('should handle empty privileges array from rootScope.currentUser', function () {
+            rootScope.currentUser = {
+                uuid: 'user-uuid',
+                username: 'testuser',
+                privileges: []
+            };
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
+        });
+
+        it('should ensure privileges are included in ipdDashboard.hostData structure', function () {
+            var mockPrivileges = [{ name: 'Test Privilege' }];
+            rootScope.currentUser = {
+                privileges: mockPrivileges
+            };
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData).toBeDefined();
+            expect(scope.ipdDashboard.hostData.privileges).toBeDefined();
+            expect(scope.ipdDashboard.hostData.privileges).toEqual(mockPrivileges);
+        });
+    });
+
 });
