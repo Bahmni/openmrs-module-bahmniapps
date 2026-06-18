@@ -4,6 +4,7 @@ var FHIR_DOSING_INSTRUCTION_TYPE = 'org.openmrs.module.bahmniemrapi.drugorder.do
 
 var LOADING_DOSE_STAGE_NAME = 'Loading Dose';
 var LOADING_DOSE_DURATION_DISPLAY = '1 Occurrence(s)';
+var DEFAULT_RATE_UNIT = 'ml/hr';
 
 var DURATION_UNIT_TO_DAYS = {
     'day': 1, 'days': 1, 'day(s)': 1,
@@ -41,6 +42,10 @@ var safeParseJson = function (str) {
     } catch (e) {
         return null;
     }
+};
+
+var extractSelectValue = function (field) {
+    return field && field.value ? field.value : field;
 };
 
 var isFhirDosageArray = function (parsed) {
@@ -90,7 +95,7 @@ var buildFhirDosageArray = function (stages, units, route) {
         }];
         var rateValue = parseFloat(stage.rate);
         if (rateValue > 0) {
-            doseAndRate[0].rateQuantity = { value: rateValue, unit: 'ml/hr' };
+            doseAndRate[0].rateQuantity = { value: rateValue, unit: DEFAULT_RATE_UNIT };
         }
         var timing = { code: { text: stage.frequency || '' } };
         if (!isLoadingDose) {
@@ -205,16 +210,60 @@ var toVariableDoseModalInitialValues = function (entry) {
     };
 };
 
+var buildDosageString = function (stage, route) {
+    if (!stage) { return ''; }
+
+    var parts = [];
+
+    var dose = parseFloat(stage.dose) || 0;
+    if (dose > 0) {
+        var dosePart = '• ' + stage.dose + (stage.unit ? ' ' + stage.unit : '');
+        parts.push(dosePart);
+    }
+
+    var frequency = extractSelectValue(stage.frequency);
+    if (frequency) {
+        parts.push(frequency);
+    }
+
+    var instructions = extractSelectValue(stage.instructions);
+    if (instructions) {
+        parts.push(instructions);
+    }
+
+    if (route && dose > 0) {
+        parts.push(route);
+    }
+
+    if (stage.duration) {
+        var durationUnit = extractSelectValue(stage.durationUnit);
+        var durationPart = stage.duration + (durationUnit ? ' ' + durationUnit : '');
+        parts.push(durationPart);
+    }
+
+    if (stage.rate) {
+        parts.push(stage.rate + ' ' + DEFAULT_RATE_UNIT);
+    }
+
+    if (stage.additives) {
+        parts.push(stage.additives);
+    }
+
+    return parts.join(', ');
+};
+
 Bahmni.Clinical.FhirDosingUtils = {
     FHIR_DOSING_INSTRUCTION_TYPE: FHIR_DOSING_INSTRUCTION_TYPE,
     LOADING_DOSE_STAGE_NAME: LOADING_DOSE_STAGE_NAME,
     normalizeToDays: normalizeToDays,
     toUcumDurationUnit: toUcumDurationUnit,
     fromUcumDurationUnit: fromUcumDurationUnit,
+    extractSelectValue: extractSelectValue,
     parseFhirDosages: parseFhirDosages,
     parseFlatAdminInstructions: parseFlatAdminInstructions,
     isLoadingDoseOrder: isLoadingDoseOrder,
     buildFhirDosageArray: buildFhirDosageArray,
     fhirDosageToStage: fhirDosageToStage,
-    toVariableDoseModalInitialValues: toVariableDoseModalInitialValues
+    toVariableDoseModalInitialValues: toVariableDoseModalInitialValues,
+    buildDosageString: buildDosageString
 };

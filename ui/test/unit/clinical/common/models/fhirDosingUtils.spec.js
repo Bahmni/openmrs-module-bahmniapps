@@ -295,4 +295,197 @@ describe('FhirDosingUtils', function () {
             expect(result.stageName).toBe('3');
         });
     });
+
+    describe('extractSelectValue', function () {
+        it('should extract value from object with label and value properties', function () {
+            var field = { label: 'Once daily', value: 'Once daily' };
+            expect(utils.extractSelectValue(field)).toBe('Once daily');
+        });
+
+        it('should return string as-is when not an object', function () {
+            expect(utils.extractSelectValue('Once daily')).toBe('Once daily');
+        });
+
+        it('should return null for null input', function () {
+            expect(utils.extractSelectValue(null)).toBeNull();
+        });
+
+        it('should return undefined for undefined input', function () {
+            expect(utils.extractSelectValue(undefined)).toBeUndefined();
+        });
+
+        it('should return object itself if it has no value property', function () {
+            var field = { label: 'Once daily' };
+            expect(utils.extractSelectValue(field)).toEqual(field);
+        });
+    });
+
+    describe('buildDosageString', function () {
+        it('should return empty string for null stage', function () {
+            expect(utils.buildDosageString(null, 'Oral')).toBe('');
+            expect(utils.buildDosageString(undefined, 'Oral')).toBe('');
+        });
+
+        it('should return empty string for empty stage object', function () {
+            expect(utils.buildDosageString({}, 'Oral')).toBe('');
+        });
+
+        it('should build dosage string with all fields present', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                frequency: 'Twice a day',
+                instructions: 'Before meals',
+                duration: '5',
+                durationUnit: 'Day(s)',
+                rate: '5',
+                additives: 'Saline'
+            };
+            var result = utils.buildDosageString(stage, 'Oral');
+            expect(result).toBe('• 10 mg, Twice a day, Before meals, Oral, 5 Day(s), 5 ml/hr, Saline');
+        });
+
+        it('should handle dose with unit', function () {
+            var stage = { dose: '100', unit: 'ml' };
+            expect(utils.buildDosageString(stage, '')).toBe('• 100 ml');
+        });
+
+        it('should handle dose without unit', function () {
+            var stage = { dose: '10' };
+            expect(utils.buildDosageString(stage, '')).toBe('• 10');
+        });
+
+        it('should handle duration with durationUnit', function () {
+            var stage = {
+                dose: '5',
+                unit: 'mg',
+                duration: '3',
+                durationUnit: 'Day(s)'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 5 mg, 3 Day(s)');
+        });
+
+        it('should handle duration without durationUnit', function () {
+            var stage = {
+                dose: '5',
+                unit: 'mg',
+                duration: '3'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 5 mg, 3');
+        });
+
+        it('should include route when provided', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                frequency: 'Once daily'
+            };
+            var result = utils.buildDosageString(stage, 'Oral');
+            expect(result).toBe('• 10 mg, Once daily, Oral');
+        });
+
+        it('should omit route when not provided', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                frequency: 'Once daily'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 10 mg, Once daily');
+        });
+
+        it('should include rate with ml/hr suffix', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                rate: '5'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 10 mg, 5 ml/hr');
+        });
+
+        it('should include additives', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                additives: 'Saline'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 10 mg, Saline');
+        });
+
+        it('should include rate and additives together', function () {
+            var stage = {
+                dose: '100',
+                unit: 'ml',
+                rate: '10',
+                additives: 'Saline'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 100 ml, 10 ml/hr, Saline');
+        });
+
+        it('should skip optional fields when absent', function () {
+            var stage = {
+                dose: '5',
+                unit: 'mg'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 5 mg');
+        });
+
+        it('should handle object-format frequency (modal format)', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                frequency: { label: 'Once daily', value: 'Once daily' }
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 10 mg, Once daily');
+        });
+
+        it('should handle object-format instructions (modal format)', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                instructions: { label: 'Before meals', value: 'Before meals' }
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 10 mg, Before meals');
+        });
+
+        it('should handle object-format durationUnit (modal format)', function () {
+            var stage = {
+                dose: '5',
+                unit: 'mg',
+                duration: '3',
+                durationUnit: { label: 'Day(s)', value: 'Day(s)' }
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 5 mg, 3 Day(s)');
+        });
+
+        it('should skip zero dose', function () {
+            var stage = {
+                dose: '0',
+                unit: 'mg',
+                frequency: 'Once daily'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('Once daily');
+        });
+
+        it('should skip empty string values', function () {
+            var stage = {
+                dose: '10',
+                unit: 'mg',
+                frequency: '',
+                instructions: 'Before meals'
+            };
+            var result = utils.buildDosageString(stage, '');
+            expect(result).toBe('• 10 mg, Before meals');
+        });
+    });
 });
