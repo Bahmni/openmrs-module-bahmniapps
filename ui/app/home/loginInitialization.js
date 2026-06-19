@@ -43,6 +43,7 @@ angular.module('bahmni.home')
                     },
                     function () {
                         $rootScope.homeURL = Bahmni.Common.Constants.homeUrl;
+                        localStorage.setItem('homeUrl', $rootScope.homeURL);
                         configDeferred.resolve();
                     }
                 );
