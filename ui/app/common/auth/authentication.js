@@ -30,7 +30,7 @@ angular.module('authentication')
         }];
         $httpProvider.interceptors.push(interceptor);
     }]).run(['$rootScope', '$window', '$timeout', function ($rootScope, $window, $timeout) {
-        $rootScope.newHomeURL = Bahmni.Common.Constants.newHomeURL;
+        $rootScope.homeURL = localStorage.getItem('homeUrl') || Bahmni.Common.Constants.homeUrl;
         $rootScope.$on('event:auth-loginRequired', function () {
             $timeout(function () {
                 $window.location = "../home/index.html#/login";

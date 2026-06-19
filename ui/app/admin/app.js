@@ -27,7 +27,7 @@ angular.module('admin')
                 templateUrl: 'views/adminDashboard.html',
                 controller: 'AdminDashboardController',
                 data: {
-                    backLinks: [{label: "Home", accessKey: "h", url: Bahmni.Common.Constants.newHomeURL, icon: "fa-home"}],
+                    backLinks: [{label: "Home", accessKey: "h", url: Bahmni.Common.Constants.homeUrl, icon: "fa-home"}],
                     extensionPointId: 'org.bahmni.admin.dashboard'
                 }
             }).state('admin.csv', {
@@ -77,6 +77,7 @@ angular.module('admin')
         }
     ]).run(['$rootScope', '$templateCache', '$window', function ($rootScope, $templateCache, $window) {
         moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        $rootScope.homeURL = localStorage.getItem('homeUrl') || Bahmni.Common.Constants.homeUrl;
         // Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', $templateCache.removeAll);
     }]);

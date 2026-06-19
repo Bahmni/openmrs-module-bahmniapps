@@ -18,7 +18,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
     function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/home');
 
-        var homeBackLink = {type: "link", name: "Home", value: Bahmni.Common.Constants.newHomeURL, accessKey: "h", icon: "fa-home"};
+        var homeBackLink = {type: "link", name: "Home", value: Bahmni.Common.Constants.homeUrl, accessKey: "h", icon: "fa-home"};
         var otSchedulingLink = {type: "state", name: "OT_SCHEDULING_KEY", value: "otScheduling", accessKey: "b"};
         var queuesLink = {type: "state", name: "OT_SURGICAL_QUEUES_KEY", value: "home", accessKey: "b"};
         var navigationLinks = [queuesLink, otSchedulingLink];
@@ -121,4 +121,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
             });
 
         $bahmniTranslateProvider.init({app: 'ot', shouldMerge: true});
+    }]).run(['$rootScope', '$window', function ($rootScope, $window) {
+        moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        $rootScope.homeURL = localStorage.getItem('homeUrl') || Bahmni.Common.Constants.homeUrl;
     }]);

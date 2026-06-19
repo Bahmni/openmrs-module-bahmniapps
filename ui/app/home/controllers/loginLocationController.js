@@ -147,7 +147,7 @@ angular.module('bahmni.home')
                 spinner.forPromise(deferrable.promise).then(
                     function (data) {
                         if (data) return;
-                        $window.location.href = Bahmni.Common.Constants.newHomeURL;
+                        $window.location.href = $rootScope.homeURL || Bahmni.Common.Constants.homeUrl;
                     }
                 );
             };
