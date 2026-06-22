@@ -390,5 +390,7 @@
     "CDSS_ACTION": "Por favor, vá até a guia de Medicações para tomar as próximas ações.",
     "MEDICATION_PRINT": "Imprimir",
     "DAYS_ADMITTED_MESSAGE": "Dias no hospital",
-    "ADDITIONAL_INSTRUCTIONS": "Instruções adicionais"
+    "ADDITIONAL_INSTRUCTIONS": "Instruções adicionais",
+
+    "VARIABLE_DOSAGE_HEADER": "Dosagem Variável"
 }

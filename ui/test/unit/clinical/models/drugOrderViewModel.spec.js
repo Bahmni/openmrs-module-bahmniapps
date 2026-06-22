@@ -857,6 +857,106 @@ describe("drugOrderViewModel", function () {
         });
     });
 
+    describe("createFromContract - per-stage status and variableDoseStatus", function () {
+        var fhirDosingInstructionType = 'org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FhirDosingInstructions';
+        var MILLISECONDS_PER_DAY = 86400000;
+        var fixedNow;
+
+        beforeEach(function () {
+            // Fix the current date to 2026-06-19 midnight (UTC) to prevent flaky tests at day boundaries
+            fixedNow = new Date('2026-06-19T00:00:00Z').getTime();
+            spyOn(Bahmni.Common.Util.DateUtil, 'now').and.returnValue(fixedNow);
+        });
+
+        var buildVdpContractWithStart = function (dosages, startDate) {
+            return {
+                uuid: 'vdp-status-uuid',
+                action: 'NEW',
+                careSetting: 'Inpatient',
+                dosingInstructionType: fhirDosingInstructionType,
+                effectiveStartDate: startDate,
+                duration: 10,
+                durationUnits: 'Days',
+                dosingInstructions: {
+                    quantity: 10,
+                    quantityUnits: 'Tablet(s)',
+                    administrationInstructions: JSON.stringify(dosages)
+                },
+                drug: { name: 'Prednisolone', uuid: 'drug-uuid' },
+                provider: { name: 'Dr. Test' }
+            };
+        };
+
+        it("should mark a future stage as 'upcoming'", function () {
+            var futureStart = new Date(fixedNow + 5 * MILLISECONDS_PER_DAY);
+            var dosages = [
+                { sequence: 1, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 3, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContractWithStart(dosages, futureStart.getTime()));
+            expect(viewModel.stages[0].status).toBe(Bahmni.Clinical.Constants.stageStatus.upcoming);
+        });
+
+        it("should mark a current stage as 'ongoing'", function () {
+            var pastStart = new Date(fixedNow - 1 * MILLISECONDS_PER_DAY);
+            var dosages = [
+                { sequence: 1, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 5, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContractWithStart(dosages, pastStart.getTime()));
+            expect(viewModel.stages[0].status).toBe(Bahmni.Clinical.Constants.stageStatus.ongoing);
+        });
+
+        it("should mark a fully elapsed stage as 'completed'", function () {
+            var oldStart = new Date(fixedNow - 10 * MILLISECONDS_PER_DAY);
+            var dosages = [
+                { sequence: 1, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 3, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContractWithStart(dosages, oldStart.getTime()));
+            expect(viewModel.stages[0].status).toBe(Bahmni.Clinical.Constants.stageStatus.completed);
+        });
+
+        it("should mark loading dose stage as 'ongoing' when startDate is today", function () {
+            var todayStart = new Date(fixedNow);
+            todayStart.setHours(0, 0, 0, 0);
+            var dosages = [
+                { sequence: 1, text: 'Loading Dose', timing: { code: { text: 'Once' } }, doseAndRate: [{ doseQuantity: { value: 10, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: true }], additionalInstruction: [], patientInstruction: '' },
+                { sequence: 2, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 5, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContractWithStart(dosages, todayStart.getTime()));
+            expect(viewModel.stages[0].status).toBe(Bahmni.Clinical.Constants.stageStatus.ongoing);
+        });
+
+        it("should mark loading dose stage as 'completed' when startDate is in the past", function () {
+            var pastStart = new Date(fixedNow - 3 * MILLISECONDS_PER_DAY);
+            var dosages = [
+                { sequence: 1, text: 'Loading Dose', timing: { code: { text: 'Once' } }, doseAndRate: [{ doseQuantity: { value: 10, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: true }], additionalInstruction: [], patientInstruction: '' },
+                { sequence: 2, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 5, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContractWithStart(dosages, pastStart.getTime()));
+            expect(viewModel.stages[0].status).toBe(Bahmni.Clinical.Constants.stageStatus.completed);
+        });
+
+        it("should mark loading dose stage as 'upcoming' when startDate is in the future", function () {
+            var futureStart = new Date(fixedNow + 3 * MILLISECONDS_PER_DAY);
+            var dosages = [
+                { sequence: 1, text: 'Loading Dose', timing: { code: { text: 'Once' } }, doseAndRate: [{ doseQuantity: { value: 10, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: true }], additionalInstruction: [], patientInstruction: '' },
+                { sequence: 2, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 5, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContractWithStart(dosages, futureStart.getTime()));
+            expect(viewModel.stages[0].status).toBe(Bahmni.Clinical.Constants.stageStatus.upcoming);
+        });
+
+        it("should expose additional instructions on each stage", function () {
+            var start = new Date(fixedNow - 1 * MILLISECONDS_PER_DAY);
+            var dosages = [
+                { sequence: 1, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 3, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: 'Take with water' },
+                { sequence: 2, text: 'Stage 2', timing: { code: { text: 'Once a day' }, repeat: { duration: 4, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 3, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: 'Avoid sunlight' }
+            ];
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(buildVdpContractWithStart(dosages, start.getTime()));
+            expect(viewModel.stages[0].additionalInstructions).toBe('Take with water');
+            expect(viewModel.stages[1].additionalInstructions).toBe('Avoid sunlight');
+        });
+    });
+
     describe("revise", function () {
         it("should create a new object that can be used for revision", function () {
             var treatment = sampleTreatment({}, [], {}, Bahmni.Common.Util.DateUtil.now());

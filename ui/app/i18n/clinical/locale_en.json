@@ -390,5 +390,6 @@
     "CDSS_ACTION": "Please go to Medications Tab to take further action",
     "MEDICATION_PRINT": "Print",
     "DAYS_ADMITTED_MESSAGE": "Days in hospital",
-    "ADDITIONAL_INSTRUCTIONS": "Additional Instructions"
+    "ADDITIONAL_INSTRUCTIONS": "Additional Instructions",
+    "VARIABLE_DOSAGE_HEADER": "Variable Dosage"
 }

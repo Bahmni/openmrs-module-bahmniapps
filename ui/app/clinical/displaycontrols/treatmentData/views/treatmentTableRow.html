@@ -1,28 +1,37 @@
-<!-- Variable Dosage: group header + one row per stage, matching regular row structure -->
 <tr ng-if="drugOrder.isVariableDoseOrder" class="variable-dosage-group-header-row">
-    <td colspan="4" class="variable-dosage-group-label">Variable Dosage</td>
+    <td colspan="4" class="variable-dosage-group-label">{{'VARIABLE_DOSAGE_HEADER' | translate}}</td>
 </tr>
 <tr ng-if="drugOrder.isVariableDoseOrder"
     ng-repeat-start="stage in drugOrder.stages"
-    ng-class="{'active-drug': drugOrder.isActive(), 'drug-discontinued': drugOrder.isDiscontinuedOrStopped(), 'notes-open': stage.showDetails}">
-    <td class="drug variable-dose-stage-drug" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped()}">
-        {{drugOrder.drugName}}<span ng-if="drugOrder.drugForm"> ({{drugOrder.drugForm}})</span>
+    ng-click="stage.showDetails = !stage.showDetails"
+    class="variable-dose-stage-row">
+    <td class="drug variable-dose-stage-drug" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped(), 'active-drug': stage.status === stageStatus.ongoing, 'scheduled-drug': stage.status === stageStatus.upcoming}">
+        {{::drugOrder.drugName}}
     </td>
     <td class="dosage" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped()}">
-        {{stage.dose}} {{stage.unit}}, {{stage.frequency}}, {{drugOrder.route}} - {{stage.duration}}
+        {{::(stage | dosageString:drugOrder)}}
     </td>
     <td class="days" ng-if="!params.hideVisitDate">
-        <span class="fr">{{stage.startDate | bahmniDate}}</span>
+        <span class="fr">{{::stage.startDate | bahmniDate}}</span>
     </td>
-    <td class="toggle-btn" toggle="stage.showDetails">
+    <td class="toggle-btn" ng-class="{active: stage.showDetails}" ng-if="!stage.additionalInstructions">
         <button class="toggle fr">
             <i class="fa fa-angle-down"></i>
             <i class="fa fa-angle-up"></i>
         </button>
     </td>
 </tr>
-<tr ng-if="drugOrder.isVariableDoseOrder" ng-repeat-end bm-show="stage.showDetails" class="notes">
-    <td colspan="4" class="notes inline-notes">
+<tr ng-repeat-end
+    ng-if="drugOrder.isVariableDoseOrder && (stage.additionalInstructions || (!stage.additionalInstructions && !params.hideVisitDate))"
+    ng-class="{'has-test-notes': stage.additionalInstructions}"
+    bm-show="stage.showDetails || stage.additionalInstructions"
+    class="notes variable-dose-stage-notes"
+    ng-class="{'inline-notes': !stage.additionalInstructions}">
+    <td colspan="4" class="notes test-notes">
+        <span ng-if="stage.additionalInstructions">
+            <i class="fa fa-comments left"></i>
+            <pre class="left">{{stage.additionalInstructions}}</pre>
+        </span>
         <div class="footer-note right">
             <span class="provider" ng-if="params.showProvider">
                 <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="::drugOrder.effectiveStartDate"></provider-directive>
@@ -31,7 +40,6 @@
     </td>
 </tr>
 
-<!-- Regular drug order rows -->
 <tr ng-if="!drugOrder.isVariableDoseOrder"
     ng-class="::{active: drugOrder.isActive(), 'test-notes-parent': (drugOrder.additionalInstructions || ''), 'notes-open': (drugOrder.showDetails == true)}">
     <td class="drug" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">

@@ -1,7 +1,17 @@
 .variable-dose-trigger-btn.bx--btn--tertiary {
-  &:hover,
+  background-color: #ffffff !important;
+  color: #007d79  !important;
+  border: 1px solid #007d79 !important;
+  padding: 10px 15px;
+
+  &:hover {
+    background-color: #007d79 !important;
+    color: #ffffff !important;
+  }
+
   &:active,
   &:focus {
+    background-color: #007d79 !important;
     color: #ffffff;
   }
 }

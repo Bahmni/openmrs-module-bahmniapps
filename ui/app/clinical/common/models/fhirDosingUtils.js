@@ -217,7 +217,7 @@ var buildDosageString = function (stage, route) {
 
     var dose = parseFloat(stage.dose) || 0;
     if (dose > 0) {
-        var dosePart = '• ' + stage.dose + (stage.unit ? ' ' + stage.unit : '');
+        var dosePart = stage.dose + (stage.unit ? ' ' + stage.unit : '');
         parts.push(dosePart);
     }
 

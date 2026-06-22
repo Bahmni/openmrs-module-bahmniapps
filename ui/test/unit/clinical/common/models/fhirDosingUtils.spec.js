@@ -342,17 +342,17 @@ describe('FhirDosingUtils', function () {
                 additives: 'Saline'
             };
             var result = utils.buildDosageString(stage, 'Oral');
-            expect(result).toBe('• 10 mg, Twice a day, Before meals, Oral, 5 Day(s), 5 ml/hr, Saline');
+            expect(result).toBe('10 mg, Twice a day, Before meals, Oral, 5 Day(s), 5 ml/hr, Saline');
         });
 
         it('should handle dose with unit', function () {
             var stage = { dose: '100', unit: 'ml' };
-            expect(utils.buildDosageString(stage, '')).toBe('• 100 ml');
+            expect(utils.buildDosageString(stage, '')).toBe('100 ml');
         });
 
         it('should handle dose without unit', function () {
             var stage = { dose: '10' };
-            expect(utils.buildDosageString(stage, '')).toBe('• 10');
+            expect(utils.buildDosageString(stage, '')).toBe('10');
         });
 
         it('should handle duration with durationUnit', function () {
@@ -363,7 +363,7 @@ describe('FhirDosingUtils', function () {
                 durationUnit: 'Day(s)'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 5 mg, 3 Day(s)');
+            expect(result).toBe('5 mg, 3 Day(s)');
         });
 
         it('should handle duration without durationUnit', function () {
@@ -373,7 +373,7 @@ describe('FhirDosingUtils', function () {
                 duration: '3'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 5 mg, 3');
+            expect(result).toBe('5 mg, 3');
         });
 
         it('should include route when provided', function () {
@@ -383,7 +383,7 @@ describe('FhirDosingUtils', function () {
                 frequency: 'Once daily'
             };
             var result = utils.buildDosageString(stage, 'Oral');
-            expect(result).toBe('• 10 mg, Once daily, Oral');
+            expect(result).toBe('10 mg, Once daily, Oral');
         });
 
         it('should omit route when not provided', function () {
@@ -393,7 +393,7 @@ describe('FhirDosingUtils', function () {
                 frequency: 'Once daily'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 10 mg, Once daily');
+            expect(result).toBe('10 mg, Once daily');
         });
 
         it('should include rate with ml/hr suffix', function () {
@@ -403,7 +403,7 @@ describe('FhirDosingUtils', function () {
                 rate: '5'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 10 mg, 5 ml/hr');
+            expect(result).toBe('10 mg, 5 ml/hr');
         });
 
         it('should include additives', function () {
@@ -413,7 +413,7 @@ describe('FhirDosingUtils', function () {
                 additives: 'Saline'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 10 mg, Saline');
+            expect(result).toBe('10 mg, Saline');
         });
 
         it('should include rate and additives together', function () {
@@ -424,7 +424,7 @@ describe('FhirDosingUtils', function () {
                 additives: 'Saline'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 100 ml, 10 ml/hr, Saline');
+            expect(result).toBe('100 ml, 10 ml/hr, Saline');
         });
 
         it('should skip optional fields when absent', function () {
@@ -433,7 +433,7 @@ describe('FhirDosingUtils', function () {
                 unit: 'mg'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 5 mg');
+            expect(result).toBe('5 mg');
         });
 
         it('should handle object-format frequency (modal format)', function () {
@@ -443,7 +443,7 @@ describe('FhirDosingUtils', function () {
                 frequency: { label: 'Once daily', value: 'Once daily' }
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 10 mg, Once daily');
+            expect(result).toBe('10 mg, Once daily');
         });
 
         it('should handle object-format instructions (modal format)', function () {
@@ -453,7 +453,7 @@ describe('FhirDosingUtils', function () {
                 instructions: { label: 'Before meals', value: 'Before meals' }
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 10 mg, Before meals');
+            expect(result).toBe('10 mg, Before meals');
         });
 
         it('should handle object-format durationUnit (modal format)', function () {
@@ -464,7 +464,7 @@ describe('FhirDosingUtils', function () {
                 durationUnit: { label: 'Day(s)', value: 'Day(s)' }
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 5 mg, 3 Day(s)');
+            expect(result).toBe('5 mg, 3 Day(s)');
         });
 
         it('should skip zero dose', function () {
@@ -485,7 +485,7 @@ describe('FhirDosingUtils', function () {
                 instructions: 'Before meals'
             };
             var result = utils.buildDosageString(stage, '');
-            expect(result).toBe('• 10 mg, Before meals');
+            expect(result).toBe('10 mg, Before meals');
         });
     });
 });

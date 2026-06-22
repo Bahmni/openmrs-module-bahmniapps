@@ -18,6 +18,11 @@ Bahmni.Clinical.Constants = (function () {
         uniform: "uniform",
         variable: "variable"
     };
+    var stageStatus = {
+        upcoming: "upcoming",
+        ongoing: "ongoing",
+        completed: "completed"
+    };
     var orderActions = {
         discontinue: 'DISCONTINUE',
         new: 'NEW',
@@ -68,6 +73,7 @@ Bahmni.Clinical.Constants = (function () {
         reviseAction: 'REVISE',
         asDirectedInstruction: 'As directed',
         dosingTypes: dosingTypes,
+        stageStatus: stageStatus,
         orderActions: orderActions,
         errorMessages: errorMessages,
         caseIntakeConceptClass: 'Case Intake',

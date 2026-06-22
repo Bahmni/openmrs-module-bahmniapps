@@ -56,7 +56,7 @@ describe('Filters: treatment', function () {
             };
             var drugOrder = {};
             var result = dosageStringFilter(stage, drugOrder);
-            expect(result).toBe('• 10 mg');
+            expect(result).toBe('10 mg');
         });
     });
 

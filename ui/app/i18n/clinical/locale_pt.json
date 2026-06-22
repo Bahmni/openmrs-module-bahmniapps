@@ -361,5 +361,7 @@
     "CHIEF_COMPLAINT_CODED_KEY": "Chief Complaint Coded",
     "SIGN_SYMPTOM_DURATION_KEY": "Sign/symptom duration",
     "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Chief Complaint Duration",
-    "ADDITIONAL_INSTRUCTIONS": "Instruções adicionais"
+    "ADDITIONAL_INSTRUCTIONS": "Instruções adicionais",
+
+    "VARIABLE_DOSAGE_HEADER": "Dosagem Variável"
 }

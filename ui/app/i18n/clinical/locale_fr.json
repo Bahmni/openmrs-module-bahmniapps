@@ -390,5 +390,6 @@
     "CDSS_ACTION": "Veuillez consulter l'onglet Médicaments pour prendre d'autres mesures.",
     "MEDICATION_PRINT": "Imprimer",
     "DAYS_ADMITTED_MESSAGE": "Jours d'hospitalisation",
-    "ADDITIONAL_INSTRUCTIONS": "Instructions supplémentaires"
+    "ADDITIONAL_INSTRUCTIONS": "Instructions supplémentaires",
+    "VARIABLE_DOSAGE_HEADER": "Dosaggio Variabile"
 }

@@ -770,6 +770,21 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
         viewModel.hasLoadingDose = viewModel.stages.some(function (s) {
             return s.stageName === utils.LOADING_DOSE_STAGE_NAME;
         });
+
+        var todayDate = DateUtil.getDate(DateUtil.now());
+        viewModel.stages.forEach(function (stage) {
+            var isDurationZero = stage.durationDays === 0;
+            var stageStart = DateUtil.getDate(stage.startDate);
+            var stageEnd = isDurationZero ? stageStart : DateUtil.addDays(stageStart, stage.durationDays);
+
+            if (stageStart > todayDate) {
+                stage.status = Bahmni.Clinical.Constants.stageStatus.upcoming;
+            } else if (isDurationZero ? stageStart.getTime() === todayDate.getTime() : todayDate < stageEnd) {
+                stage.status = Bahmni.Clinical.Constants.stageStatus.ongoing;
+            } else {
+                stage.status = Bahmni.Clinical.Constants.stageStatus.completed;
+            }
+        });
         viewModel.drugName = drugOrderResponse.drug ? drugOrderResponse.drug.name : '';
         viewModel.drugForm = drugOrderResponse.drug && drugOrderResponse.drug.dosageForm
             ? drugOrderResponse.drug.dosageForm.display : '';

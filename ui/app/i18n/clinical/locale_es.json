@@ -390,5 +390,6 @@
     "CDSS_ACTION": "Vaya a la pestaña Medicamentos para tomar medidas adicionales.",
     "MEDICATION_PRINT": "Imprimir",
     "DAYS_ADMITTED_MESSAGE": "Días en el hospital",
-    "ADDITIONAL_INSTRUCTIONS": "Instrucciones adicionales"
+    "ADDITIONAL_INSTRUCTIONS": "Instrucciones adicionales",
+    "VARIABLE_DOSAGE_HEADER": "Dosificación Variable"
 }

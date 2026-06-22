@@ -26,22 +26,42 @@ mfe-next-ui-variable-dose-protocol-table .next-ui {
     white-space: nowrap;
 }
 
+.variable-dosage-group-header-row {
+    background-color: #E7F3F3;
+}
+
+.variable-dosage-group-header-row td {
+    background-color: #E7F3F3;
+    border: none !important;
+}
+
 .variable-dosage-group-header-row td.variable-dosage-group-label {
     font-weight: bold;
     color: #264478;
     font-size: 14px;
-    padding: 8px 5px;
-    background-color: #f4f4f4;
+    padding: 2px 5px;
+}
+
+.variable-dose-stage-row {
+    cursor: pointer;
+    font-size: 13px;
 }
 
 .variable-dose-stage-drug {
-    padding-left: 30px !important;
+    padding-left: 20px !important;
 }
 
-.variable-dosage-table-cell {
-    padding: 0 !important;
+.variable-dose-stage-row button.toggle,
+.variable-dose-stage-row button.toggle:focus,
+.variable-dose-stage-row button.toggle:active {
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
-.variable-dosage-group-header-row td {
-    border-bottom: none !important;
+.variable-dose-stage-notes {
+    td.test-notes {
+        font-size: 12px;
+        padding: 3px 3px 3px 15px;
+    }
 }

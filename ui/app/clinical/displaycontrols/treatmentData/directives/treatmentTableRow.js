@@ -13,6 +13,7 @@ angular.module('bahmni.clinical')
     .directive('treatmentTableRow', function () {
         var controller = function ($scope) {
             $scope.showDetails = false;
+            $scope.stageStatus = Bahmni.Clinical.Constants.stageStatus;
             if ($scope.params.showProvider === undefined) {
                 $scope.params.showProvider = true;
             }
