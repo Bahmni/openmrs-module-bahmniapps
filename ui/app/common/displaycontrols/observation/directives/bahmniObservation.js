@@ -15,6 +15,8 @@ angular.module('bahmni.common.displaycontrol.observation')
         function (encounterService, observationsService, appService, $q, spinner, $rootScope,
                   formRecordTreeBuildService, $translate, providerInfoService, conceptGroupFormatService, formPrintService) {
             var controller = function ($scope) {
+                var getFormNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion;
+
                 $scope.print = $rootScope.isBeingPrinted || false;
 
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
@@ -48,7 +50,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                     } else {
                         $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
                     }
-
+                    if ($scope.config.filterByFormName) {
+                        fetchFormSpecificObs($scope.config.filterByFormName);
+                    }
                     if (_.isEmpty($scope.bahmniObservations)) {
                         $scope.noObsMessage = $translate.instant(Bahmni.Common.Constants.messageForNoObservation);
                         $scope.$emit("no-data-present-event");
@@ -72,9 +76,25 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                 };
 
+                var fetchFormSpecificObs = function (formName) {
+                    var obsFormNameAndVersion;
+                    $scope.bahmniObservations.forEach(function (bahmniObs, index) {
+                        bahmniObs.value = _.filter(bahmniObs.value, function (observation) {
+                            if (observation.formFieldPath) {
+                                obsFormNameAndVersion = getFormNameAndVersion(observation.formFieldPath);
+                                if (formName.toUpperCase() === obsFormNameAndVersion.formName.toUpperCase()) {
+                                    return observation;
+                                }
+                            }
+                        });
+                        if (bahmniObs.value.length <= 0) {
+                            $scope.bahmniObservations.splice(index, 1);
+                        }
+                    });
+                };
+
                 var fetchObservations = function () {
                     if ($scope.config.formType === Bahmni.Common.Constants.formBuilderDisplayControlType) {
-                        var getFormNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion;
                         encounterService.findByEncounterUuid($scope.config.encounterUuid, {includeAll: false}).then(function (reponse) {
                             var encounterTransaction = reponse.data;
                             var observationsForSelectedForm = _.filter(encounterTransaction.observations, function (obs) {
