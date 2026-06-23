@@ -1,7 +1,9 @@
 <div ng-controller="PatientDashboardTreatmentController" class="dashboard-treatment-section">
+<ul show-if-privilege="{{::dashboardConfig.requiredPrivilege}}">
     <h2 ng-click="openSummaryDialog()" class="section-title has-link">
     	<span class="title-link"> {{::section | titleTranslate}} </span>
 	    <i class="fa fa-external-link"></i>
     </h2>
         <treatment-data id="dashboard-treatments" params="::dashboardConfig"></treatment-data>
+</ul>		
 </div>
