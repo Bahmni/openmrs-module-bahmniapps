@@ -107,6 +107,11 @@ describe("OrderItemContainer", () => {
         expect(screen.getByText("On Hold")).toBeTruthy();
     });
 
+    it("should display Cancelled for CANCELLED orderStatus", () => {
+        render(<OrderItemContainer {...mockProps} orderStatus="CANCELLED" />);
+        expect(screen.getByText("Cancelled")).toBeTruthy();
+    });
+
     it("should display Ready for Pickup for READY orderStatus", () => {
         render(<OrderItemContainer {...mockProps} orderStatus="READY" />);
         expect(screen.getByText("Ready for Pickup")).toBeTruthy();
