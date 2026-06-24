@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate',
-        function (formService, spinner, $timeout, $translate) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService', 'appService',
+        function (formService, spinner, $timeout, $translate, $state, messagingService, appService) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -29,6 +29,8 @@ angular.module('bahmni.common.conceptSet')
                 var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                 var validateForm = $scope.validateForm || false;
                 var locale = $translate.use();
+                var security = (appService.getAppDescriptor().getConfigValue('security')) || {};
+                var allowedDomains = security.hyperlinkAllowedDomains || [];
 
                 if (!loadedFormDetails[formUuid]) {
                     spinner.forPromise(formService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
@@ -45,12 +47,14 @@ angular.module('bahmni.common.conceptSet')
                                         var formTranslations = !_.isEmpty(response.data) ? response.data[0] : {};
                                         loadedFormTranslations[formUuid] = formTranslations;
                                         $scope.form.component = renderWithControls(formDetails, formObservations,
-                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations);
+                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations,
+                                            allowedDomains);
                                     }, function () {
                                         var formTranslations = {};
                                         loadedFormTranslations[formUuid] = formTranslations;
                                         $scope.form.component = renderWithControls(formDetails, formObservations,
-                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations);
+                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations,
+                                            allowedDomains);
                                     })
                                 );
                             }
@@ -61,7 +65,8 @@ angular.module('bahmni.common.conceptSet')
                     $timeout(function () {
                         $scope.form.events = loadedFormDetails[formUuid].events;
                         $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations,
-                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid]);
+                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid],
+                            allowedDomains);
                         unMountReactContainer($scope.form.formUuid);
                     }, 0, false);
                 }
@@ -70,7 +75,8 @@ angular.module('bahmni.common.conceptSet')
                     var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
                         $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations,
-                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid]);
+                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid],
+                            allowedDomains);
                     }
                 });
 

@@ -10,7 +10,7 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, formService, renderHelper, translate;
+    var element, scope, $compile, spinner, provide, formService, renderHelper, translate, $state, appService;
 
     beforeEach(
         function () {
@@ -19,12 +19,27 @@ describe("Form Controls", function () {
                 provide = $provide;
                 formService = jasmine.createSpyObj('formService', ['getFormDetail', 'getFormTranslations']);
                 spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+                $state = {
+                    patientUuid: 'patientUuid',
+                    dirtyConsultationForm: false
+                };
+                appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+                appService.getAppDescriptor.and.returnValue({
+                    getConfigValue: function (key) {
+                        if (key === 'security') {
+                            return { hyperlinkAllowedDomains: [] };
+                        }
+                        return null;
+                    }
+                });
                 provide.value('formService', formService);
                 translate = {
                     use: function(){ return 'en' }
                 };
                 provide.value('spinner', spinner);
                 provide.value('$translate', translate);
+                provide.value('$state', $state);
+                provide.value('appService', appService);
             });
 
             inject(function (_$compile_, $rootScope) {
@@ -88,6 +103,34 @@ describe("Form Controls", function () {
         mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
         expect(renderHelper.renderWithControlsCalledTimes).toBe(2);
+    });
+
+    it("should set dirtyForm flag when changes are saved", function () {
+        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        createElement();
+        scope.$digest();
+
+        scope.$broadcast("$event:changes-saved");
+        expect($state.dirtyForm).toBeFalsy();
+    });
+
+    it('should pass allowedDomains from security config to renderWithControls', function () {
+        var capturedAllowedDomains;
+        window.renderWithControls = function () {
+            capturedAllowedDomains = arguments[8];
+            renderHelper.renderWithControlsCalledTimes += 1;
+        };
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (key) {
+                if (key === 'security') {
+                    return { hyperlinkAllowedDomains: ['*.example.com'] };
+                }
+                return null;
+            }
+        });
+        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        createElement();
+        expect(capturedAllowedDomains).toEqual(['*.example.com']);
     });
 
     var createElement = function () {
