@@ -157,8 +157,12 @@ angular.module('bahmni.clinical')
                         var matchingTemplate = _.find($scope.allTemplates, function (t) {
                             return t.uuid === draftObs.concept.uuid;
                         });
-                        if (matchingTemplate && (!matchingTemplate.observations || matchingTemplate.observations.length === 0)) {
-                            matchingTemplate.observations = [stripObservationFlags(draftObs)];
+                        if (matchingTemplate) {
+                            if (!matchingTemplate.observations || matchingTemplate.observations.length === 0) {
+                                matchingTemplate.observations = [stripObservationFlags(draftObs)];
+                            } else {
+                                formDirtyStateService.populateObservationValues(matchingTemplate.observations[0], stripObservationFlags(draftObs));
+                            }
                             matchingTemplate.hasUnsavedFormObservations = true;
                         }
                     });
@@ -603,6 +607,7 @@ angular.module('bahmni.clinical')
                     var draftDate = $filter('date')(savedDate, 'dd MMM yyyy');
                     var draftTime = $filter('date')(savedDate, 'hh:mm a');
 
+                    $rootScope.draftData = response.data;
                     $scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
                     $scope.formDraft.statusParams = {draftDate: draftDate, draftTime: draftTime};
                     $scope.formDraft.draftDate = draftDate;
@@ -757,6 +762,7 @@ angular.module('bahmni.clinical')
                 $scope.formDraft.hasDrafts = false;
                 dirtyTrackingState.postSaveRefreshPending = true;
                 $scope.formDraft.showSpinner = false;
+                $rootScope.draftData = null;
                 clearDraftStatus(true);
                 if (dirtyTrackingState.postSaveRefreshTimeout) {
                     $timeout.cancel(dirtyTrackingState.postSaveRefreshTimeout);

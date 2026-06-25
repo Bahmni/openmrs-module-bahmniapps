@@ -294,4 +294,60 @@ describe("FormDisplayControl Component with Accordion and Non-Accordion", () => 
       expect(container.querySelectorAll(".fa.fa-pencil")).toHaveLength(0);
     });
   });
+
+  it("should show disabled pencil icon when a draft exists for that form", async () => {
+    const hostDataWithDraft = {
+      patientUuid: "some-patient-uuid",
+      showEditForActiveEncounter: false,
+      encounterUuid: "6e52cecd-a095-457f-9515-38cf9178cb50",
+      draftFormNames: ["Orthopaedic Triage"],
+    };
+    const { container } = render(
+      <FormDisplayControl hostData={hostDataWithDraft} appService={mockAppService} />
+    );
+
+    await waitFor(() => {
+      const disabledPencils = container.querySelectorAll(".fa.fa-pencil.pencil-disabled");
+      const clickablePencils = container.querySelectorAll(".fa.fa-pencil:not(.pencil-disabled)");
+      expect(disabledPencils).toHaveLength(1);
+      expect(clickablePencils).toHaveLength(3);
+    });
+  });
+
+  it("should show all pencil icons as clickable when no draft exists", async () => {
+    const hostDataNoDraft = {
+      patientUuid: "some-patient-uuid",
+      showEditForActiveEncounter: false,
+      encounterUuid: "6e52cecd-a095-457f-9515-38cf9178cb50",
+      draftFormNames: [],
+    };
+    const { container } = render(
+      <FormDisplayControl hostData={hostDataNoDraft} appService={mockAppService} />
+    );
+
+    await waitFor(() => {
+      const disabledPencils = container.querySelectorAll(".fa.fa-pencil.pencil-disabled");
+      const clickablePencils = container.querySelectorAll(".fa.fa-pencil:not(.pencil-disabled)");
+      expect(disabledPencils).toHaveLength(0);
+      expect(clickablePencils).toHaveLength(4);
+    });
+  });
+
+  it("should not disable pencil when draftFormNames contains a different form name", async () => {
+    const hostDataOtherDraft = {
+      patientUuid: "some-patient-uuid",
+      showEditForActiveEncounter: false,
+      encounterUuid: "6e52cecd-a095-457f-9515-38cf9178cb50",
+      draftFormNames: ["Some Other Form"],
+    };
+    const { container } = render(
+      <FormDisplayControl hostData={hostDataOtherDraft} appService={mockAppService} />
+    );
+
+    await waitFor(() => {
+      const disabledPencils = container.querySelectorAll(".fa.fa-pencil.pencil-disabled");
+      expect(disabledPencils).toHaveLength(0);
+      expect(container.querySelectorAll(".fa.fa-pencil")).toHaveLength(4);
+    });
+  });
 });
