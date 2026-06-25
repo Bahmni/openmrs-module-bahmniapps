@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.forms')
-    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state', '$rootScope',
-        function (conceptSetService, spinner, $q, visitFormService, appService, $state, $rootScope) {
+    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state', '$rootScope', 'formDraftService',
+        function (conceptSetService, spinner, $q, visitFormService, appService, $state, $rootScope, formDraftService) {
             var defaultController = function ($scope) {
                 $scope.shouldPromptBrowserReload = true;
                 $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
@@ -67,6 +67,23 @@ angular.module('bahmni.common.displaycontrol.forms')
                         }
                     } else { return true; }
                 };
+
+                $scope.draftFormConceptUuids = [];
+
+                var updateDraftFormConceptUuids = function (draftData) {
+                    $scope.draftFormConceptUuids = _.compact(_.map(
+                        _.filter(formDraftService.parseDraftObs(draftData), function (obs) {
+                            return obs.concept && !obs.formFieldPath;
+                        }),
+                        function (obs) { return obs.concept.uuid; }
+                    ));
+                };
+
+                $scope.hasFormDraft = function (data) {
+                    if (!data || !data.concept) { return false; }
+                    return $scope.draftFormConceptUuids.indexOf(data.concept.uuid) !== -1;
+                };
+
                 var init = function () {
                     $scope.formsNotFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {
@@ -84,6 +101,17 @@ angular.module('bahmni.common.displaycontrol.forms')
                         }
                     });
                 };
+
+                updateDraftFormConceptUuids($rootScope.draftData);
+
+                var cleanUpDraftWatch = $rootScope.$watch('draftData', function (newVal, oldVal) {
+                    if (newVal === oldVal) { return; }
+                    updateDraftFormConceptUuids(newVal);
+                });
+
+                $scope.$on("$destroy", function () {
+                    cleanUpDraftWatch();
+                });
 
                 $scope.getDisplayName = function (data) {
                     var concept = data.concept;

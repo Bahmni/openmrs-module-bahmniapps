@@ -80,6 +80,7 @@ describe("ManageProgramController", function () {
         $provide.value('messagingService', messageService);
         $provide.value('retrospectiveEntryService', retrospectiveEntryService);
         $provide.value('$stateParams', {configName: "default"});
+        $provide.value('formDraftService', {getFormNamesFromDraft: function () { return []; }});
     }));
 
     beforeEach(inject(function ($controller, $rootScope, $q) {
@@ -291,7 +292,6 @@ describe("ManageProgramController", function () {
                 ]
             }
         ];
-
     });
 
     it("should update active programs list", function () {
@@ -329,7 +329,6 @@ describe("ManageProgramController", function () {
     });
 
     describe("Remove program states", function () {
-
         it("should remove latest program state", function () {
             scope.$apply(setUp);
             scope.removePatientState(listOfPatientPrograms.activePrograms[0]);
@@ -352,7 +351,6 @@ describe("ManageProgramController", function () {
 
             expect(programService.updatePatientProgram).toHaveBeenCalledWith(programToBeUpdated, scope.programAttributeTypes, null);
         });
-
     });
 
     describe("updatePatientProgram", function () {
@@ -415,7 +413,6 @@ describe("ManageProgramController", function () {
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
-
             });
             var newStateUuid = '8417ab09-52b4-4573-aefa-7f6e7bdf6d61';
             expect(patientProgramToBeUpdated.states.length).toBe(2);
@@ -437,7 +434,6 @@ describe("ManageProgramController", function () {
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
-
             });
             var currentActiveStateUuid = '1317ab09-52b4-4573-aefa-7f6e7bdf6d61';
             expect(patientProgramToBeUpdated.states.length).toBe(2);
@@ -460,7 +456,6 @@ describe("ManageProgramController", function () {
             var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
-
             });
             programService.updatePatientProgram.and.callFake(function () {
                 deferred = q.defer();

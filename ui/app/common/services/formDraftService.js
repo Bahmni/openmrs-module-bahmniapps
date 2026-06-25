@@ -66,10 +66,30 @@ angular.module('bahmni.common.services')
             });
         };
 
+        var parseDraftObs = function (draftData) {
+            if (draftData && draftData.uuid && !draftData.markedAsSaved && draftData.formData) {
+                try {
+                    return angular.fromJson(draftData.formData);
+                } catch (e) { /* ignore */ }
+            }
+            return [];
+        };
+
+        var getFormNamesFromDraft = function (draftData) {
+            return _.uniq(_.compact(_.map(
+                _.filter(parseDraftObs(draftData), function (obs) {
+                    return obs.formNamespace === 'Bahmni' && obs.formFieldPath;
+                }),
+                function (obs) { return obs.formFieldPath.split('.')[0]; }
+            )));
+        };
+
         return {
             saveDraft: saveDraft,
             getDraft: getDraft,
             discardDraft: discardDraft,
-            markDraftAsSaved: markDraftAsSaved
+            markDraftAsSaved: markDraftAsSaved,
+            parseDraftObs: parseDraftObs,
+            getFormNamesFromDraft: getFormNamesFromDraft
         };
     }]);
