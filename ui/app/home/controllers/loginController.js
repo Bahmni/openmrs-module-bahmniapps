@@ -62,22 +62,19 @@ angular.module('bahmni.home')
                 $rootScope.cookieExpirationTime = response.data.loggedInUrlCookieExpirationTimeInMinutes;
             });
 
-            localeService.getLocalesLangs().then(function (response) {
-                localeLanguages = response.data.locales;
-            }).finally(function () {
-                promise.then(function (response) {
-                    var localeList = response.data.replace(/\s+/g, '').split(',');
-                    $scope.locales = [];
-                    _.forEach(localeList, function (locale) {
-                        var localeLanguage = findLanguageByLocale(locale);
-                        if (_.isUndefined(localeLanguage)) {
-                            $scope.locales.push({"code": locale, "nativeName": locale});
-                        } else {
-                            $scope.locales.push(localeLanguage);
-                        }
-                    });
-                    $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
+            $q.all([localeService.getLocalesLangs(), promise]).then(function (responses) {
+                localeLanguages = (responses[0].data && responses[0].data.locales) || [];
+                var raw = responses[1].data;
+                var localeList = (angular.isString(raw) ? raw : '')
+                    .replace(/\s+/g, '').split(',').filter(Boolean);
+                $scope.locales = _.map(localeList, function (locale) {
+                    return findLanguageByLocale(locale) || {"code": locale, "nativeName": locale};
                 });
+
+                if (_.isEmpty($scope.locales)) {
+                    $scope.locales = [{"code": "en", "nativeName": "English"}];
+                }
+                $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
             });
 
             localeService.defaultLocale().then(function (response) {
