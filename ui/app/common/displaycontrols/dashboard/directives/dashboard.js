@@ -32,7 +32,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             };
 
             if ($scope.patient !== undefined) {
-                var dashboardConfig = findFormV2ReactConfig($scope.config.sections);
+                dashboardConfig = findFormV2ReactConfig($scope.config.sections);
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
@@ -45,7 +45,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     consultationMapper: new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                     configurations.consultationNoteConcept(), configurations.labOrderNotesConcept()),
                     editErrorMessage: $translate.instant('CLINICAL_FORM_ERRORS_MESSAGE_KEY'),
-                    showPrintOption: (dashboardConfig && dashboardConfig.printing) ? true : false
+                    showPrintOption: !!(dashboardConfig && dashboardConfig.printing)
                 };
                 $scope.formApi = {
                     handleEditSave: function (encounter) {
@@ -98,7 +98,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                         formGroup: sectionDashboardConfig && sectionDashboardConfig.formGroup || [],
                         numberOfVisits: sectionDashboardConfig && sectionDashboardConfig.maximumNoOfVisits || undefined,
                         showEditForActiveEncounter: sectionDashboardConfig && sectionDashboardConfig.showEditForActiveEncounter || true,
-                        showPrintOption: sectionDashboardConfig && sectionDashboardConfig.printing ? true : false,
+                        showPrintOption: !!(sectionDashboardConfig && sectionDashboardConfig.printing),
                         sectionTitle: section.translationKey || null
                     }));
                 }
