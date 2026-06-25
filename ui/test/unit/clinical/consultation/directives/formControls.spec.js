@@ -87,6 +87,24 @@ describe("Form Controls", function () {
         })
     }
 
+    function mockObservationServiceWithTranslationFailure(data) {
+        formService.getFormDetail.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({ data: data });
+                }
+            }
+        });
+
+        formService.getFormTranslations.and.callFake(function () {
+            return {
+                then: function (successCallback, errorCallback) {
+                    return errorCallback();
+                }
+            }
+        })
+    }
+
     it('should call formService.getFormDetail', function () {
         mockObservationService({});
         createElement();
@@ -114,6 +132,22 @@ describe("Form Controls", function () {
         expect($state.dirtyForm).toBeFalsy();
     });
 
+    it('should pass empty allowedDomains when security config is absent (backward compat)', function () {
+        var capturedAllowedDomains;
+        window.renderWithControls = function () {
+            capturedAllowedDomains = arguments[8];
+            renderHelper.renderWithControlsCalledTimes += 1;
+        };
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function () {
+                return null;
+            }
+        });
+        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        createElement();
+        expect(capturedAllowedDomains).toEqual([]);
+    });
+
     it('should pass allowedDomains from security config to renderWithControls', function () {
         var capturedAllowedDomains;
         window.renderWithControls = function () {
@@ -129,6 +163,25 @@ describe("Form Controls", function () {
             }
         });
         mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        createElement();
+        expect(capturedAllowedDomains).toEqual(['*.example.com']);
+    });
+
+    it('should pass allowedDomains to renderWithControls even when translation fetch fails', function () {
+        var capturedAllowedDomains;
+        window.renderWithControls = function () {
+            capturedAllowedDomains = arguments[8];
+            renderHelper.renderWithControlsCalledTimes += 1;
+        };
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (key) {
+                if (key === 'security') {
+                    return { hyperlinkAllowedDomains: ['*.example.com'] };
+                }
+                return null;
+            }
+        });
+        mockObservationServiceWithTranslationFailure({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
         expect(capturedAllowedDomains).toEqual(['*.example.com']);
     });
