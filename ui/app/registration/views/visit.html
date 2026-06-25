@@ -41,7 +41,7 @@
                                     <form-controls form="conceptSet" patient="patient" validate-form="true"></form-controls>
                                 </article>
                                 <article ng-if="::conceptSet.options.showLatest" class="obs-section fr" id="observationSection">
-                                    <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
+                                    <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest', filterObsWithOrders: false}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
                                 </article>
                             </div>
                         </div>

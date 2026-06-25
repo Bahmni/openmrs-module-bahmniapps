@@ -126,10 +126,28 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
             expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames, scope.config.scope,
-                scope.config.numberOfVisits, undefined, undefined, null);
+                scope.config.numberOfVisits, undefined, undefined, undefined);
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(0);
+        });
+
+        it("should pass filterObsWithOrders from config to observationsService", function () {
+            scope.patient = {uuid: '123'};
+            scope.config = {showGroupDateTime: false, conceptNames: ["Height", "Weight"], scope: "latest", numberOfVisits: 1, filterObsWithOrders: false};
+            scope.section = {};
+            observationsService.fetch.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
+
+            mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames, scope.config.scope,
+                scope.config.numberOfVisits, undefined, undefined, false);
+            expect(observationsService.fetch.calls.count()).toEqual(1);
         });
 
         it("should fetch observations within daterange if you want to fetch program specific data.", function () {
@@ -162,7 +180,7 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
             expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames,
-                scope.config.scope, scope.config.numberOfVisits, undefined, undefined, null);
+                scope.config.scope, scope.config.numberOfVisits, undefined, undefined, undefined);
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(0);
