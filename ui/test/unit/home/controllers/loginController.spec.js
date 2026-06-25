@@ -159,6 +159,25 @@ describe('loginController', function () {
         expect(scopeMock.locales).toEqual([{code: 'it', nativeName: 'it'}]);
     });
 
+    it('should still populate locales from the allowed list when getLocalesLangs fails', function () {
+        // getLocalesLangs() rejects: its .then(success) is skipped but .finally() still runs,
+        // so the dropdown is built from the allowed list using the locale codes as names.
+        var failedLangsPromise = {
+            then: function () { return this; },
+            finally: function (callback) { callback(); return this; }
+        };
+        localeService.getLocalesLangs.and.returnValue(failedLangsPromise);
+        localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: "en"}));
+        loginController();
+        expect(scopeMock.locales).toEqual([{code: 'en', nativeName: 'en'}]);
+    });
+
+    it('should default to English when the allowed locales list is empty', function () {
+        localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: ""}));
+        loginController();
+        expect(scopeMock.locales).toEqual([{code: 'en', nativeName: 'English'}]);
+    });
+
     it ("should fetch bahmniCore data and assign it to windows object ",function() {
             loginController();
             var fakeHttpGetPromise = {
