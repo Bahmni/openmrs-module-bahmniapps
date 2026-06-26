@@ -676,6 +676,111 @@ describe("SurgicalBlockMapper", function () {
         ]
         var diagnosisInfo = surgicalBlockMapper.mapPrimaryDiagnoses(diagnosisObs);
         expect(diagnosisInfo).toEqual('Hemarthrosis hand');
-    })
+    });
+
+    function getDateString(daysAgo) {
+        var date = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000);
+        return date.toISOString();
+    }
+
+    describe('mapObservations', function () {
+        it('should return blank values when obs is older than validityDays', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(40),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('');
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].date).toBeNull();
+        });
+
+        it('should return value when obs is within validityDays', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('Yes');
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].date).not.toBeNull();
+        });
+
+        it('should map multiple concepts independently', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                },
+                {
+                    concept: { display: 'Assessed for Surgery?' },
+                    value: { display: 'No' },
+                    obsDatetime: getDateString(5),
+                    display: 'Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [
+                { conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 },
+                { conceptName: 'Assessed for Surgery?', validityDays: 45 }
+            ];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('Yes');
+            expect(result['Assessed for Surgery?'].value).toBe('No');
+        });
+
+        it('should use per-concept validityDays', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(35),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                },
+                {
+                    concept: { display: 'Assessed for Surgery?' },
+                    value: { display: 'No' },
+                    obsDatetime: getDateString(35),
+                    display: 'Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [
+                { conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 },
+                { conceptName: 'Assessed for Surgery?', validityDays: 45 }
+            ];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('');
+            expect(result['Assessed for Surgery?'].value).toBe('No');
+        });
+
+        it('should return defaults for empty observations', function () {
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations([], conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBeNull();
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].date).toBeNull();
+        });
+
+        it('should return empty map when no concept configs provided', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var result = surgicalBlockMapper.mapObservations(observations, []);
+            expect(Object.keys(result).length).toBe(0);
+        });
+    });
 });
 

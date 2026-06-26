@@ -22,16 +22,27 @@ describe("newSurgicalAppointmentController", function () {
     var queryService = jasmine.createSpyObj('queryService', ['getResponseFromQuery']);
     appService.getAppDescriptor.and.returnValue(getAppDescriptor);
     programHelper = jasmine.createSpyObj('programHelper', ['groupPrograms']);
-
+    var conceptService = jasmine.createSpyObj('conceptService', ['getAnswersForConceptName']);
+    var otUtils = jasmine.createSpyObj('otUtils', ['getConceptFormatAttributeName', 'getConceptFormatAttributeNames']);
+    otUtils.getConceptFormatAttributeName.and.returnValue("conceptFormatAttributeName");
+    otUtils.getConceptFormatAttributeNames.and.returnValue(["conceptFormatAttributeName"]);
+    conceptService.getAnswersForConceptName.and.returnValue(specUtil.simplePromise([]));
     var ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
     _window = jasmine.createSpyObj('$window', ['open', 'location']);
-
+    _window.localStorage = {
+        "NG_TRANSLATE_LANG_KEY": "en"
+    };
 
     var attributeTypes = {
         "results": [
             {
                 "uuid": "25ef8484-3a1f-11e7-83f8-0800274a5156",
                 "name": "procedure"
+            },
+            {
+                "uuid": "11111111-3a1f-11e7-83f8-0800274a5156",
+                "name": "conceptFormatAttributeName",
+                "format": "org.openmrs.Concept"
             },
             {
                 "uuid": "25ef9562-3a1f-11e7-83f8-0800274a5156",
@@ -92,6 +103,8 @@ describe("newSurgicalAppointmentController", function () {
             controller = $controller;
             scope = $rootScope.$new();
             surgicalAppointmentHelper = _surgicalAppointmentHelper_;
+            spyOn(surgicalAppointmentHelper, 'addConceptFormatAttributeTranslation').and.returnValue(new Map());
+            spyOn(surgicalAppointmentHelper, 'getDefaultAttributeTranslations').and.returnValue(new Map());
         });
     });
 
@@ -109,9 +122,82 @@ describe("newSurgicalAppointmentController", function () {
             appService: appService,
             surgicalAppointmentHelper: surgicalAppointmentHelper,
             ngDialog: ngDialog,
-            programHelper: programHelper
+            programHelper: programHelper,
+            conceptService: conceptService,
+            otUtils: otUtils
         });
     };
+
+    it("should initialize conceptFormatAttributeName from otUtils", function () {
+        createController();
+        expect(otUtils.getConceptFormatAttributeName).toHaveBeenCalled();
+        expect(scope.conceptFormatAttributeName).toBe("conceptFormatAttributeName");
+    });
+
+    it("should initialize defaultAttributeTranslations from surgicalAppointmentHelper", function () {
+        createController();
+        expect(surgicalAppointmentHelper.getDefaultAttributeTranslations).toHaveBeenCalled();
+    });
+
+    it("should fetch concept answers for conceptFormatAttributeName dropdown options", function () {
+        var mockAnswers = [
+            { name: { name: "Not Applicable" } },
+            { name: "Requested" },
+            { name: { name: "Not Requested" } }
+        ];
+        conceptService.getAnswersForConceptName.and.returnValue(specUtil.simplePromise(mockAnswers));
+        
+        createController();
+        
+        expect(conceptService.getAnswersForConceptName).toHaveBeenCalledWith({
+            answersConceptName: "conceptFormatAttributeName"
+        });
+        expect(scope.conceptFormatAttributeDropdownOptionsMap["conceptFormatAttributeName"]).toEqual([
+            { label: "Not Applicable", value: "Not Applicable" },
+            { label: "Requested", value: "Requested" },
+            { label: "Not Requested", value: "Not Requested" }
+        ]);
+    });
+
+    it("should convert object values to string for concept format attributes", function () {
+        scope.ngDialogData = {
+            patient: { uuid: "patientUuid", display: "Test Patient" },
+            surgicalAppointmentAttributes: {
+                conceptFormatAttributeName: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '11111111-3a1f-11e7-83f8-0800274a5156',
+                        name: 'conceptFormatAttributeName',
+                        format: 'org.openmrs.Concept'
+                    },
+                    value: { display: "Requested", name: "Requested Concept" }
+                }
+            }
+        };
+        
+        createController();
+        
+        expect(scope.attributes.conceptFormatAttributeName.value).toBe("Requested");
+    });
+
+    it("should keep string values as-is for concept format attributes", function () {
+        scope.ngDialogData = {
+            patient: { uuid: "patientUuid", display: "Test Patient" },
+            surgicalAppointmentAttributes: {
+                conceptFormatAttributeName: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '11111111-3a1f-11e7-83f8-0800274a5156',
+                        name: 'conceptFormatAttributeName',
+                        format: 'org.openmrs.Concept'
+                    },
+                    value: "Not Applicable"
+                }
+            }
+        };
+
+        createController();
+
+        expect(scope.attributes.conceptFormatAttributeName.value).toBe("Not Applicable");
+    });
 
     it("should map the display name for patients", function () {
         var patients = [{givenName: "Natsume", familyName: "Hyuga", identifier: "IQ12345"},
@@ -152,11 +238,18 @@ describe("newSurgicalAppointmentController", function () {
                         name: 'procedure'
                     }, value: ""
                 },
-                cleaningTime: {
+                conceptFormatAttributeName: {
                     surgicalAppointmentAttributeType: {
-                        uuid: '25efb2ef-3a1f-11e7-83f8-0800274a5156',
-                        name: 'cleaningTime'
-                    }, value: 15
+                        uuid: '11111111-3a1f-11e7-83f8-0800274a5156',
+                        name: 'conceptFormatAttributeName',
+                        format: 'org.openmrs.Concept'
+                    }, value: ""
+                },
+                estTimeHours: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25ef9562-3a1f-11e7-83f8-0800274a5156',
+                        name: 'estTimeHours'
+                    }, value: 0
                 },
                 estTimeMinutes: {
                     surgicalAppointmentAttributeType: {
@@ -164,11 +257,11 @@ describe("newSurgicalAppointmentController", function () {
                         name: 'estTimeMinutes'
                     }, value: 0
                 },
-                estTimeHours: {
+                cleaningTime: {
                     surgicalAppointmentAttributeType: {
-                        uuid: '25ef9562-3a1f-11e7-83f8-0800274a5156',
-                        name: 'estTimeHours'
-                    }, value: 0
+                        uuid: '25efb2ef-3a1f-11e7-83f8-0800274a5156',
+                        name: 'cleaningTime'
+                    }, value: 15
                 },
                 otherSurgeon: {
                     surgicalAppointmentAttributeType: {
@@ -277,11 +370,18 @@ describe("newSurgicalAppointmentController", function () {
                     name: 'procedure'
                 }, value: ""
             },
-            cleaningTime: {
+            conceptFormatAttributeName: {
                 surgicalAppointmentAttributeType: {
-                    uuid: '25efb2ef-3a1f-11e7-83f8-0800274a5156',
-                    name: 'cleaningTime'
-                }, value: 15
+                    uuid: '11111111-3a1f-11e7-83f8-0800274a5156',
+                    name: 'conceptFormatAttributeName',
+                    format: 'org.openmrs.Concept'
+                }, value: ""
+            },
+            estTimeHours: {
+                surgicalAppointmentAttributeType: {
+                    uuid: '25ef9562-3a1f-11e7-83f8-0800274a5156',
+                    name: 'estTimeHours'
+                }, value: 0
             },
             estTimeMinutes: {
                 surgicalAppointmentAttributeType: {
@@ -289,11 +389,11 @@ describe("newSurgicalAppointmentController", function () {
                     name: 'estTimeMinutes'
                 }, value: 0
             },
-            estTimeHours: {
+            cleaningTime: {
                 surgicalAppointmentAttributeType: {
-                    uuid: '25ef9562-3a1f-11e7-83f8-0800274a5156',
-                    name: 'estTimeHours'
-                }, value: 0
+                    uuid: '25efb2ef-3a1f-11e7-83f8-0800274a5156',
+                    name: 'cleaningTime'
+                }, value: 15
             },
             otherSurgeon: {
                 surgicalAppointmentAttributeType: {
@@ -453,11 +553,18 @@ describe("newSurgicalAppointmentController", function () {
                         name: 'procedure'
                     }, value: ""
                 },
-                cleaningTime: {
+                conceptFormatAttributeName: {
                     surgicalAppointmentAttributeType: {
-                        uuid: '25efb2ef-3a1f-11e7-83f8-0800274a5156',
-                        name: 'cleaningTime'
-                    }, value: 15
+                        uuid: '11111111-3a1f-11e7-83f8-0800274a5156',
+                        name: 'conceptFormatAttributeName',
+                        format: 'org.openmrs.Concept'
+                    }, value: ""
+                },
+                estTimeHours: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25ef9562-3a1f-11e7-83f8-0800274a5156',
+                        name: 'estTimeHours'
+                    }, value: 0
                 },
                 estTimeMinutes: {
                     surgicalAppointmentAttributeType: {
@@ -465,11 +572,11 @@ describe("newSurgicalAppointmentController", function () {
                         name: 'estTimeMinutes'
                     }, value: 0
                 },
-                estTimeHours: {
+                cleaningTime: {
                     surgicalAppointmentAttributeType: {
-                        uuid: '25ef9562-3a1f-11e7-83f8-0800274a5156',
-                        name: 'estTimeHours'
-                    }, value: 0
+                        uuid: '25efb2ef-3a1f-11e7-83f8-0800274a5156',
+                        name: 'cleaningTime'
+                    }, value: 15
                 },
                 otherSurgeon: {
                     surgicalAppointmentAttributeType: {
