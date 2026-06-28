@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 
 const PatientListContent = ({ patientMedicationDetails, handleOnClick }) => {
   const { administered_date_time, administered_drug_name, medication_administration_performer_uuid, medication_administration_uuid } = patientMedicationDetails;
-  const acknowledgementRequiredText = (<FormattedMessage id="AKNOWLEDGE_BUTTON" defaultMessage="Acknowledge" />);
+  const acknowledgementRequiredText = (<FormattedMessage id="ACKNOWLEDGE_BUTTON" defaultMessage="Acknowledge" />);
   const [providerNotes, setProviderNotes] = useState("");
 
   function acknowledgeMedication() {

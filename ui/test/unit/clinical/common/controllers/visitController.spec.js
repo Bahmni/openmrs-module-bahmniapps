@@ -11,7 +11,7 @@
 
 describe('VisitController', function () {
     var scope, $controller, success, encounterService, patient, dateUtil, $timeout, getEncounterPromise, window;
-    var locationService, appService, $location, auditLogService, sessionService;
+    var locationService, appService, $location, auditLogService, sessionService, visitService;
     var q, state, rootScope, controller, allergyService;
     var configurations = {
         encounterConfig: function () {
@@ -31,6 +31,7 @@ describe('VisitController', function () {
     var allergiesMock = {
         data: {
             entry: [
+                {resource: { code: {coding:[{display: "No Known Allergy"}]}}},
                 {resource: { code: {coding:[{display: "Eggs"}]}}}
             ],
         },
@@ -53,6 +54,8 @@ describe('VisitController', function () {
         };
         state = $state;
         state.current = state.current || {views: {'dashboard-content': {templateUrl: "/template/url"}}};
+        state.go = state.go || function() {};
+        state.href = state.href || function() {};
         $controller = $injector.get('$controller');
         scope = $rootScope.$new();
         scope.patient = patient;
@@ -62,12 +65,16 @@ describe('VisitController', function () {
         encounterService = jasmine.createSpyObj('encounterService', ['getEncountersForEncounterType']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         getEncounterPromise = specUtil.createServicePromise('getEncountersForEncounterType');
-        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
+        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient', 'getNoKnownAllergyUuid', 'fetchAndProcessAllergies']);
+        visitService = jasmine.createSpyObj('visitService', ['getVisit']);
         $location = jasmine.createSpyObj('$location', ['search']);
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
         sessionService = jasmine.createSpyObj('sessionService', ['destroy']);
         allergyService.getAllergyForPatient.and.returnValue(Promise.resolve(allergiesMock));
+        allergyService.getNoKnownAllergyUuid.and.returnValue(Promise.resolve("no-known-allergy-uuid"));
+        allergyService.fetchAndProcessAllergies.and.returnValue(Promise.resolve("Pollen, Eggs"));
         encounterService.getEncountersForEncounterType.and.returnValue(getEncounterPromise);
+        visitService.getVisit.and.returnValue(Promise.resolve({data: {encounters: []}}));
         $location.search.and.returnValue({source: "clinical"});
         window = $window;
         auditLogService.log.and.returnValue({
@@ -111,6 +118,7 @@ describe('VisitController', function () {
                 visitHistory:[],
                 $stateParams: {},
                 locationService: locationService,
+                visitService: visitService,
                 appService: appService,
                 allergyService: allergyService,
                 auditLogService: auditLogService,
@@ -169,10 +177,22 @@ describe('VisitController', function () {
             expect(scope.testResultClass(inputLine)).toEqual(expectedStyle);
         });
 
+        it('should handle on print event', function () {
+            scope.visitTabConfig.currentTab.printing = {templateUrl: 'common/views/visitTabPrint.html', observationsConcepts: ["WEIGHT"]}
+            scope.$broadcast("event:printVisitTab", {});
+            expect(allergyService.fetchAndProcessAllergies).toHaveBeenCalled();
+        });
+
+
         it('should call auditLogService.log and sessionService.destroy on logout', function (){
             scope.ipdDashboard.hostApi.onLogOut();
             expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
             expect(sessionService.destroy).toHaveBeenCalled();
+        });
+
+        it('should call auditLogService.log while handleAuditEvent is triggered', function (){
+            scope.ipdDashboard.hostApi.handleAuditEvent('test_patient_id','CREATE_SCHEDULED_MEDICATION_TASK','test_message_params','MODULE_LABEL_CLINICAL_KEY');
+            expect(auditLogService.log).toHaveBeenCalledWith('test_patient_id','CREATE_SCHEDULED_MEDICATION_TASK','test_message_params','MODULE_LABEL_CLINICAL_KEY');
         });
 
         it('should call handleLogoutShortcut on keydown event', function (){
@@ -184,6 +204,212 @@ describe('VisitController', function () {
             spyOn(window, 'removeEventListener');
             scope.$destroy();
             expect(window.removeEventListener).toHaveBeenCalledWith('keydown', jasmine.any(Function));
+        });
+    });
+
+    function createController(rootScope) {
+        return $controller('VisitController', {
+            $scope: scope,
+            $rootScope: rootScope,
+            $state: state,
+            encounterService: encounterService,
+            clinicalAppConfigService: clinicalAppConfigService,
+            visitSummary: {},
+            configurations: configurations,
+            $timeout: $timeout,
+            printer: {},
+            visitConfig: visitTabConfig,
+            visitHistory: [],
+            $stateParams: {},
+            locationService: locationService,
+            visitService: visitService,
+            appService: appService,
+            allergyService: allergyService,
+            auditLogService: auditLogService,
+            sessionService: sessionService,
+            $location: $location,
+            $window: window
+        });
+        }
+
+    describe('template URL handling', function () {
+        it('should pick template from print-content view when dashboard-content templateUrl is not available', function () {
+            state.current = {views: {'dashboard-content': {}, 'print-content': {templateUrl: '/print/template/url'}}};
+            createController(rootScope);
+            expect(scope.currentVisitUrl).toBe('/print/template/url');
+        });
+
+        it('should pick template from dashboard-content view when available', function () {
+            state.current = {views: {'dashboard-content': {templateUrl: '/dashboard/template/url'}}};
+            createController(rootScope);
+            expect(scope.currentVisitUrl).toBe('/dashboard/template/url');
+        });
+    });
+
+    describe('config handling', function () {
+        it('should set showProviderInfo to false when config is explicitly false', function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function (key) {
+                    if (key === 'showProviderInfoinVisits') return false;
+                    return undefined;
+                }
+            });
+            createController(rootScope);
+            expect(scope.showProviderInfo).toBe(false);
+        });
+
+        it('should set showProviderInfo to true when config is not defined', function () {
+            appService.getAppDescriptor.and.returnValue({
+                getConfigValue: function () {
+                    return undefined;
+                }
+            });
+            createController(rootScope);
+            expect(scope.showProviderInfo).toBe(true);
+        });
+
+    });
+
+    describe('IPD visit mode logic', function () {
+        it('should set isIpdReadMode to false when visit is IPD and not stopped', function () {
+            const visitSummary = {visitType: 'IPD', stopDateTime: null};
+            $controller('VisitController', {
+                $scope: scope,
+                $rootScope: rootScope,
+                $state: state,
+                encounterService: encounterService,
+                clinicalAppConfigService: clinicalAppConfigService,
+                visitSummary: visitSummary,
+                configurations: configurations,
+                $timeout: $timeout,
+                printer: {},
+                visitConfig: visitTabConfig,
+                visitHistory: [],
+                $stateParams: {},
+                locationService: locationService,
+                visitService: visitService,
+                appService: appService,
+                allergyService: allergyService,
+                auditLogService: auditLogService,
+                sessionService: sessionService,
+                $location: $location,
+                $window: window
+            });
+            expect(scope.isIpdReadMode).toBe(false);
+            expect(scope.isActiveIpdVisit).toBe(true);
+        });
+
+        it('should set isIpdReadMode to true when visit is IPD and stopped', function () {
+            const visitSummary = {visitType: 'IPD', stopDateTime: '2024-01-01'};
+            $controller('VisitController', {
+                $scope: scope,
+                $rootScope: rootScope,
+                $state: state,
+                encounterService: encounterService,
+                clinicalAppConfigService: clinicalAppConfigService,
+                visitSummary: visitSummary,
+                configurations: configurations,
+                $timeout: $timeout,
+                printer: {},
+                visitConfig: visitTabConfig,
+                visitHistory: [],
+                $stateParams: {},
+                locationService: locationService,
+                visitService: visitService,
+                appService: appService,
+                allergyService: allergyService,
+                auditLogService: auditLogService,
+                sessionService: sessionService,
+                $location: $location,
+                $window: window
+            });
+            expect(scope.isIpdReadMode).toBe(true);
+            expect(scope.isActiveIpdVisit).toBe(true);
+        });
+
+    });
+
+    describe('scope functions', function () {
+        it('should toggle item show property', function () {
+            const item = {show: false};
+            scope.toggle(item);
+            expect(item.show).toBe(true);
+            scope.toggle(item);
+            expect(item.show).toBe(false);
+        });
+
+        it('should return true for isEmpty when notes is null', function () {
+            expect(scope.isEmpty(null)).toBe(true);
+        });
+
+        it('should return true for isEmpty when notes is undefined', function () {
+            expect(scope.isEmpty(undefined)).toBe(true);
+        });
+
+        it('should return true for isEmpty when notes has only whitespace', function () {
+            expect(scope.isEmpty('  ')).toBe(true);
+        });
+
+        it('should return false for isEmpty when notes has content', function () {
+            expect(scope.isEmpty('Some notes')).toBe(false);
+        });
+
+        it('should return correct class for testResultClass with pending results', function () {
+            const line = {isSummary: true, hasResults: false, name: 'Test'};
+            const result = scope.testResultClass(line);
+            expect(result['pending-result']).toBe(true);
+            expect(result['header']).toBe(true);
+        });
+
+        it('should return correct class for testResultClass without pending results', function () {
+            const line = {isSummary: true, hasResults: true, name: 'Test'};
+            const result = scope.testResultClass(line);
+            expect(result['pending-result']).toBeUndefined();
+            expect(result['header']).toBe(true);
+        });
+
+        it('should return correct class for testResultClass for non-summary line', function () {
+            const line = {isSummary: false};
+            const result = scope.testResultClass(line);
+            expect(result['pending-result']).toBeUndefined();
+            expect(result['header']).toBeUndefined();
+        });
+
+        it('should return true for pendingResults when line is summary without results and has name', function () {
+            const line = {isSummary: true, hasResults: false, name: 'Test'};
+            expect(scope.pendingResults(line)).toBe(true);
+        });
+
+        it('should return false for pendingResults when line has results', function () {
+            const line = {isSummary: true, hasResults: true, name: 'Test'};
+            expect(scope.pendingResults(line)).toBe(false);
+        });
+
+        it('should return false for pendingResults when line has empty name', function () {
+            const line = {isSummary: true, hasResults: false, name: ''};
+            expect(scope.pendingResults(line)).toBe(false);
+        });
+
+        it('should return false for pendingResults when line is not summary', function () {
+            const line = {isSummary: false, hasResults: false, name: 'Test'};
+            expect(scope.pendingResults(line)).toBe(false);
+        });
+    });
+
+    describe('event:clearVisitBoard', function () {
+        it('should set clearBoard to true and then false after timeout', function () {
+            scope.$broadcast('event:clearVisitBoard');
+            expect(scope.clearBoard).toBe(true);
+            $timeout.flush();
+            expect(scope.clearBoard).toBe(false);
+        });
+    });
+
+    describe('loadVisit', function () {
+        it('should navigate to patient dashboard visit with given visitUuid', function () {
+            spyOn(state, 'go');
+            scope.loadVisit('test-visit-uuid');
+            expect(state.go).toHaveBeenCalledWith('patient.dashboard.visit', {visitUuid: 'test-visit-uuid'});
         });
     });
 
