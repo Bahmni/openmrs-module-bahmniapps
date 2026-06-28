@@ -51,7 +51,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
               dir="auto"
             >
               <div
-                class=" allergies-row allergies-red-text"
+                class="allergies-row red-text"
               >
                 <div>
                   Bee
@@ -116,7 +116,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
               dir="auto"
             >
               <div
-                class=" allergies-row "
+                class="allergies-row "
               >
                 <div>
                   Peanuts
@@ -167,6 +167,67 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
                 class="allergy-provider"
               >
                 Dr. Jane
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <ul
+        class="bx--accordion bx--accordion--end bx--accordion--md"
+      >
+        <li
+          class="bx--accordion__item"
+        >
+          <button
+            aria-controls="accordion-item-3"
+            aria-expanded="false"
+            class="bx--accordion__heading"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="bx--accordion__arrow"
+              fill="currentColor"
+              focusable="false"
+              height="16"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 16 16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"
+              />
+            </svg>
+            <div
+              class="bx--accordion__title"
+              dir="auto"
+            >
+              <div
+                class="allergies-row no-known-allergy"
+              >
+                <div>
+                  No Known Allergy
+                </div>
+                <div />
+                <div
+                  class="capitalize"
+                />
+              </div>
+            </div>
+          </button>
+          <div
+            class="bx--accordion__content"
+            id="accordion-item-3"
+          >
+            <div
+              class="allergies-accordion-item"
+            >
+              <div />
+              <div
+                class="allergy-provider"
+              >
+                Dr. John Doe
               </div>
             </div>
           </div>

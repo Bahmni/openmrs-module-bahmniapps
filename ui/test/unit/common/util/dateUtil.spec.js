@@ -283,7 +283,7 @@ describe('DateUtil', function () {
         });
 
         it("should take a string representation of date and format", function () {
-            var date = new Date();
+            var date = moment('2017-06-22').toDate();
             expect(dateUtil.formatDateWithoutTimeToLocal(moment(date).format(dateFormat))).toEqual(moment(date).format(clientDateDisplayFormat));
         });
 

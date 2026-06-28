@@ -79,7 +79,9 @@ exports[`AddAllergy should render the component 1`] = `
                   class="bx--label"
                   for="allergen-search"
                   id="allergen-search-search"
-                />
+                >
+                  Search
+                </label>
                 <input
                   autocomplete="off"
                   class="bx--search-input"
