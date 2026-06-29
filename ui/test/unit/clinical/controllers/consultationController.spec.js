@@ -889,6 +889,100 @@ describe("ConsultationController", function () {
         });
     });
 
+    describe("isObservationFormValid — draftValidationPassed tracking", function () {
+        var makeConsultation = function (observationForms) {
+            return {
+                discontinuedDrugs: [],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                conditions: [],
+                observationForms: observationForms || []
+            };
+        };
+
+        it("should block save and set draftValidationPassed=false when rendered form has errors", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: { getValue: function () { return {errors: {field: 'required'}}; } }
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            spyOn(scope.$parent.$parent, '$broadcast');
+
+            scope.save({toState: {}}).then(function () {
+                expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                expect(form.draftValidationPassed).toBe(false);
+                done();
+            });
+        });
+
+        it("should allow save and set draftValidationPassed=true when rendered form has no errors", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: { getValue: function () { return {}; } }
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.create).toHaveBeenCalled();
+                expect(form.draftValidationPassed).toBe(true);
+                done();
+            });
+        });
+
+        it("should block save when form has no component, hasUnsavedFormObservations=true, and draftValidationPassed is undefined", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: undefined,
+                draftValidationPassed: undefined
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            spyOn(scope.$parent.$parent, '$broadcast');
+
+            scope.save({toState: {}}).then(function () {
+                expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                done();
+            });
+        });
+
+        it("should allow save when form has no component and hasUnsavedFormObservations=false", function (done) {
+            var form = {
+                hasUnsavedFormObservations: false,
+                component: undefined
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.create).toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it("should allow save when form has no component, hasUnsavedFormObservations=true, but draftValidationPassed=true (previously validated clean)", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: undefined,
+                draftValidationPassed: true
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.create).toHaveBeenCalled();
+                done();
+            });
+        });
+    });
+
     describe("startAdhocTeleconsultationLink", function ()  {
         it("should get ad-hoc teleconsultation link", function () {
             scope.patient = {
