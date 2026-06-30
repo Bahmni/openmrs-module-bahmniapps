@@ -43,7 +43,7 @@ export function FormDisplayControl(props) {
   );
   const formsHeading = (
     <FormattedMessage
-      id={"DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY"}
+      id={props?.hostData?.sectionTitle || "DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY"}
       defaultMessage={"Observation Forms"}
     />
   );
@@ -67,10 +67,16 @@ export function FormDisplayControl(props) {
 
   const buildResponseData = async () => {
     try {
-      const formResponseData = await fetchFormData(
+      let formResponseData = await fetchFormData(
         props?.hostData?.patientUuid,
         props?.hostData?.numberOfVisits
       );
+      const forms = props?.hostData?.forms || [];
+      if (forms.length > 0) {
+        formResponseData = formResponseData.filter((form) =>
+          forms.includes(form.formName)
+        );
+      }
       const latestForms = await getLatestPublishedForms();
       var grouped = {};
       if (formResponseData?.length > 0 && latestForms?.length > 0) {

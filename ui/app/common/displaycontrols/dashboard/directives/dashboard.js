@@ -12,6 +12,8 @@
 angular.module('bahmni.common.displaycontrol.dashboard')
     .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', 'configurations', 'encounterService', 'spinner', 'auditLogService', 'messagingService', '$state', '$translate', 'formPrintService', function (appService, $stateParams, $bahmniCookieStore, configurations, encounterService, spinner, auditLogService, messagingService, $state, $translate, formPrintService) {
         var controller = function ($scope, $filter, $rootScope) {
+            var dashboardConfig = null;
+
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
@@ -30,19 +32,20 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             };
 
             if ($scope.patient !== undefined) {
-                var dashboardConfig = findFormV2ReactConfig($scope.config.sections);
+                dashboardConfig = findFormV2ReactConfig($scope.config.sections);
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
                     encounterUuid: $scope.activeEncounterUuid,
                     showEditForActiveEncounter: dashboardConfig && dashboardConfig.showEditForActiveEncounter || false,
                     numberOfVisits: dashboardConfig && dashboardConfig.maximumNoOfVisits || undefined,
+                    forms: dashboardConfig && dashboardConfig.forms || [],
                     hasNoHierarchy: $scope.hasNoHierarchy,
                     currentUser: $rootScope.currentUser,
                     consultationMapper: new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                     configurations.consultationNoteConcept(), configurations.labOrderNotesConcept()),
                     editErrorMessage: $translate.instant('CLINICAL_FORM_ERRORS_MESSAGE_KEY'),
-                    showPrintOption: (dashboardConfig && dashboardConfig.printing) ? true : false
+                    showPrintOption: !!(dashboardConfig && dashboardConfig.printing)
                 };
                 $scope.formApi = {
                     handleEditSave: function (encounter) {
@@ -85,6 +88,22 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 $scope.appService = appService;
                 $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
             }
+
+            var sectionFormDataCache = new WeakMap();
+            $scope.getSectionFormData = function (section) {
+                if (!section) return $scope.formData;
+                if (!sectionFormDataCache.has(section)) {
+                    var sectionDashboardConfig = section.dashboardConfig;
+                    sectionFormDataCache.set(section, angular.extend({}, $scope.formData, {
+                        forms: sectionDashboardConfig && sectionDashboardConfig.forms || [],
+                        numberOfVisits: sectionDashboardConfig && sectionDashboardConfig.maximumNoOfVisits || undefined,
+                        showEditForActiveEncounter: sectionDashboardConfig && sectionDashboardConfig.showEditForActiveEncounter || true,
+                        showPrintOption: !!(sectionDashboardConfig && sectionDashboardConfig.printing),
+                        sectionTitle: section.translationKey || null
+                    }));
+                }
+                return sectionFormDataCache.get(section);
+            };
 
             var checkDisplayType = function (sections, typeToCheck, index) {
                 return sections[index] && sections[index]['displayType'] && sections[index]['displayType'] === typeToCheck;
