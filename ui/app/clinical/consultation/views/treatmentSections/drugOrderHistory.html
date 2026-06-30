@@ -12,7 +12,7 @@
                 </label>
                 <button ng-show="printPrescriptionFeature" ng-disabled="!isAnyDrugSelected()" type="submit" class="secondary-button print-drugs-btn fr" form="prescribedDrugs">{{ ::'MEDICATION_PRINT' | translate }}</button>
                 <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">{{ ::'MEDICATION_REFILL_ALL' | translate }}</button>
-                <button  ng-repeat="orderAttribute in getOrderAttributes()" class="secondary-button dispense-all-btn fr" show-if-privilege="{{dispensePrivilege}}" ng-if="!drugOrderGroupsEmpty()"  ng-click="updateAllOrderAttributesByName(orderAttribute,drugOrderGroup)" ng-disabled="!canUpdateAtLeastOneOrderAttributeOfName(drugOrderGroup,orderAttribute.name)">
+                <button  ng-repeat="orderAttribute in getOrderAttributes()" class="secondary-button dispense-all-btn fr" show-if-privilege="{{dispensePrivilege}}" ng-if="!drugOrderGroupsEmpty()"  ng-click="updateAllOrderAttributesByName(orderAttribute,drugOrderGroup)" ng-disabled="!canUpdateAtLeastOneOrderAttributeOfName(drugOrderGroup,orderAttribute.name) || showPharmacistReviewBanner()">
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
@@ -48,7 +48,7 @@
                                             {{ ::'IPD_BUTTON' | translate}}
                                         </button>
                                         <button type="button" ng-repeat="orderAttribute in drugOrder.orderAttributes" show-if-privilege="{{dispensePrivilege}}"
-                                                class="dispense-btn" ng-disabled="shouldBeDisabled(drugOrder,orderAttribute)"
+                                                class="dispense-btn" ng-disabled="shouldBeDisabled(drugOrder,orderAttribute) || showPharmacistReviewBanner()"
                                                 ng-click="updateOrderAttribute(drugOrder,orderAttribute)">
                                             <i class="fa fa-check" ng-show="orderAttribute.value"></i>
                                             {{orderAttribute.name.substring(0,1)}}

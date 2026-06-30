@@ -20,6 +20,9 @@ angular.module('bahmni.clinical')
             var activeDrugOrdersList = [];
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
+            if ($scope.pharmacistBannerEnabled && !$scope.pharmacistBanner) {
+                $scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: false};
+            }
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             var allMedicinesConfig = appService.getAppDescriptor().getConfigValue("allMedicinesInPrescriptionAvailableForIPD");
             $scope.allMedicinesInPrescriptionAvailableForIPD = allMedicinesConfig !== null ? allMedicinesConfig : true;
@@ -224,6 +227,9 @@ angular.module('bahmni.clinical')
                     $stateParams.patientUuid, true, numberOfVisits, $stateParams.dateEnrolled, $stateParams.dateCompleted).then(function (data) {
                         prescribedDrugOrders = data;
                         createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
+                        if ($scope.pharmacistBannerEnabled && $scope.pharmacistBanner) {
+                            $scope.pharmacistBanner.hasUndispensedOrders = $scope.hasActiveUndispensedOrders();
+                        }
                     }));
             };
 
@@ -307,6 +313,33 @@ angular.module('bahmni.clinical')
 
             $scope.undoDiscontinue = function (drugOrder) {
                 $rootScope.$broadcast("event:undoDiscontinueDrugOrder", drugOrder);
+            };
+
+            var hasDispensePrivilege = function () {
+                if ($rootScope.currentUser) {
+                    var userPrivileges = _.map($rootScope.currentUser.privileges, _.property('name'));
+                    return _.includes(userPrivileges, Bahmni.Clinical.Constants.dispensePrivilege);
+                }
+                return false;
+            };
+
+            $scope.hasActiveUndispensedOrders = function () {
+                if (!$scope.consultation.drugOrderGroups || $scope.consultation.drugOrderGroups.length === 0) {
+                    return false;
+                }
+                var recentGroup = $scope.consultation.drugOrderGroups[0];
+                return recentGroup.drugOrders.some(function (drugOrder) {
+                    if (drugOrder.isActive() && drugOrder.orderAttributes && drugOrder.orderAttributes.length > 0) {
+                        return drugOrder.orderAttributes.some(function (attr) {
+                            return !attr.value && !attr.obsUuid;
+                        });
+                    }
+                    return false;
+                });
+            };
+
+            $scope.showPharmacistReviewBanner = function () {
+                return $scope.pharmacistBannerEnabled && hasDispensePrivilege() && $scope.pharmacistBanner && $scope.pharmacistBanner.hasUndispensedOrders && !$scope.pharmacistBanner.confirmed;
             };
 
             $scope.shouldBeDisabled = function (drugOrder, orderAttribute) {

@@ -20,13 +20,54 @@ describe('TreatmentController', function () {
         $scope = $rootScope.$new();
         clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getVisitTypeForRetrospectiveEntries']);
         cdssService = jasmine.createSpyObj('cdssService', ['sortInteractionsByStatus']);
-        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensionById']);
+        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensionById', 'getConfigValue']);
         mockAppDescriptor.getExtensionById.and.returnValue({extensionParams: {sections: {allergies: {}}}});
+        mockAppDescriptor.getConfigValue.and.returnValue(null);
 
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
         filter = _$filter_;
     }));
+
+    var createController = function () {
+        return $controller('TreatmentController', {
+            $scope: $scope,
+            treatmentConfig: {drugOrderHistoryConfig: {view: 'default'}},
+            $stateParams: {tabConfigName: 'allMedicationTabConfig'},
+            appService: appService,
+            clinicalAppConfigService: clinicalAppConfigService,
+            cdssService: cdssService,
+            $filter: filter
+        });
+    };
+
+    describe('pharmacist review banner', function () {
+        it('should not initialize pharmacistBanner when feature flag is disabled', function () {
+            createController();
+            expect($scope.pharmacistBannerEnabled).toBe(false);
+            expect($scope.pharmacistBanner).toBeUndefined();
+        });
+
+        it('should initialize pharmacistBanner when feature flag is enabled', function () {
+            mockAppDescriptor.getConfigValue.and.returnValue(true);
+            createController();
+            expect($scope.pharmacistBannerEnabled).toBe(true);
+            expect($scope.pharmacistBanner).toEqual({confirmed: false, hasUndispensedOrders: false});
+        });
+
+        it('should set pharmacistBanner.confirmed to true on confirmPharmacistReview when enabled', function () {
+            mockAppDescriptor.getConfigValue.and.returnValue(true);
+            createController();
+            $scope.confirmPharmacistReview();
+            expect($scope.pharmacistBanner.confirmed).toBe(true);
+        });
+
+        it('should set dispensePrivilege from constants when enabled', function () {
+            mockAppDescriptor.getConfigValue.and.returnValue(true);
+            createController();
+            expect($scope.dispensePrivilege).toEqual('bahmni:clinical:dispense');
+        });
+    });
 
     it('should initialize the newlyAddedTabTreatments', function () {
         var controller = $controller('TreatmentController', {
