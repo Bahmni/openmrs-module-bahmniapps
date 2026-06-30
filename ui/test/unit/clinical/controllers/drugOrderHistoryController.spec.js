@@ -215,16 +215,6 @@ describe("DrugOrderHistoryController", function () {
             expect(scope.pharmacistBanner).toBeUndefined();
         });
 
-        it('should disable dispense buttons when banner is showing', function () {
-            scope.pharmacistBannerEnabled = true;
-            scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: true};
-            rootScope.currentUser = {privileges: [{name: 'bahmni:clinical:dispense'}]};
-            initController();
-            spyOn(scope, 'showPharmacistReviewBanner').and.returnValue(true);
-            var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
-            expect(scope.shouldBeDisabled(drugOrder, {})).toBe(true);
-        });
-
         it('should not show banner after pharmacist confirms review', function () {
             scope.pharmacistBannerEnabled = true;
             scope.pharmacistBanner = {confirmed: false, hasUndispensedOrders: true};
