@@ -39,11 +39,13 @@ angular.module('bahmni.home')
                         var config = response.data && response.data.config;
                         $rootScope.homeURL = (config && config.homeUrl) || Bahmni.Common.Constants.homeUrl;
                         localStorage.setItem('homeUrl', $rootScope.homeURL);
+                        localStorage.setItem('enableCommandPalette', config && config.enableCommandPalette === true ? 'true' : 'false');
                         configDeferred.resolve();
                     },
                     function () {
                         $rootScope.homeURL = Bahmni.Common.Constants.homeUrl;
                         localStorage.setItem('homeUrl', $rootScope.homeURL);
+                        localStorage.setItem('enableCommandPalette', 'false');
                         configDeferred.resolve();
                     }
                 );
