@@ -39,7 +39,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     encounterUuid: $scope.activeEncounterUuid,
                     showEditForActiveEncounter: dashboardConfig && dashboardConfig.showEditForActiveEncounter || false,
                     numberOfVisits: dashboardConfig && dashboardConfig.maximumNoOfVisits || undefined,
-                    formGroup: dashboardConfig && dashboardConfig.formGroup || [],
+                    forms: dashboardConfig && dashboardConfig.forms || [],
                     hasNoHierarchy: $scope.hasNoHierarchy,
                     currentUser: $rootScope.currentUser,
                     consultationMapper: new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
@@ -95,7 +95,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 if (!sectionFormDataCache.has(section)) {
                     var sectionDashboardConfig = section.dashboardConfig;
                     sectionFormDataCache.set(section, angular.extend({}, $scope.formData, {
-                        formGroup: sectionDashboardConfig && sectionDashboardConfig.formGroup || [],
+                        forms: sectionDashboardConfig && sectionDashboardConfig.forms || [],
                         numberOfVisits: sectionDashboardConfig && sectionDashboardConfig.maximumNoOfVisits || undefined,
                         showEditForActiveEncounter: sectionDashboardConfig && sectionDashboardConfig.showEditForActiveEncounter || true,
                         showPrintOption: !!(sectionDashboardConfig && sectionDashboardConfig.printing),

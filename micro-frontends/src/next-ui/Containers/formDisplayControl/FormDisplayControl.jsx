@@ -71,10 +71,10 @@ export function FormDisplayControl(props) {
         props?.hostData?.patientUuid,
         props?.hostData?.numberOfVisits
       );
-      const formGroup = props?.hostData?.formGroup || [];
-      if (formGroup.length > 0) {
+      const forms = props?.hostData?.forms || [];
+      if (forms.length > 0) {
         formResponseData = formResponseData.filter((form) =>
-          formGroup.includes(form.formName)
+          forms.includes(form.formName)
         );
       }
       const latestForms = await getLatestPublishedForms();
