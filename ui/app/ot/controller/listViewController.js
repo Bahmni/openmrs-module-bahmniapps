@@ -50,34 +50,58 @@ angular.module('bahmni.ot')
 
             $scope.tableInfo = getTableInfo();
 
-            function getTableInfo () {
-                var customTableInfo = appService.getAppDescriptor().getConfigValue("listViewColumns") || [];
-                if (customTableInfo.length > 0) {
-                    return customTableInfo;
-                } else {
-                    var listViewAttributes = [
-                        {heading: 'Status', sortInfo: 'status'},
-                        {heading: 'Day', sortInfo: 'derivedAttributes.expectedStartDate'},
-                        {heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
-                        {heading: 'Identifier', sortInfo: 'derivedAttributes.patientIdentifier'},
-                        {heading: 'Patient Name', sortInfo: 'derivedAttributes.patientName'},
-                        {heading: 'Patient Age', sortInfo: 'derivedAttributes.patientAge'},
-                        {heading: 'Start Time', sortInfo: 'derivedAttributes.expectedStartTime'},
-                        {heading: 'Est Time', sortInfo: 'derivedAttributes.duration'},
-                        {heading: 'Actual Time', sortInfo: 'actualStartDatetime'},
-                        {heading: 'OT#', sortInfo: 'surgicalBlock.location.name'},
-                        {heading: 'Surgeon', sortInfo: 'surgicalBlock.provider.person.display'}];
+            function getObservationColumnsTableInfo () {
+                return $scope.filteredObservationColumns.map(function (column) {
+                    return { heading: column.heading, sortInfo: null };
+                });
+            }
 
-                    var attributesRelatedToBed = [{heading: 'Status Change Notes', sortInfo: 'notes'},
-                        {heading: 'Bed Location', sortInfo: 'bedLocation'},
-                        {heading: 'Bed ID', sortInfo: 'bedNumber'}];
-                    if ($rootScope.showPrimaryDiagnosisForOT != null && $rootScope.showPrimaryDiagnosisForOT != "") {
-                        var primaryDiagnosisInfo = [{heading: 'Primary Diagnoses', sortInfo: 'patientObservations'}];
-                        return listViewAttributes.concat(getSurgicalAttributesTableInfo(), attributesRelatedToBed, primaryDiagnosisInfo);
-                    } else {
-                        return listViewAttributes.concat(getSurgicalAttributesTableInfo(), attributesRelatedToBed);
-                    }
+            function getTableInfo () {
+                var customTemplateUrl = appService.getAppDescriptor().getConfigValue("listViewTemplateUrl");
+                var customTableInfo = appService.getAppDescriptor().getConfigValue("listViewColumns") || [];
+                if (customTemplateUrl && customTableInfo.length > 0) {
+                    return customTableInfo;
                 }
+
+                var listViewAttributes = [
+                    {heading: 'Identifier', sortInfo: 'derivedAttributes.patientIdentifier'},
+                    {heading: 'Patient Name', sortInfo: 'derivedAttributes.patientName'},
+                    {heading: 'Status', sortInfo: 'status'}
+                ];
+
+                if ($scope.conceptFormatAttributeName) {
+                    listViewAttributes.push({
+                        heading: $scope.conceptFormatAttributeName,
+                        sortInfo: 'surgicalAppointmentAttributes.' + $scope.conceptFormatAttributeName + '.value'
+                    });
+                }
+
+                listViewAttributes = listViewAttributes.concat(getObservationColumnsTableInfo());
+
+                listViewAttributes = listViewAttributes.concat([
+                    {heading: 'Day', sortInfo: 'derivedAttributes.expectedStartDate'},
+                    {heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
+                    {heading: 'Patient Age', sortInfo: 'derivedAttributes.patientAge'},
+                    {heading: 'Start Time', sortInfo: 'derivedAttributes.expectedStartTime'},
+                    {heading: 'Est Time', sortInfo: 'derivedAttributes.duration'},
+                    {heading: 'Actual Time', sortInfo: 'actualStartDatetime'},
+                    {heading: 'OT#', sortInfo: 'surgicalBlock.location.name'},
+                    {heading: 'Surgeon', sortInfo: 'surgicalBlock.provider.person.display'}
+                ]);
+
+                var attributesRelatedToBed = [
+                    {heading: 'Status Change Notes', sortInfo: 'notes'},
+                    {heading: 'Bed Location', sortInfo: 'bedLocation'},
+                    {heading: 'Bed ID', sortInfo: 'bedNumber'}
+                ];
+
+                if ($rootScope.showPrimaryDiagnosisForOT != null && $rootScope.showPrimaryDiagnosisForOT != "") {
+                    return listViewAttributes.concat(
+                        getSurgicalAttributesTableInfo(), attributesRelatedToBed,
+                        [{heading: 'Primary Diagnoses', sortInfo: 'patientObservations'}]
+                    );
+                }
+                return listViewAttributes.concat(getSurgicalAttributesTableInfo(), attributesRelatedToBed);
             }
 
             function getFilteredSurgicalAttributeTypes () {

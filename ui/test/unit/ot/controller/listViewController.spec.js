@@ -907,5 +907,48 @@ describe('listViewController', function () {
         expect(scope.tableInfo.length).toBe(22);
         expect(scope.tableInfo[21].heading).toBe('Primary Diagnoses');
         expect(scope.tableInfo[21].sortInfo).toBe('patientObservations');
-        })
+        });
+
+    it("should set sortInfo to null for observation columns in tableInfo", function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [{concept: "Haemoglobin", type: "date", label: "Hb Date"}];
+            }
+            return null;
+        });
+        createController();
+        var obsColumn = scope.tableInfo.find(function (col) { return col.heading === "Hb Date"; });
+        expect(obsColumn).toBeDefined();
+        expect(obsColumn.sortInfo).toBeNull();
+    });
+
+    it("should add observation column headings to defaultAttributeTranslations", function () {
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [
+                    {concept: "Haemoglobin", label: "OT_HB_LABEL"},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE"}
+                ];
+            }
+            return null;
+        });
+        createController();
+        expect(scope.defaultAttributeTranslations.get("OT_HB_LABEL")).toBe("OT_HB_LABEL");
+        expect(scope.defaultAttributeTranslations.get("OT_ANAESTHESIA_REVIEW_DATE")).toBe("OT_ANAESTHESIA_REVIEW_DATE");
+    });
+
+    it("should include both conceptFormatAttribute and observation columns in correct order in tableInfo", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [{concept: "Haemoglobin", label: "Hb"}];
+            }
+            return null;
+        });
+        createController();
+        expect(scope.tableInfo[3].heading).toBe('Blood Transfusion Requested for Surgery?');
+        expect(scope.tableInfo[4].heading).toBe('Hb');
+        expect(scope.tableInfo[4].sortInfo).toBeNull();
+        expect(scope.tableInfo[5].heading).toBe('Day');
+    });
 });
