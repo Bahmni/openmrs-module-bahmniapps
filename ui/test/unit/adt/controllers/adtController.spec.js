@@ -545,9 +545,10 @@ describe("AdtController", function () {
     });
 
     describe('Discharge', function () {
-        it('should discharge patient and log the encounter when audit log is enabled', function () {
+        var encounterResponse;
+        beforeEach(function () {
             scope.patient = {uuid: "patient Uuid"};
-            var encounterResponse = {
+            encounterResponse = {
                 patientUuid: scope.patient.uuid,
                 encounterUuid: 'encounterUuid',
                 encounterType: 'DISCHARGE'
@@ -560,10 +561,17 @@ describe("AdtController", function () {
                 };
             });
             createController();
+        });
 
+        it('should discharge patient and log the encounter when audit log is enabled', function () {
             scope.discharge();
             var messageParams = {encounterUuid: encounterResponse.encounterUuid, encounterType: encounterResponse.encounterType};
             expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParams, 'MODULE_LABEL_INPATIENT_KEY');
+        });
+
+        it('should not discard draft on discharge since visit is not closed', function () {
+            scope.discharge();
+            expect(formDraftService.discardDraft).not.toHaveBeenCalled();
         });
     });
 

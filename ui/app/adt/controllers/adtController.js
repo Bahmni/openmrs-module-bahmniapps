@@ -310,8 +310,6 @@ angular.module('bahmni.adt')
             $scope.discharge = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getDischargeEncounterTypeUuid());
                 return spinner.forPromise(encounterService.discharge(encounterData).then(function (response) {
-                    var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                    formDraftService.discardDraft(response.data.patientUuid, providerUuid);
                     logEncounter(response.data.patientUuid, response.data.encounterUuid, response.data.encounterType);
                     forwardUrl(response.data, "onDischargeForwardTo");
                 }));

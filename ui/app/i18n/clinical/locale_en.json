@@ -200,7 +200,7 @@
     "MESSAGE_DIALOG_OPTION_COPY": "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "MESSAGE_DIALOG_OPTION_REVIEW": "Review",
-    "MESSAGE_DIALOG_OPTION_DISCARD": "Proceed",
+    "MESSAGE_DIALOG_OPTION_PROCEED": "Proceed",
     "VIEW_IPD_DASHBOARD": "View IPD Dashboard",
     "OBS_BOOLEAN_YES_KEY": "Yes",
     "OBS_BOOLEAN_NO_KEY": "No",
@@ -400,5 +400,5 @@
     "FORMS_DRAFT_BANNER_SUBTITLE": "Your inputs were saved as a draft on {{ draftDate }} at {{ draftTime }}. Click Resume to continue where you left off or Discard Draft to start over.",
     "DISCARD_DRAFT_CONFIRM_MESSAGE": "The saved draft for observation forms will be removed and cannot be restored.",
     "DISCARD": "Discard",
-    "DRAFT_DISCARDED_SUCCESS": "The saved draft session is discarded",
+    "DRAFT_DISCARDED_SUCCESS": "The saved draft session is discarded"
 }
