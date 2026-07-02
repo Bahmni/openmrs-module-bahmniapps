@@ -105,9 +105,13 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const drugFormDefaults = hostData?.drugFormDefaults || {};
     const dosageRuleUnitsMap = hostData?.dosageRuleUnitsMap || {};
     const frequencies = hostData?.frequencies || [];
-    const durationUnits = hostData?.durationUnits || [];
-    const dosingInstructions = hostData?.dosingInstructions || [];
 
+    const durationUnits = (hostData?.durationUnits || []).filter((unit) => {
+        const normalized = (unit?.name || "").toString().toLowerCase();
+        return !normalized.includes("occurrence(s)");
+    });
+
+    const dosingInstructions = hostData?.dosingInstructions || [];
     const defaultDurationUnitName = durationUnits.find((u) => /day/i.test(u.name))?.name ?? durationUnits[0]?.name;
     const defaultDurationUnit = defaultDurationUnitName ? { label: defaultDurationUnitName, value: defaultDurationUnitName } : null;
 
