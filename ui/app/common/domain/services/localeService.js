@@ -18,8 +18,11 @@ angular.module('bahmni.common.domain')
                     property: 'locale.allowed.list'
                 },
                 withCredentials: true,
+                cache: false,
                 headers: {
-                    Accept: 'text/plain'
+                    Accept: 'text/plain',
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
                 }
             });
         };
@@ -58,8 +61,11 @@ angular.module('bahmni.common.domain')
         this.getLocalesLangs = function () {
             return $http.get(Bahmni.Common.Constants.localeLangs, {
                 method: "GET",
+                cache: false,
                 headers: {
-                    Accept: 'text/plain'
+                    Accept: 'text/plain',
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
                 }
             });
         };

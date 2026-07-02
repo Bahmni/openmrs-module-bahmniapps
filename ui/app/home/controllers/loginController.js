@@ -62,23 +62,26 @@ angular.module('bahmni.home')
                 $rootScope.cookieExpirationTime = response.data.loggedInUrlCookieExpirationTimeInMinutes;
             });
 
-            localeService.getLocalesLangs().then(function (response) {
-                localeLanguages = response.data.locales;
-            }).finally(function () {
+            var setLocalesFromAllowedList = function () {
                 promise.then(function (response) {
-                    var localeList = response.data.replace(/\s+/g, '').split(',');
-                    $scope.locales = [];
-                    _.forEach(localeList, function (locale) {
-                        var localeLanguage = findLanguageByLocale(locale);
-                        if (_.isUndefined(localeLanguage)) {
-                            $scope.locales.push({"code": locale, "nativeName": locale});
-                        } else {
-                            $scope.locales.push(localeLanguage);
-                        }
+                    var raw = response.data;
+                    var localeList = (angular.isString(raw) ? raw : '')
+                        .replace(/\s+/g, '').split(',').filter(Boolean);
+                    $scope.locales = _.map(localeList, function (locale) {
+                        return findLanguageByLocale(locale) || {"code": locale, "nativeName": locale};
                     });
+
+                    if (_.isEmpty($scope.locales)) {
+                        var savedLoacale = $translate.use() || "en";
+                        $scope.locales = [findLanguageByLocale(savedLoacale) || {"code": savedLoacale, "nativeName": savedLoacale}];
+                    }
                     $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
                 });
-            });
+            };
+
+            localeService.getLocalesLangs().then(function (response) {
+                localeLanguages = (response.data && response.data.locales) || [];
+            }).finally(setLocalesFromAllowedList);
 
             localeService.defaultLocale().then(function (response) {
                 localStorage.setItem("openmrsDefaultLocale", response.data || "en");
