@@ -155,7 +155,7 @@ function VariableDoseProtocolTableInner(props) {
                                     <TableCell>{formatStageDate(stage.startDate, intl)}</TableCell>
                                     <TableCell>{stage.dose} {stage.unit}</TableCell>
                                     <TableCell>{stage.frequency}</TableCell>
-                                    <TableCell>{stage.duration}{stage.durationUnit ? ` ${stage.durationUnit}` : ''}</TableCell>
+                                    <TableCell>{stage.duration}{stage.durationUnit ? ` ${stage.durationUnit.value || stage.durationUnit}` : ''}</TableCell>
                                 </TableRow>
                                 {isExpanded && hasDetails && (
                                     <TableRow className="vdp-expanded-content-row">

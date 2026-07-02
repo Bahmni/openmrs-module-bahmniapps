@@ -31,6 +31,15 @@ const defaultStage = () => ({
     showInstructions: false,
 });
 
+const toDurationUnitObject = (du) => {
+    if (!du) return null;
+    if (typeof du === "string") return { label: du, value: du };
+    const label = du.label ?? du.name ?? du.value;
+    const value = du.value ?? du.name ?? du.label;
+    if (label == null && value == null) return null;
+    return { label: String(label), value: String(value) };
+};
+
 function useDebounce(fn, delay) {
     const timerRef = useRef(null);
     useEffect(() => {
@@ -90,23 +99,6 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const [loadingDoseAdditionalInstructions, setLoadingDoseAdditionalInstructions] = useState(
         initialValues.loadingDose ? (initialValues.loadingDose.additionalInstructions || "") : ""
     );
-
-    const [stages, setStages] = useState(
-        initialValues.stages && (isEditMode ? initialValues.stages.length >= 1 : initialValues.stages.length >= 2)
-            ? initialValues.stages
-            : [defaultStage()]
-    );
-
-    const stagesFooterRef = useRef(null);
-    const prevStagesLengthRef = useRef(stages.length);
-
-    useEffect(() => {
-        if (stages.length > prevStagesLengthRef.current && stagesFooterRef.current) {
-            stagesFooterRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-        prevStagesLengthRef.current = stages.length;
-    }, [stages.length]);
-
     const doseUnits = hostData?.doseUnits || [];
     const routes = hostData?.routes || [];
     const dosingRules = hostData?.dosingRules || [];
@@ -114,6 +106,33 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const dosageRuleUnitsMap = hostData?.dosageRuleUnitsMap || {};
     const frequencies = hostData?.frequencies || [];
     const durationUnits = hostData?.durationUnits || [];
+    const dosingInstructions = hostData?.dosingInstructions || [];
+
+    const defaultDurationUnitName = durationUnits.find((u) => /day/i.test(u.name))?.name ?? durationUnits[0]?.name;
+    const defaultDurationUnit = defaultDurationUnitName ? { label: defaultDurationUnitName, value: defaultDurationUnitName } : null;
+
+    const buildInitialStages = () => {
+        const minStages = isEditMode ? 1 : 2;
+        if (!initialValues.stages || initialValues.stages.length < minStages) {
+            return [{ ...defaultStage(), durationUnit: defaultDurationUnit }];
+        }
+        return initialValues.stages.map((s) => ({
+            ...s,
+            durationUnit: s.durationUnit == null ? defaultDurationUnit : toDurationUnitObject(s.durationUnit),
+        }));
+    };
+
+    const [stages, setStages] = useState(buildInitialStages);
+
+    const stagesFooterRef = useRef(null);
+    const prevStagesLengthRef = useRef(stages.length);
+
+    useEffect(() => {
+        if (stages.length > prevStagesLengthRef.current) {
+            stagesFooterRef.current?.scrollIntoView?.({ behavior: "smooth", block: "nearest" });
+        }
+        prevStagesLengthRef.current = stages.length;
+    }, [stages.length]);
 
     const loadingDoseUnitName = units?.value || "Units";
     const showRateAndAdditives = dosingRule?.value === "ml/kg";
@@ -194,7 +213,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
 
     const addStage = (e) => {
         e.currentTarget.blur();
-        setStages((prev) => [...prev, defaultStage()]);
+        setStages((prev) => [...prev, { ...defaultStage(), durationUnit: defaultDurationUnit }]);
     };
     const removeStage = (index) => setStages((prev) => prev.filter((_, i) => i !== index));
 
@@ -457,7 +476,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                                     id="loading-dose-instructions"
                                     titleText={LOADING_DOSE_INSTRUCTIONS_LABEL}
                                     placeholder={LOADING_DOSE_SELECT_INSTRUCTIONS}
-                                    options={(hostData?.dosingInstructions || []).map((instruction) => ({ label: instruction.name, value: instruction.name }))}
+                                    options={dosingInstructions.map((instruction) => ({ label: instruction.name, value: instruction.name }))}
                                     selectedValue={loadingDoseInstructions}
                                     onChange={(item) => setLoadingDoseInstructions(item || null)}
                                     width="100%"
@@ -560,7 +579,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                                                 id={`stage-instructions-${index}`}
                                                 titleText={STAGE_INSTRUCTIONS_LABEL}
                                                 placeholder={STAGE_SELECT_FREQUENCY}
-                                                options={(hostData?.dosingInstructions || []).map((inst) => ({ label: inst.name, value: inst.name }))}
+                                                options={dosingInstructions.map((inst) => ({ label: inst.name, value: inst.name }))}
                                                 selectedValue={stage.instructions}
                                                 onChange={(item) => updateStage(index, "instructions", item || null)}
                                                 width="100%"

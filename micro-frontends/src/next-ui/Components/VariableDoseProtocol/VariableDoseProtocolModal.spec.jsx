@@ -129,6 +129,70 @@ describe("VariableDoseProtocolModal", () => {
         });
     });
 
+    it("should default duration unit for new stages to Day(s)", async () => {
+        const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
+        mockSearchDrugs.mockResolvedValue([drug]);
+        const { container } = renderModal();
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Para" } });
+        await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
+
+        await act(async () => {
+            const option = await screen.findByText("Paracetamol");
+            fireEvent.click(option);
+        });
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        fireEvent.click(screen.getByText("Add Stage"));
+
+        await waitFor(() => {
+            const stageUnitInput = getDropdownInput(container, "stage-duration-unit-1");
+            expect(stageUnitInput.value).toBe("Days");
+        });
+    });
+
+    it("should default existing stages without durationUnit to Day(s) on open", async () => {
+        const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
+        const hostData = {
+            ...defaultHostData,
+            initialValues: {
+                drug,
+                units: "mg",
+                route: "Oral",
+                startDate: new Date(),
+                isLoadingDose: false,
+                loadingDose: null,
+                stages: [
+                    {
+                        dose: 5,
+                        frequency: { label: "Once a day", value: "Once a day" },
+                        duration: 3,
+                        durationUnit: null,
+                        instructions: null,
+                        additionalInstructions: "",
+                        rate: 0,
+                        additives: "",
+                        showInstructions: false,
+                    },
+                ],
+            },
+        };
+
+        const { container } = renderModal(hostData);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        await waitFor(() => {
+            const stageUnitInput = getDropdownInput(container, "stage-duration-unit-0");
+            expect(stageUnitInput.value).toBe("Days");
+        });
+    });
+
     it("should enable Save when drug, units, and at least 2 valid stages are set", async () => {
         const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
         mockSearchDrugs.mockResolvedValue([drug]);
