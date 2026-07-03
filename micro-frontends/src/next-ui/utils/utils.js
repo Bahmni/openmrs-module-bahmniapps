@@ -57,3 +57,12 @@ export const parseDateArray = (dateArray) => {
   const dateString = dateArray.join('-');
   return moment(dateString, 'YYYY-MM-DD-HH-mm-ss');
 };
+
+export const toOption = (item) => {
+    if (item == null) return null;
+    if (typeof item === "string") return item === "" ? null : { label: item, value: item };
+    const label = item.label ?? item.name ?? item.value;
+    const value = item.value ?? item.name ?? item.label;
+    if (label == null && value == null) return null;
+    return { label: String(label), value: String(value) };
+};
