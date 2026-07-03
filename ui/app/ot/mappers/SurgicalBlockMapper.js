@@ -38,9 +38,57 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         return mappedAttributes;
     };
 
+    var mapConcepts = function (observations, conceptDisplayName, validityDays) {
+        if (!observations || !angular.isArray(observations) || observations.length === 0) {
+            return { value: null, date: null };
+        }
+        var latestValue = null;
+        var latestDate = null;
+        _.each(observations, function (obs) {
+            if (!obs || !obs.display) {
+                return;
+            }
+            if (obs.concept && obs.concept.display === conceptDisplayName) {
+                var currentObsDate = obs.obsDatetime;
+                var parsedDate = currentObsDate && Bahmni.Common.Util.DateUtil.parseServerDateToDate(currentObsDate);
+                if (!latestDate || (parsedDate && parsedDate > latestDate)) {
+                    if (obs.value) {
+                        latestValue = obs.value.display || obs.value;
+                    }
+                    if (parsedDate) {
+                        latestDate = parsedDate;
+                    }
+                }
+            }
+        });
+        if (latestDate && validityDays) {
+            var now = new Date();
+            var diffDays = (now - latestDate) / (1000 * 60 * 60 * 24);
+            if (diffDays > validityDays) {
+                return { value: '', date: null };
+            }
+        }
+        return { value: latestValue, date: latestDate };
+    };
+
+    var mapObservations = function (patientObservations, conceptConfigs) {
+        var result = {};
+        _.each(conceptConfigs, function (config) {
+            result[config.conceptName] = mapConcepts(patientObservations, config.conceptName, config.validityDays)
+                || { date: null, value: "" };
+        });
+        return result;
+    };
+
     var mapPrimaryDiagnoses = function (diagnosisObs) {
+        if (!diagnosisObs || !angular.isArray(diagnosisObs) || diagnosisObs.length === 0) {
+            return "";
+        }
         var uniqueDiagnoses = new Map();
         _.each(diagnosisObs, function (diagnosis) {
+            if (!diagnosis || !diagnosis.display) {
+                return;
+            }
             var existingDiagnosis = uniqueDiagnoses.get(diagnosis.display);
             if (existingDiagnosis) {
                 if (existingDiagnosis.obsDatetime < diagnosis.obsDatetime) {
@@ -51,19 +99,29 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             }
         });
         var primaryDiagnosesNames = _.filter(Array.from(uniqueDiagnoses.values()), function (diagnosis) {
-            var obsGroupList = diagnosis.obsGroup.display.split(": ")[1].split(", ");
+            if (!diagnosis.obsGroup || !diagnosis.obsGroup.display) {
+                return false;
+            }
+            var splitResult = diagnosis.obsGroup.display.split(": ");
+            if (splitResult.length < 2) {
+                return false;
+            }
+            var obsGroupList = splitResult[1].split(", ");
             return _.includes(obsGroupList, "Primary") && !(_.includes(obsGroupList, "Ruled Out Diagnosis"));
         }).map(function (diagnosis) {
-            if (diagnosis.concept.display == "Non-coded Diagnosis") {
+            if (diagnosis.concept && diagnosis.concept.display == "Non-coded Diagnosis") {
                 return diagnosis.value;
             }
-            return diagnosis.value.display;
+            return diagnosis.value && diagnosis.value.display ? diagnosis.value.display : "";
+        }).filter(function (name) {
+            return name && name.trim() !== "";
         }).join(", ");
         return primaryDiagnosesNames;
     };
 
-    var mapSurgicalAppointment = function (openMrsSurgicalAppointment, attributeTypes, surgeonsList) {
+    var mapSurgicalAppointment = function (openMrsSurgicalAppointment, attributeTypes, surgeonsList, conceptConfigs) {
         var surgicalAppointmentAttributes = mapOpenMrsSurgicalAppointmentAttributes(openMrsSurgicalAppointment.surgicalAppointmentAttributes, surgeonsList);
+
         return {
             id: openMrsSurgicalAppointment.id,
             uuid: openMrsSurgicalAppointment.uuid,
@@ -77,13 +135,14 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             bedLocation: (openMrsSurgicalAppointment.bedLocation || ""),
             bedNumber: (openMrsSurgicalAppointment.bedNumber || ""),
             surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes),
-            primaryDiagnosis: mapPrimaryDiagnoses(openMrsSurgicalAppointment.patientObservations) || ""
+            primaryDiagnosis: mapPrimaryDiagnoses(openMrsSurgicalAppointment.patientObservations) || "",
+            observationMap: mapObservations(openMrsSurgicalAppointment.patientObservations, conceptConfigs)
         };
     };
 
-    this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList) {
+    this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList, conceptConfigs) {
         var surgicalAppointments = _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
-            return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList);
+            return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList, conceptConfigs);
         });
         return {
             id: openMrsSurgicalBlock.id,
@@ -167,4 +226,5 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     };
 
     this.mapPrimaryDiagnoses = mapPrimaryDiagnoses;
+    this.mapObservations = mapObservations;
 };

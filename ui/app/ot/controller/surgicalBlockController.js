@@ -17,7 +17,9 @@ angular.module('bahmni.ot')
                     surgicalAppointments: []
                 };
                 $scope.configuredSurgeryAttributeNames = appService.getAppDescriptor().getConfigValue("surgeryAttributes");
-                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations();
+                var listViewTranslations = appService.getAppDescriptor().getConfigValue("listViewTranslations") || [];
+                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(listViewTranslations);
+                $scope.conceptFormatAttributeName = surgicalAppointmentHelper.getConceptFormatAttributeName ? surgicalAppointmentHelper.getConceptFormatAttributeName() : Bahmni.OT.Constants.conceptFormatAttributeName;
                 var providerNamesFromConfig = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                 return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater"), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNamesFromConfig, response[0].data.results);
@@ -239,7 +241,6 @@ angular.module('bahmni.ot')
                 };
                 return !$scope.surgicalForm.id || surgicalBlockWithCompletedAppointments();
             };
-
             $scope.addNewSurgicalAppointment = function (surgicalAppointment) {
                 ngDialog.open({
                     template: "views/surgicalAppointment.html",

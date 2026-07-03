@@ -212,7 +212,10 @@ describe("surgicalBlockController", function () {
         if (value === 'calendarView') {
             return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'}
         }
-        return value;
+        if (value === 'listViewTranslations') {
+            return [];
+        }
+        return null;
     });
 
     var appointmentAttributeTypes ={data: {results: [
@@ -767,7 +770,21 @@ describe("surgicalBlockController", function () {
     });
 
     it('should return surgery attributes from config', function () {
-        appDescriptor.getConfigValue.and.returnValue(['procedure', 'surgicalAssistant']);
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'primarySurgeonsForOT') {
+                return ["provider1", "provider2"];
+            }
+            if (value === 'calendarView') {
+                return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'}
+            }
+            if (value === 'listViewTranslations') {
+                return [];
+            }
+            if (value === 'surgeryAttributes') {
+                return ['procedure', 'surgicalAssistant'];
+            }
+            return null;
+        });
 
         createController();
         expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('surgeryAttributes');
