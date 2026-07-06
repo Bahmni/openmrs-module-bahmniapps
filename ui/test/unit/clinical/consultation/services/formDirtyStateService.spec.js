@@ -73,6 +73,51 @@ describe('formDirtyStateService', function () {
             formDirtyStateService.collectObsValues(null, values);
             expect(values).toEqual([]);
         });
+
+        it('should push null for voided observation with a value (so removal is detectable as dirty)', function () {
+            var values = [];
+            var obs = {value: 'image-url', voided: true};
+            formDirtyStateService.collectObsValues(obs, values);
+            expect(values).toEqual([null]);
+        });
+
+        it('should collect value when observation is not voided', function () {
+            var values = [];
+            var obs = {value: 'image-url', voided: false};
+            formDirtyStateService.collectObsValues(obs, values);
+            expect(values).toEqual(['image-url']);
+        });
+
+        it('should detect dirty state when image is removed (voided) — upload then void on fresh form', function () {
+            var templates = [{observations: [{value: 'image-url', voided: undefined}]}];
+            var cleanState = formDirtyStateService.getObsValues(templates);  // '["image-url"]'
+
+            templates[0].observations[0].voided = true;
+            var afterVoidState = formDirtyStateService.getObsValues(templates);  // '[null]'
+
+            expect(afterVoidState).not.toEqual(cleanState);
+        });
+
+        it('should detect dirty state when image removed after save-as-draft (cleanState has url)', function () {
+            var templates = [{observations: [{value: 'image-url', voided: false}]}];
+            var cleanState = formDirtyStateService.getObsValues(templates);  // '["image-url"]'
+
+            templates[0].observations[0].voided = true;
+            var afterVoidState = formDirtyStateService.getObsValues(templates);  // '[null]'
+
+            expect(afterVoidState).not.toEqual(cleanState);
+        });
+
+        it('should restore clean state when image void is undone', function () {
+            var templates = [{observations: [{value: 'image-url', voided: false}]}];
+            var cleanState = formDirtyStateService.getObsValues(templates);
+
+            templates[0].observations[0].voided = true;
+            templates[0].observations[0].voided = false;
+            var afterUndoState = formDirtyStateService.getObsValues(templates);
+
+            expect(afterUndoState).toEqual(cleanState);
+        });
     });
 
     describe('getTemplateObservationsForDirtyTracking', function () {

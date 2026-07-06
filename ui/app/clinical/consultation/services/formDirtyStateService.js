@@ -27,11 +27,15 @@ angular.module('bahmni.clinical')
                 return;
             }
             if (obs.value !== null && obs.value !== undefined) {
-                var val = obs.value;
-                if (val && typeof val === 'object' && val.uuid) {
-                    values.push(val.uuid);
+                if (obs.voided) {
+                    values.push(null);
                 } else {
-                    values.push(val);
+                    var val = obs.value;
+                    if (val && typeof val === 'object' && val.uuid) {
+                        values.push(val.uuid);
+                    } else {
+                        values.push(val);
+                    }
                 }
             }
         };
