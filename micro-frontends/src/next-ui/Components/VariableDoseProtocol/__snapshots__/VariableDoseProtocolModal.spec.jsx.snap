@@ -779,7 +779,7 @@ exports[`VariableDoseProtocolModal should render the modal (open=true is hardcod
                           style="width: 100%;"
                           tabindex="0"
                           type="text"
-                          value="Days"
+                          value="Day(s)"
                         />
                         <button
                           aria-label="Clear selected item"

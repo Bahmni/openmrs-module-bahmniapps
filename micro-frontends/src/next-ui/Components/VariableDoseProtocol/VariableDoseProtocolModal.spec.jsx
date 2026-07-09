@@ -16,7 +16,7 @@ const defaultHostData = {
     drugFormDefaults: {},
     dosingInstructions: [{ name: "As directed" }, { name: "Before meals" }],
     frequencies: [{ name: "Once a day" }, { name: "Twice a day" }],
-    durationUnits: [{ name: "Days" }, { name: "Weeks" }],
+    durationUnits: [{ name: "Day(s)" }, { name: "Weeks" }],
 };
 
 const defaultHostApi = {
@@ -152,7 +152,7 @@ describe("VariableDoseProtocolModal", () => {
 
         await waitFor(() => {
             const stageUnitInput = getDropdownInput(container, "stage-duration-unit-1");
-            expect(stageUnitInput.value).toBe("Days");
+            expect(stageUnitInput.value).toBe("Day(s)");
         });
     });
 

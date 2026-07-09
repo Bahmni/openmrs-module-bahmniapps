@@ -99,16 +99,13 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const dosageRuleUnitsMap = hostData?.dosageRuleUnitsMap || {};
     const frequencies = hostData?.frequencies || [];
 
-    const durationUnits = (hostData?.durationUnits || []).filter((unit) => {
-        const normalized = (unit?.name || "").toString().toLowerCase();
-        return !normalized.includes("occurrence(s)");
-    });
+    const durationUnits = (hostData?.durationUnits || [])
+        .map(toOption)
+        .filter((unit) => unit && !unit.label?.toLowerCase().includes("occurrence(s)"));
 
     const dosingInstructions = hostData?.dosingInstructions || [];
 
-    const defaultDurationUnit = toOption(
-        durationUnits.find((unit) => unit.name && /day/i.test(unit.name)) ?? durationUnits[0]
-    );
+    const defaultDurationUnit = durationUnits.find((unit) => /day/i.test(unit.label)) ?? durationUnits[0] ?? null;
 
     const buildInitialStages = () => {
         const minStages = isEditMode ? 1 : 2;
