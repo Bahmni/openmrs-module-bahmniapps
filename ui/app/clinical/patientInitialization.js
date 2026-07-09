@@ -17,6 +17,7 @@ angular.module('bahmni.clinical').factory('patientInitialization',
                     var patientMapper = new Bahmni.PatientMapper(configurations.patientConfig(), $rootScope, $translate);
                     return patientService.getPatient(patientUuid).then(function (openMRSPatientResponse) {
                         var patient = patientMapper.map(openMRSPatientResponse.data);
+                        console.log(patient);
                         return {"patient": patient};
                     });
                 };

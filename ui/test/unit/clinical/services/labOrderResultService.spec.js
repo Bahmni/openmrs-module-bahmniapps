@@ -114,4 +114,133 @@ describe("labOrderResultService", function() {
         });
 
     });
+
+    describe("getReferredOutPrintableLabOrders", function () {
+
+        it("should return empty array when no lab orders are provided", function () {
+            expect(labOrderResultService.getReferredOutPrintableLabOrders([])).toEqual([]);
+        });
+
+        it("should include individual test that is referred out", function () {
+            var labOrders = [
+                { testName: 'Sodium', orderName: 'Sodium', referredOut: true, commentToFulfiller: 'Urgent' }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result.length).toBe(1);
+            expect(result[0].name).toBe('Sodium');
+            expect(result[0].notes).toBe('Urgent');
+            expect(result[0].isSubTest).toBe(false);
+        });
+
+        it("should exclude individual test that is not referred out", function () {
+            var labOrders = [
+                { testName: 'Sodium', orderName: 'Sodium', referredOut: false }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result.length).toBe(0);
+        });
+
+        it("should show panel with count of only referred out sub-tests", function () {
+            var labOrders = [
+                {
+                    isPanel: true,
+                    orderName: 'CBC',
+                    tests: [
+                        { testName: 'Haemoglobin', referredOut: true, commentToFulfiller: 'Check levels' },
+                        { testName: 'Platelets', referredOut: false }
+                    ]
+                }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result.length).toBe(2);
+            expect(result[0].name).toBe('CBC (1)');
+            expect(result[0].notes).toBe('Check levels');
+            expect(result[0].isSubTest).toBe(false);
+            expect(result[1].name).toBe('Haemoglobin');
+            expect(result[1].isSubTest).toBe(true);
+        });
+
+        it("should include all sub-tests of a panel when all are referred out", function () {
+            var labOrders = [
+                {
+                    isPanel: true,
+                    orderName: 'Electrolyte',
+                    tests: [
+                        { testName: 'Sodium', referredOut: true, commentToFulfiller: 'testing electrolyte' },
+                        { testName: 'Potassium', referredOut: true, commentToFulfiller: 'testing electrolyte' }
+                    ]
+                }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result.length).toBe(3);
+            expect(result[0].name).toBe('Electrolyte (2)');
+            expect(result[1].name).toBe('Sodium');
+            expect(result[1].isSubTest).toBe(true);
+            expect(result[2].name).toBe('Potassium');
+            expect(result[2].isSubTest).toBe(true);
+        });
+
+        it("should exclude panel entirely when none of its sub-tests are referred out", function () {
+            var labOrders = [
+                {
+                    isPanel: true,
+                    orderName: 'CBC',
+                    tests: [
+                        { testName: 'Haemoglobin', referredOut: false },
+                        { testName: 'Platelets', referredOut: false }
+                    ]
+                }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result.length).toBe(0);
+        });
+
+        it("should exclude sub-tests appearing as individual items (duplicates from flattened accession)", function () {
+            var labOrders = [
+                {
+                    isPanel: true,
+                    orderName: 'Electrolyte',
+                    tests: [
+                        { testName: 'Sodium', referredOut: true, commentToFulfiller: 'testing electrolyte' }
+                    ]
+                },
+                { testName: 'Sodium', orderName: 'Sodium', panelName: 'Electrolyte', referredOut: true }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result.length).toBe(2);
+            expect(result[0].name).toBe('Electrolyte (1)');
+            expect(result[1].name).toBe('Sodium');
+            expect(result[1].isSubTest).toBe(true);
+        });
+
+        it("should handle mix of individual tests and panels correctly", function () {
+            var labOrders = [
+                { testName: 'Blood Sugar', orderName: 'Blood Sugar', referredOut: true, commentToFulfiller: 'Fasting' },
+                { testName: 'Urine Routine', orderName: 'Urine Routine', referredOut: false },
+                {
+                    isPanel: true,
+                    orderName: 'CBC',
+                    tests: [
+                        { testName: 'Haemoglobin', referredOut: true, commentToFulfiller: 'Correlate' },
+                        { testName: 'Platelets', referredOut: false }
+                    ]
+                }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result.length).toBe(3);
+            expect(result[0].name).toBe('Blood Sugar');
+            expect(result[1].name).toBe('CBC (1)');
+            expect(result[2].name).toBe('Haemoglobin');
+            expect(result[2].isSubTest).toBe(true);
+        });
+
+        it("should use empty string for notes when commentToFulfiller is absent", function () {
+            var labOrders = [
+                { testName: 'Sodium', orderName: 'Sodium', referredOut: true }
+            ];
+            var result = labOrderResultService.getReferredOutPrintableLabOrders(labOrders);
+            expect(result[0].notes).toBe('');
+        });
+
+    });
 });

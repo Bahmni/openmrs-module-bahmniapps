@@ -128,6 +128,28 @@ describe('Order Service', function () {
         });
     });
 
+    it('getOrderByUuid should call the correct order URL with uuid substituted', function (done) {
+        var orderUuid = 'some-order-uuid';
+        var representation = 'custom:(orderer:(uuid,display,attributes:(value,attributeType:(display))))';
+        var expectedUrl = Bahmni.Common.Constants.orderUrl.replace('{{orderUuid}}', orderUuid);
+
+        orderService.getOrderByUuid(orderUuid, representation).then(function (response) {
+            expect(response).toEqual("success");
+            done();
+        });
+
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(expectedUrl);
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({v: representation});
+    });
+
+    it('getOrderByUuid should pass withCredentials true', function (done) {
+        orderService.getOrderByUuid('order-uuid', 'default').then(function () {
+            done();
+        });
+        expect(mockHttp.get.calls.mostRecent().args[1].withCredentials).toBe(true);
+    });
+
     it("getOrders should make http get request with location uuids when specified", function (done) {
         var params = {
             patientUuid:"somePatientUuid",

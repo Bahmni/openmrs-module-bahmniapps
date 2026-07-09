@@ -236,6 +236,7 @@ Bahmni.Common = Bahmni.Common || {};
         bedFromVisit: RESTWS_V1 + "/beds",
         sendViaEmailUrl: RESTWS_V1 + "/patient/{{patientUuid}}/send/email",
         ordersUrl: RESTWS_V1 + "/order",
+        orderUrl: RESTWS_V1 + "/order/{{orderUuid}}",
         formDataUrl: RESTWS_V1 + "/obs",
         providerUrl: RESTWS_V1 + "/provider",
         providerAttributeUrl: RESTWS_V1 + "/provider/{{providerUuid}}/attribute",

@@ -869,6 +869,40 @@ h3 {
         }
     }
 }
+
+.lab-results-print {
+    .patient-info {
+        margin-bottom: 15px;
+        table {
+            width: 100%;
+            tr {
+                td {
+                    font-weight: bold;
+                    padding: 3px 5px;
+                    .value {
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
+    }
+    .accession-info {
+        margin-top: 15px;
+        font-size: 9pt;
+        p {
+            margin: 5px 0;
+        }
+    }
+    .print-footer {
+        margin-top: 30px;
+        .doctor-section {
+            p {
+                margin: 5px 0;
+                font-size: 9pt;
+            }
+        }
+    }
+}
 .dashboard-section{box-shadow: none}
 .patient-gender-age, .patient-estimated-text, .patient-birth-time{
     display: none;
