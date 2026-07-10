@@ -231,7 +231,7 @@
                             <div class="field-value">
                                 <select ng-if="!treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit"
                                         class="fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
-                                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
+                                        ng-options="item.name as item.name for item in getFinalDosingUnits(treatment)"
                                         ng-required="treatment.isDurationRequired">
                                     <option value="">{{ ::treatmentConfig.translate('quantityUnitsPlaceHolder', 'MEDICATION_CHOOSE_QUANTITY_UNIT_PLACEHOLDER') }} </option>
                                 </select>

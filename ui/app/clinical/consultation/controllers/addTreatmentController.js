@@ -603,8 +603,19 @@ angular.module('bahmni.clinical')
                 var anyValuesFilled = $scope.treatment.drug || $scope.treatment.uniformDosingType.dose ||
                     $scope.treatment.uniformDosingType.frequency || $scope.treatment.variableDosingType.morningDose ||
                     $scope.treatment.variableDosingType.afternoonDose || $scope.treatment.variableDosingType.eveningDose ||
+                    $scope.treatment.variableDosingType.nightDose ||
                     $scope.treatment.duration || $scope.treatment.quantity || $scope.treatment.isNonCodedDrug || $scope.treatment.drugNameDisplay;
                 return (anyValuesFilled && $scope.addForm.$invalid);
+            };
+
+            $scope.isVariableDoseValid = function (variableDosingType) {
+                var nonZeroCount = [
+                    variableDosingType.morningDose,
+                    variableDosingType.afternoonDose,
+                    variableDosingType.eveningDose,
+                    variableDosingType.nightDose
+                ].filter(function (dose) { return dose > 0; }).length;
+                return nonZeroCount >= Bahmni.Clinical.Constants.minRequiredDoseBoxes;
             };
             $scope.unaddedDrugOrders = function () {
                 return $scope.addForm.$valid;
@@ -973,6 +984,27 @@ angular.module('bahmni.clinical')
                         return $scope.addForm.$valid && $scope.calculateDose(treatment);
                     }
                 }
+                $scope.$watch('treatment.dosingRule', function (newRule) {
+                    if (!newRule) {
+                        $scope.treatment.uniformDosingType.doseUnits = undefined;
+                        $scope.treatment.variableDosingType.doseUnits = undefined;
+                        $scope.treatment.quantityUnit = undefined;
+                        return;
+                    }
+                    var ruleUnits = $scope.ruleUnitsMap[newRule];
+                    if (ruleUnits && ruleUnits.length === 1) {
+                        $scope.treatment.uniformDosingType.doseUnits = ruleUnits[0];
+                        $scope.treatment.quantityUnit = ruleUnits[0];
+                    }
+                    if (!$scope.treatment.isUniformDosingType() && ruleUnits && ruleUnits.length > 0 && ruleUnits[0]) {
+                        $scope.treatment.variableDosingType.doseUnits = ruleUnits[0];
+                        $scope.treatment.quantityUnit = ruleUnits[0];
+                    }
+                });
+            };
+
+            $scope.verifyAdd = function (treatment) {
+                return $scope.addForm.$valid && $scope.calculateDose(treatment);
             };
 
             var init = function () {
