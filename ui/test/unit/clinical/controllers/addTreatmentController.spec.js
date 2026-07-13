@@ -1734,6 +1734,67 @@ describe("AddTreatmentController", function () {
         });
     });
 
+    describe("Refill All excludes variable-dose orders", function () {
+        beforeEach(function () {
+            scope.treatments = [];
+        });
+
+        it("should refill a regular drug order when it has an effectiveStopDate", function () {
+            var refillCalled = false;
+            var regularOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: false,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () {
+                    refillCalled = true;
+                    return { drug: { name: 'Aspirin' } };
+                }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [regularOrder]);
+            expect(refillCalled).toBe(true);
+            expect(scope.treatments.length).toBe(1);
+        });
+
+        it("should NOT refill a variable-dose order even when it has an effectiveStopDate", function () {
+            var refillCalled = false;
+            var variableDoseOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: true,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () {
+                    refillCalled = true;
+                    return { drug: { name: 'Prednisolone' } };
+                }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [variableDoseOrder]);
+            expect(refillCalled).toBe(false);
+            expect(scope.treatments.length).toBe(0);
+        });
+
+        it("should refill regular orders but skip variable-dose orders in a mixed list", function () {
+            var refillCount = 0;
+            var regularOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: false,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () { refillCount++; return { drug: { name: 'Aspirin' } }; }
+            };
+            var variableDoseOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: true,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () { refillCount++; return { drug: { name: 'Prednisolone' } }; }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [regularOrder, variableDoseOrder]);
+            expect(refillCount).toBe(1);
+            expect(scope.treatments.length).toBe(1);
+        });
+    });
+
     describe("VDP conflict detection when adding a regular drug order", function () {
         var encounterDate;
         beforeEach(function () {

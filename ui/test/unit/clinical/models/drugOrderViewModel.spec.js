@@ -857,6 +857,54 @@ describe("drugOrderViewModel", function () {
         });
     });
 
+    describe("createFromContract - FHIR non-coded drug read-back", function () {
+        var fhirDosingInstructionType = 'org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FhirDosingInstructions';
+
+        var buildFhirContract = function (overrides) {
+            var dosages = [
+                { sequence: 1, text: 'Stage 1', timing: { code: { text: 'Once a day' }, repeat: { duration: 3, durationUnit: 'd' } }, doseAndRate: [{ doseQuantity: { value: 5, unit: 'mg' } }], extension: [{ url: 'isLoadingDose', valueBoolean: false }], additionalInstruction: [], patientInstruction: '' }
+            ];
+            return Object.assign({
+                uuid: 'vdp-noncoded-uuid',
+                action: 'NEW',
+                careSetting: 'Outpatient',
+                dosingInstructionType: fhirDosingInstructionType,
+                effectiveStartDate: new Date('2026-01-01').getTime(),
+                duration: 3,
+                durationUnits: 'Days',
+                dosingInstructions: {
+                    quantity: 15,
+                    quantityUnits: 'mg',
+                    administrationInstructions: JSON.stringify(dosages)
+                },
+                drug: { name: 'Prednisolone', uuid: 'drug-uuid' },
+                provider: { name: 'Dr. Test' }
+            }, overrides || {});
+        };
+
+        it("should set drugNameDisplay to drugNonCoded when drugNonCoded is present", function () {
+            var contract = buildFhirContract({ drug: null, drugNonCoded: 'Herbal Mixture 500mg' });
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(contract);
+            expect(viewModel.drugNonCoded).toBe('Herbal Mixture 500mg');
+            expect(viewModel.isNonCodedDrug).toBe(true);
+            expect(viewModel.drugNameDisplay).toBe('Herbal Mixture 500mg');
+        });
+
+        it("should set drugNameDisplay from drug name when no drugNonCoded is present", function () {
+            var contract = buildFhirContract({ drugNonCoded: null });
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(contract);
+            expect(viewModel.drugNonCoded).toBeFalsy();
+            expect(viewModel.isNonCodedDrug).toBe(false);
+            expect(viewModel.drugNameDisplay).toBeTruthy();
+        });
+
+        it("should set drugNonCoded to null when not present in contract", function () {
+            var contract = buildFhirContract();
+            var viewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(contract);
+            expect(viewModel.drugNonCoded).toBeFalsy();
+        });
+    });
+
     describe("createFromContract - per-stage status and variableDoseStatus", function () {
         var fhirDosingInstructionType = 'org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FhirDosingInstructions';
         var MILLISECONDS_PER_DAY = 86400000;

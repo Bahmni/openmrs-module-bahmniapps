@@ -63,7 +63,7 @@
                                         <button type="button" class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
                                             {{ ::'MEDICATION_STOP' | translate }}
                                         </button>
-                                        <button type="button" class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
+                                        <button type="button" class="refill-btn" ng-if="!drugOrder.isVariableDoseOrder" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
                                         <input ng-show="printPrescriptionFeature" type="checkbox" id="{{$parent.$index + '/' + drugOrder.uuid}}" name="selectedDrug"

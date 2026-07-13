@@ -788,8 +788,9 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
         viewModel.drugName = drugOrderResponse.drug ? drugOrderResponse.drug.name : '';
         viewModel.drugForm = drugOrderResponse.drug && drugOrderResponse.drug.dosageForm
             ? drugOrderResponse.drug.dosageForm.display : '';
-        viewModel.drugNameDisplay = constructDrugNameDisplayWithConcept(viewModel.drug, viewModel.concept) || viewModel.drugName;
+        viewModel.drugNonCoded = drugOrderResponse.drugNonCoded || null;
         viewModel.isNonCodedDrug = !!drugOrderResponse.drugNonCoded;
+        viewModel.drugNameDisplay = viewModel.drugNonCoded || constructDrugNameDisplayWithConcept(viewModel.drug, viewModel.concept) || viewModel.drugName;
         viewModel.asNeeded = false;
         viewModel.dosage = '';
         viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace('ORD-', ''));

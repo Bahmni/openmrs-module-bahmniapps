@@ -100,6 +100,8 @@ Bahmni.Clinical.DrugOrder = (function () {
 
         return new DrugOrder({
             drug: vdt.drug,
+            drugNonCoded: vdt.drugNonCoded || null,
+            concept: vdt.concept || null,
             orderType: 'Drug Order',
             action: Bahmni.Clinical.Constants.orderActions.new,
             dosingInstructionType: utils.FHIR_DOSING_INSTRUCTION_TYPE,

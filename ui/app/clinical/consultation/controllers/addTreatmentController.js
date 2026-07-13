@@ -310,7 +310,7 @@ angular.module('bahmni.clinical')
             var refillDrugOrders = function (drugOrders) {
                 drugOrders.forEach(function (drugOrder) {
                     setNonCodedDrugConcept(drugOrder);
-                    if (drugOrder.effectiveStopDate) {
+                    if (drugOrder.effectiveStopDate && !drugOrder.isVariableDoseOrder) {
                         var refill = drugOrder.refill();
                         $scope.treatments.push(refill);
                     }
@@ -939,6 +939,24 @@ angular.module('bahmni.clinical')
                 }
             });
 
+            $scope.$watch('treatment.dosingRule', function (newRule) {
+                if (!newRule) {
+                    $scope.treatment.uniformDosingType.doseUnits = undefined;
+                    $scope.treatment.variableDosingType.doseUnits = undefined;
+                    $scope.treatment.quantityUnit = undefined;
+                    return;
+                }
+                var ruleUnits = $scope.ruleUnitsMap[newRule];
+                if (ruleUnits && ruleUnits.length === 1) {
+                    $scope.treatment.uniformDosingType.doseUnits = ruleUnits[0];
+                    $scope.treatment.quantityUnit = ruleUnits[0];
+                }
+                if (!$scope.treatment.isUniformDosingType() && ruleUnits && ruleUnits.length > 0 && ruleUnits[0]) {
+                    $scope.treatment.variableDosingType.doseUnits = ruleUnits[0];
+                    $scope.treatment.quantityUnit = ruleUnits[0];
+                }
+            });
+
             $scope.checkForContinuousMedication = function (route) {
                 $scope.isContinuousMedication = $scope.continuousMedicationRoutes.includes(route);
             };
@@ -984,27 +1002,6 @@ angular.module('bahmni.clinical')
                         return $scope.addForm.$valid && $scope.calculateDose(treatment);
                     }
                 }
-                $scope.$watch('treatment.dosingRule', function (newRule) {
-                    if (!newRule) {
-                        $scope.treatment.uniformDosingType.doseUnits = undefined;
-                        $scope.treatment.variableDosingType.doseUnits = undefined;
-                        $scope.treatment.quantityUnit = undefined;
-                        return;
-                    }
-                    var ruleUnits = $scope.ruleUnitsMap[newRule];
-                    if (ruleUnits && ruleUnits.length === 1) {
-                        $scope.treatment.uniformDosingType.doseUnits = ruleUnits[0];
-                        $scope.treatment.quantityUnit = ruleUnits[0];
-                    }
-                    if (!$scope.treatment.isUniformDosingType() && ruleUnits && ruleUnits.length > 0 && ruleUnits[0]) {
-                        $scope.treatment.variableDosingType.doseUnits = ruleUnits[0];
-                        $scope.treatment.quantityUnit = ruleUnits[0];
-                    }
-                });
-            };
-
-            $scope.verifyAdd = function (treatment) {
-                return $scope.addForm.$valid && $scope.calculateDose(treatment);
             };
 
             var init = function () {
@@ -1080,6 +1077,7 @@ angular.module('bahmni.clinical')
                         revisingVariableDoseDrugOrder = drugOrder;
                         var initialValues = Bahmni.Clinical.FhirDosingUtils.toVariableDoseModalInitialValues({
                             drug: drugOrder.drug,
+                            drugNonCoded: drugOrder.drugNonCoded || null,
                             units: (drugOrder.dosingInstructions && drugOrder.dosingInstructions.doseUnits) || drugOrder.quantityUnit || '',
                             route: (drugOrder.dosingInstructions && drugOrder.dosingInstructions.route) || drugOrder.route || '',
                             startDate: drugOrder.effectiveStartDate,
@@ -1107,7 +1105,7 @@ angular.module('bahmni.clinical')
                                 ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order') && $scope.confirmedDiagnoses.length === 0)) {
                                 return;
                             }
-                            var vdpDrugName = data.drug ? data.drug.name : '';
+                            var vdpDrugName = data.drugNonCoded ? data.drugNonCoded : (data.drug ? data.drug.name : '');
                             var vdpCareSetting = (currentVisitType === 'IPD')
                                 ? Bahmni.Clinical.Constants.careSetting.inPatient
                                 : Bahmni.Clinical.Constants.careSetting.outPatient;
@@ -1142,8 +1140,8 @@ angular.module('bahmni.clinical')
                                 var unit = data.units || '';
                                 var realStages = data.stages || [];
                                 var dosingRule = data.dosingRule || '';
-                                var drugName = data.drug ? data.drug.name : '';
-                                var careSetting = (currentVisitType === 'IPD')
+                                var drugName = data.drugNonCoded ? data.drugNonCoded : (data.drug ? data.drug.name : '');
+                                var careSetting = (currentVisitType === 'IPD' && !$scope.treatment.isDischargeMedication)
                                     ? Bahmni.Clinical.Constants.careSetting.inPatient
                                     : Bahmni.Clinical.Constants.careSetting.outPatient;
 
@@ -1233,9 +1231,11 @@ angular.module('bahmni.clinical')
                                     }
 
                                     var entry = {
-                                        drug: data.drug || null,
-                                        drugName: data.drug ? data.drug.name : '',
-                                        drugForm: data.drug && data.drug.dosageForm ? data.drug.dosageForm.display : '',
+                                        drug: data.isNonCodedDrug ? null : (data.drug || null),
+                                        drugNonCoded: data.isNonCodedDrug ? data.drugNonCoded : null,
+                                        concept: data.isNonCodedDrug ? treatmentConfig.nonCodedDrugconcept : null,
+                                        drugName: data.isNonCodedDrug ? data.drugNonCoded : (data.drug ? data.drug.name : ''),
+                                        drugForm: (!data.isNonCodedDrug && data.drug && data.drug.dosageForm) ? data.drug.dosageForm.display : '',
                                         units: unit,
                                         route: data.route || '',
                                         dosingRule: dosingRule,

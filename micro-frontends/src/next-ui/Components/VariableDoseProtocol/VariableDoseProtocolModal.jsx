@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Modal, ComboBox, Toggle, TextInput, TextArea, NumberInput, Checkbox, Button } from "carbon-components-react";
+import Downshift from "downshift";
 import { TrashCan16, Add16 } from "@carbon/icons-react";
 import { Title, Dropdown as BahmniDropdown, DatePickerCarbon } from "bahmni-carbon-ui";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -11,6 +12,16 @@ import "../../../styles/carbon-theme.scss";
 import "./VariableDoseProtocolModal.scss";
 
 const DEBOUNCE_DELAY_MS = 300;
+
+const preserveTypedInputStateReducer = (state, changes) => {
+    switch (changes.type) {
+        case Downshift.stateChangeTypes.blurInput:
+        case Downshift.stateChangeTypes.mouseUp:
+            return { ...changes, inputValue: state.inputValue };
+        default:
+            return changes;
+    }
+};
 
 const normalizeToDays = (duration, durationUnitStr) => {
     const d = parseFloat(duration) || 0;
@@ -52,7 +63,15 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
 
     const initialValues = hostData?.initialValues || {};
 
-    const [selectedDrug, setSelectedDrug] = useState(initialValues.drug || null);
+    const resolvedInitialDrugName = initialValues.drugNonCoded || (initialValues.drug ? initialValues.drug.name : "");
+
+    const [selectedDrug, setSelectedDrug] = useState(
+        initialValues.drug ||
+        (initialValues.drugNonCoded ? { name: initialValues.drugNonCoded, isNonCoded: true } : null)
+    );
+    const [inputValue, setInputValue] = useState(resolvedInitialDrugName);
+    const [isNonCodedDrug, setIsNonCodedDrug] = useState(!!(initialValues.drugNonCoded));
+    const [drugNonCoded, setDrugNonCoded] = useState(initialValues.drugNonCoded || "");
     const [searchResults, setSearchResults] = useState(
         initialValues.drug ? [initialValues.drug] : []
     );
@@ -136,8 +155,12 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const isStageValid = (stage) =>
         stage.dose > 0 && stage.frequency !== null && stage.duration > 0 && stage.durationUnit !== null;
 
+    const hasCodedDrug = !!(selectedDrug && !selectedDrug.isNonCoded);
+    const codedDrugActive = hasCodedDrug && inputValue === selectedDrug.name;
+    const isDrugSelected = !!(codedDrugActive || (isNonCodedDrug && drugNonCoded));
+
     const isNextEnabled = !!(
-        selectedDrug &&
+        isDrugSelected &&
         units &&
         startDate &&
         (!isLoadingDose || loadingDoseValue > 0) &&
@@ -145,7 +168,9 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
         stages.every(isStageValid)
     );
 
-    const isDirty = !!(selectedDrug || dosingRule || units || route || isLoadingDose || stages.some(isStageValid));
+    const hasUnsavedDrugText = inputValue && !isNonCodedDrug && !codedDrugActive;
+    const hasModifiedNonCodedText = isNonCodedDrug && inputValue !== drugNonCoded;
+    const isDirty = !!(selectedDrug || isNonCodedDrug || hasUnsavedDrugText || hasModifiedNonCodedText || dosingRule || units || route || isLoadingDose || stages.some(isStageValid));
 
     const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
 
@@ -175,7 +200,9 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
 
     const handleSave = () => {
         hostApi?.onSave({
-            drug: selectedDrug,
+            drug: codedDrugActive ? selectedDrug : null,
+            drugNonCoded: isNonCodedDrug ? drugNonCoded : null,
+            isNonCodedDrug: isNonCodedDrug,
             dosingRule: dosingRule?.value || "",
             units: units?.value || "",
             route: route?.value || "",
@@ -227,19 +254,44 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     );
 
     const debouncedSearch = useDebounce(performSearch, DEBOUNCE_DELAY_MS);
-    const handleDrugInputChange = ({ value }) => debouncedSearch(value);
+
+    const handleDrugInputChange = ({ value }) => {
+        setInputValue(value || "");
+        if (isNonCodedDrug && value !== drugNonCoded) {
+            setIsNonCodedDrug(false);
+            setDrugNonCoded("");
+        }
+        debouncedSearch(value);
+    };
 
     const handleDrugChange = ({ selectedItem }) => {
-        setSelectedDrug(selectedItem || null);
-        if (!selectedItem) return;
-        const dosageForm = selectedItem.dosageForm?.display;
-        const defaults = dosageForm ? drugFormDefaults[dosageForm] : null;
-        if (!defaults) return;
-        if (defaults.doseUnits && doseUnits.some((u) => u.name === defaults.doseUnits)) {
-            setUnits({ label: defaults.doseUnits, value: defaults.doseUnits });
+        if (selectedItem && !selectedItem.isNonCoded) {
+            setSelectedDrug(selectedItem);
+            setIsNonCodedDrug(false);
+            setDrugNonCoded("");
+            setInputValue(selectedItem.name || "");
+            const dosageForm = selectedItem.dosageForm?.display;
+            const defaults = dosageForm ? drugFormDefaults[dosageForm] : null;
+            if (!defaults) return;
+            if (defaults.doseUnits && doseUnits.some((u) => u.name === defaults.doseUnits)) {
+                setUnits({ label: defaults.doseUnits, value: defaults.doseUnits });
+            }
+            if (defaults.route && routes.some((r) => r.name === defaults.route)) {
+                setRoute({ label: defaults.route, value: defaults.route });
+            }
+        } else if (!selectedItem) {
+            setSelectedDrug(null);
+            setInputValue("");
         }
-        if (defaults.route && routes.some((r) => r.name === defaults.route)) {
-            setRoute({ label: defaults.route, value: defaults.route });
+    };
+
+    const handleAcceptChange = (checked) => {
+        if (checked) {
+            setIsNonCodedDrug(true);
+            setDrugNonCoded(inputValue);
+        } else {
+            setIsNonCodedDrug(false);
+            setDrugNonCoded("");
         }
     };
 
@@ -325,6 +377,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                         items={searchResults}
                         itemToString={(item) => (item ? item.name || "" : "")}
                         filterItems={(items) => items}
+                        downshiftProps={{ stateReducer: preserveTypedInputStateReducer }}
                         onInputChange={(value) => handleDrugInputChange({ value })}
                         onChange={handleDrugChange}
                         selectedItem={selectedDrug}
@@ -339,7 +392,9 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                                     defaultMessage="Accept"
                                 />
                             }
-                            disabled={true}
+                            checked={isNonCodedDrug}
+                            disabled={isEditMode || codedDrugActive || !inputValue}
+                            onChange={(checked) => handleAcceptChange(checked)}
                         />
                     </div>
                 </div>

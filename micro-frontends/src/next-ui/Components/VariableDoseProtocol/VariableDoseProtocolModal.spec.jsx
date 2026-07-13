@@ -642,6 +642,197 @@ describe("Edit Mode (initialValues pre-population)", () => {
     });
 });
 
+describe("Non-coded drug (Accept flow)", () => {
+    it("Accept checkbox is enabled when text is typed and no coded drug is selected", async () => {
+        const { container } = renderModal();
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        const acceptCheckbox = container.querySelector("#variable-dose-accept");
+        expect(acceptCheckbox.disabled).toBe(true);
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Aspirin custom" } });
+
+        await waitFor(() => {
+            expect(acceptCheckbox.disabled).toBe(false);
+        });
+    });
+
+    it("Save button is disabled when text is typed but Accept is unchecked", async () => {
+        const { container } = renderModal(defaultHostDataWithValidStages);
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Aspirin custom" } });
+
+        // Accept checkbox is enabled but not checked - Save should be disabled
+        await waitFor(() => {
+            const nextButton = screen.getByText("Save").closest("button");
+            expect(nextButton.disabled).toBe(true);
+        });
+    });
+
+    it("Checking Accept with typed text accepts it as non-coded and enables Save", async () => {
+        const { container } = renderModal(defaultHostDataWithValidStages);
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "My Custom Drug" } });
+
+        const acceptCheckbox = container.querySelector("#variable-dose-accept");
+        await waitFor(() => expect(acceptCheckbox.disabled).toBe(false));
+
+        fireEvent.click(acceptCheckbox);
+
+        await waitFor(() => {
+            const nextButton = screen.getByText("Save").closest("button");
+            expect(nextButton.disabled).toBe(false);
+        });
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+
+        expect(mockOnSave).toHaveBeenCalledWith(
+            expect.objectContaining({
+                drugNonCoded: "My Custom Drug",
+                isNonCodedDrug: true,
+                drug: null,
+            })
+        );
+    });
+
+    it("Accept checkbox is disabled when a coded drug is selected from the dropdown", async () => {
+        const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
+        mockSearchDrugs.mockResolvedValue([drug]);
+        const { container } = renderModal();
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Para" } });
+        await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
+
+        await act(async () => {
+            const option = await screen.findByText("Paracetamol");
+            fireEvent.click(option);
+        });
+
+        await waitFor(() => {
+            const acceptCheckbox = container.querySelector("#variable-dose-accept");
+            expect(acceptCheckbox.disabled).toBe(true);
+        });
+    });
+
+    it("re-enables Accept and saves as non-coded when a selected coded drug's name is edited", async () => {
+        const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
+        mockSearchDrugs.mockResolvedValue([drug]);
+        const { container } = renderModal(defaultHostDataWithValidStages);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Para" } });
+        await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
+
+        await act(async () => {
+            const option = await screen.findByText("Paracetamol");
+            fireEvent.click(option);
+        });
+
+        const acceptCheckbox = container.querySelector("#variable-dose-accept");
+        // Coded drug selected -> Accept disabled.
+        await waitFor(() => expect(acceptCheckbox.disabled).toBe(true));
+
+        // Editing the name away from the coded drug re-enables Accept (now free text) and the
+        // typed text is retained (the coded selection is not cleared).
+        fireEvent.change(comboInput, { target: { value: "Paracetamol custom" } });
+        await waitFor(() => expect(acceptCheckbox.disabled).toBe(false));
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        fireEvent.click(acceptCheckbox);
+
+        await waitFor(() => {
+            const saveButton = screen.getByText("Save").closest("button");
+            expect(saveButton.disabled).toBe(false);
+        });
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+
+        expect(mockOnSave).toHaveBeenCalledWith(
+            expect.objectContaining({
+                drug: null,
+                drugNonCoded: "Paracetamol custom",
+                isNonCodedDrug: true,
+            })
+        );
+    });
+
+    it("should pre-populate Accept as checked and non-coded text when initialValues.drugNonCoded is provided", async () => {
+        const nonCodedHostData = {
+            ...defaultHostDataWithValidStages,
+            editMode: true,
+            initialValues: {
+                ...defaultHostDataWithValidStages.initialValues,
+                drugNonCoded: "Herbal Mixture",
+                drug: null,
+                units: "mg",
+            },
+        };
+        const { container } = renderModal(nonCodedHostData);
+
+        await waitFor(() => {
+            const acceptCheckbox = container.querySelector("#variable-dose-accept");
+            expect(acceptCheckbox.checked).toBe(true);
+            const comboInput = container.querySelector("#variable-dose-drug-name");
+            expect(comboInput.value).toBe("Herbal Mixture");
+            const saveButton = screen.getByText("Save Changes").closest("button");
+            expect(saveButton.disabled).toBe(false);
+        });
+    });
+
+    it("should include drugNonCoded=null and isNonCodedDrug=false when a coded drug is saved", async () => {
+        const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
+        mockSearchDrugs.mockResolvedValue([drug]);
+        const { container } = renderModal(defaultHostDataWithValidStages);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Para" } });
+        await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
+
+        await act(async () => {
+            const option = await screen.findByText("Paracetamol");
+            fireEvent.click(option);
+        });
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        await waitFor(() => {
+            const nextButton = screen.getByText("Save").closest("button");
+            expect(nextButton.disabled).toBe(false);
+        });
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+
+        expect(mockOnSave).toHaveBeenCalledWith(
+            expect.objectContaining({
+                drug: drug,
+                drugNonCoded: null,
+                isNonCodedDrug: false,
+            })
+        );
+    });
+});
+
 describe("Drug Field Disable in Edit Mode", () => {
     it("should disable drug field when editMode=true (unsaved edit)", async () => {
         const mockDrug = { name: "Aspirin", uuid: "drug-1" };

@@ -6,7 +6,7 @@
     ng-click="stage.showDetails = !stage.showDetails"
     class="variable-dose-stage-row">
     <td class="drug variable-dose-stage-drug" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped(), 'active-drug': stage.status === stageStatus.ongoing, 'scheduled-drug': stage.status === stageStatus.upcoming}">
-        {{::drugOrder.drugName}}
+        {{::drugOrder.drugNameDisplay}}
     </td>
     <td class="dosage" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped()}">
         {{::(stage | dosageString:drugOrder)}}

@@ -195,6 +195,7 @@ var toVariableDoseModalInitialValues = function (entry) {
 
     return {
         drug: entry.drug || null,
+        drugNonCoded: entry.drugNonCoded || null,
         units: units,
         route: route,
         startDate: entry.startDate || null,
