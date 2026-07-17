@@ -82,7 +82,7 @@
                                 <button class="stop-drug-btn" ng-if="actionName=='stop' && !drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
                                     {{ 'MEDICATIONS_STOP_LABEL'|translate }}
                                 </button>
-                                <button class="refill-btn" ng-if="actionName=='refill'" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
+                                <button class="refill-btn" ng-if="actionName=='refill' && !drugOrder.isVariableDoseOrder" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                     {{ 'MEDICATIONS_REFILL_LABEL'|translate }}
                                 </button>
                             </div>

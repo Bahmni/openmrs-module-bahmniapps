@@ -1,11 +1,54 @@
-<tr ng-class="::{active: drugOrder.isActive(), 'test-notes-parent': (drugOrder.additionalInstructions || ''), 'notes-open': (drugOrder.showDetails == true)}" >
+<tr ng-if="drugOrder.isVariableDoseOrder" class="variable-dosage-group-header-row">
+    <td colspan="4" class="variable-dosage-group-label">{{'VARIABLE_DOSAGE_HEADER' | translate}}</td>
+</tr>
+<tr ng-if="drugOrder.isVariableDoseOrder"
+    ng-repeat-start="stage in drugOrder.stages"
+    ng-click="stage.showDetails = !stage.showDetails"
+    class="variable-dose-stage-row">
+    <td class="drug variable-dose-stage-drug" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped(), 'active-drug': stage.status === stageStatus.ongoing, 'scheduled-drug': stage.status === stageStatus.upcoming}">
+        {{::drugOrder.drugNameDisplay}}
+    </td>
+    <td class="dosage" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped()}">
+        {{::(stage | dosageString:drugOrder)}}
+    </td>
+    <td class="days" ng-if="!params.hideVisitDate">
+        <span class="fr">{{::stage.startDate | bahmniDate}}</span>
+    </td>
+    <td class="toggle-btn" ng-class="{active: stage.showDetails}" ng-if="!stage.additionalInstructions">
+        <button class="toggle fr">
+            <i class="fa fa-angle-down"></i>
+            <i class="fa fa-angle-up"></i>
+        </button>
+    </td>
+</tr>
+<tr ng-repeat-end
+    ng-if="drugOrder.isVariableDoseOrder && (stage.additionalInstructions || (!stage.additionalInstructions && !params.hideVisitDate))"
+    ng-class="{'has-test-notes': stage.additionalInstructions}"
+    bm-show="stage.showDetails || stage.additionalInstructions"
+    class="notes variable-dose-stage-notes"
+    ng-class="{'inline-notes': !stage.additionalInstructions}">
+    <td colspan="4" class="notes test-notes">
+        <span ng-if="stage.additionalInstructions">
+            <i class="fa fa-comments left"></i>
+            <pre class="left">{{stage.additionalInstructions}}</pre>
+        </span>
+        <div class="footer-note right">
+            <span class="provider" ng-if="params.showProvider">
+                <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}" provider-date="::drugOrder.effectiveStartDate"></provider-directive>
+            </span>
+        </div>
+    </td>
+</tr>
+
+<tr ng-if="!drugOrder.isVariableDoseOrder"
+    ng-class="::{active: drugOrder.isActive(), 'test-notes-parent': (drugOrder.additionalInstructions || ''), 'notes-open': (drugOrder.showDetails == true)}">
     <td class="drug" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
-        <span >{{::drugOrder.getDrugOrderName((params.showDrugForm == true))}}</span>
+        <span>{{::drugOrder.getDrugOrderName((params.showDrugForm == true))}}</span>
         <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-if="::orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
             {{::orderAttribute.name.substring(0,1)}}
         </span>
     </td>
-    <td class="dosage" >
+    <td class="dosage">
         <span ng-if="::(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutDuration()}}</span>
         <span ng-if="::!(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
         <span>{{::drugOrder.getSpanDetails()}}</span>
@@ -21,7 +64,7 @@
         </button>
     </td>
 </tr>
-<tr ng-if="::drugOrder.additionalInstructions" ng-class="::{'has-test-notes': drugOrder.additionalInstructions}">
+<tr ng-if="!drugOrder.isVariableDoseOrder && drugOrder.additionalInstructions" ng-class="::{'has-test-notes': drugOrder.additionalInstructions}">
     <td colspan="5" class="notes test-notes">
         <i class="fa fa-comments left"></i>
         <pre class="left">{{::drugOrder.additionalInstructions}}</pre>
@@ -32,7 +75,7 @@
         </div>
     </td>
 </tr>
-<tr bm-show="drugOrder.showDetails" ng-if="::(!drugOrder.additionalInstructions && !params.hideVisitDate)">
+<tr ng-if="!drugOrder.isVariableDoseOrder && !drugOrder.additionalInstructions && !params.hideVisitDate" bm-show="drugOrder.showDetails">
     <td colspan="5" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider" ng-if="::params.showProvider">

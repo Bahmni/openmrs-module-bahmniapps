@@ -28,6 +28,12 @@ angular.module('bahmni.clinical')
             $scope.remove = function (index) {
                 $rootScope.$broadcast("event:removeDrugOrder", index);
             };
+            $scope.removeVariableDose = function (index) {
+                $scope.variableDoseTreatments.splice(index, 1);
+            };
+            $scope.editVariableDose = function (index) {
+                $rootScope.$broadcast('event:editVariableDoseOrder', index);
+            };
             var defaultBulkDuration = function () {
                 return {
                     bulkDurationUnit: $scope.treatmentConfig.durationUnits ? $scope.treatmentConfig.durationUnits[0].name : ""
@@ -113,8 +119,8 @@ angular.module('bahmni.clinical')
             templateUrl: 'consultation/views/newDrugOrders.html',
             scope: {
                 treatments: "=",
-                treatmentConfig: "="
-
+                treatmentConfig: "=",
+                variableDoseTreatments: "="
             },
             controller: controller
         };

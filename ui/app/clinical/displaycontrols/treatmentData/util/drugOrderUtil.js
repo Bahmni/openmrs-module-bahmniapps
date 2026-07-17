@@ -23,8 +23,9 @@ Bahmni.Clinical.DrugOrder.Util = {
                 return value1 === value2 || (_.isEmpty(value1) && _.isEmpty(value2));
             };
 
-            var foundDrugOrder = _.find(drugOrders, function (existingOrder) {
-                return areValuesEqual(existingOrder.drugNonCoded, drugOrder.drugNonCoded) &&
+            var foundDrugOrder = drugOrder.isVariableDoseOrder ? undefined : _.find(drugOrders, function (existingOrder) {
+                return !existingOrder.isVariableDoseOrder &&
+                    areValuesEqual(existingOrder.drugNonCoded, drugOrder.drugNonCoded) &&
                     (existingOrder.drug && drugOrder.drug &&
                     areValuesEqual(existingOrder.drug.uuid, drugOrder.drug.uuid)) &&
                     areValuesEqual(existingOrder.instructions, drugOrder.instructions) &&

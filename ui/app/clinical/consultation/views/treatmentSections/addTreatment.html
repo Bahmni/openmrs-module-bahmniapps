@@ -7,6 +7,12 @@
     <div class="order-section-container"  ng-show="addTreatment">
         <div class="Order-section-orderDrug clearfix">
             <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container" alert-on-exit>
+                <div ng-if="showVariableDoseProtocol" class="variable-dose-trigger-wrapper">
+                    <mfe-next-ui-variable-dose-protocol
+                        host-data="variableDoseHostData"
+                        host-api="variableDoseHostApi">
+                    </mfe-next-ui-variable-dose-protocol>
+                </div>
                 <article class="form-field">
                     <div class="field-attribute">
                         <label>{{ ::treatmentConfig.translate('drugName', 'MEDICATION_DRUG_NAME_TITLE') }} </label>
@@ -225,7 +231,7 @@
                             <div class="field-value">
                                 <select ng-if="!treatmentConfig.isHiddenField('quantityUnits')" id="total-quantity-unit"
                                         class="fl" ng-model="treatment.quantityUnit" ng-change="treatment.setQuantityUnitEnteredManually()"
-                                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
+                                        ng-options="item.name as item.name for item in getFinalDosingUnits(treatment)"
                                         ng-required="treatment.isDurationRequired">
                                     <option value="">{{ ::treatmentConfig.translate('quantityUnitsPlaceHolder', 'MEDICATION_CHOOSE_QUANTITY_UNIT_PLACEHOLDER') }} </option>
                                 </select>

@@ -26,6 +26,7 @@ Bahmni.Clinical.DrugOrder = (function () {
             var dosingInstructions = {};
             dosingInstructions.instructions = drugOrderData.instructions && drugOrderData.instructions;
             dosingInstructions.additionalInstructions = drugOrderData.additionalInstructions;
+            dosingInstructions.isLoadingDose = drugOrderData.isLoadingDose || false;
             if (drugOrderData.frequencyType === Bahmni.Clinical.Constants.dosingTypes.variable) {
                 dosingInstructions.morningDose = drugOrderData.variableDosingType.morningDose;
                 dosingInstructions.afternoonDose = drugOrderData.variableDosingType.afternoonDose;
@@ -78,6 +79,53 @@ Bahmni.Clinical.DrugOrder = (function () {
             drugOrder.dosingInstructions.quantityUnits = "Unit(s)";
         }
         return drugOrder;
+    };
+
+    DrugOrder.createFhirDrugOrder = function (vdt) {
+        var utils = Bahmni.Clinical.FhirDosingUtils;
+        var stages = vdt.stages || [];
+        var fhirDosages = utils.buildFhirDosageArray(stages, vdt.units, vdt.route);
+
+        var totalDays = stages.reduce(function (sum, s) {
+            if (s.stageName === utils.LOADING_DOSE_STAGE_NAME) { return sum; }
+            return sum + utils.normalizeToDays(s.duration, s.durationUnit);
+        }, 0);
+
+        var totalDosage = stages.reduce(function (sum, s) {
+            if (s.stageName === utils.LOADING_DOSE_STAGE_NAME) {
+                return sum + (parseFloat(s.dose) || 0);
+            }
+            return sum + (parseFloat(s.dose) || 0) * (s.frequencyPerDay || 1) * utils.normalizeToDays(s.duration, s.durationUnit);
+        }, 0);
+
+        return new DrugOrder({
+            drug: vdt.drug,
+            drugNonCoded: vdt.drugNonCoded || null,
+            concept: vdt.concept || null,
+            orderType: 'Drug Order',
+            action: Bahmni.Clinical.Constants.orderActions.new,
+            dosingInstructionType: utils.FHIR_DOSING_INSTRUCTION_TYPE,
+            duration: totalDays,
+            durationUnits: 'Days',
+            scheduledDate: vdt.startDate,
+            careSetting: vdt.careSetting || 'OUTPATIENT',
+            dosingInstructions: {
+                administrationInstructions: JSON.stringify(fhirDosages),
+                doseUnits: vdt.units || '',
+                route: vdt.route || '',
+                asNeeded: false,
+                quantity: totalDosage,
+                quantityUnits: vdt.units || 'Unit(s)',
+                numberOfRefills: 0
+            }
+        });
+    };
+
+    DrugOrder.createFhirDrugOrderRevise = function (vdt) {
+        var order = DrugOrder.createFhirDrugOrder(vdt);
+        order.action = Bahmni.Clinical.Constants.orderActions.revise;
+        order.previousOrderUuid = vdt.previousOrderUuid;
+        return order;
     };
 
     DrugOrder.prototype = {

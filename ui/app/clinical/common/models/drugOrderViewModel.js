@@ -9,6 +9,8 @@
 
 'use strict';
 
+var MILLISECONDS_PER_DAY = 86400000;
+
 var constructDrugNameDisplayWithConcept = function (drug, concept) {
     if (!_.isEmpty(drug)) {
         if (drug.name) {
@@ -111,6 +113,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.instructions = this.instructions || inputOptionsConfig.defaultInstructions;
     this.autoExpireDate = this.autoExpireDate || undefined;
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
+    this.isLoadingDose = this.isLoadingDose || false;
+    this.isVariableDoseOrder = this.isVariableDoseOrder || false;
     this.uniformDosingType = this.uniformDosingType || {};
     if (this.uniformDosingType.dose && config.getDoseFractions && !_.isEmpty(config.getDoseFractions())) {
         var destructredNumber = destructureReal(this.uniformDosingType.dose);
@@ -177,6 +181,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         return abscissa ? "" + abscissa + result : "" + result;
     };
 
+    var getDisplayFrequency = function () {
+        return self.isLoadingDose ? 'Loading Dose' : blankIfFalsy(self.uniformDosingType.frequency);
+    };
+
     var simpleDoseAndFrequency = function () {
         var uniformDosingType = self.uniformDosingType;
         var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
@@ -187,7 +195,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         }
 
         return addDelimiter(blankIfFalsy(doseAndUnits), ", ") +
-            addDelimiter(blankIfFalsy(uniformDosingType.frequency), ", ");
+            addDelimiter(getDisplayFrequency(), ", ");
     };
 
     var numberBasedDoseAndFrequency = function () {
@@ -669,7 +677,15 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     };
 
     this.getDoseAndUnits = function () {
+        if (self.isVariableDoseOrder) { return ""; }
         var variableDosingType = self.variableDosingType;
+        if (!variableDosingType) {
+            if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
+                var value = morphToMixedFraction(calculateUniformDose());
+                return value ? value + " " + blankIfFalsy(self.doseUnits) : "";
+            }
+            return "";
+        }
         var variableDosingString = addDelimiter(morphToMixedFraction(variableDosingType.morningDose || 0) + "-" + morphToMixedFraction(variableDosingType.afternoonDose || 0) + "-" + morphToMixedFraction(variableDosingType.eveningDose || 0), " ");
 
         if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
@@ -681,7 +697,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     };
 
     this.getFrequency = function () {
-        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? blankIfFalsy(self.uniformDosingType.frequency) : "";
+        if (self.isVariableDoseOrder) { return ""; }
+        return self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform ? getDisplayFrequency() : "";
     };
 
     this.calculateEffectiveStopDate = function () {
@@ -695,9 +712,101 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
 Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, config) {
     var DateUtil = Bahmni.Common.Util.DateUtil;
+    var utils = Bahmni.Clinical.FhirDosingUtils;
     drugOrderResponse.dosingInstructions = drugOrderResponse.dosingInstructions || {};
-    var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions || "{}");
+    var adminInstructionsStr = drugOrderResponse.dosingInstructions.administrationInstructions || '{}';
     var viewModel = new Bahmni.Clinical.DrugOrderViewModel(config);
+
+    if (drugOrderResponse.dosingInstructionType === utils.FHIR_DOSING_INSTRUCTION_TYPE) {
+        var fhirDosages = utils.parseFhirDosages(adminInstructionsStr) || [];
+        viewModel.isVariableDoseOrder = true;
+        var FHIR_PROPERTY_MAPPING = {
+            drug: 'drug',
+            route: 'dosingInstructions.route',
+            durationUnit: 'durationUnits',
+            scheduledDate: 'effectiveStartDate',
+            duration: 'duration',
+            effectiveStopDate: 'effectiveStopDate',
+            totalDays: 'duration',
+            totalDosage: 'dosingInstructions.quantity',
+            totalDosageUnits: 'dosingInstructions.quantityUnits',
+            quantity: 'dosingInstructions.quantity',
+            quantityUnit: 'dosingInstructions.quantityUnits',
+            provider: 'provider',
+            creatorName: 'creatorName',
+            action: 'action',
+            careSetting: 'careSetting',
+            dateStopped: 'dateStopped',
+            uuid: 'uuid',
+            dateActivated: 'dateActivated',
+            encounterUuid: 'encounterUuid',
+            voided: 'voided',
+            visit: 'visit',
+            concept: 'concept',
+            drugNonCoded: 'drugNonCoded',
+            isDrugRetired: 'retired'
+        };
+        var FHIR_PROPERTY_DEFAULTS = {
+            totalDays: 0,
+            totalDosage: 0,
+            totalDosageUnits: '',
+            voided: false
+        };
+
+        Object.keys(FHIR_PROPERTY_MAPPING).forEach(function (vmKey) {
+            viewModel[vmKey] = _.get(drugOrderResponse, FHIR_PROPERTY_MAPPING[vmKey]) || FHIR_PROPERTY_DEFAULTS[vmKey];
+        });
+
+        var cumulativeDays = 0;
+        viewModel.stages = fhirDosages.map(function (dosage) {
+            var stage = utils.fhirDosageToStage(dosage);
+            stage.startDate = new Date(new Date(drugOrderResponse.effectiveStartDate).getTime() + cumulativeDays * MILLISECONDS_PER_DAY);
+            cumulativeDays += stage.durationDays || 0;
+            return stage;
+        });
+        viewModel.stageCount = viewModel.stages.filter(function (s) {
+            return s.stageName !== utils.LOADING_DOSE_STAGE_NAME;
+        }).length;
+        viewModel.hasLoadingDose = viewModel.stages.some(function (s) {
+            return s.stageName === utils.LOADING_DOSE_STAGE_NAME;
+        });
+
+        var todayDate = DateUtil.getDate(DateUtil.now());
+        viewModel.stages.forEach(function (stage) {
+            var isDurationZero = stage.durationDays === 0;
+            var stageStart = DateUtil.getDate(stage.startDate);
+            var stageEnd = isDurationZero ? stageStart : DateUtil.addDays(stageStart, stage.durationDays);
+
+            if (stageStart > todayDate) {
+                stage.status = Bahmni.Clinical.Constants.stageStatus.upcoming;
+            } else if (isDurationZero ? stageStart.getTime() === todayDate.getTime() : todayDate < stageEnd) {
+                stage.status = Bahmni.Clinical.Constants.stageStatus.ongoing;
+            } else {
+                stage.status = Bahmni.Clinical.Constants.stageStatus.completed;
+            }
+        });
+        viewModel.drugName = drugOrderResponse.drug ? drugOrderResponse.drug.name : '';
+        viewModel.drugForm = drugOrderResponse.drug && drugOrderResponse.drug.dosageForm
+            ? drugOrderResponse.drug.dosageForm.display : '';
+        viewModel.drugNonCoded = drugOrderResponse.drugNonCoded || null;
+        viewModel.isNonCodedDrug = !!drugOrderResponse.drugNonCoded;
+        viewModel.drugNameDisplay = viewModel.drugNonCoded || constructDrugNameDisplayWithConcept(viewModel.drug, viewModel.concept) || viewModel.drugName;
+        viewModel.asNeeded = false;
+        viewModel.dosage = '';
+        viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace('ORD-', ''));
+        if (drugOrderResponse.orderGroup) {
+            viewModel.orderGroupUuid = drugOrderResponse.orderGroup.uuid;
+            viewModel.orderSetUuid = drugOrderResponse.orderGroup.orderSet && drugOrderResponse.orderGroup.orderSet.uuid;
+            viewModel.sortWeight = drugOrderResponse.sortWeight;
+        }
+        if (drugOrderResponse.effectiveStartDate) {
+            viewModel.effectiveStartDate = DateUtil.parse(drugOrderResponse.effectiveStartDate);
+        }
+        if (config) { viewModel.loadOrderAttributes(drugOrderResponse); }
+        return viewModel;
+    }
+
+    var administrationInstructions = utils.parseFlatAdminInstructions(adminInstructionsStr);
     viewModel.asNeeded = !drugOrderResponse.dosingInstructions.asNeeded ? false : drugOrderResponse.dosingInstructions.asNeeded;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
 
@@ -733,6 +842,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     }
     viewModel.instructions = administrationInstructions.instructions;
     viewModel.additionalInstructions = administrationInstructions.additionalInstructions;
+    viewModel.isLoadingDose = utils.isLoadingDoseOrder(adminInstructionsStr);
     viewModel.quantity = drugOrderResponse.dosingInstructions.quantity;
     viewModel.quantityUnit = drugOrderResponse.dosingInstructions.quantityUnits;
     viewModel.drug = drugOrderResponse.drug;

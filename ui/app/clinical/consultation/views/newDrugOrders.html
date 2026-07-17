@@ -82,3 +82,50 @@
         </li>
     </ul>
 </section>
+
+<section class="section-grid new-drug-order" ng-if="variableDoseTreatments && variableDoseTreatments.length > 0">
+    <div class="section-title-wrapper clearfix">
+        <h2 class="section-title fl">{{ ::'MEDICATION_NEW_PRESCRIPTION' | translate }}</h2>
+    </div>
+    <ul class="table-mimic">
+        <li ng-repeat="treatment in variableDoseTreatments">
+            <div class="drug-details">
+                <div class="form">
+                    <div class="drug-dosage">
+                        <strong class="drug-name">
+                            {{treatment.drugName}}<span ng-if="treatment.drugForm"> ({{treatment.drugForm}})</span>
+                        </strong>
+                        <div class="dosage-frequency">
+                            Variable Dosage | {{treatment.hasLoadingDose ? 'Loading Dose + ' : ''}}{{treatment.stageCount}} {{treatment.stageCount == 1 ? 'Stage' : 'Stages'}} | {{treatment.totalDays}} Day(s)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-group-wrapper">
+                <div class="button-group">
+                    <button ng-show="!allMedicinesInPrescriptionAvailableForIPD" class="ipd-btn" ng-click="toggleCareSetting(treatment)">
+                        <i class="fa fa-check" ng-show="treatment.careSetting === 'INPATIENT'"></i>
+                        {{ ::'IPD_BUTTON' | translate }}
+                    <button ng-click="editVariableDose($index)">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button ng-confirm-click="removeVariableDose($index)"
+                            confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="start-date fr">
+                <span>from {{treatment.startDate | bahmniDate}}</span>
+            </div>
+            <div class="dosage-details">
+                <div>
+                    <span ng-if="treatment.route">{{treatment.route}}</span>
+                    <span ng-if="treatment.quantity"> | {{treatment.quantity}} {{treatment.quantityUnit}}</span>
+                </div>
+            </div>
+            <mfe-next-ui-variable-dose-protocol-table host-data="treatment">
+            </mfe-next-ui-variable-dose-protocol-table>
+        </li>
+    </ul>
+</section>

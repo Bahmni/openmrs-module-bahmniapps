@@ -1,0 +1,423 @@
+.variable-dose-trigger-btn.bx--btn--tertiary {
+  background-color: #ffffff !important;
+  color: #007d79  !important;
+  border: 1px solid #007d79 !important;
+  padding: 10px 15px;
+
+  &:hover {
+    background-color: #007d79 !important;
+    color: #ffffff !important;
+  }
+
+  &:active,
+  &:focus {
+    background-color: #007d79 !important;
+    color: #ffffff;
+  }
+}
+
+.variable-dose-modal {
+  [class*="bx--"]:disabled {
+    -webkit-text-fill-color: #6F6F6F;
+  }
+
+  .bx--list-box--disabled .bx--list-box__label {
+    color: #6F6F6F;
+  }
+
+  .bx--modal-container {
+    width: 55%;
+    height: 84%;
+    top: 96px;
+    background-color: #ffffff;
+  }
+
+  .bx--modal-content {
+    background-color: #ffffff;
+  }
+
+  .bx--modal-header {
+    display: flex;
+    align-items: center;
+    padding-right: 0;
+
+    .bx--modal-close {
+      position: static;
+      margin-left: auto;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+
+      &:hover {
+        background-color: #e5e5e5 !important;
+      }
+    }
+  }
+
+  .bx--label {
+    display: block;
+    color: #161616 !important;
+  }
+
+  .bx--list-box__wrapper {
+    max-width: 100% !important;
+  }
+
+  input.bx--checkbox[type="checkbox"],
+  input.bx--toggle-input[type="checkbox"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    appearance: none !important;
+  }
+
+  .bx--date-picker-container {
+    justify-content: flex-start !important;
+  }
+
+  .bx--date-picker,
+  .bx--date-picker-container,
+  .bx--date-picker-input__wrapper,
+  .bx--date-picker__input {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .bx--date-picker__input {
+    background-color: #f4f4f4 !important;
+  }
+
+  .bx--modal-footer {
+    height: auto !important;
+    justify-content: flex-end !important;
+
+    .bx--btn {
+      width: 270px !important;
+      max-width: 270px !important;
+      flex: 0 0 270px !important;
+      height: 4rem !important;
+    }
+  }
+}
+
+.variable-dose-accept-wrapper {
+  display: flex;
+  align-items: center;
+  align-self: end;
+  padding-bottom: 0.75rem;
+}
+
+.variable-dose-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 3rem;
+  margin-top: 1.5rem;
+
+  > * {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+.variable-dose-required {
+  color: #da1e28;
+}
+
+.vdp-protocol-section {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.vdp-protocol-heading {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.16px;
+  color: #000000;
+  margin: 0 0 16px;
+}
+
+.vdp-protocol-section .bx--label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #525252 !important;
+  margin-bottom: 8px;
+}
+
+.vdp-loading-dose-toggle-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .bx--form-item {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+  }
+
+  .bx--label {
+    display: none;
+  }
+
+  .bx--toggle-input__label {
+    margin-top: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bx--toggle-input--small + .bx--toggle-input__label > .bx--toggle__switch {
+    margin-top: 0;
+  }
+}
+
+.vdp-loading-dose-toggle-label {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #161616;
+  line-height: 18px;
+  letter-spacing: 0.16px;
+}
+
+.vdp-loading-dose-fields {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.vdp-loading-dose-dose-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.vdp-loading-dose-stepper {
+  flex: 0 0 140px;
+  width: 140px;
+  min-width: 0;
+}
+
+.vdp-loading-dose-unit {
+  flex: 0 0 168px;
+  width: 168px;
+  min-width: 0;
+}
+
+.vdp-loading-dose-stepper .bx--number,
+.vdp-loading-dose-stepper .bx--form-item {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+
+.vdp-loading-dose-unit .bx--list-box__wrapper,
+.vdp-loading-dose-unit .bx--form-item,
+.vdp-loading-dose-unit .bx--list-box {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+.vdp-loading-dose-unit .bx--list-box__field {
+  box-sizing: border-box !important;
+  height: 40px !important;
+  min-height: 40px !important;
+}
+
+
+.vdp-loading-dose-unit .bx--list-box__menu-icon {
+  border: none !important;
+  background-color: transparent !important;
+  cursor: default !important;
+}
+
+.vdp-loading-dose-unit .bx--list-box__menu-icon:hover {
+  background-color: transparent !important;
+}
+
+/* Unit dropdown is disabled — hide its clear (×) button */
+.vdp-loading-dose-unit .bx--list-box__selection {
+  display: none !important;
+}
+
+.vdp-loading-dose-details-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.4fr;
+  gap: 24px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.vdp-loading-dose-details-row .bx--list-box,
+.vdp-loading-dose-details-row .bx--number,
+.vdp-loading-dose-details-row .bx--form-item {
+  width: 100%;
+}
+
+.variable-dose-modal .bx--text-area {
+  background-color: #f4f4f4 !important;
+  width: 100% !important;
+  height: 52px;
+}
+
+.variable-dose-modal .bx--number input[type='number'],
+.variable-dose-modal .bx--text-input {
+  background-color: #f4f4f4 !important;
+}
+
+.variable-dose-modal .bx--number__input-wrapper {
+  position: relative !important;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  overflow: hidden;
+  border-bottom: 1px solid #8d8d8d;
+}
+
+.variable-dose-modal .bx--number__input-wrapper:has(input[type='number']:focus) {
+  border-bottom: 2px solid #0f62fe;
+}
+
+.variable-dose-modal .bx--number input[type='number'] {
+  border-bottom: none !important;
+  box-sizing: border-box !important;
+  min-width: 0;
+}
+
+.variable-dose-modal .bx--number__controls {
+  top: 0 !important;
+  transform: none !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.variable-dose-modal .bx--number__control-btn {
+  border: none !important;
+  box-sizing: border-box !important;
+}
+
+.variable-dose-modal .bx--number__control-btn:hover:not(:active):not(:focus) {
+  outline: none !important;
+}
+
+.variable-dose-modal .bx--number__control-btn::before,
+.variable-dose-modal .bx--number__control-btn::after {
+  background-color: transparent !important;
+}
+
+.vdp-stage-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 16px;
+  margin-top: 16px;
+  background-color: #ffffff;
+}
+
+.vdp-stage-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.vdp-stage-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #161616;
+  margin: 0;
+}
+
+.vdp-stage-main-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.vdp-stage-instructions-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.vdp-stage-additives {
+  grid-column: span 2;
+  width: 100%;
+}
+
+.vdp-stage-main-row .bx--form-item,
+.vdp-stage-main-row .bx--number,
+.vdp-stage-instructions-row .bx--form-item,
+.vdp-stage-instructions-row .bx--number,
+.vdp-stage-additives .bx--text-input-wrapper,
+.vdp-stage-additives .bx--form-item {
+  width: 100%;
+}
+
+
+.vdp-toggle-instructions-btn.bx--btn--ghost {
+  color: #0f62fe;
+  padding: 6px 12px;
+  min-height: unset;
+  margin-top: 8px;
+  border-radius: 0;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    background-color: #e5e5e5;
+    opacity: 1;  /* override clinical.css button:hover { opacity: 0.8 } */
+    text-decoration: none;
+    color: #0f62fe;
+  }
+
+  &:active {
+    background-color: #c6c6c6;
+    opacity: 1;
+    color: #0f62fe;
+  }
+}
+
+.vdp-stage-delete-btn.bx--btn--ghost {
+  color: #525252;
+  padding: 6px;
+  min-height: unset;
+
+  &:hover { opacity: 1; color: #525252; }
+  &:active { opacity: 1; color: #525252; }
+}
+
+.vdp-stages-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 8px;
+}
+
+.vdp-add-stage-btn.bx--btn--tertiary {
+  border: 1px solid #0f62fe;
+  color: #0f62fe;
+  background-color: transparent;
+
+  &:hover {
+    background-color: #e8f0fe;
+  }
+}
+
+.vdp-totals {
+  font-size: 13px;
+  color: #525252;
+  white-space: nowrap;
+}
+

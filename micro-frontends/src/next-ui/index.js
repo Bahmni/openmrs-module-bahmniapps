@@ -12,6 +12,8 @@ import { PatientAlergiesControl } from "./Containers/patientAlergies/PatientAler
 import { FormDisplayControl } from "./Containers/formDisplayControl/FormDisplayControl";
 import { ProviderNotifications } from "./Containers/providerNotifications/ProviderNotifications";
 import { OtNotesSavePopup, OtNotesDeletePopup } from "./Containers/otNotes/OtNotes";
+import { VariableDoseProtocol } from "./Containers/variableDoseProtocol/VariableDoseProtocol";
+import { VariableDoseProtocolTable } from "./Components/VariableDoseProtocol/VariableDoseProtocolTable";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -46,3 +48,14 @@ builder.createComponentWithTranslationForwarding(
     "OtNotesDeletePopup",
     OtNotesDeletePopup
 );
+
+builder.createComponentWithTranslationForwarding(
+    "VariableDoseProtocol",
+    VariableDoseProtocol
+);
+
+builder.createComponentWithTranslationForwarding(
+    "VariableDoseProtocolTable",
+    VariableDoseProtocolTable
+);
+

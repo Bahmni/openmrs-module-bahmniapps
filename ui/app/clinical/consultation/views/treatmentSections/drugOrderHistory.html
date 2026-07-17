@@ -35,9 +35,10 @@
                                             <cdss-popover alerts="drugOrder.alerts"></cdss-popover>
                                         </div>
                                         <div class="dosage-frequency">
-                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}}</span>
-                                            <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length"> | {{drugOrder.getFrequency()}}</span> 
-                                            <span ng-show="drugOrder.getDurationAndDurationUnits()"> | {{drugOrder.getDurationAndDurationUnits()}}</span>
+                                            <span ng-if="drugOrder.isVariableDoseOrder">Variable Dosage | {{drugOrder.hasLoadingDose ? 'Loading Dose + ' : ''}}{{drugOrder.stageCount}} {{drugOrder.stageCount == 1 ? 'Stage' : 'Stages'}} | {{drugOrder.totalDays}} Day(s)</span>
+                                            <span ng-if="!drugOrder.isVariableDoseOrder && drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}}</span>
+                                            <span ng-if="!drugOrder.isVariableDoseOrder && drugOrder.getFrequency() && drugOrder.getFrequency().length"> | {{drugOrder.getFrequency()}}</span>
+                                            <span ng-if="!drugOrder.isVariableDoseOrder && drugOrder.getDurationAndDurationUnits()"> | {{drugOrder.getDurationAndDurationUnits()}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +54,7 @@
                                             <i class="fa fa-check" ng-show="orderAttribute.value"></i>
                                             {{orderAttribute.name.substring(0,1)}}
                                         </button>
-                                        <button type="button" ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed || disableEditButton(drugOrder)" ng-click="revise(drugOrder, drugOrderGroup.drugOrders)">
+                                        <button type="button" ng-disabled="!drugOrder.isActive() || !drugOrder.isEditAllowed || disableEditButton(drugOrder)" ng-click="drugOrder.isVariableDoseOrder ? reviseVariableDose(drugOrder) : revise(drugOrder, drugOrderGroup.drugOrders)">
                                             <i class="fa fa-edit"></i>
                                         </button>
                                         <button type="button" class="undo-btn" ng-if="drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="undoDiscontinue(drugOrder)">
@@ -62,7 +63,7 @@
                                         <button type="button" class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
                                             {{ ::'MEDICATION_STOP' | translate }}
                                         </button>
-                                        <button type="button" class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
+                                        <button type="button" class="refill-btn" ng-if="!drugOrder.isVariableDoseOrder" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
                                         <input ng-show="printPrescriptionFeature" type="checkbox" id="{{$parent.$index + '/' + drugOrder.uuid}}" name="selectedDrug"
@@ -97,6 +98,8 @@
                                             <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>
                                         </span>
                                     </div>
+                                    <mfe-next-ui-variable-dose-protocol-table ng-if="drugOrder.isVariableDoseOrder" host-data="drugOrder">
+                                    </mfe-next-ui-variable-dose-protocol-table>
                                 </div>
                                 <div ng-if="drugOrder.isMarkedForDiscontinue">
                                     <div class="form fl drug-stop-container">

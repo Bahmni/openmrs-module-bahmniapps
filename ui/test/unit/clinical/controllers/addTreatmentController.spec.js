@@ -1734,6 +1734,140 @@ describe("AddTreatmentController", function () {
         });
     });
 
+    describe("Refill All excludes variable-dose orders", function () {
+        beforeEach(function () {
+            scope.treatments = [];
+        });
+
+        it("should refill a regular drug order when it has an effectiveStopDate", function () {
+            var refillCalled = false;
+            var regularOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: false,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () {
+                    refillCalled = true;
+                    return { drug: { name: 'Aspirin' } };
+                }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [regularOrder]);
+            expect(refillCalled).toBe(true);
+            expect(scope.treatments.length).toBe(1);
+        });
+
+        it("should NOT refill a variable-dose order even when it has an effectiveStopDate", function () {
+            var refillCalled = false;
+            var variableDoseOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: true,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () {
+                    refillCalled = true;
+                    return { drug: { name: 'Prednisolone' } };
+                }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [variableDoseOrder]);
+            expect(refillCalled).toBe(false);
+            expect(scope.treatments.length).toBe(0);
+        });
+
+        it("should refill regular orders but skip variable-dose orders in a mixed list", function () {
+            var refillCount = 0;
+            var regularOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: false,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () { refillCount++; return { drug: { name: 'Aspirin' } }; }
+            };
+            var variableDoseOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: true,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () { refillCount++; return { drug: { name: 'Prednisolone' } }; }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [regularOrder, variableDoseOrder]);
+            expect(refillCount).toBe(1);
+            expect(scope.treatments.length).toBe(1);
+        });
+    });
+
+    describe("VDP conflict detection when adding a regular drug order", function () {
+        var encounterDate;
+        beforeEach(function () {
+            scope.treatments = [];
+            encounterDate = DateUtil.parse("2026-01-10");
+        });
+
+        // buildWith defaults drug.form to "Tablet", so getDisplayName() returns "abc (Tablet)".
+        // VDP proxy uses vdp.drugName directly, so drugName must match getDisplayName() output.
+        it("should show conflict modal when adding a regular drug order for the same drug as an unsaved VDP", function () {
+            scope.consultation.variableDoseTreatments = [{
+                drugName: 'abc (Tablet)',
+                startDate: DateUtil.parse("2026-01-10"),
+                totalDays: 7
+            }];
+
+            var newOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: { name: 'abc', uuid: '123' },
+                effectiveStartDate: DateUtil.parse("2026-01-12"),
+                effectiveStopDate: DateUtil.parse("2026-01-15"),
+                durationInDays: 3
+            }, encounterDate);
+
+            scope.treatment = newOrder;
+            scope.add();
+
+            expect(ngDialog.open).toHaveBeenCalled();
+            expect(scope.treatments.length).toEqual(0);
+        });
+
+        it("should allow adding a regular drug order when the VDP does not overlap", function () {
+            scope.consultation.variableDoseTreatments = [{
+                drugName: 'abc (Tablet)',
+                startDate: DateUtil.parse("2026-01-01"),
+                totalDays: 5
+            }];
+
+            var newOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: { name: 'abc', uuid: '123' },
+                effectiveStartDate: DateUtil.parse("2026-01-20"),
+                effectiveStopDate: DateUtil.parse("2026-01-25"),
+                durationInDays: 5
+            }, encounterDate);
+
+            scope.treatment = newOrder;
+            scope.add();
+
+            expect(ngDialog.open).not.toHaveBeenCalled();
+            expect(scope.treatments.length).toEqual(1);
+        });
+
+        it("should not conflict when drugs are different", function () {
+            scope.consultation.variableDoseTreatments = [{
+                drugName: 'differentDrug (Tablet)',
+                startDate: DateUtil.parse("2026-01-10"),
+                totalDays: 7
+            }];
+
+            var newOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: { name: 'abc', uuid: '123' },
+                effectiveStartDate: DateUtil.parse("2026-01-12"),
+                effectiveStopDate: DateUtil.parse("2026-01-15"),
+                durationInDays: 3
+            }, encounterDate);
+
+            scope.treatment = newOrder;
+            scope.add();
+
+            expect(ngDialog.open).not.toHaveBeenCalled();
+            expect(scope.treatments.length).toEqual(1);
+        });
+    });
+
     describe("After selection from ng-dialog", function () {
 
         beforeEach(function () {

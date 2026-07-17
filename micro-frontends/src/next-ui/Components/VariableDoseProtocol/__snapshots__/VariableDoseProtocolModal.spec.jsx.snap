@@ -1,0 +1,1013 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VariableDoseProtocolModal should render the modal (open=true is hardcoded, visibility controlled by ng-if) 1`] = `
+<div>
+  <div
+    class="bx--modal bx--modal-tall is-visible next-ui variable-dose-modal"
+    role="presentation"
+  >
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+    <div
+      aria-label="[object Object]"
+      aria-modal="true"
+      class="bx--modal-container bx--modal-container--lg"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div
+        class="bx--modal-header"
+      >
+        
+        <h3
+          class="bx--modal-header__heading"
+          id="bx--modal-header__heading--modal-1"
+        >
+          Order Drug - Variable Dosage Protocol
+        </h3>
+        <button
+          aria-label="close"
+          class="bx--modal-close"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="bx--modal-close__icon"
+            fill="currentColor"
+            focusable="false"
+            height="20"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 32 32"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        aria-labelledby="bx--modal-header__heading--modal-1"
+        class="bx--modal-content"
+        id="bx--modal-body--modal-1"
+      >
+        <div
+          class="variable-dose-form-grid"
+        >
+          <div
+            class="bx--list-box__wrapper"
+          >
+            <label
+              class="bx--label"
+              dir="auto"
+              for="variable-dose-drug-name"
+              id="downshift-0-label"
+            >
+              <div
+                class="titleText"
+              >
+                <span>
+                  Drug Name 
+                </span>
+                <span
+                  class="required"
+                >
+                  *
+                </span>
+              </div>
+            </label>
+            <div
+              class="bx--combo-box bx--list-box"
+            >
+              <div
+                class="bx--list-box__field"
+              >
+                <input
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  autocomplete="off"
+                  class="bx--text-input bx--text-input--empty"
+                  id="variable-dose-drug-name"
+                  placeholder="Type to Search a Drug"
+                  role="combobox"
+                  tabindex="0"
+                  type="text"
+                  value=""
+                />
+                
+                <button
+                  aria-haspopup="true"
+                  aria-label="Open"
+                  class="bx--list-box__menu-icon"
+                  data-toggle="true"
+                  role="button"
+                  tabindex="-1"
+                  title="Open"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    fill="currentColor"
+                    focusable="false"
+                    height="16"
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                aria-label="Choose an item"
+                class="bx--list-box__menu"
+                id="downshift-0-menu"
+                role="listbox"
+              />
+            </div>
+          </div>
+          <div
+            class="variable-dose-accept-wrapper"
+          >
+            <div
+              class="bx--form-item bx--checkbox-wrapper"
+            >
+              <input
+                class="bx--checkbox"
+                disabled=""
+                id="variable-dose-accept"
+                type="checkbox"
+              />
+              <label
+                class="bx--checkbox-label"
+                for="variable-dose-accept"
+              >
+                <span
+                  class="bx--checkbox-label-text"
+                  dir="auto"
+                >
+                  Accept
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="variable-dose-form-grid"
+        >
+          <div />
+          <div
+            data-testid="select"
+          >
+            <div
+              class="bx--list-box__wrapper"
+            >
+              <label
+                class="bx--label"
+                dir="auto"
+                for="variable-dose-units"
+                id="downshift-0-label"
+              >
+                <div
+                  class="titleText"
+                >
+                  <span>
+                    Units 
+                  </span>
+                  <span
+                    class="required"
+                  >
+                    *
+                  </span>
+                </div>
+              </label>
+              <div
+                class="bx--combo-box bx--list-box"
+              >
+                <div
+                  class="bx--list-box__field"
+                >
+                  <input
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    autocomplete="off"
+                    class="bx--text-input bx--text-input--empty"
+                    id="variable-dose-units"
+                    placeholder="Select Unit"
+                    role="combobox"
+                    style="width: 100%;"
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                  
+                  <button
+                    aria-haspopup="true"
+                    aria-label="Open"
+                    class="bx--list-box__menu-icon"
+                    data-toggle="true"
+                    role="button"
+                    tabindex="-1"
+                    title="Open"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      fill="currentColor"
+                      focusable="false"
+                      height="16"
+                      preserveAspectRatio="xMidYMid meet"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  aria-label="Choose an item"
+                  class="bx--list-box__menu"
+                  id="downshift-0-menu"
+                  role="listbox"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="variable-dose-form-grid"
+        >
+          <div
+            class="date-picker-carbon"
+            data-testid="datePicker"
+          >
+            <div
+              class="bx--form-item"
+            >
+              <div
+                class="bx--date-picker bx--date-picker--single"
+              >
+                <div
+                  class="bx--date-picker-container"
+                >
+                  <label
+                    class="bx--label"
+                    for="variable-dose-start-date"
+                  >
+                    <div
+                      class="titleText"
+                    >
+                      <span>
+                        Start Date 
+                      </span>
+                      <span
+                        class="required"
+                      >
+                        *
+                      </span>
+                    </div>
+                  </label>
+                  <div
+                    class="bx--date-picker-input__wrapper"
+                  >
+                    <input
+                      autocomplete="off"
+                      class="bx--date-picker__input bx--date-picker__input--md flatpickr-input"
+                      id="variable-dose-start-date"
+                      pattern="\\d{1,2}\\/\\d{1,2}\\/\\d{4}"
+                      placeholder="DD MMM YYYY"
+                      required=""
+                      style="width: 100%;"
+                      type="text"
+                    />
+                    <svg
+                      aria-hidden="true"
+                      class="bx--date-picker__icon"
+                      fill="currentColor"
+                      focusable="false"
+                      height="16"
+                      preserveAspectRatio="xMidYMid meet"
+                      role="img"
+                      viewBox="0 0 32 32"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M26,4h-4V2h-2v2h-8V2h-2v2H6C4.9,4,4,4.9,4,6v20c0,1.1,0.9,2,2,2h20c1.1,0,2-0.9,2-2V6C28,4.9,27.1,4,26,4z M26,26H6V12h20	V26z M26,10H6V6h4v2h2V6h8v2h2V6h4V10z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            data-testid="select"
+          >
+            <div
+              class="bx--list-box__wrapper"
+            >
+              <label
+                class="bx--label"
+                dir="auto"
+                for="variable-dose-route"
+                id="downshift-1-label"
+              >
+                <div
+                  class="titleText"
+                >
+                  <span>
+                    Route 
+                  </span>
+                </div>
+              </label>
+              <div
+                class="bx--combo-box bx--list-box"
+              >
+                <div
+                  class="bx--list-box__field"
+                >
+                  <input
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    autocomplete="off"
+                    class="bx--text-input bx--text-input--empty"
+                    id="variable-dose-route"
+                    placeholder="Select Route"
+                    role="combobox"
+                    style="width: 100%;"
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                  
+                  <button
+                    aria-haspopup="true"
+                    aria-label="Open"
+                    class="bx--list-box__menu-icon"
+                    data-toggle="true"
+                    role="button"
+                    tabindex="-1"
+                    title="Open"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      fill="currentColor"
+                      focusable="false"
+                      height="16"
+                      preserveAspectRatio="xMidYMid meet"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  aria-label="Choose an item"
+                  class="bx--list-box__menu"
+                  id="downshift-1-menu"
+                  role="listbox"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="vdp-protocol-section"
+        >
+          <h4
+            class="vdp-protocol-heading"
+          >
+            Protocol
+          </h4>
+          <div
+            class="vdp-loading-dose-toggle-row"
+          >
+            <div
+              class="bx--form-item"
+            >
+              <input
+                class="bx--toggle-input bx--toggle-input--small"
+                id="loading-dose-toggle"
+                type="checkbox"
+              />
+              <label
+                class="bx--toggle-input__label"
+                for="loading-dose-toggle"
+              >
+                
+                <span
+                  class="bx--toggle__switch"
+                >
+                  <svg
+                    class="bx--toggle__check"
+                    height="5px"
+                    viewBox="0 0 6 5"
+                    width="6px"
+                  >
+                    <path
+                      d="M2.2 2.7L5 0 6 1 2.2 5 0 2.7 1 1.5z"
+                    />
+                  </svg>
+                  <span
+                    aria-hidden="true"
+                    class="bx--toggle__text--off"
+                  />
+                  <span
+                    aria-hidden="true"
+                    class="bx--toggle__text--on"
+                  />
+                </span>
+              </label>
+            </div>
+            <span
+              class="vdp-loading-dose-toggle-label"
+            >
+              Add Loading Dose
+            </span>
+          </div>
+          <div
+            class="vdp-stage-card"
+          >
+            <div
+              class="vdp-stage-header-row"
+            >
+              <h5
+                class="vdp-stage-heading"
+              >
+                Stage 
+                1
+              </h5>
+              <button
+                aria-label="Delete Stage"
+                class="vdp-stage-delete-btn bx--btn bx--btn--sm bx--btn--ghost"
+                tabindex="0"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  focusable="false"
+                  height="16"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 32 32"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 12H14V24H12zM18 12H20V24H18z"
+                  />
+                  <path
+                    d="M4 6V8H6V28a2 2 0 002 2H24a2 2 0 002-2V8h2V6zM8 28V8H24V28zM12 2H20V4H12z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              class="vdp-stage-main-row"
+            >
+              <div
+                class="vdp-stage-dose-group"
+              >
+                <div
+                  class="bx--form-item"
+                >
+                  <div
+                    class="bx--number bx--number--helpertext"
+                  >
+                    <label
+                      class="bx--label"
+                      for="stage-dose-0"
+                    >
+                      Dosage
+                    </label>
+                    <div
+                      class="bx--number__input-wrapper"
+                    >
+                      <input
+                        id="stage-dose-0"
+                        min="0"
+                        pattern="[0-9]*"
+                        step="0.5"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="bx--number__controls"
+                      >
+                        <button
+                          aria-label="Decrement number"
+                          class="bx--number__control-btn down-icon"
+                          tabindex="-1"
+                          title="Decrement number"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="down-icon"
+                            fill="currentColor"
+                            focusable="false"
+                            height="16"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 32 32"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8 15H24V17H8z"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          class="bx--number__rule-divider"
+                        />
+                        <button
+                          aria-label="Increment number"
+                          class="bx--number__control-btn up-icon"
+                          tabindex="-1"
+                          title="Increment number"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="up-icon"
+                            fill="currentColor"
+                            focusable="false"
+                            height="16"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 32 32"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M17 15L17 8 15 8 15 15 8 15 8 17 15 17 15 24 17 24 17 17 24 17 24 15z"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          class="bx--number__rule-divider"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="vdp-stage-frequency-group"
+              >
+                <div
+                  data-testid="select"
+                >
+                  <div
+                    class="bx--list-box__wrapper"
+                  >
+                    <label
+                      class="bx--label"
+                      dir="auto"
+                      for="stage-frequency-0"
+                      id="downshift-2-label"
+                    >
+                      <div
+                        class="titleText"
+                      >
+                        <span>
+                          Frequency 
+                        </span>
+                      </div>
+                    </label>
+                    <div
+                      class="bx--combo-box bx--list-box"
+                    >
+                      <div
+                        class="bx--list-box__field"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          autocomplete="off"
+                          class="bx--text-input bx--text-input--empty"
+                          id="stage-frequency-0"
+                          placeholder="Select an option"
+                          role="combobox"
+                          style="width: 100%;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        
+                        <button
+                          aria-haspopup="true"
+                          aria-label="Open"
+                          class="bx--list-box__menu-icon"
+                          data-toggle="true"
+                          role="button"
+                          tabindex="-1"
+                          title="Open"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="currentColor"
+                            focusable="false"
+                            height="16"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div
+                        aria-label="Choose an item"
+                        class="bx--list-box__menu"
+                        id="downshift-2-menu"
+                        role="listbox"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="vdp-stage-duration-group"
+              >
+                <div
+                  class="bx--form-item"
+                >
+                  <div
+                    class="bx--number bx--number--helpertext"
+                  >
+                    <label
+                      class="bx--label"
+                      for="stage-duration-0"
+                    >
+                      Duration
+                    </label>
+                    <div
+                      class="bx--number__input-wrapper"
+                    >
+                      <input
+                        id="stage-duration-0"
+                        min="0"
+                        pattern="[0-9]*"
+                        step="1"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="bx--number__controls"
+                      >
+                        <button
+                          aria-label="Decrement number"
+                          class="bx--number__control-btn down-icon"
+                          tabindex="-1"
+                          title="Decrement number"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="down-icon"
+                            fill="currentColor"
+                            focusable="false"
+                            height="16"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 32 32"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8 15H24V17H8z"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          class="bx--number__rule-divider"
+                        />
+                        <button
+                          aria-label="Increment number"
+                          class="bx--number__control-btn up-icon"
+                          tabindex="-1"
+                          title="Increment number"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="up-icon"
+                            fill="currentColor"
+                            focusable="false"
+                            height="16"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 32 32"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M17 15L17 8 15 8 15 15 8 15 8 17 15 17 15 24 17 24 17 17 24 17 24 15z"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          class="bx--number__rule-divider"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="vdp-stage-duration-unit-group"
+              >
+                <div
+                  data-testid="select"
+                >
+                  <div
+                    class="bx--list-box__wrapper"
+                  >
+                    <label
+                      class="bx--label"
+                      dir="auto"
+                      for="stage-duration-unit-0"
+                      id="downshift-3-label"
+                    >
+                      <div
+                        class="titleText"
+                      >
+                        <span>
+                          Units 
+                        </span>
+                      </div>
+                    </label>
+                    <div
+                      class="bx--combo-box bx--list-box"
+                    >
+                      <div
+                        class="bx--list-box__field"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          autocomplete="off"
+                          class="bx--text-input"
+                          id="stage-duration-unit-0"
+                          placeholder="Select"
+                          role="combobox"
+                          style="width: 100%;"
+                          tabindex="0"
+                          type="text"
+                          value="Day(s)"
+                        />
+                        <button
+                          aria-label="Clear selected item"
+                          class="bx--list-box__selection"
+                          tabindex="0"
+                          title="Clear selected item"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="currentColor"
+                            focusable="false"
+                            height="16"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 32 32"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          aria-haspopup="true"
+                          aria-label="Open"
+                          class="bx--list-box__menu-icon"
+                          data-toggle="true"
+                          role="button"
+                          tabindex="-1"
+                          title="Open"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="currentColor"
+                            focusable="false"
+                            height="16"
+                            preserveAspectRatio="xMidYMid meet"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div
+                        aria-label="Choose an item"
+                        class="bx--list-box__menu"
+                        id="downshift-3-menu"
+                        role="listbox"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="vdp-toggle-instructions-btn bx--btn bx--btn--sm bx--btn--ghost"
+              tabindex="0"
+              type="button"
+            >
+              Add Instructions
+            </button>
+          </div>
+          <div
+            class="vdp-stages-footer"
+          >
+            <button
+              class="vdp-add-stage-btn bx--btn bx--btn--sm bx--btn--tertiary"
+              tabindex="0"
+              type="button"
+            >
+              Add Stage
+              <svg
+                aria-hidden="true"
+                class="bx--btn__icon"
+                fill="currentColor"
+                focusable="false"
+                height="16"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 32 32"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17 15L17 8 15 8 15 15 8 15 8 17 15 17 15 24 17 24 17 17 24 17 24 15z"
+                />
+              </svg>
+            </button>
+            <span
+              class="vdp-totals"
+            >
+              Total Dosage
+              : 
+              0.0
+               
+              
+               | 
+              Total Duration
+              : 
+              0
+               
+              Day(s)
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="bx--modal-footer bx--btn-set"
+      >
+        <button
+          class="bx--btn bx--btn--secondary"
+          tabindex="0"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="bx--btn bx--btn--primary bx--btn--disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+  </div>
+  <div
+    class="bx--modal bx--modal-tall bx--modal--danger next-ui variable-dose-close-confirmation"
+    role="presentation"
+    style="z-index: 10000;"
+  >
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+    <div
+      aria-label="[object Object]"
+      aria-modal="true"
+      class="bx--modal-container"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div
+        class="bx--modal-header"
+      >
+        
+        <h3
+          class="bx--modal-header__heading"
+          id="bx--modal-header__heading--modal-2"
+        >
+          You will lose the details entered. Do you want to continue?
+        </h3>
+        <button
+          aria-label="close"
+          class="bx--modal-close"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="bx--modal-close__icon"
+            fill="currentColor"
+            focusable="false"
+            height="20"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 32 32"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        aria-labelledby="bx--modal-header__heading--modal-2"
+        class="bx--modal-content"
+        id="bx--modal-body--modal-2"
+      />
+      <div
+        class="bx--modal-footer bx--btn-set"
+      >
+        <button
+          class="bx--btn bx--btn--secondary"
+          tabindex="0"
+          type="button"
+        >
+          Yes
+        </button>
+        <button
+          aria-describedby="danger-description-7"
+          class="bx--btn bx--btn--danger"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="bx--visually-hidden"
+            id="danger-description-7"
+          >
+            danger
+          </span>
+          No
+        </button>
+      </div>
+    </div>
+    <span
+      class="bx--visually-hidden"
+      role="link"
+      tabindex="0"
+    >
+      Focus sentinel
+    </span>
+  </div>
+</div>
+`;
