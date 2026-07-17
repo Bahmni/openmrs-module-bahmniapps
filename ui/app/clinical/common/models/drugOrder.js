@@ -106,7 +106,7 @@ Bahmni.Clinical.DrugOrder = (function () {
             action: Bahmni.Clinical.Constants.orderActions.new,
             dosingInstructionType: utils.FHIR_DOSING_INSTRUCTION_TYPE,
             duration: totalDays,
-            durationUnits: 'Day(s)',
+            durationUnits: 'Days',
             scheduledDate: vdt.startDate,
             careSetting: vdt.careSetting || 'OUTPATIENT',
             dosingInstructions: {
