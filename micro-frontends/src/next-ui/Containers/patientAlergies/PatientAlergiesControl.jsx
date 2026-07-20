@@ -224,7 +224,6 @@ export function PatientAlergiesControl(props) {
   }, []);
 
   useEffect(() => {
-    if (!enableNoKnownAllergy) return;
     getNoKnownAllergyUuid().then((code) => {
       setNoKnownAllergyUuid(code);
     });
@@ -276,6 +275,7 @@ export function PatientAlergiesControl(props) {
                 }
               }}
               noKnownAllergyUuid={noKnownAllergyUuid}
+              enableNoKnownAllergy={enableNoKnownAllergy}
             />
           )}
           <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy information saved successfully"/>} hideCloseButton={true}/>
