@@ -303,7 +303,7 @@ describe("FormDisplayControl Component with Accordion and Non-Accordion", () => 
       draftFormNames: ["Orthopaedic Triage"],
     };
     const { container } = render(
-      <FormDisplayControl hostData={hostDataWithDraft} appService={mockAppService} />
+      <FormDisplayControl hostData={hostDataWithDraft} />
     );
 
     await waitFor(() => {
@@ -322,7 +322,7 @@ describe("FormDisplayControl Component with Accordion and Non-Accordion", () => 
       draftFormNames: [],
     };
     const { container } = render(
-      <FormDisplayControl hostData={hostDataNoDraft} appService={mockAppService} />
+      <FormDisplayControl hostData={hostDataNoDraft} />
     );
 
     await waitFor(() => {
@@ -341,7 +341,7 @@ describe("FormDisplayControl Component with Accordion and Non-Accordion", () => 
       draftFormNames: ["Some Other Form"],
     };
     const { container } = render(
-      <FormDisplayControl hostData={hostDataOtherDraft} appService={mockAppService} />
+      <FormDisplayControl hostData={hostDataOtherDraft} />
     );
 
     await waitFor(() => {
