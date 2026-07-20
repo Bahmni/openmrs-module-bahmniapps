@@ -314,16 +314,22 @@ export function FormDisplayControl(props) {
                           )}
                           {checkForPrivileges(value[0], "edit") &&
                             showEdit(value[0].encounterUuid) && (
-                              <i
-                                className="fa fa-pencil"
-                                onClick={() => {
-                                  openEditObservationForm(
-                                    key,
-                                    value[0].encounterUuid,
-                                    value[0].formNameTranslations
-                                  );
-                                }}
-                              ></i>
+                              props?.hostData?.draftFormNames?.includes(key) ? (
+                                <i
+                                  className="fa fa-pencil pencil-disabled"
+                                ></i>
+                              ) : (
+                                <i
+                                  className="fa fa-pencil"
+                                  onClick={() => {
+                                    openEditObservationForm(
+                                      key,
+                                      value[0].encounterUuid,
+                                      value[0].formNameTranslations
+                                    );
+                                  }}
+                                ></i>
+                              )
                             )}
                         </span>
                         <span
