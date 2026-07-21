@@ -12,7 +12,7 @@
 describe('VisitController', function () {
     var scope, $controller, success, encounterService, patientService, patient, dateUtil, $timeout, spinner,
         getEncounterPromise, getPatientPromise, stateParams, patientMapper, q, state, appService, appDescriptor,
-        sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore, auditLogService, messageParams, formService;
+        sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore, auditLogService, messageParams, formService, formDraftService;
 
     var compile, provide;
     var html = '<div class="submit-btn-container"><button type="button" class="cancel" tabindex="-1" ng-click="cancelFunction()"></button><div class="right"><button ng-click="back()"></button><button single-click="clickFunction()" class="confirm"></button></div></div>';
@@ -155,6 +155,8 @@ describe('VisitController', function () {
         patientService.get.and.returnValue(getPatientPromise);
         formService = jasmine.createSpyObj('formService', ['getFormList']);
         formService.getFormList.and.returnValue(specUtil.respondWithPromise(q, { data: observationForms }));
+        formDraftService = jasmine.createSpyObj('formDraftService', ['discardDraft']);
+        formDraftService.discardDraft.and.returnValue(specUtil.simplePromise({}));
         scope.currentProvider = {uuid: ''};
         patientMapper.map.and.returnValue(patient);
 
@@ -182,7 +184,8 @@ describe('VisitController', function () {
             visitService: visitService,
             $location: location,
             auditLogService: auditLogService,
-            formService: formService
+            formService: formService,
+            formDraftService: formDraftService
         });
     }
 
@@ -334,6 +337,31 @@ describe('VisitController', function () {
             expect(visitService.endVisit).toHaveBeenCalledWith('visitUuid');
             messageParams = {visitUuid: visitController.visitUuid, visitType: visitSummary.visitType};
             expect(auditLogService.log).toHaveBeenCalledWith(stateParams.patientUuid, 'CLOSE_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
+        });
+
+        it("should discard draft on visit close confirmation", function () {
+            var visitSummary = {admissionDetails: null, dischargeDetails: null, visitType: 'OPD'};
+            visitService.getVisitSummary.and.returnValue(getVisitSummaryForUuid(visitSummary));
+            window.confirm.and.returnValue(true);
+            visitService.endVisit.and.returnValue(specUtil.createFakePromise());
+            rootScope.currentProvider = {uuid: 'provider-uuid'};
+            createController();
+            visitController.visitUuid = 'visitUuid';
+
+            scope.closeVisitIfDischarged();
+
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith(stateParams.patientUuid, 'provider-uuid');
+        });
+
+        it("should not discard draft when visit close is cancelled", function () {
+            var visitSummary = {admissionDetails: null, dischargeDetails: null, visitType: 'OPD'};
+            visitService.getVisitSummary.and.returnValue(getVisitSummaryForUuid(visitSummary));
+            window.confirm.and.returnValue(false);
+            createController();
+
+            scope.closeVisitIfDischarged();
+
+            expect(formDraftService.discardDraft).not.toHaveBeenCalled();
         });
 
         it("should not close visit when cancelled", function () {

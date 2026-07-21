@@ -737,6 +737,9 @@ concept-set {
           }
 
         }
+        &.has-unsaved-form-observations {
+          border-left: 3px solid #FFA500;
+        }
       }
     }
   }

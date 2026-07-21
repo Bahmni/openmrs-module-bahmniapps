@@ -56,4 +56,46 @@ describe("concept", function () {
         expect(compiledElementScope.hideAbnormalButton).toBeTruthy();
 
     });
+
+    it("should expose collapsible and pdf helpers when directive is linked", function () {
+        scope.conceptSetName = "conceptSetName";
+        scope.showTitle = true;
+        scope.observation = { value: "report.pdf" };
+        recursionHelper.compile.and.callFake(function (element, linkFn) {
+            return function (linkScope) {
+                linkFn(linkScope);
+            };
+        });
+
+        httpBackend.expectGET('../common/concept-set/views/observation.html').respond('<div>dummy</div>');
+        var html = '<concept concept-set-name = "conceptSetName" show-title="showTitle" observation="observation"></concept>';
+        var element = compile(html)(scope);
+        scope.$digest();
+        httpBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        expect(compiledElementScope.isCollapsibleSet()).toBeTruthy();
+        expect(compiledElementScope.hasPDFAsValue()).toBeTruthy();
+    });
+
+    it("should return false for non-pdf values in helper", function () {
+        scope.conceptSetName = "conceptSetName";
+        scope.showTitle = false;
+        scope.observation = { value: "notes.txt" };
+        recursionHelper.compile.and.callFake(function (element, linkFn) {
+            return function (linkScope) {
+                linkFn(linkScope);
+            };
+        });
+
+        httpBackend.expectGET('../common/concept-set/views/observation.html').respond('<div>dummy</div>');
+        var html = '<concept concept-set-name = "conceptSetName" show-title="showTitle" observation="observation"></concept>';
+        var element = compile(html)(scope);
+        scope.$digest();
+        httpBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        expect(compiledElementScope.isCollapsibleSet()).toBeFalsy();
+        expect(compiledElementScope.hasPDFAsValue()).toBeFalsy();
+    });
 });
