@@ -95,7 +95,8 @@
                                     <select id="uniform-dose-unit" class="form-field freq-choose-units" ng-model="treatment.uniformDosingType.doseUnits"
                                             ng-options="item.name as item.name for item in getFinalDosingUnits(treatment)"
                                             ng-required="treatment.isUniformDoseUnitRequired()"
-                                            ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}">
+                                            ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}"
+                                            ng-disabled="isRuleMode(treatment)">
                                         <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                                     </select>
                                 </div>
@@ -274,6 +275,27 @@
                     </div>
                 </article>
 
+                <div ng-if="treatment.doseUnits === 'ml'">
+                    <article class="form-field">
+                        <div class="field-attribute">
+                            <label class="start-date-label fl">{{::treatmentConfig.translate('rate', 'MEDICATION_LABEL_RATE')}}</label>
+                        </div>
+                        <div class="field-value">
+                            <input type="number" id="infusion-rate" class="drug-order-notes"
+                                   ng-model="treatment.rate" min="0"/>
+                        </div>
+                    </article>
+
+                    <article class="form-field">
+                        <div class="field-attribute">
+                            <label class="start-date-label fl">{{::treatmentConfig.translate('additives', 'MEDICATION_LABEL_ADDITIVES')}}</label>
+                        </div>
+                        <div class="field-value">
+                            <textarea id="infusion-additives" rows="1" msd-elastic class="drug-order-notes"
+                                      ng-model="treatment.additives"/>
+                        </div>
+                    </article>
+                </div>
 
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"

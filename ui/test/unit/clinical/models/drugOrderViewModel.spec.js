@@ -736,6 +736,81 @@ describe("drugOrderViewModel", function () {
             expect(drugOrderViewModel.reverseSynced).toBe(true);
         });
 
+        it("should deserialize rate and additives from administrationInstructions JSON", function() {
+            var drugOrder = {
+                "uuid": "ml-kg-order-uuid",
+                "action": "NEW",
+                "careSetting": "Inpatient",
+                "orderType": "Drug Order",
+                "drug": {
+                    "form": "Fluid",
+                    "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4240",
+                    "name": "Normal Saline 0.9% IV Fluid"
+                },
+                "dosingInstructions": {
+                    "quantity": 700,
+                    "route": "Intravenous",
+                    "frequency": "Once a day",
+                    "doseUnits": "ml",
+                    "asNeeded": false,
+                    "quantityUnits": "ml",
+                    "dose": 100,
+                    "administrationInstructions": "{\"instructions\":\"For IV infusion\",\"additionalInstructions\":\"Monitor vitals every 4 hours\",\"rate\":100,\"additives\":\"10 mEq KCl in saline\"}",
+                    "numberOfRefills": null
+                },
+                "durationUnits": "Days",
+                "dateActivated": 1410322624000,
+                "effectiveStartDate": 1410322624000,
+                "effectiveStopDate": 1410409024000,
+                "duration": 7,
+                "provider": {name: "Dr. Smith"},
+                "orderAttributes": []
+            };
+            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
+
+            expect(drugOrderViewModel.rate).toBe(100);
+            expect(drugOrderViewModel.additives).toBe("10 mEq KCl in saline");
+            expect(drugOrderViewModel.instructions).toBe("For IV infusion");
+            expect(drugOrderViewModel.additionalInstructions).toBe("Monitor vitals every 4 hours");
+        });
+
+        it("should deserialize rate and additives as null when not present in administrationInstructions", function() {
+            var drugOrder = {
+                "uuid": "order-uuid",
+                "action": "NEW",
+                "careSetting": "Outpatient",
+                "orderType": "Drug Order",
+                "drug": {
+                    "form": "Tablet",
+                    "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+                    "name": "Paracetamol 500mg"
+                },
+                "dosingInstructions": {
+                    "quantity": 15,
+                    "route": "Orally",
+                    "frequency": "Three times a day",
+                    "doseUnits": "Tablet",
+                    "asNeeded": false,
+                    "quantityUnits": "Tablet",
+                    "dose": 1,
+                    "administrationInstructions": "{\"instructions\":\"Take with water\",\"additionalInstructions\":null}",
+                    "numberOfRefills": null
+                },
+                "durationUnits": "Days",
+                "dateActivated": 1410322624000,
+                "effectiveStartDate": 1410322624000,
+                "duration": 5,
+                "provider": {name: "Dr. Johnson"},
+                "orderAttributes": []
+            };
+            var drugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder);
+
+            expect(drugOrderViewModel.rate).toBeUndefined();
+            expect(drugOrderViewModel.additives).toBeUndefined();
+            expect(drugOrderViewModel.instructions).toBe("Take with water");
+            expect(drugOrderViewModel.additionalInstructions).toBe(null);
+        });
+
 
     });
 
