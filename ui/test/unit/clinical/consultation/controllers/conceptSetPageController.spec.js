@@ -2289,7 +2289,21 @@ describe('ConceptSetPageController', function () {
                 appService.getAppDescriptor.and.returnValue(appDescriptor);
             };
 
-            it('should start auto-save interval when dirty tracking is set up', function () {
+            var dirtyTheForm = function (getObservationValue) {
+                scope.consultation.selectedObsTemplate = [{
+                    component: {
+                        getValue: function () {
+                            return {
+                                observations: [{value: getObservationValue()}]
+                            };
+                        }
+                    },
+                    observations: []
+                }];
+                scope.$digest();
+            };
+
+            it('should NOT start auto-save interval when dirty tracking is set up but form is clean', function () {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
@@ -2300,6 +2314,27 @@ describe('ConceptSetPageController', function () {
 
                 createControllerWithAutoSave();
 
+                expect(autoSaveService.start).not.toHaveBeenCalled();
+            });
+
+            it('should start auto-save interval only once the form becomes dirty', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+                enableDraftFeature();
+
+                scope.patient = {uuid: 'patient-uuid'};
+                rootScope.currentProvider = {uuid: 'provider-uuid'};
+
+                createControllerWithAutoSave();
+                expect(autoSaveService.start).not.toHaveBeenCalled();
+
+                var observationValue;
+                dirtyTheForm(function () { return observationValue; });
+                expect(autoSaveService.start).not.toHaveBeenCalled();
+
+                observationValue = 'updated-value';
+                dirtyTheForm(function () { return observationValue; });
                 expect(autoSaveService.start).toHaveBeenCalled();
             });
 
@@ -2314,6 +2349,11 @@ describe('ConceptSetPageController', function () {
                 scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
 
                 createControllerWithAutoSave();
+
+                var observationValue;
+                dirtyTheForm(function () { return observationValue; });
+                observationValue = 'updated-value';
+                dirtyTheForm(function () { return observationValue; });
 
                 var shouldSaveFn = autoSaveService.start.calls.mostRecent().args[0];
                 scope.formDraft.isDirty = true;
@@ -2331,6 +2371,11 @@ describe('ConceptSetPageController', function () {
 
                 createControllerWithAutoSave();
 
+                var observationValue;
+                dirtyTheForm(function () { return observationValue; });
+                observationValue = 'updated-value';
+                dirtyTheForm(function () { return observationValue; });
+
                 var shouldSaveFn = autoSaveService.start.calls.mostRecent().args[0];
                 scope.formDraft.isDirty = false;
                 expect(shouldSaveFn()).toBe(false);
@@ -2345,6 +2390,11 @@ describe('ConceptSetPageController', function () {
                 rootScope.currentProvider = {uuid: 'provider-uuid'};
 
                 createControllerWithAutoSave();
+
+                var observationValue;
+                dirtyTheForm(function () { return observationValue; });
+                observationValue = 'updated-value';
+                dirtyTheForm(function () { return observationValue; });
 
                 var shouldSaveFn = autoSaveService.start.calls.mostRecent().args[0];
                 scope.formDraft.isDirty = true;
