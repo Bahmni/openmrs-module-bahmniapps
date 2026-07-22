@@ -16,10 +16,10 @@
         <div class="recent-patients-wrapper" ng-show="triggeredByButton || showPatientsBySearch">
             <span  class="recent_patient" ng-if="!search.searchParameter">{{'RECENT_PATIENTS_LABEL'|translate}}</span>
             <div ng-repeat="recent in recentlyViewedPatients track by $index" ng-class ="{'currentPatient': recent.uuid == patient.uuid}" ng-if="!search.searchParameter">
-                <a ng-href="#/{{configName}}/patient/{{recent.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{recent.name}}</span> ({{recent.identifier}})</a>
+                <a ng-href="#/{{configName}}/patient/{{recent.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{recent.name}}</span><span ng-if="recent.isDead" style="color:red; font-weight:bold; margin-left: 5px;">(Deceased)</span> ({{recent.identifier}})</a>
             </div>
             <div ng-repeat="patient in search.searchResults track by $index" ng-if="search.searchParameter">
-                <a ng-href="#/{{configName}}/patient/{{patient.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{patient.name}}</span> ({{patient.identifier}})</a>
+                <a ng-href="#/{{configName}}/patient/{{patient.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{patient.name}}</span><span ng-if="patient.isDead" style="color:red; font-weight:bold; margin-left: 5px;">(Deceased)</span> ({{patient.identifier}})</a>
             </div>
         </div>
     </div>

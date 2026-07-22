@@ -69,7 +69,7 @@
                                ng-click="forwardPatient(row, heading)">{{::row[heading.name]}}</a>
                             <div ng-if="::isHeadingOfName(heading.name)" style="min-width: 150px" ng-click="forwardPatient(row)">
                                 <div style="width: 80%;">
-                                    {{::(isHeadingOfDateColumn(heading.name) ? (row[heading.name] | bahmniDate) : row[heading.name])}}
+                                    {{::(isHeadingOfDateColumn(heading.name) ? (row[heading.name] | bahmniDate) : row[heading.name])}} <span ng-if="row.isDead" style="color:red; font-weight:bold; margin-left: 5px;">(Deceased)</span>
                                 </div>
                                 <span class="icons-container">
                                     <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
@@ -90,7 +90,7 @@
             <ul>
                 <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
                     <img class="smallImages" ng-src="{{::patient.image}}" fallback-src='../images/blank-user.png'>
-                    <div class="patient-name">{{::patient.name}}</div>
+                    <div class="patient-name">{{::patient.name}}<span ng-if="patient.isDead" style="color:red; font-weight:bold; margin-left: 5px;">(Deceased)</span></div>
                     <div ng-if="!preferExtraIdInSearchResults" class="patient-id">{{::patient.identifier}}</div>
                     <div ng-if="preferExtraIdInSearchResults" class="patient-id">{{::patient.extraIdentifier}}</div>
                     <span class="icons-container">

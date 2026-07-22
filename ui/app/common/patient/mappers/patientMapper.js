@@ -21,6 +21,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
     this.mapBasic = function (openmrsPatient) {
         var patient = {};
         patient.uuid = openmrsPatient.uuid;
+        patient.isDead = openmrsPatient.person.dead || false;
         patient.givenName = openmrsPatient.person.preferredName.givenName;
         patient.familyName = openmrsPatient.person.preferredName.familyName === null ? '' : openmrsPatient.person.preferredName.familyName;
         patient.name = patient.givenName + ' ' + patient.familyName;
