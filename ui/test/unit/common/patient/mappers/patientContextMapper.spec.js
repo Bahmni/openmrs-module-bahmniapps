@@ -55,7 +55,8 @@ describe('patient context mapper', function () {
             familyName: 'Patient',
             middleName: null,
             gender: 'M',
-            identifier: 'OS1234'
+            identifier: 'OS1234',
+            isDead: false
         };
         expect(patientContextMapper.map(patient)).toEqual(mappedPatient);
     });
@@ -103,7 +104,8 @@ describe('patient context mapper', function () {
             familyName: 'Patient',
             middleName: null,
             gender: 'M',
-            identifier: 'BDH202048'
+            identifier: 'BDH202048',
+            isDead: false
         };
         expect(patientContextMapper.map(patient)).toEqual(mappedPatient);
     })
