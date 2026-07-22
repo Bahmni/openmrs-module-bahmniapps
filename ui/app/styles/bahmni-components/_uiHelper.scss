@@ -241,3 +241,9 @@ table {
       }
     }
 }
+
+.patient-deceased-label {
+    color: $error;
+    font-weight: bold;
+    margin-left: $smallestSpacing;
+}
