@@ -232,6 +232,8 @@ angular.module('bahmni.common.patientSearch')
             $.extend(options, {
                 patientUuid: patient.uuid,
                 visitUuid: patient.activeVisitUuid || null,
+                medicationAdministrationUuid: patient.medicationAdministrationUuid || null,
+                medicationAdministrationEpoch: patient.medicationAdministrationEpoch || null,
                 encounterUuid: $stateParams.encounterUuid || 'active',
                 programUuid: patient.programUuid || null,
                 enrollment: patient.enrollment || null,
