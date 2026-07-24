@@ -111,9 +111,20 @@ angular.module('bahmni.clinical')
             };
 
             var concatObservationForms = function () {
+                var templateAlreadySelected = function (template) {
+                    return _.find($scope.consultation.selectedObsTemplate, function (t) {
+                        var key = t.formUuid || t.uuid;
+                        var templateKey = template.formUuid || template.uuid;
+                        return key && templateKey ? key === templateKey : t.label === template.label;
+                    });
+                };
+
                 $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
                 $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
                 $scope.allTemplates = $scope.allTemplates.concat($scope.consultation.observationForms);
+                $scope.allTemplates = _.uniqBy($scope.allTemplates, function (t) {
+                    return t.formUuid || t.uuid || t.id;
+                });
 
                 var currentPatientUuid = $scope.patient ? $scope.patient.uuid : null;
                 var isDraftResumeValid = $rootScope.resumeDraftOnLoad &&
@@ -194,7 +205,7 @@ angular.module('bahmni.clinical')
                     if (draftFormData) {
                         _.each($scope.allTemplates, function (template) {
                             if (template.observations && template.observations.length > 0 &&
-                                !_.find($scope.consultation.selectedObsTemplate, function (t) { return t === template; })) {
+                                !templateAlreadySelected(template)) {
                                 insertTemplate(template);
                             }
                         });
@@ -208,7 +219,7 @@ angular.module('bahmni.clinical')
                 } else if (draftFormData) {
                     _.each($scope.allTemplates, function (template) {
                         if (template.hasUnsavedFormObservations &&
-                            !_.find($scope.consultation.selectedObsTemplate, function (t) { return t === template; })) {
+                            !templateAlreadySelected(template)) {
                             insertTemplate(template);
                         }
                     });

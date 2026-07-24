@@ -360,22 +360,118 @@ describe('ConceptSetPageController', function () {
             createController();
 
             expect(scope.allTemplates).toBeTruthy();
-            expect(scope.allTemplates.length).toEqual(3);
+            expect(scope.allTemplates.length).toEqual(2);
 
             expect(scope.consultation.selectedObsTemplate).toBeTruthy();
-            expect(scope.consultation.selectedObsTemplate.length).toEqual(3);
+            expect(scope.consultation.selectedObsTemplate.length).toEqual(2);
 
             expect(scope.consultation.selectedObsTemplate[0].conceptName).toEqual("abcd");
             expect(scope.consultation.selectedObsTemplate[0].observations[0].uuid).toEqual("cafedead");
             expect(scope.consultation.selectedObsTemplate[0].uuid).toEqual(123);
 
-            expect(scope.consultation.selectedObsTemplate[1].conceptName).toEqual("abcd");
-            expect(scope.consultation.selectedObsTemplate[1].observations[0].uuid).toEqual("deadcafe");
-            expect(scope.consultation.selectedObsTemplate[1].uuid).toEqual(123);
+            expect(scope.consultation.selectedObsTemplate[1].formName).toEqual("my form");
+            expect(scope.consultation.selectedObsTemplate[1].observations[0].uuid).toEqual("random-uuid");
+            expect(scope.consultation.selectedObsTemplate[1].formUuid).toEqual("my-form-uuid");
+        });
 
-            expect(scope.consultation.selectedObsTemplate[2].formName).toEqual("my form");
-            expect(scope.consultation.selectedObsTemplate[2].observations[0].uuid).toEqual("random-uuid");
-            expect(scope.consultation.selectedObsTemplate[2].formUuid).toEqual("my-form-uuid");
+        it("should not duplicate Form 1 template when resuming a draft", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            var data = [
+                {
+                    name: "my form",
+                    version: '1',
+                    uuid: "my-form-uuid",
+                    privileges: []
+                }
+            ];
+            mockConceptSetService(conceptResponseData);
+            mockformService(data);
+
+            scope.patient = {};
+            scope.consultation.observations = [{
+                concept: {
+                    name: "abcd",
+                    uuid: 123
+                },
+                uuid: "obs-uuid-1"
+            }];
+
+            rootScope.resumeDraftOnLoad = true;
+            rootScope.draftData = {
+                formData: JSON.stringify([{
+                    concept: { uuid: 123 },
+                    uuid: "draft-uuid",
+                    observations: []
+                }])
+            };
+
+            createController();
+
+            var form1Templates = _.filter(scope.consultation.selectedObsTemplate, function (t) {
+                return t.uuid === 123;
+            });
+            expect(form1Templates.length).toEqual(1);
+        });
+
+        it("should insert multiple Form 2 templates with undefined labels during draft resume", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "concept1"}, uuid: 100}]
+                    }
+                ]
+            };
+            var form2Data = [
+                {
+                    name: "form-a",
+                    formName: "form-a",
+                    formUuid: "form-uuid-1",
+                    uuid: "form-uuid-1",
+                    version: '1',
+                    privileges: []
+                },
+                {
+                    name: "form-b",
+                    formName: "form-b",
+                    formUuid: "form-uuid-2",
+                    uuid: "form-uuid-2",
+                    version: '1',
+                    privileges: []
+                }
+            ];
+            mockConceptSetService(conceptResponseData);
+            mockformService(form2Data);
+
+            scope.patient = {};
+            rootScope.resumeDraftOnLoad = true;
+            rootScope.draftData = {
+                formData: JSON.stringify([
+                    {
+                        formNamespace: "Bahmni",
+                        formFieldPath: "form-a.1/101",
+                        uuid: "obs-1"
+                    },
+                    {
+                        formNamespace: "Bahmni",
+                        formFieldPath: "form-b.1/102",
+                        uuid: "obs-2"
+                    }
+                ])
+            };
+
+            createController();
+
+            var form2Templates = _.filter(scope.consultation.selectedObsTemplate, function (t) {
+                return t.formUuid;
+            });
+            expect(form2Templates.length).toEqual(2);
+            expect(_.map(form2Templates, 'formUuid')).toEqual(['form-uuid-1', 'form-uuid-2']);
         });
 
         it("should load all templates specific to program when program uuid is present", function () {
