@@ -729,6 +729,7 @@ describe('listViewController', function () {
     });
 
     it("should have assessment and other fields in table info when configured", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue(undefined);
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
@@ -747,19 +748,20 @@ describe('listViewController', function () {
         };
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
-        expect(scope.tableInfo.length).toBe(22);
+        expect(scope.tableInfo.length).toBe(27);
         expect(scope.filteredObservationColumns.length).toBe(4);
         expect(scope.filteredObservationColumns[0].heading).toBe("OT_ANAESTHESIA_REVIEW_DATE");
         expect(scope.filteredObservationColumns[1].heading).toBe("OT_ANAESTHESIA_REVIEW");
-        expect(scope.tableInfo[19].heading).toBe("Bed Location");
-        expect(scope.tableInfo[19].sortInfo).toBe("bedLocation");
-        expect(scope.tableInfo[20].heading).toBe("Bed ID");
-        expect(scope.tableInfo[20].sortInfo).toBe("bedNumber");
-        expect(scope.tableInfo[21].heading).toBe("Primary Diagnoses");
-        expect(scope.tableInfo[21].sortInfo).toBe("patientObservations");
+        expect(scope.tableInfo[24].heading).toBe("Bed Location");
+        expect(scope.tableInfo[24].sortInfo).toBe("bedLocation");
+        expect(scope.tableInfo[25].heading).toBe("Bed ID");
+        expect(scope.tableInfo[25].sortInfo).toBe("bedNumber");
+        expect(scope.tableInfo[26].heading).toBe("Primary Diagnoses");
+        expect(scope.tableInfo[26].sortInfo).toBe("patientObservations");
     });
 
     it("should not include assessment columns when config is absent", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue(undefined);
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return undefined;
@@ -779,10 +781,11 @@ describe('listViewController', function () {
         expect(headings).not.toContain("OT_ANAESTHESIA_REVIEW");
         expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW_DATE");
         expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW");
-        expect(scope.tableInfo.length).toBe(22);
+        expect(scope.tableInfo.length).toBe(23);
     });
 
     it("should not include assessment columns when config is empty array", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue(undefined);
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [];
@@ -802,10 +805,11 @@ describe('listViewController', function () {
         expect(headings).not.toContain("OT_ANAESTHESIA_REVIEW");
         expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW_DATE");
         expect(headings).not.toContain("OT_PAEDIATRIC_REVIEW");
-        expect(scope.tableInfo.length).toBe(22);
+        expect(scope.tableInfo.length).toBe(23);
     });
 
     it("should include only configured assessment columns in configured order", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue(undefined);
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
@@ -823,7 +827,7 @@ describe('listViewController', function () {
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
 
-        expect(scope.tableInfo.length).toBe(22);
+        expect(scope.tableInfo.length).toBe(25);
         expect(scope.filteredObservationColumns.length).toBe(2);
         expect(scope.filteredObservationColumns[0].heading).toBe("OT_PAEDIATRIC_REVIEW");
         expect(scope.filteredObservationColumns[1].heading).toBe("OT_ANAESTHESIA_REVIEW_DATE");
@@ -860,6 +864,7 @@ describe('listViewController', function () {
     });
 
     it('should have all the surgical attributes in table info', function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue(undefined);
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
@@ -878,21 +883,21 @@ describe('listViewController', function () {
         };
         rootScope.attributeTypes = defaultAttributeTypes;
         createController();
-        expect(scope.tableInfo.length).toBe(22);
-        expect(scope.tableInfo[11].heading).toBe('procedure');
-        expect(scope.tableInfo[11].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
-        expect(scope.tableInfo[12].heading).toBe('otherSurgeon');
-        expect(scope.tableInfo[12].sortInfo).toBe('surgicalAppointmentAttributes.otherSurgeon.value.person.display');
-        expect(scope.tableInfo[13].heading).toBe('surgicalAssistant');
-        expect(scope.tableInfo[13].sortInfo).toBe('surgicalAppointmentAttributes.surgicalAssistant.value');
-        expect(scope.tableInfo[14].heading).toBe('anaesthetist');
-        expect(scope.tableInfo[14].sortInfo).toBe('surgicalAppointmentAttributes.anaesthetist.value');
-        expect(scope.tableInfo[15].heading).toBe('scrubNurse');
-        expect(scope.tableInfo[15].sortInfo).toBe('surgicalAppointmentAttributes.scrubNurse.value');
-        expect(scope.tableInfo[16].heading).toBe('circulatingNurse');
-        expect(scope.tableInfo[16].sortInfo).toBe('surgicalAppointmentAttributes.circulatingNurse.value');
-        expect(scope.tableInfo[17].heading).toBe('notes');
-        expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
+        expect(scope.tableInfo.length).toBe(27);
+        expect(scope.tableInfo[15].heading).toBe('procedure');
+        expect(scope.tableInfo[15].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
+        expect(scope.tableInfo[16].heading).toBe('otherSurgeon');
+        expect(scope.tableInfo[16].sortInfo).toBe('surgicalAppointmentAttributes.otherSurgeon.value.person.display');
+        expect(scope.tableInfo[17].heading).toBe('surgicalAssistant');
+        expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.surgicalAssistant.value');
+        expect(scope.tableInfo[18].heading).toBe('anaesthetist');
+        expect(scope.tableInfo[18].sortInfo).toBe('surgicalAppointmentAttributes.anaesthetist.value');
+        expect(scope.tableInfo[19].heading).toBe('scrubNurse');
+        expect(scope.tableInfo[19].sortInfo).toBe('surgicalAppointmentAttributes.scrubNurse.value');
+        expect(scope.tableInfo[20].heading).toBe('circulatingNurse');
+        expect(scope.tableInfo[20].sortInfo).toBe('surgicalAppointmentAttributes.circulatingNurse.value');
+        expect(scope.tableInfo[21].heading).toBe('notes');
+        expect(scope.tableInfo[21].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
     })
 
     it('should have primaryDiagnosisInfo attributes in table info', function () {
@@ -904,9 +909,9 @@ describe('listViewController', function () {
         rootScope.attributeTypes = defaultAttributeTypes;
         rootScope.showPrimaryDiagnosisForOT = true;
         createController();
-        expect(scope.tableInfo.length).toBe(22);
-        expect(scope.tableInfo[21].heading).toBe('Primary Diagnoses');
-        expect(scope.tableInfo[21].sortInfo).toBe('patientObservations');
+        expect(scope.tableInfo.length).toBe(23);
+        expect(scope.tableInfo[22].heading).toBe('Primary Diagnoses');
+        expect(scope.tableInfo[22].sortInfo).toBe('patientObservations');
         });
 
     it("should set sortInfo to null for observation columns in tableInfo", function () {
@@ -950,5 +955,69 @@ describe('listViewController', function () {
         expect(scope.tableInfo[4].heading).toBe('Hb');
         expect(scope.tableInfo[4].sortInfo).toBeNull();
         expect(scope.tableInfo[5].heading).toBe('Day');
+    });
+
+    it("should generate default table structure with observation columns when no custom template or listViewColumns configured", function () {
+        otUtils.getConceptFormatAttributeName.and.returnValue(undefined);
+        // Simulate real-world scenario: only listViewObservationColumns configured, no custom template or listViewColumns
+        appDescriptor.getConfigValue.and.callFake(function (configName) {
+            if (configName === 'listViewObservationColumns') {
+                return [
+                    {concept: "Haemoglobin", type: "date", label: "HB_DATE"},
+                    {concept: "Haemoglobin", label: "HB_VALUE"}
+                ];
+            }
+            if (configName === 'listViewTemplateUrl') {
+                return null; // No custom template
+            }
+            if (configName === 'listViewColumns') {
+                return null; // No custom columns config
+            }
+            return null;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
+        createController();
+
+        // Verify default structure is built (not custom template structure)
+        expect(scope.tableInfo).toBeDefined();
+        expect(scope.tableInfo.length).toBeGreaterThan(0);
+
+        // Verify it includes base columns (Identifier, Patient Name, Status)
+        var headings = scope.tableInfo.map(function(info) { return info.heading; });
+        expect(headings).toContain('Identifier');
+        expect(headings).toContain('Patient Name');
+        expect(headings).toContain('Status');
+
+        // Verify it includes observation columns
+        expect(headings).toContain('HB_DATE');
+        expect(headings).toContain('HB_VALUE');
+
+        // Verify it includes standard surgical columns
+        expect(headings).toContain('Day');
+        expect(headings).toContain('Date');
+        expect(headings).toContain('Patient Age');
+        expect(headings).toContain('OT#');
+        expect(headings).toContain('Surgeon');
+
+        // Verify observation columns have null sortInfo (not sortable)
+        var hbDateCol = scope.tableInfo.find(function(col) { return col.heading === 'HB_DATE'; });
+        var hbValueCol = scope.tableInfo.find(function(col) { return col.heading === 'HB_VALUE'; });
+        expect(hbDateCol.sortInfo).toBeNull();
+        expect(hbValueCol.sortInfo).toBeNull();
+
+        // Verify surgical attributes are included
+        var procedureCol = scope.tableInfo.find(function(col) { return col.heading === 'procedure'; });
+        expect(procedureCol).toBeDefined();
+        expect(procedureCol.sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
+
+        // Verify bed-related attributes are included
+        expect(headings).toContain('Bed Location');
+        expect(headings).toContain('Bed ID');
     });
 });
