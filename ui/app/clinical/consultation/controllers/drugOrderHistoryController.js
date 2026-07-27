@@ -273,9 +273,11 @@ angular.module('bahmni.clinical')
                     $scope.toggleDrugOrderAttribute(drugOrder.orderAttributes[0]);
                 }
 
-                if (drugOrder.isEditAllowed) {
-                    $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
-                }
+                $rootScope.$broadcast("event:reviseDrugOrder", drugOrder, drugOrders);
+            };
+
+            $scope.reviseVariableDose = function (drugOrder) {
+                $rootScope.$broadcast("event:reviseVariableDoseOrder", drugOrder);
             };
 
             $scope.updateFormConditions = function (drugOrder) {

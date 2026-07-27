@@ -27,6 +27,7 @@ angular.module('bahmni.clinical')
                     $scope.treatments = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName].treatments;
                     $scope.orderSetTreatments = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName].orderSetTreatments;
                     $scope.newOrderSet = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName].newOrderSet;
+                    $scope.variableDoseTreatments = $scope.consultation.variableDoseTreatments = $scope.consultation.variableDoseTreatments || [];
                 };
 
                 var getPreviousDrugAlerts = function () {

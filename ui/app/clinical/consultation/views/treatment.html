@@ -7,7 +7,8 @@
         <section class="treatment-section-right clearfix">
             <dashboard patient="::patient" config="::medicationTabDisplayControls" section-groups="sectionGroups"></dashboard>
             <new-drug-orders treatments="treatments"
-                             treatment-config="treatmentConfig"></new-drug-orders>
+                             treatment-config="treatmentConfig"
+                             variable-dose-treatments="variableDoseTreatments"></new-drug-orders>
             <new-order-group treatments="orderSetTreatments" order-set-name="newOrderSet.name"></new-order-group>
             <div ng-if="drugOrderHistoryView === 'default'" ui-view="defaultHistoryView"></div>
             <div ng-if="drugOrderHistoryView === 'custom'" ui-view="customHistoryView"></div>

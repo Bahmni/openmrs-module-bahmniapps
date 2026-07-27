@@ -12,7 +12,8 @@ import {
   parseDateArray,
   formatDate,
   formatArrayDateToDefaultDateFormat,
-  formatGender
+  formatGender,
+  toOption
 } from './utils';
 describe('calculateAgeFromEpochDOB', () => {
 
@@ -95,5 +96,35 @@ describe('calculateAgeFromEpochDOB', () => {
 
     expect(result1).toEqual('2024-02-07 12:30:00');
     expect(result2).toEqual('2000-01-01 00:00:00');
+  });
+
+  describe('toOption', () => {
+    it('should return null for null input', () => {
+      expect(toOption(null)).toBeNull();
+    });
+
+    it('should return null for undefined input', () => {
+      expect(toOption(undefined)).toBeNull();
+    });
+
+    it('should return null for an empty string', () => {
+      expect(toOption("")).toBeNull();
+    });
+
+    it('should convert a string to a {label, value} option', () => {
+      expect(toOption("Days")).toEqual({ label: "Days", value: "Days" });
+    });
+
+    it('should convert a {name} object to a {label, value} option', () => {
+      expect(toOption({ name: "Weeks" })).toEqual({ label: "Weeks", value: "Weeks" });
+    });
+
+    it('should convert a {label, value} object through unchanged', () => {
+      expect(toOption({ label: "Months", value: "Months" })).toEqual({ label: "Months", value: "Months" });
+    });
+
+    it('should return null for an object with no resolvable label or value', () => {
+      expect(toOption({})).toBeNull();
+    });
   });
 });
