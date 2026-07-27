@@ -19,6 +19,17 @@ describe("Form Controls", function () {
                 provide = $provide;
                 formService = jasmine.createSpyObj('formService', ['getFormDetail', 'getFormTranslations']);
                 spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+                var configurationService = jasmine.createSpyObj('configurationService', ['hyperlinkAllowedDomains']);
+                var promiseMock = {
+                    then: function (callback) {
+                        callback({ data: '' });
+                        return promiseMock;
+                    },
+                    catch: function (callback) {
+                        return promiseMock;
+                    }
+                };
+                configurationService.hyperlinkAllowedDomains.and.returnValue(promiseMock);
                 appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
                 appService.getAppDescriptor.and.returnValue({
                     getConfigValue: function (key) {
@@ -34,6 +45,7 @@ describe("Form Controls", function () {
                 };
                 provide.value('formService', formService);
                 provide.value('appService', appService);
+                provide.value('configurationService', configurationService);
                 translate = {
                     use: function(){ return 'en' }
                 };
@@ -137,13 +149,17 @@ describe("Form Controls", function () {
             capturedAllowedDomains = arguments[8];
             renderHelper.renderWithControlsCalledTimes += 1;
         };
-        appService.getAppDescriptor.and.returnValue({
-            getConfigValue: function (key) {
-                if (key === 'hyperlinkAllowedDomains') {
-                    return ['*.example.com'];
+        inject(function (configurationService) {
+            var promiseMock = {
+                then: function (callback) {
+                    callback({ data: '*.example.com' });
+                    return promiseMock;
+                },
+                catch: function (callback) {
+                    return promiseMock;
                 }
-                return null;
-            }
+            };
+            configurationService.hyperlinkAllowedDomains.and.returnValue(promiseMock);
         });
         mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
@@ -156,8 +172,17 @@ describe("Form Controls", function () {
             capturedAllowedDomains = arguments[8];
             renderHelper.renderWithControlsCalledTimes += 1;
         };
-        appService.getAppDescriptor.and.returnValue({
-            getConfigValue: function () { return null; }
+        inject(function (configurationService) {
+            var promiseMock = {
+                then: function (callback) {
+                    callback({ data: '' });
+                    return promiseMock;
+                },
+                catch: function (callback) {
+                    return promiseMock;
+                }
+            };
+            configurationService.hyperlinkAllowedDomains.and.returnValue(promiseMock);
         });
         mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
@@ -170,13 +195,17 @@ describe("Form Controls", function () {
             capturedAllowedDomains = arguments[8];
             renderHelper.renderWithControlsCalledTimes += 1;
         };
-        appService.getAppDescriptor.and.returnValue({
-            getConfigValue: function (key) {
-                if (key === 'hyperlinkAllowedDomains') {
-                    return ['*.example.com'];
+        inject(function (configurationService) {
+            var promiseMock = {
+                then: function (callback) {
+                    callback({ data: '*.example.com' });
+                    return promiseMock;
+                },
+                catch: function (callback) {
+                    return promiseMock;
                 }
-                return null;
-            }
+            };
+            configurationService.hyperlinkAllowedDomains.and.returnValue(promiseMock);
         });
         mockObservationServiceWithTranslationFailure({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();

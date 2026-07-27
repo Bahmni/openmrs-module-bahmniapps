@@ -74,4 +74,18 @@
 .bx--modal-content {
     padding-top: 0;
 }
+
+a[data-bahmni-hyperlink="true"] {
+    color: #0066cc;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:visited {
+        color: #663399;
+    }
+}
   
