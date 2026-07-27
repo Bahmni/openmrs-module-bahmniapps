@@ -400,7 +400,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                 </div>
 
                 <div className="variable-dose-form-grid">
-                    {dosingRules.length > 0 ? (
+                    {dosingRules.length > 0 && (
                         <div onInput={(e) => {
                             if (e.target.value === "") {
                                 setDosingRule(null);
@@ -436,8 +436,6 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                                 width="100%"
                             />
                         </div>
-                    ) : (
-                        <div />
                     )}
 
                     <BahmniDropdown
@@ -451,9 +449,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                         onChange={(selectedItem) => setUnits(selectedItem || null)}
                         width="100%"
                     />
-                </div>
 
-                <div className="variable-dose-form-grid">
                     <DatePickerCarbon
                         id="variable-dose-start-date"
                         title={START_DATE_LABEL}

@@ -165,7 +165,6 @@ exports[`VariableDoseProtocolModal should render the modal (open=true is hardcod
         <div
           class="variable-dose-form-grid"
         >
-          <div />
           <div
             data-testid="select"
           >
@@ -247,10 +246,6 @@ exports[`VariableDoseProtocolModal should render the modal (open=true is hardcod
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="variable-dose-form-grid"
-        >
           <div
             class="date-picker-carbon"
             data-testid="datePicker"

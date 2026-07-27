@@ -1047,9 +1047,9 @@ angular.module('bahmni.clinical')
                         return angular.extend({
                             doseUnits: treatmentConfig.getDoseUnits(),
                             routes: treatmentConfig.getRoutes(),
-                            dosingRules: treatmentConfig.dosingRules || [],
+                            dosingRules: $scope.showRulesInMedication ? (treatmentConfig.dosingRules || []) : [],
                             drugFormDefaults: treatmentConfig.inputOptionsConfig.drugFormDefaults || {},
-                            dosageRuleUnitsMap: (orderSetConfig && orderSetConfig.dosageRuleUnitsMap) || {},
+                            dosageRuleUnitsMap: $scope.showRulesInMedication ? ((orderSetConfig && orderSetConfig.dosageRuleUnitsMap) || {}) : {},
                             dosingInstructions: treatmentConfig.getDosingInstructions(),
                             frequencies: treatmentConfig.getFrequencies(),
                             durationUnits: treatmentConfig.getDurationUnits()

@@ -115,7 +115,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: start;
-  gap: 3rem;
+  row-gap: 1.5rem;
+  column-gap: 3rem;
   margin-top: 1.5rem;
 
   > * {
