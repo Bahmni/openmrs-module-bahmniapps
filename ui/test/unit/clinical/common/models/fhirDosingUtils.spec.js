@@ -488,4 +488,37 @@ describe('FhirDosingUtils', function () {
             expect(result).toBe('10 mg, Before meals');
         });
     });
+
+    describe('getBaseDurationUnitName', function () {
+        it('should return the configured name for the factor-1 entry', function () {
+            var durationUnitsFactors = [
+                { name: 'Day(s)', factor: 1 },
+                { name: 'Week(s)', factor: 7 },
+                { name: 'Month(s)', factor: 30 }
+            ];
+            expect(utils.getBaseDurationUnitName(durationUnitsFactors)).toBe('Day(s)');
+        });
+
+        it('should return the site-configured name even if it differs from the default', function () {
+            var durationUnitsFactors = [
+                { name: 'Days', factor: 1 },
+                { name: 'Weeks', factor: 7 },
+                { name: 'Months', factor: 30 }
+            ];
+            expect(utils.getBaseDurationUnitName(durationUnitsFactors)).toBe('Days');
+        });
+
+        it('should fall back to Days when there is no factor-1 entry', function () {
+            var durationUnitsFactors = [
+                { name: 'Week(s)', factor: 7 }
+            ];
+            expect(utils.getBaseDurationUnitName(durationUnitsFactors)).toBe('Days');
+        });
+
+        it('should fall back to Days when config is missing or empty', function () {
+            expect(utils.getBaseDurationUnitName(null)).toBe('Days');
+            expect(utils.getBaseDurationUnitName(undefined)).toBe('Days');
+            expect(utils.getBaseDurationUnitName([])).toBe('Days');
+        });
+    });
 });

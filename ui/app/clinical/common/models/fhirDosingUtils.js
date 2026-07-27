@@ -35,6 +35,11 @@ var fromUcumDurationUnit = function (ucum) {
     return map[ucum] || 'Day(s)';
 };
 
+var getBaseDurationUnitName = function (durationUnitsFactors) {
+    var match = (durationUnitsFactors || []).filter(function (u) { return u.factor === 1; })[0];
+    return (match && match.name) || 'Days';
+};
+
 var safeParseJson = function (str) {
     if (!str) { return null; }
     try {
@@ -259,6 +264,7 @@ Bahmni.Clinical.FhirDosingUtils = {
     normalizeToDays: normalizeToDays,
     toUcumDurationUnit: toUcumDurationUnit,
     fromUcumDurationUnit: fromUcumDurationUnit,
+    getBaseDurationUnitName: getBaseDurationUnitName,
     extractSelectValue: extractSelectValue,
     parseFhirDosages: parseFhirDosages,
     parseFlatAdminInstructions: parseFlatAdminInstructions,

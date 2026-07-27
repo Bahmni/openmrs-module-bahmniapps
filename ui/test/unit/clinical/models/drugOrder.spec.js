@@ -193,5 +193,17 @@ describe("DrugOrder", function() {
 			expect(drugOrder.drugNonCoded).toBe('Herbal Mixture 500mg');
 			expect(drugOrder.concept).toEqual(nonCodedConcept);
 		});
+
+		it("should use vdt.totalDurationUnit as the durationUnits when provided", function () {
+			var vdt = buildVdt({totalDurationUnit: 'Day(s)'});
+			var drugOrder = Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt);
+			expect(drugOrder.durationUnits).toBe('Day(s)');
+		});
+
+		it("should fall back to 'Days' as the durationUnits when vdt.totalDurationUnit is not provided", function () {
+			var vdt = buildVdt();
+			var drugOrder = Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt);
+			expect(drugOrder.durationUnits).toBe('Days');
+		});
 	});
 });

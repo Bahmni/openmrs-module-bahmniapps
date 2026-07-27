@@ -1246,6 +1246,7 @@ angular.module('bahmni.clinical')
                                         stageCount: stageCount,
                                         hasLoadingDose: !!(data.loadingDose && calculatedLoadingDose),
                                         totalDays: totalDays,
+                                        totalDurationUnit: Bahmni.Clinical.FhirDosingUtils.getBaseDurationUnitName(treatmentConfig.getDurationUnits()),
                                         stages: stages
                                     };
                                     $scope.consultation.variableDoseTreatments = $scope.consultation.variableDoseTreatments || [];
