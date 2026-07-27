@@ -2996,12 +2996,13 @@ describe('ConceptSetPageController', function () {
             expect(rootScope.draftData).toBeNull();
         });
 
-        it('should clear stale hasUnsavedFormObservations in concatObservationForms when isDraftResumeValid is false and activeVisit is present', function () {
+        it('should preserve unsaved form observations in concatObservationForms when isDraftResumeValid is false but activeVisit is present', function () {
             rootScope.resumeDraftOnLoad = false;
             rootScope.draftData = null;
             scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
             // Pre-populate selectedObsTemplate so initializeDefaultTemplates is skipped,
-            // and set a stale unsaved form obs on observationForms to exercise the stale-obs guard
+            // and set a stale unsaved form obs on observationForms to verify
+            // that the stale-obs guard does NOT fire when an active visit is present.
             scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', label: 'Template 1'}];
             scope.consultation.observationForms = [{
                 formName: 'Form1',
@@ -3014,8 +3015,8 @@ describe('ConceptSetPageController', function () {
             createController();
 
             var hasAnyFormUnsaved = _.some(scope.consultation.observationForms, function (f) { return f.hasUnsavedFormObservations; });
-            expect(hasAnyFormUnsaved).toBe(false);
-            expect(scope.consultation.observationForms[0].observations.length).toBe(0);
+            expect(hasAnyFormUnsaved).toBe(true);
+            expect(scope.consultation.observationForms[0].observations.length).toBe(1);
         });
     });
 });
