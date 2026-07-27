@@ -51,14 +51,17 @@ angular.module('bahmni.ot')
             $scope.tableInfo = getTableInfo();
 
             function getObservationColumnsTableInfo () {
-                return $scope.filteredObservationColumns.map(function (column) {
+                return ($scope.filteredObservationColumns || []).map(function (column) {
                     return { heading: column.heading, sortInfo: null };
                 });
             }
 
             function getTableInfo () {
-                var customTemplateUrl = appService.getAppDescriptor().getConfigValue("listViewTemplateUrl");
-                var customTableInfo = appService.getAppDescriptor().getConfigValue("listViewColumns") || [];
+                var appDescriptor = appService.getAppDescriptor();
+                var customTemplateUrl = appDescriptor.getConfigValue("listViewTemplateUrl");
+                var customTableInfo = appDescriptor.getConfigValue("listViewColumns") || [];
+                // Custom columns are only used when BOTH template URL and columns are configured.
+                // The custom template is responsible for rendering tableInfo in a non-standard way.
                 if (customTemplateUrl && customTableInfo.length > 0) {
                     return customTableInfo;
                 }
@@ -251,8 +254,8 @@ angular.module('bahmni.ot')
                 }
             });
 
-            $scope.$watch("filterParams", function (oldValue, newValue) {
-                if (oldValue !== newValue) {
+            $scope.$watch("filterParams", function (newValue, oldValue) {
+                if (newValue !== oldValue) {
                     filterSurgicalBlocksAndMapAppointmentsForDisplay($scope.surgicalBlocks);
                 }
             });
