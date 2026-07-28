@@ -60,8 +60,6 @@ angular.module('bahmni.ot')
                 var appDescriptor = appService.getAppDescriptor();
                 var customTemplateUrl = appDescriptor.getConfigValue("listViewTemplateUrl");
                 var customTableInfo = appDescriptor.getConfigValue("listViewColumns") || [];
-                // Custom columns are only used when BOTH template URL and columns are configured.
-                // The custom template is responsible for rendering tableInfo in a non-standard way.
                 if (customTemplateUrl && customTableInfo.length > 0) {
                     return customTableInfo;
                 }
