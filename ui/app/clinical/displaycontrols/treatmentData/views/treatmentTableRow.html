@@ -4,6 +4,8 @@
 <tr ng-if="drugOrder.isVariableDoseOrder"
     ng-repeat-start="stage in drugOrder.stages"
     ng-click="stage.showDetails = !stage.showDetails"
+    ng-keydown="$event.which === 13 && (stage.showDetails = !stage.showDetails)"
+    tabindex="0"
     class="variable-dose-stage-row">
     <td class="drug variable-dose-stage-drug" ng-class="{'strike-text': drugOrder.isDiscontinuedOrStopped(), 'active-drug': stage.status === stageStatus.ongoing, 'scheduled-drug': stage.status === stageStatus.upcoming}">
         {{::drugOrder.drugNameDisplay}}
