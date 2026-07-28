@@ -70,8 +70,8 @@ describe("VariableDoseProtocolModal", () => {
         const { container } = renderModal();
         await waitFor(() => {
             expect(screen.getByText("Order Drug - Variable Dosage Protocol")).toBeTruthy();
-            expect(container).toMatchSnapshot();
         });
+        expect(container).toMatchSnapshot();
     });
 
     it("should disable Next button when no drug is selected", async () => {
