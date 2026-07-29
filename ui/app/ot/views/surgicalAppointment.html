@@ -32,10 +32,11 @@
                     <textarea class="text-section" id="procedureID" ng-model="attributes.procedure.value" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1" msd-elastic> </textarea>
                 </p>
                 <p ng-if="conceptFormatAttributeNames.indexOf(attributeTypeName) !== -1">
-                    <label class="surgeon-block surgeon-text">
+                    <label class="surgeon-block surgeon-text" for="{{attributeTypeName}}-select">
                         {{ (defaultAttributeTranslations.get(attributeTypeName) | translate) || attributeTypeName }}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span>
                     </label>
-                    <select ng-options="option.value as (option.label | translate) for option in conceptFormatAttributeDropdownOptionsMap[attributeTypeName]"
+                    <select id="{{attributeTypeName}}-select"
+                            ng-options="option.value as (option.label | translate) for option in conceptFormatAttributeDropdownOptionsMap[attributeTypeName]"
                             ng-model="attributes[attributeTypeName].value"
                             ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">
                         <option value=""> {{'OT_SELECT_OPTION_KEY' | translate}}</option>
@@ -44,14 +45,14 @@
                 <p ng-switch-when="estTimeHours">
                     <!--Since time and hours are displayed as one single attribute in UI, OT_SURGICAL_APPOINTMENT_MINUTES and
                     OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME have to be hard-coded-->
-                    <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
+                    <label class="surgeon-block surgeon-text" for="estTimeHoursID">{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
                     <input type="number" id="estTimeHoursID" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1" ng-model="attributes.estTimeHours.value" string-to-number min="0" max="23" step="1">
                     {{defaultAttributeTranslations.get(attributeTypeName) | translate}} :
                     <input type="number" id="estTimeMinutesID" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1" ng-model="attributes.estTimeMinutes.value" string-to-number min="0" max="59">
-                    {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
+                    <label for="estTimeMinutesID">{{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}</label>
                 </p>
                 <p ng-switch-when="cleaningTime">
-                    <label class="surgeon-block surgeon-text">{{defaultAttributeTranslations.get(attributeTypeName) | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
+                    <label class="surgeon-block surgeon-text" for="cleaningTimeID">{{defaultAttributeTranslations.get(attributeTypeName) | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
                     <input type="number" id="cleaningTimeID" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1" ng-model="attributes.cleaningTime.value" string-to-number min="0" max="59"> min(s)
                 </p>
                 <p ng-switch-when="otherSurgeon">
@@ -63,7 +64,7 @@
                     </select>
                 </p>
                 <p ng-switch-when="notes">
-                    <label class="surgeon-block surgeon-text">{{defaultAttributeTranslations.get(attributeTypeName) | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
+                    <label class="surgeon-block surgeon-text" for="notesID">{{defaultAttributeTranslations.get(attributeTypeName) | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
                     <textarea class="text-section" placeholder="{{'OT_ENTER_YOUR_NOTES' | translate}}" id="notesID" ng-model="attributes.notes.value" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1" msd-elastic></textarea>
                 </p>
                 <p ng-switch-when="patientWeight">
