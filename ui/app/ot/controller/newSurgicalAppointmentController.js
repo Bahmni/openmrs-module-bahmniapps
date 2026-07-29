@@ -27,7 +27,7 @@ angular.module('bahmni.ot')
                     $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
                     $scope.conceptFormatAttributeNames = otUtils.getConceptFormatAttributeNames();
                     var configuredRequired = appService.getAppDescriptor().getConfigValue("requiredSurgeryAttributes");
-                    $scope.requiredConceptAttributes = configuredRequired || [$scope.conceptFormatAttributeName];
+                    $scope.requiredConceptAttributes = configuredRequired || [];
                     var attributes = {};
                     var mapAttributes = new Bahmni.OT.SurgicalBlockMapper().mapAttributes(attributes, $scope.attributeTypes);
                     $scope.attributes = $scope.ngDialogData && $scope.ngDialogData.surgicalAppointmentAttributes || mapAttributes;
