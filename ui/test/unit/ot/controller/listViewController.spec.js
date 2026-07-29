@@ -733,10 +733,10 @@ describe('listViewController', function () {
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
-                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
-                    {concept: "Pre Anaesthesia Assessed for Surgery?", label: "OT_ANAESTHESIA_REVIEW"},
-                    {concept: "Assessed for Surgery?", type: "date", label: "OT_PAEDIATRIC_REVIEW_DATE", validityDays: 30},
-                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"}
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", translationKey: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", translationKey: "OT_ANAESTHESIA_REVIEW"},
+                    {concept: "Assessed for Surgery?", type: "date", translationKey: "OT_PAEDIATRIC_REVIEW_DATE", validityDays: 30},
+                    {concept: "Assessed for Surgery?", translationKey: "OT_PAEDIATRIC_REVIEW"}
                 ];
             }
             return null;
@@ -747,6 +747,7 @@ describe('listViewController', function () {
             statusList: []
         };
         rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
         createController();
         expect(scope.tableInfo.length).toBe(27);
         expect(scope.filteredObservationColumns.length).toBe(4);
@@ -774,6 +775,7 @@ describe('listViewController', function () {
             statusList: []
         };
         rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
         createController();
 
         var headings = scope.tableInfo.map(function (info) { return info.heading; });
@@ -798,6 +800,7 @@ describe('listViewController', function () {
             statusList: []
         };
         rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
         createController();
 
         var headings = scope.tableInfo.map(function (info) { return info.heading; });
@@ -813,8 +816,8 @@ describe('listViewController', function () {
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
-                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"},
-                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30}
+                    {concept: "Assessed for Surgery?", translationKey: "OT_PAEDIATRIC_REVIEW"},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", translationKey: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30}
                 ];
             }
             return null;
@@ -825,6 +828,7 @@ describe('listViewController', function () {
             statusList: []
         };
         rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
         createController();
 
         expect(scope.tableInfo.length).toBe(25);
@@ -841,8 +845,8 @@ describe('listViewController', function () {
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
-                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
-                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"}
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", translationKey: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
+                    {concept: "Assessed for Surgery?", translationKey: "OT_PAEDIATRIC_REVIEW"}
                 ];
             }
             return null;
@@ -868,10 +872,10 @@ describe('listViewController', function () {
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
-                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
-                    {concept: "Pre Anaesthesia Assessed for Surgery?", label: "OT_ANAESTHESIA_REVIEW"},
-                    {concept: "Assessed for Surgery?", type: "date", label: "OT_PAEDIATRIC_REVIEW_DATE", validityDays: 30},
-                    {concept: "Assessed for Surgery?", label: "OT_PAEDIATRIC_REVIEW"}
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", translationKey: "OT_ANAESTHESIA_REVIEW_DATE", validityDays: 30},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", translationKey: "OT_ANAESTHESIA_REVIEW"},
+                    {concept: "Assessed for Surgery?", type: "date", translationKey: "OT_PAEDIATRIC_REVIEW_DATE", validityDays: 30},
+                    {concept: "Assessed for Surgery?", translationKey: "OT_PAEDIATRIC_REVIEW"}
                 ];
             }
             return null;
@@ -882,6 +886,7 @@ describe('listViewController', function () {
             statusList: []
         };
         rootScope.attributeTypes = defaultAttributeTypes;
+        rootScope.showPrimaryDiagnosisForOT = true;
         createController();
         expect(scope.tableInfo.length).toBe(27);
         expect(scope.tableInfo[15].heading).toBe('procedure');
@@ -917,7 +922,7 @@ describe('listViewController', function () {
     it("should set sortInfo to null for observation columns in tableInfo", function () {
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
-                return [{concept: "Haemoglobin", type: "date", label: "Hb Date"}];
+                return [{concept: "Haemoglobin", type: "date", translationKey: "Hb Date"}];
             }
             return null;
         });
@@ -931,8 +936,8 @@ describe('listViewController', function () {
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
-                    {concept: "Haemoglobin", label: "OT_HB_LABEL"},
-                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", label: "OT_ANAESTHESIA_REVIEW_DATE"}
+                    {concept: "Haemoglobin", translationKey: "OT_HB_LABEL"},
+                    {concept: "Pre Anaesthesia Assessed for Surgery?", type: "date", translationKey: "OT_ANAESTHESIA_REVIEW_DATE"}
                 ];
             }
             return null;
@@ -946,7 +951,7 @@ describe('listViewController', function () {
         otUtils.getConceptFormatAttributeName.and.returnValue('Blood Transfusion Requested for Surgery?');
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
-                return [{concept: "Haemoglobin", label: "Hb"}];
+                return [{concept: "Haemoglobin", translationKey: "Hb"}];
             }
             return null;
         });
@@ -962,8 +967,8 @@ describe('listViewController', function () {
         appDescriptor.getConfigValue.and.callFake(function (configName) {
             if (configName === 'listViewObservationColumns') {
                 return [
-                    {concept: "Haemoglobin", type: "date", label: "HB_DATE"},
-                    {concept: "Haemoglobin", label: "HB_VALUE"}
+                    {concept: "Haemoglobin", type: "date", translationKey: "HB_DATE"},
+                    {concept: "Haemoglobin", translationKey: "HB_VALUE"}
                 ];
             }
             if (configName === 'listViewTemplateUrl') {

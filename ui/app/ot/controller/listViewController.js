@@ -27,7 +27,7 @@ angular.module('bahmni.ot')
                 return {
                     conceptName: entry.concept,
                     isDate: entry.type === 'date',
-                    heading: entry.label
+                    heading: entry.translationKey
                 };
             });
 
