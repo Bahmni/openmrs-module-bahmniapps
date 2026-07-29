@@ -374,7 +374,7 @@ describe("AddAllergy", () => {
     }, "patient#1");
   });
 
-  it("should show known allergy selector when existingAllergies is empty", () => {
+  it("should show known allergy selector when existingAllergies is empty and enableNoKnownAllergy is true", () => {
     render(
         <IntlProvider locale="en">
           <AddAllergy
@@ -387,6 +387,7 @@ describe("AddAllergy", () => {
               reaction={mockReactionsData}
               existingAllergies={[]}
               noKnownAllergyUuid={"000000AAAAAA"}
+              enableNoKnownAllergy={true}
           />
         </IntlProvider>
     );
@@ -406,6 +407,27 @@ describe("AddAllergy", () => {
               reaction={mockReactionsData}
               existingAllergies={mockExistingAllergies}
               noKnownAllergyUuid={"000000AAAAAA"}
+              enableNoKnownAllergy={true}
+          />
+        </IntlProvider>
+    );
+    expect(() => screen.getByText("Does the patient have any known allergies?")).toThrow();
+  });
+
+  it("should not show known allergy selector when enableNoKnownAllergy is false even with noKnownAllergyUuid set", () => {
+    render(
+        <IntlProvider locale="en">
+          <AddAllergy
+              onClose={onClose}
+              onSave={onSave}
+              patient={patient}
+              provider={provider}
+              severityOptions={mockSeverityData}
+              allergens={mockAllergensData}
+              reaction={mockReactionsData}
+              existingAllergies={[]}
+              noKnownAllergyUuid={"000000AAAAAA"}
+              enableNoKnownAllergy={false}
           />
         </IntlProvider>
     );
@@ -453,6 +475,7 @@ describe("AddAllergy", () => {
               reaction={mockReactionsData}
               existingAllergies={[]}
               noKnownAllergyUuid="000000AAAAAA"
+              enableNoKnownAllergy={true}
           />
         </IntlProvider>
     );
@@ -475,6 +498,7 @@ describe("AddAllergy", () => {
               reaction={mockReactionsData}
               existingAllergies={[]}
               noKnownAllergyUuid={"000000AAAAAA"}
+              enableNoKnownAllergy={true}
           />
         </IntlProvider>
     );

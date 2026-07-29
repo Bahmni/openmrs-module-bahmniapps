@@ -20,7 +20,7 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
 
 
   export function AddAllergy(props) {
-    const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies, noKnownAllergyUuid } = props;
+    const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies, noKnownAllergyUuid, enableNoKnownAllergy } = props;
     const [allergen, setAllergen] = React.useState({});
     const [reactions, setReactions] = React.useState([]);
     const [severity, setSeverity] = React.useState("");
@@ -101,7 +101,7 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     };
 
 
-    const showKnownAllergySelector = existingAllergies?.length === 0
+    const showKnownAllergySelector = existingAllergies?.length === 0 && !!noKnownAllergyUuid && enableNoKnownAllergy
 
     return (
         <div className={"next-ui"}>
@@ -216,5 +216,6 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     patient: propTypes.object.isRequired,
     severityOptions: propTypes.array.isRequired,
     existingAllergies: propTypes.array.isRequired,
-    noKnownAllergyUuid: propTypes.string.isRequired
+    noKnownAllergyUuid: propTypes.string.isRequired,
+    enableNoKnownAllergy: propTypes.bool.isRequired
   };

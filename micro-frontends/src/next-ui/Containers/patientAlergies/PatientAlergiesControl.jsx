@@ -47,6 +47,7 @@ export function PatientAlergiesControl(props) {
   const { patient, provider, activeVisit, allergyControlConceptIdMap } = hostData;
 
   const isAddButtonEnabled = activeVisit && activeVisit.uuid;
+  const enableNoKnownAllergy = appService.getAppDescriptor().getConfigValue("enableNoKnownAllergy") || false;
 
   const extractAllergenData = (allergenData, allergenKind) =>
     allergenData?.setMembers
@@ -265,6 +266,7 @@ export function PatientAlergiesControl(props) {
                 }
               }}
               noKnownAllergyUuid={noKnownAllergyUuid}
+              enableNoKnownAllergy={enableNoKnownAllergy}
             />
           )}
           <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy information saved successfully"/>} hideCloseButton={true}/>
