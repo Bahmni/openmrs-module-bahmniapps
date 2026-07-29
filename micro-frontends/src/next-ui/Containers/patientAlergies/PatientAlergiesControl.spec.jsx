@@ -11,6 +11,7 @@ import React from "react";
 import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { PatientAlergiesControl } from "./PatientAlergiesControl";
 import { IntlProvider } from "react-intl";
+import { getNoKnownAllergyUuid } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
 
 const mockMedicationResponseData = {
   uuid: "100340AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -231,5 +232,21 @@ describe("PatientAlergiesControl", () => {
 
     fireEvent.click(getByTestId("cancel"));
     expect(container.querySelector(".overlay-next-ui")).toBeNull();
+  });
+
+  it("should fetch noKnownAllergyUuid even when enableNoKnownAllergy toggle is off", async () => {
+    const mockAppServiceToggleOff = {
+      getAppDescriptor: () => ({
+        getConfigValue: () => false
+      })
+    };
+    render(
+      <IntlProvider locale="en">
+        <PatientAlergiesControl hostData={testHostData} appService={mockAppServiceToggleOff}/>
+      </IntlProvider>
+    );
+    await waitFor(() => {
+      expect(getNoKnownAllergyUuid).toHaveBeenCalled();
+    });
   });
 });
