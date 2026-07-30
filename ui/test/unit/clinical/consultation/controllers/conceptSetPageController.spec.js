@@ -38,6 +38,7 @@ describe('ConceptSetPageController', function () {
                 return true;
             }
         };
+        rootScope.formDraftFeatureEnabled = false;
 
         var register = function () {
         };
@@ -632,9 +633,7 @@ describe('ConceptSetPageController', function () {
             };
             mockConceptSetService(conceptResponseData);
             mockformService({});
-            var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-            appDescriptor.getConfigValue.and.returnValue(true);
-            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            rootScope.formDraftFeatureEnabled = true;
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -656,9 +655,7 @@ describe('ConceptSetPageController', function () {
             };
             mockConceptSetService(conceptResponseData);
             mockformService({});
-            var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-            appDescriptor.getConfigValue.and.returnValue(false);
-            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            rootScope.formDraftFeatureEnabled = false;
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -670,7 +667,7 @@ describe('ConceptSetPageController', function () {
             expect(scope.enableFormDraftFeature).toBe(false);
         });
 
-        it("should call appService.getAppDescriptor().getConfigValue() with enableFormDraftFeature", function () {
+        it("should read enableFormDraftFeature from rootScope", function () {
             var conceptResponseData = {
                 results: [
                     {
@@ -680,6 +677,7 @@ describe('ConceptSetPageController', function () {
             };
             mockConceptSetService(conceptResponseData);
             mockformService({});
+            rootScope.formDraftFeatureEnabled = true;
             rootScope.currentUser = {
                 isFavouriteObsTemplate: function () {
                     return false;
@@ -688,7 +686,7 @@ describe('ConceptSetPageController', function () {
 
             createController();
 
-            expect(appService.getAppDescriptor).toHaveBeenCalled();
+            expect(scope.enableFormDraftFeature).toBe(true);
         });
     })
 
@@ -696,6 +694,7 @@ describe('ConceptSetPageController', function () {
         var createControllerWithTimeoutAndFilter;
 
         beforeEach(inject(function ($timeout) {
+            rootScope.formDraftFeatureEnabled = true;
             createControllerWithTimeoutAndFilter = function (timeoutMock, filterMock, formDraftServiceMock) {
                 var defaultFilterMock = function () {
                     return function () {
@@ -1112,6 +1111,7 @@ describe('ConceptSetPageController', function () {
             var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
             mockConceptSetService(conceptResponseData);
             mockformService({});
+            rootScope.formDraftFeatureEnabled = false;
 
             createControllerWithTimeoutAndFilter();
             scope.formDraft.isDirty = true;
@@ -1837,6 +1837,7 @@ describe('ConceptSetPageController', function () {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 'concept-uuid-1'}]}]};
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
+                rootScope.formDraftFeatureEnabled = false;
 
                 scope.patient = {uuid: 'test-patient-uuid'};
                 rootScope.currentProvider = {uuid: 'test-provider-uuid'};
@@ -2481,6 +2482,7 @@ describe('ConceptSetPageController', function () {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
+                rootScope.formDraftFeatureEnabled = false;
 
                 scope.patient = {uuid: 'patient-uuid'};
                 rootScope.currentProvider = {uuid: 'provider-uuid'};
@@ -2902,6 +2904,7 @@ describe('ConceptSetPageController', function () {
             var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appDescriptor.getConfigValue.and.returnValue(true);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
+            rootScope.formDraftFeatureEnabled = true;
 
             scope.patient = {uuid: 'test-patient-uuid'};
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};

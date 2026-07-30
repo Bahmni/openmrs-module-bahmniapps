@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
-            $scope.enableFormDraftFeature = appService.getAppDescriptor().getConfigValue('enableFormDraftFeature');
+            $scope.enableFormDraftFeature = $rootScope.formDraftFeatureEnabled;
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
             var configs = clinicalAppConfigService.getAllConceptsConfig();
             var visitType = configurations.encounterConfig().getVisitTypeByUuid($scope.consultation.visitTypeUuid);

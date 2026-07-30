@@ -14,7 +14,7 @@ angular.module('bahmni.clinical')
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter', 'formDraftService', '$rootScope', 'ngDialog', '$timeout',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
             $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter, formDraftService, $rootScope, ngDialog, $timeout) {
-            $scope.enableFormDraftFeature = appService.getAppDescriptor().getConfigValue('enableFormDraftFeature');
+            $scope.enableFormDraftFeature = $rootScope.formDraftFeatureEnabled;
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -163,6 +163,9 @@ angular.module('bahmni.clinical')
             });
 
             var cleanUpListenerDraftSaved = $scope.$on("draft:saved", function (event, draftTimestamp) {
+                if (!$scope.enableFormDraftFeature) {
+                    return;
+                }
                 if (draftTimestamp && typeof draftTimestamp === 'object') {
                     $scope.formDraft.hasDrafts = true;
                     $scope.formDraft.draftDate = draftTimestamp.draftDate;
@@ -246,5 +249,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.init(getCurrentTab());
-            checkForExistingDrafts();
+            if ($scope.enableFormDraftFeature) {
+                checkForExistingDrafts();
+            }
         }]);
