@@ -109,6 +109,8 @@ angular.module('bahmni.common.domain')
                 transformResponse: [function (data) {
                     return data;
                 }]
+            }).catch(function () {
+                return '';
             });
         };
 
@@ -264,7 +266,6 @@ angular.module('bahmni.common.domain')
         };
 
         return {
-            getConfigurations: getConfigurations,
-            hyperlinkAllowedDomains: configurationFunctions.hyperlinkAllowedDomains
+            getConfigurations: getConfigurations
         };
     }]);

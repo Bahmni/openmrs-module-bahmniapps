@@ -9,6 +9,7 @@
 
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
+import axios from 'axios';
 import { getLocale } from "../i18n/utils";
 import { getFormByFormName, getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
@@ -79,8 +80,8 @@ const EditObservationForm = (props) => {
 
                 const [latestForms, allowedDomainsData] = await Promise.all([
                     getLatestPublishedForms(),
-                    fetch(GLOBAL_PROPERTY_URL + '?property=bahmni.forms.hyperlink.allowedDomains', { credentials: 'include' })
-                        .then(res => res.ok ? res.text() : '')
+                    axios.get(GLOBAL_PROPERTY_URL, { params: { property: 'bahmni.forms.hyperlink.allowedDomains' } })
+                        .then(res => res.data || '')
                         .catch(() => '')
                 ]);
 

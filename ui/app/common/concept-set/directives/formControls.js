@@ -21,7 +21,7 @@ angular.module('bahmni.common.conceptSet')
                 });
             };
 
-            var controller = function ($scope, $http) {
+            var controller = function ($scope) {
                 var formUuid = $scope.form.formUuid;
                 var formVersion = $scope.form.formVersion;
                 var formName = $scope.form.formName;
@@ -72,9 +72,9 @@ angular.module('bahmni.common.conceptSet')
                     }
                 };
 
-                configurationService.hyperlinkAllowedDomains()
-                    .then(function (response) {
-                        var domainsData = response.data || '';
+                configurationService.getConfigurations(['hyperlinkAllowedDomains'])
+                    .then(function (configurations) {
+                        var domainsData = configurations.hyperlinkAllowedDomains || '';
                         allowedDomains = (domainsData || '').split(',').map(function (d) { return d.trim(); }).filter(function (d) { return d; });
                         loadForm();
                     })

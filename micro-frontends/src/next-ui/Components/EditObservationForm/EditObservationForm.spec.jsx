@@ -9,11 +9,13 @@
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import axios from 'axios';
 import EditObservationForm from './EditObservationForm';
 import { getFormByFormName, getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
 import { getLatestPublishedForms } from '../../utils/FormDisplayControl/FormUtils';
 
+jest.mock('axios');
 jest.mock('../i18n/utils');
 jest.mock('./EditObservationFormUtils');
 jest.mock('../../utils/FormDisplayControl/FormView');
@@ -98,11 +100,13 @@ describe('EditObservationForm', () => {
     };
 
     beforeEach(() => {
+        jest.clearAllMocks();
         findByEncounterUuid.mockResolvedValue({});
         getLatestPublishedForms.mockResolvedValue([]);
         getFormByFormName.mockReturnValue({ uuid: 'form-uuid' });
         getFormDetail.mockResolvedValue({ resources: [{ value: '{}' }] });
         getFormTranslations.mockResolvedValue({});
+        axios.get.mockResolvedValue({ data: '' });
         props.setEditFormLoading.mockClear();
         window.renderWithControls.mockReturnValue({
             getValue: jest.fn().mockReturnValue({
@@ -110,10 +114,6 @@ describe('EditObservationForm', () => {
                 observations: []
             })
         });
-    });
-
-    beforeEach(() => {
-        jest.clearAllMocks();
     });
 
     test('renders loading state correctly', async () => {
