@@ -103,7 +103,6 @@ describe("newSurgicalAppointmentController", function () {
             controller = $controller;
             scope = $rootScope.$new();
             surgicalAppointmentHelper = _surgicalAppointmentHelper_;
-            spyOn(surgicalAppointmentHelper, 'addConceptFormatAttributeTranslation').and.returnValue(new Map());
             spyOn(surgicalAppointmentHelper, 'getDefaultAttributeTranslations').and.returnValue(new Map());
         });
     });
