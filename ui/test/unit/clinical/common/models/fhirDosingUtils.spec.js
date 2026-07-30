@@ -40,16 +40,16 @@ describe('FhirDosingUtils', function () {
             expect(utils.isLoadingDoseOrder('not-json')).toBe(false);
         });
 
-        it('should return true for FHIR array with isLoadingDose extension', function () {
+        it('should return true for FHIR array with timing.repeat.count=1', function () {
             var fhirStr = JSON.stringify([{
-                extension: [{ url: 'isLoadingDose', valueBoolean: true }]
+                timing: { repeat: { count: 1 } }
             }]);
             expect(utils.isLoadingDoseOrder(fhirStr)).toBe(true);
         });
 
-        it('should return false for FHIR array without isLoadingDose extension', function () {
+        it('should return false for FHIR array with count != 1', function () {
             var fhirStr = JSON.stringify([{
-                extension: [{ url: 'isLoadingDose', valueBoolean: false }]
+                timing: { repeat: { count: 2 } }
             }]);
             expect(utils.isLoadingDoseOrder(fhirStr)).toBe(false);
         });
@@ -58,7 +58,7 @@ describe('FhirDosingUtils', function () {
             expect(utils.isLoadingDoseOrder(JSON.stringify([]))).toBe(false);
         });
 
-        it('should return false for FHIR dosage with no extension', function () {
+        it('should return false for FHIR dosage with no timing.repeat.count', function () {
             var fhirStr = JSON.stringify([{ sequence: 1 }]);
             expect(utils.isLoadingDoseOrder(fhirStr)).toBe(false);
         });
@@ -95,13 +95,16 @@ describe('FhirDosingUtils', function () {
     });
 
     describe('buildFhirDosageArray', function () {
-        it('should build loading dose with isLoadingDose extension and no timing.repeat', function () {
+        it('should build loading dose with timing.repeat.count=1', function () {
             var stages = [{ stageName: 'Loading Dose', dose: '5', frequency: 'Once', duration: '1', durationUnit: 'Occurrence(s)', rate: '', additives: '', instructions: '', additionalInstructions: '' }];
             var result = utils.buildFhirDosageArray(stages, 'mg', 'Oral');
-            var ext = result[0].extension.find(function (e) { return e.url === 'isLoadingDose'; });
-            expect(ext).toBeTruthy();
-            expect(ext.valueBoolean).toBe(true);
-            expect(result[0].timing.repeat).toBeUndefined();
+            expect(result[0].timing.repeat).toBeDefined();
+            expect(result[0].timing.repeat.count).toBe(1);
+            expect(result[0].timing.repeat.duration).toBeUndefined();
+            expect(result[0].timing.repeat.durationUnit).toBeUndefined();
+            expect(result[0].extension).toBeUndefined();
+            expect(result[0].additionalInstruction).toBeUndefined();
+            expect(result[0].patientInstruction).toBeUndefined();
         });
 
         it('should add rateQuantity when rate > 0', function () {
@@ -120,9 +123,62 @@ describe('FhirDosingUtils', function () {
         it('should add additives extension when present', function () {
             var stages = [{ stageName: '1', dose: '10', frequency: 'Once a day', duration: '3', durationUnit: 'Day(s)', rate: '', additives: 'NS 100ml', instructions: '', additionalInstructions: '', isLoadingDose: false }];
             var result = utils.buildFhirDosageArray(stages, 'mg', 'Oral');
-            var ext = result[0].extension.find(function (e) { return e.url === 'additives'; });
+            var ext = result[0].extension.find(function (e) { return e.url === 'http://fhir.bahmni.org/ext/medication-additives'; });
             expect(ext).toBeTruthy();
             expect(ext.valueString).toBe('NS 100ml');
+        });
+
+        it('should not include empty additionalInstruction and patientInstruction fields', function () {
+            var stages = [{ stageName: '1', dose: '10', frequency: 'Once a day', duration: '3', durationUnit: 'Day(s)', rate: '', additives: '', instructions: '', additionalInstructions: '', isLoadingDose: false }];
+            var result = utils.buildFhirDosageArray(stages, 'mg', 'Oral');
+            expect(result[0].additionalInstruction).toBeUndefined();
+            expect(result[0].patientInstruction).toBeUndefined();
+        });
+
+        it('should include additionalInstruction and patientInstruction when they have values', function () {
+            var stages = [{ stageName: '1', dose: '10', frequency: 'Once a day', duration: '3', durationUnit: 'Day(s)', rate: '', additives: '', instructions: 'Take with food', additionalInstructions: 'Avoid dairy', isLoadingDose: false }];
+            var result = utils.buildFhirDosageArray(stages, 'mg', 'Oral');
+            expect(result[0].additionalInstruction).toBeDefined();
+            expect(result[0].additionalInstruction[0].text).toBe('Take with food');
+            expect(result[0].patientInstruction).toBe('Avoid dairy');
+        });
+
+        it('should build timing.code as CodeableConcept with text only when no frequency object provided', function () {
+            var stages = [{ stageName: '1', dose: '10', frequency: 'Once a day', duration: '3', durationUnit: 'Day(s)', rate: '', additives: '', instructions: '', additionalInstructions: '', isLoadingDose: false }];
+            var result = utils.buildFhirDosageArray(stages, 'mg', 'Oral');
+            expect(result[0].timing.code).toBeDefined();
+            expect(result[0].timing.code.text).toBe('Once a day');
+            expect(result[0].timing.code.coding).toBeUndefined();
+        });
+
+        it('should build timing.code CodeableConcept with coding array when frequency object with uuid provided', function () {
+            var frequencyObject = { uuid: 'freq-uuid-123', name: 'Once a day' };
+            var stages = [{ stageName: '1', dose: '10', frequency: 'Once a day', frequencyObject: frequencyObject, duration: '3', durationUnit: 'Day(s)', rate: '', additives: '', instructions: '', additionalInstructions: '', isLoadingDose: false }];
+            var result = utils.buildFhirDosageArray(stages, 'mg', 'Oral');
+            expect(result[0].timing.code).toBeDefined();
+            expect(result[0].timing.code.text).toBe('Once a day');
+            expect(result[0].timing.code.coding).toBeDefined();
+            expect(result[0].timing.code.coding[0].code).toBe('freq-uuid-123');
+            expect(result[0].timing.code.coding[0].display).toBe('Once a day');
+        });
+
+        it('should build route CodeableConcept with text only when route is string', function () {
+            var stages = [{ stageName: '1', dose: '10', frequency: 'Once a day', duration: '3', durationUnit: 'Day(s)', rate: '', additives: '', instructions: '', additionalInstructions: '', isLoadingDose: false }];
+            var result = utils.buildFhirDosageArray(stages, 'mg', 'Oral');
+            expect(result[0].route).toBeDefined();
+            expect(result[0].route.text).toBe('Oral');
+            expect(result[0].route.coding).toBeUndefined();
+        });
+
+        it('should build route CodeableConcept with coding array when route object with uuid provided', function () {
+            var routeObject = { uuid: 'route-uuid-456', name: 'Intravenous' };
+            var stages = [{ stageName: '1', dose: '10', frequency: 'Once a day', duration: '3', durationUnit: 'Day(s)', rate: '', additives: '', instructions: '', additionalInstructions: '', isLoadingDose: false }];
+            var result = utils.buildFhirDosageArray(stages, 'mg', routeObject);
+            expect(result[0].route).toBeDefined();
+            expect(result[0].route.text).toBe('Intravenous');
+            expect(result[0].route.coding).toBeDefined();
+            expect(result[0].route.coding[0].code).toBe('route-uuid-456');
+            expect(result[0].route.coding[0].display).toBe('Intravenous');
         });
     });
 
@@ -252,13 +308,10 @@ describe('FhirDosingUtils', function () {
         it('should return loading dose duration from constant', function () {
             var dosage = {
                 sequence: 1, text: 'Loading Dose',
-                timing: { code: { text: 'Once' } },
+                timing: { code: { text: 'Once' }, repeat: { count: 1 } },
                 route: { text: 'Oral' },
                 doseAndRate: [{ type: { text: 'ordered' }, doseQuantity: { value: 5, unit: 'mg' } }],
-                additionalInstruction: [], patientInstruction: '',
-                extension: [
-                    { url: 'isLoadingDose', valueBoolean: true }
-                ]
+                additionalInstruction: [], patientInstruction: ''
             };
             var result = utils.fhirDosageToStage(dosage);
             expect(result.duration).toBe('1 Occurrence(s)');
@@ -272,8 +325,7 @@ describe('FhirDosingUtils', function () {
                 timing: { repeat: { duration: 3, durationUnit: 'd' }, code: { text: 'Once a day' } },
                 route: { text: 'Oral' },
                 doseAndRate: [{ type: { text: 'ordered' }, doseQuantity: { value: 10, unit: 'mg' } }],
-                additionalInstruction: [{ text: 'As directed' }], patientInstruction: '',
-                extension: [{ url: 'isLoadingDose', valueBoolean: false }]
+                additionalInstruction: [{ text: 'As directed' }], patientInstruction: ''
             };
             var result = utils.fhirDosageToStage(dosage);
             expect(result.duration).toBe('3 Day(s)');
@@ -288,8 +340,7 @@ describe('FhirDosingUtils', function () {
                 timing: { repeat: { duration: 2, durationUnit: 'd' }, code: { text: 'Twice a day' } },
                 route: { text: 'Oral' },
                 doseAndRate: [{ type: { text: 'ordered' }, doseQuantity: { value: 5, unit: 'mg' } }],
-                additionalInstruction: [], patientInstruction: '',
-                extension: [{ url: 'isLoadingDose', valueBoolean: false }]
+                additionalInstruction: [], patientInstruction: ''
             };
             var result = utils.fhirDosageToStage(dosage);
             expect(result.stageName).toBe('3');

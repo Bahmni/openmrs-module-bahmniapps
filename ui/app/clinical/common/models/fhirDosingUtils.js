@@ -4,7 +4,11 @@ var FHIR_DOSING_INSTRUCTION_TYPE = 'org.openmrs.module.bahmniemrapi.drugorder.do
 
 var LOADING_DOSE_STAGE_NAME = 'Loading Dose';
 var LOADING_DOSE_DURATION_DISPLAY = '1 Occurrence(s)';
+var LOADING_DOSE_FREQUENCY = 'Once';
 var DEFAULT_RATE_UNIT = 'ml/hr';
+var MEDICATION_ADDITIVES_EXTENSION_URL = 'http://fhir.bahmni.org/ext/medication-additives';
+var DOSAGE_FHIR_VERSION_MODIFIER_EXTENSION_URL = 'http://fhir.bahmni.org/ext/dosage-fhir-version';
+var FHIR_VERSION = '4.0.1';
 
 var DURATION_UNIT_TO_DAYS = {
     'day': 1, 'days': 1, 'day(s)': 1,
@@ -74,25 +78,26 @@ var isLoadingDoseOrder = function (adminInstructionsStr) {
     if (!parsed || !isFhirDosageArray(parsed)) { return false; }
     var firstDosage = parsed[0];
     if (!firstDosage) { return false; }
-    var ext = (firstDosage.extension || []).find(function (e) { return e.url === 'isLoadingDose'; });
-    return ext ? ext.valueBoolean === true : false;
+    return !!(firstDosage.timing && firstDosage.timing.repeat && firstDosage.timing.repeat.count === 1);
 };
 
-var buildExtensionMap = function (extensions) {
-    return (extensions || []).reduce(function (acc, e) {
-        acc[e.url] = e.valueString !== undefined ? e.valueString : e.valueBoolean;
-        return acc;
-    }, {});
+var buildCodeableConcept = function (textValue, conceptObject) {
+    var concept = { text: textValue || '' };
+    if (conceptObject && (conceptObject.uuid || conceptObject.code)) {
+        concept.coding = [{
+            code: conceptObject.uuid || conceptObject.code || '',
+            display: conceptObject.name || textValue || ''
+        }];
+    }
+    return concept;
 };
 
 var buildFhirDosageArray = function (stages, units, route) {
     return (stages || []).map(function (stage, index) {
         var isLoadingDose = stage.stageName === LOADING_DOSE_STAGE_NAME;
-        var extensions = [
-            { url: 'isLoadingDose', valueBoolean: isLoadingDose }
-        ];
+        var extensions = [];
         if (stage.additives) {
-            extensions.push({ url: 'additives', valueString: stage.additives });
+            extensions.push({ url: MEDICATION_ADDITIVES_EXTENSION_URL, valueString: stage.additives });
         }
         var doseAndRate = [{
             type: { text: 'ordered' },
@@ -102,30 +107,50 @@ var buildFhirDosageArray = function (stages, units, route) {
         if (rateValue > 0) {
             doseAndRate[0].rateQuantity = { value: rateValue, unit: DEFAULT_RATE_UNIT };
         }
-        var timing = { code: { text: stage.frequency || '' } };
+        var timing = {};
         if (!isLoadingDose) {
-            timing.repeat = {
+            timing.code = buildCodeableConcept(stage.frequency || '', stage.frequencyObject);
+        }
+        timing.repeat = isLoadingDose
+            ? { count: 1 }
+            : {
                 duration: parseFloat(stage.duration) || 1,
                 durationUnit: toUcumDurationUnit(stage.durationUnit || 'Days')
             };
-        }
-        return {
+        var routeText = (route && route.name) ? route.name : (route || '');
+        var dosage = {
             sequence: index + 1,
             text: stage.stageName,
             timing: timing,
-            route: { text: route || '' },
-            doseAndRate: doseAndRate,
-            additionalInstruction: stage.instructions ? [{ text: stage.instructions }] : [],
-            patientInstruction: stage.additionalInstructions || '',
-            extension: extensions
+            route: buildCodeableConcept(routeText, route),
+            doseAndRate: doseAndRate
         };
+        if (stage.instructions) {
+            dosage.additionalInstruction = [{ text: stage.instructions }];
+        }
+        if (stage.additionalInstructions) {
+            dosage.patientInstruction = stage.additionalInstructions;
+        }
+        if (extensions.length > 0) {
+            dosage.extension = extensions;
+        }
+        dosage.modifierExtension = [{
+            url: DOSAGE_FHIR_VERSION_MODIFIER_EXTENSION_URL,
+            valueCode: FHIR_VERSION
+        }];
+        return dosage;
     });
 };
 
 var fhirDosageToStage = function (dosage) {
-    var extMap = buildExtensionMap(dosage.extension);
     var dr = dosage.doseAndRate && dosage.doseAndRate[0];
-    var isLoadingDose = extMap.isLoadingDose === true;
+    var additives = '';
+    (dosage.extension || []).forEach(function (e) {
+        if (e.url === MEDICATION_ADDITIVES_EXTENSION_URL && e.valueString) {
+            additives = e.valueString;
+        }
+    });
+    var isLoadingDose = !!(dosage.timing && dosage.timing.repeat && dosage.timing.repeat.count === 1);
     var durationDisplay = isLoadingDose
         ? LOADING_DOSE_DURATION_DISPLAY
         : ((dosage.timing && dosage.timing.repeat)
@@ -135,20 +160,23 @@ var fhirDosageToStage = function (dosage) {
         : ((dosage.timing && dosage.timing.repeat)
             ? normalizeToDays(dosage.timing.repeat.duration, fromUcumDurationUnit(dosage.timing.repeat.durationUnit))
             : 0);
+    var frequency = isLoadingDose
+        ? LOADING_DOSE_FREQUENCY
+        : ((dosage.timing && dosage.timing.code) ? dosage.timing.code.text : '');
     return {
         stageName: dosage.text || String(dosage.sequence || ''),
         sequence: dosage.sequence || 0,
         isLoadingDose: isLoadingDose,
         dose: dr ? String(dr.doseQuantity.value) : '',
         unit: dr ? (dr.doseQuantity.unit || '') : '',
-        frequency: (dosage.timing && dosage.timing.code) ? dosage.timing.code.text : '',
+        frequency: frequency,
         duration: durationDisplay,
         durationDays: durationDays,
         instructions: (dosage.additionalInstruction && dosage.additionalInstruction[0])
             ? dosage.additionalInstruction[0].text : '',
         additionalInstructions: dosage.patientInstruction || '',
         rate: (dr && dr.rateQuantity) ? String(dr.rateQuantity.value) : '',
-        additives: extMap.additives || ''
+        additives: additives
     };
 };
 

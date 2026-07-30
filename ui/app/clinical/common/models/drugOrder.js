@@ -86,7 +86,7 @@ Bahmni.Clinical.DrugOrder = (function () {
     DrugOrder.createFhirDrugOrder = function (vdt) {
         var utils = Bahmni.Clinical.FhirDosingUtils;
         var stages = vdt.stages || [];
-        var fhirDosages = utils.buildFhirDosageArray(stages, vdt.units, vdt.route);
+        var fhirDosages = utils.buildFhirDosageArray(stages, vdt.units, vdt.routeObject || vdt.route);
 
         var totalDays = stages.reduce(function (sum, s) {
             if (s.stageName === utils.LOADING_DOSE_STAGE_NAME) { return sum; }
