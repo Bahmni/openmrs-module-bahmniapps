@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Modal, ComboBox, Toggle, TextInput, TextArea, NumberInput, Checkbox, Button } from "carbon-components-react";
+import { Modal, ComboBox, Toggle, TextInput, TextArea, NumberInput, Checkbox, Button, InlineNotification } from "carbon-components-react";
 import Downshift from "downshift";
 import { TrashCan16, Add16 } from "@carbon/icons-react";
 import { Title, Dropdown as BahmniDropdown, DatePickerCarbon } from "bahmni-carbon-ui";
@@ -12,6 +12,13 @@ import "../../../styles/carbon-theme.scss";
 import "./VariableDoseProtocolModal.scss";
 
 const DEBOUNCE_DELAY_MS = 300;
+const MILLISECONDS_PER_DAY = 86400000;
+
+const formatConflictDate = (date) => (date
+    ? new Date(date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
+    : "");
+
+const lastOccupiedDay = (stopDate) => (stopDate ? new Date(new Date(stopDate).getTime() - MILLISECONDS_PER_DAY) : null);
 
 const preserveTypedInputStateReducer = (state, changes) => {
     switch (changes.type) {
@@ -173,6 +180,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const isDirty = !!(selectedDrug || isNonCodedDrug || hasUnsavedDrugText || hasModifiedNonCodedText || dosingRule || units || route || isLoadingDose || stages.some(isStageValid));
 
     const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
+    const [drugConflict, setDrugConflict] = useState(null);
 
     const handleClose = () => {
         if (isDirty) {
@@ -198,36 +206,53 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
         isLoadingDose && loadingDoseValue > 0 ? parseFloat(loadingDoseValue) : 0
     );
 
+    const startDateForSubmission = (pickedDate) => {
+        if (!pickedDate) return pickedDate;
+        const now = new Date();
+        const combined = new Date(pickedDate);
+        combined.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+        return combined;
+    };
+
+    const buildSavePayload = () => ({
+        drug: codedDrugActive ? selectedDrug : null,
+        drugNonCoded: isNonCodedDrug ? drugNonCoded : null,
+        isNonCodedDrug: isNonCodedDrug,
+        dosingRule: dosingRule?.value || "",
+        units: units?.value || "",
+        route: route?.value || "",
+        startDate: startDateForSubmission(startDate),
+        loadingDose: isLoadingDose ? {
+            dose: String(loadingDoseValue),
+            instructions: loadingDoseInstructions?.value || "",
+            rate: loadingDoseRate > 0 ? String(loadingDoseRate) : "",
+            additives: loadingDoseAdditives,
+            additionalInstructions: loadingDoseAdditionalInstructions,
+        } : null,
+        stages: stages.map((stage, index) => ({
+            stageName: 'Stage ' + String(index + 1),
+            dose: String(stage.dose),
+            unit: units?.value || "",
+            frequency: stage.frequency?.label || "",
+            frequencyValue: stage.frequency?.value || "",
+            duration: String(stage.duration),
+            durationUnit: stage.durationUnit?.value || "",
+            instructions: stage.instructions?.value || "",
+            additionalInstructions: stage.additionalInstructions,
+            rate: stage.rate > 0 ? String(stage.rate) : "",
+            additives: stage.additives || "",
+        })),
+    });
+
     const handleSave = () => {
-        hostApi?.onSave({
-            drug: codedDrugActive ? selectedDrug : null,
-            drugNonCoded: isNonCodedDrug ? drugNonCoded : null,
-            isNonCodedDrug: isNonCodedDrug,
-            dosingRule: dosingRule?.value || "",
-            units: units?.value || "",
-            route: route?.value || "",
-            startDate,
-            loadingDose: isLoadingDose ? {
-                dose: String(loadingDoseValue),
-                instructions: loadingDoseInstructions?.value || "",
-                rate: loadingDoseRate > 0 ? String(loadingDoseRate) : "",
-                additives: loadingDoseAdditives,
-                additionalInstructions: loadingDoseAdditionalInstructions,
-            } : null,
-            stages: stages.map((stage, index) => ({
-                stageName: 'Stage ' + String(index + 1),
-                dose: String(stage.dose),
-                unit: units?.value || "",
-                frequency: stage.frequency?.label || "",
-                frequencyValue: stage.frequency?.value || "",
-                duration: String(stage.duration),
-                durationUnit: stage.durationUnit?.value || "",
-                instructions: stage.instructions?.value || "",
-                additionalInstructions: stage.additionalInstructions,
-                rate: stage.rate > 0 ? String(stage.rate) : "",
-                additives: stage.additives || "",
-            })),
-        });
+        const payload = buildSavePayload();
+        const conflict = hostApi?.checkVdpConflict ? hostApi.checkVdpConflict(payload) : null;
+        if (conflict) {
+            setDrugConflict(conflict);
+            return;
+        }
+        setDrugConflict(null);
+        hostApi?.onSave(payload);
     };
 
     const updateStage = (index, field, value) => {
@@ -256,6 +281,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const debouncedSearch = useDebounce(performSearch, DEBOUNCE_DELAY_MS);
 
     const handleDrugInputChange = ({ value }) => {
+        setDrugConflict(null);
         setInputValue(value || "");
         if (isNonCodedDrug && value !== drugNonCoded) {
             setIsNonCodedDrug(false);
@@ -265,6 +291,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     };
 
     const handleDrugChange = ({ selectedItem }) => {
+        setDrugConflict(null);
         if (selectedItem && !selectedItem.isNonCoded) {
             setSelectedDrug(selectedItem);
             setIsNonCodedDrug(false);
@@ -330,6 +357,16 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     const TOTAL_DOSAGE_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_TOTAL_DOSAGE_LABEL", defaultMessage: "Total Dosage" });
     const TOTAL_DURATION_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_TOTAL_DURATION_LABEL", defaultMessage: "Total Duration" });
     const DAYS_LABEL = intl.formatMessage({ id: "VARIABLE_DOSE_DAYS", defaultMessage: "Day(s)" });
+    const CONFLICT_TITLE = drugConflict
+        ? intl.formatMessage(
+            { id: "VARIABLE_DOSE_CONFLICT_TITLE", defaultMessage: "{drugName} from {startDate} to {stopDate} is conflicting with drug order you are trying to add." },
+            {
+                drugName: drugConflict.drugName,
+                startDate: formatConflictDate(drugConflict.startDate),
+                stopDate: formatConflictDate(lastOccupiedDay(drugConflict.stopDate)),
+            }
+        )
+        : "";
 
     const toNum = (v, fallback) => {
         const n = parseFloat(v);
@@ -362,7 +399,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                 secondaryButtonText={
                     <FormattedMessage id="VARIABLE_DOSE_CANCEL_BUTTON" defaultMessage="Cancel" />
                 }
-                primaryButtonDisabled={!isNextEnabled}
+                primaryButtonDisabled={!isNextEnabled || !!drugConflict}
                 onRequestClose={handleClose}
                 onSecondarySubmit={handleClose}
                 onRequestSubmit={handleSave}
@@ -376,6 +413,10 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                         placeholder={DRUG_NAME_PLACEHOLDER}
                         items={searchResults}
                         itemToString={(item) => (item ? item.name || "" : "")}
+                        itemToElement={(item) => {
+                            const form = item?.dosageForm?.display;
+                            return <span>{form ? `${item.name} (${form})` : (item?.name || "")}</span>;
+                        }}
                         filterItems={(items) => items}
                         downshiftProps={{ stateReducer: preserveTypedInputStateReducer }}
                         onInputChange={(value) => handleDrugInputChange({ value })}
@@ -458,7 +499,10 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                         dateFormat="d M Y"
                         value={startDate}
                         onChange={(dates) => {
-                            if (dates.length === 1) setStartDate(dates[0]);
+                            if (dates.length === 1) {
+                                setDrugConflict(null);
+                                setStartDate(dates[0]);
+                            }
                         }}
                         width="100%"
                     />
@@ -700,6 +744,16 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
                         </span>
                     </div>
                 </div>
+                {drugConflict && (
+                    <InlineNotification
+                        kind="error"
+                        role="alert"
+                        lowContrast
+                        hideCloseButton
+                        title={CONFLICT_TITLE}
+                        className="vdp-drug-conflict-banner"
+                    />
+                )}
             </Modal>
             <Modal
                 open={showCloseConfirmation}
@@ -747,6 +801,7 @@ VariableDoseProtocolModalInner.propTypes = {
         onClose: PropTypes.func,
         onSave: PropTypes.func,
         searchDrugs: PropTypes.func,
+        checkVdpConflict: PropTypes.func,
     }),
 };
 

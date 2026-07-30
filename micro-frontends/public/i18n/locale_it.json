@@ -94,5 +94,6 @@
   "VARIABLE_DOSE_TOTAL_DURATION_LABEL": "Total Duration",
   "VARIABLE_DOSE_DAYS": "Day(s)",
   "VARIABLE_DOSE_DELETE_STAGE": "Delete Stage",
-  "VARIABLE_DOSE_TABLE_HEADER_START_DATE": "Start Date"
+  "VARIABLE_DOSE_TABLE_HEADER_START_DATE": "Start Date",
+  "VARIABLE_DOSE_CONFLICT_TITLE": "{drugName} dal {startDate} al {stopDate} è in conflitto con l'ordine di farmaco che si sta cercando di aggiungere."
 }

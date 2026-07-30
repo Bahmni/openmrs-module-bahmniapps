@@ -98,5 +98,6 @@ VariableDoseProtocol.propTypes = {
         onClose: PropTypes.func,
         onSave: PropTypes.func,
         searchDrugs: PropTypes.func,
+        checkVdpConflict: PropTypes.func,
     }),
 };

@@ -104,6 +104,31 @@
   }
 }
 
+.vdp-drug-conflict-banner.bx--inline-notification {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  max-width: 100%;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 0;
+
+  .bx--inline-notification__details {
+    max-width: 100%;
+    flex: 1;
+  }
+
+  .bx--inline-notification__text-wrapper {
+    max-width: 100%;
+    flex: 1;
+  }
+
+  .bx--inline-notification__title {
+    flex: 1;
+  }
+}
+
 .variable-dose-accept-wrapper {
   display: flex;
   align-items: center;

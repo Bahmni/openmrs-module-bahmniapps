@@ -71,5 +71,6 @@
   "VARIABLE_DOSE_TOTAL_DOSAGE_LABEL": "Total Dosage",
   "VARIABLE_DOSE_TOTAL_DURATION_LABEL": "Total Duration",
   "VARIABLE_DOSE_DAYS": "Day(s)",
-  "VARIABLE_DOSE_TABLE_HEADER_START_DATE": "Start Date"
+  "VARIABLE_DOSE_TABLE_HEADER_START_DATE": "Start Date",
+  "VARIABLE_DOSE_CONFLICT_TITLE": "{drugName}从{startDate}到{stopDate}与您尝试添加的药物医嘱冲突。"
 }

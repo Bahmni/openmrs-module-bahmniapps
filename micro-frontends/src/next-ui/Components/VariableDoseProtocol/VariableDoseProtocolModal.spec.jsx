@@ -327,7 +327,7 @@ describe("VariableDoseProtocolModal", () => {
         await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
 
         await act(async () => {
-            const option = await screen.findByText("Amoxicillin");
+            const option = await screen.findByText("Amoxicillin (Tablet)");
             fireEvent.click(option);
         });
 
@@ -377,7 +377,7 @@ describe("VariableDoseProtocolModal", () => {
         await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
 
         await act(async () => {
-            const option = await screen.findByText("Ibuprofen");
+            const option = await screen.findByText("Ibuprofen (Capsule)");
             fireEvent.click(option);
         });
 
@@ -830,6 +830,133 @@ describe("Non-coded drug (Accept flow)", () => {
                 isNonCodedDrug: false,
             })
         );
+    });
+});
+
+describe("Drug conflict check (VDP)", () => {
+    const buildConflictHostApi = (conflictResult) => ({
+        onClose: mockOnClose,
+        onSave: mockOnSave,
+        searchDrugs: mockSearchDrugs,
+        checkVdpConflict: jest.fn().mockReturnValue(conflictResult),
+    });
+
+    const setupValidForm = async (container) => {
+        const drug = { uuid: "uuid-1", name: "Paracetamol", dosageForm: null };
+        mockSearchDrugs.mockResolvedValue([drug]);
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Para" } });
+        await waitFor(() => expect(mockSearchDrugs).toHaveBeenCalled());
+
+        await act(async () => {
+            const option = await screen.findByText("Paracetamol");
+            fireEvent.click(option);
+        });
+
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("mg"));
+
+        await waitFor(() => {
+            const saveButton = screen.getByText("Save").closest("button");
+            expect(saveButton.disabled).toBe(false);
+        });
+    };
+
+    it("shows a blocking conflict banner and does not save when the drug conflicts with an existing order (AC1)", async () => {
+        const conflict = { drugName: "Paracetamol", startDate: new Date("2024-01-01"), stopDate: new Date("2024-01-05") };
+        const hostApi = buildConflictHostApi(conflict);
+        const { container } = renderModal(defaultHostDataWithValidStages, hostApi);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+        await setupValidForm(container);
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+
+        await waitFor(() => {
+            expect(screen.getByText(/is conflicting with drug order/)).toBeTruthy();
+        });
+        expect(mockOnSave).not.toHaveBeenCalled();
+
+        const saveButton = screen.getByText("Save").closest("button");
+        expect(saveButton.disabled).toBe(true);
+    });
+
+    it("clears the conflict banner immediately when the drug name is changed (AC2)", async () => {
+        const conflict = { drugName: "Paracetamol", startDate: new Date("2024-01-01"), stopDate: new Date("2024-01-05") };
+        const hostApi = buildConflictHostApi(conflict);
+        const { container } = renderModal(defaultHostDataWithValidStages, hostApi);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+        await setupValidForm(container);
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+        await waitFor(() => screen.getByText(/is conflicting with drug order/));
+
+        const comboInput = screen.getByPlaceholderText("Type to Search a Drug");
+        fireEvent.change(comboInput, { target: { value: "Ibuprofen" } });
+
+        expect(screen.queryByText(/is conflicting with drug order/)).toBeNull();
+    });
+
+    it("clears the conflict banner immediately when the start date is changed (AC2)", async () => {
+        const conflict = { drugName: "Paracetamol", startDate: new Date("2024-01-01"), stopDate: new Date("2024-01-05") };
+        const hostApi = buildConflictHostApi(conflict);
+        const { container } = renderModal(defaultHostDataWithValidStages, hostApi);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+        await setupValidForm(container);
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+        await waitFor(() => screen.getByText(/is conflicting with drug order/));
+
+        const dateInput = getDropdownInput(container, "variable-dose-start-date");
+        fireEvent.change(dateInput, { target: { value: "10 Feb 2024" } });
+        fireEvent.blur(dateInput);
+
+        expect(screen.queryByText(/is conflicting with drug order/)).toBeNull();
+    });
+
+    it("allows save into the list once a non-conflicting start date is chosen, and re-blocks if the new date still conflicts (AC3)", async () => {
+        const conflict = { drugName: "Paracetamol", startDate: new Date("2024-01-01"), stopDate: new Date("2024-01-05") };
+        const hostApi = buildConflictHostApi(conflict);
+        const { container } = renderModal(defaultHostDataWithValidStages, hostApi);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+        await setupValidForm(container);
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+        await waitFor(() => screen.getByText(/is conflicting with drug order/));
+        expect(mockOnSave).not.toHaveBeenCalled();
+
+        hostApi.checkVdpConflict.mockReturnValueOnce(null);
+        const dateInput = getDropdownInput(container, "variable-dose-start-date");
+        fireEvent.change(dateInput, { target: { value: "10 Feb 2024" } });
+        fireEvent.blur(dateInput);
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+        await waitFor(() => expect(mockOnSave).toHaveBeenCalled());
+
+        hostApi.checkVdpConflict.mockReturnValueOnce(conflict);
+        fireEvent.change(dateInput, { target: { value: "02 Jan 2024" } });
+        fireEvent.blur(dateInput);
+        fireEvent.click(screen.getByText("Save").closest("button"));
+
+        await waitFor(() => {
+            expect(screen.getByText(/is conflicting with drug order/)).toBeTruthy();
+        });
+    });
+
+    it("does not invoke checkVdpConflict when hostApi does not provide it (backward compatibility)", async () => {
+        const { container } = renderModal(defaultHostDataWithValidStages);
+
+        await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
+        await setupValidForm(container);
+
+        fireEvent.click(screen.getByText("Save").closest("button"));
+
+        await waitFor(() => expect(mockOnSave).toHaveBeenCalled());
+        expect(screen.queryByText(/is conflicting with drug order/)).toBeNull();
     });
 });
 
