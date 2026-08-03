@@ -10,7 +10,7 @@
 'use strict';
 
 describe("CareViewController", function () {
-    var scope, controller, auditLogService, sessionService, $window;
+    var scope, controller, auditLogService, logoutService, $window;
     var state = jasmine.createSpyObj('$state', ['go']);
     beforeEach(module('bahmni.ipd'));
     beforeEach(inject(function ($controller, $rootScope,_$window_) {
@@ -19,12 +19,9 @@ describe("CareViewController", function () {
         $window = _$window_;
     }));
     auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
-    sessionService = jasmine.createSpyObj('sessionService', ['destroy']);
+    logoutService = jasmine.createSpyObj('logoutService', ['attemptLogout']);
     auditLogService.log.and.returnValue({
         then: function(callback) { return callback(); }
-    });
-    sessionService.destroy.and.returnValue({
-        then: function() { }
     });
     let mockProvider = {name: "__test__provider"}
     let mockUser = { name: "__test__user" }
@@ -35,7 +32,7 @@ describe("CareViewController", function () {
             $rootScope: {currentProvider: mockProvider, quickLogoutComboKey: 'Escape', cookieExpiryTime:30, currentUser: mockUser},
             $state: state,
             auditLogService: auditLogService,
-            sessionService: sessionService,
+            logoutService: logoutService,
             $window: $window
         });
     };
@@ -52,11 +49,10 @@ describe("CareViewController", function () {
         expect(state.go).toHaveBeenCalledWith('home');
     });
 
-    it('should call auditLogService.log and sessionService.destroy on logout', function () {
+    it('should delegate to logoutService.attemptLogout on logout', function () {
         createController();
         scope.hostApi.onLogOut();
-        expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
-        expect(sessionService.destroy).toHaveBeenCalled();
+        expect(logoutService.attemptLogout).toHaveBeenCalledWith(scope);
     });
 
     it('should call auditLogService.log while handleAuditEvent is triggered', function (){

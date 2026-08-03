@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', '$window', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService', 'auditLogService', 'sessionService', '$location',
-        function ($scope, $state, $rootScope, $q, encounterService, $window, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService, auditLogService, sessionService, $location) {
+    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', '$window', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService', 'auditLogService', 'logoutService', '$location', '$http',
+        function ($scope, $state, $rootScope, $q, encounterService, $window, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService, auditLogService, logoutService, $location, $http) {
             function handleLogoutShortcut (event) {
                 if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
                     $scope.ipdDashboard.hostApi.onLogOut();
@@ -60,12 +60,7 @@ angular.module('bahmni.clinical')
                         }
                     },
                     onLogOut: function () {
-                        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
-                            sessionService.destroy().then(
-                                function () {
-                                    $window.location = "../home/index.html#/login";
-                                });
-                        });
+                        logoutService.attemptLogout($scope);
                     },
                     handleAuditEvent: function (patientUuid, eventType, messageParams, module) {
                         return auditLogService.log(patientUuid, eventType, messageParams, module);

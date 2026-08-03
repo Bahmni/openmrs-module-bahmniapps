@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Brouillon en cours",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Vous avez des formulaires d'observation non enregistrés. Êtes-vous sûr de vouloir vous déconnecter ?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Annuler",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Déconnexion"
+}

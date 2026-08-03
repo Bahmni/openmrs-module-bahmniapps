@@ -237,7 +237,8 @@ angular.module('authentication')
         return {
             authenticateUser: authenticateUser
         };
-    }]).directive('logOut', ['$rootScope', 'sessionService', '$window', 'configurationService', 'auditLogService', function ($rootScope, sessionService, $window, configurationService, auditLogService) {
+    }]).factory('logoutService', ['$rootScope', 'sessionService', '$window', 'auditLogService', 'formDraftService', 'ngDialog', 'appService', '$log', function ($rootScope, sessionService, $window, auditLogService, formDraftService, ngDialog, appService, $log) {
+        var isAttemptingLogout = false;
         function logoutUser () {
             auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
                 sessionService.destroy().then(function () {
@@ -246,21 +247,73 @@ angular.module('authentication')
             });
         }
 
-        function handleKeyPress (event) {
-            if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+        function showDraftsWarning (scope) {
+            var draftsWarningScope = scope.$new();
+            var dialog = ngDialog.open({
+                template: '../common/auth/views/logoutDraftsWarning.html',
+                scope: draftsWarningScope,
+                className: 'ngdialog-theme-default discard-draft-modal',
+                showClose: false
+            });
+            draftsWarningScope.logout = function () {
+                ngDialog.close(dialog.id);
                 logoutUser();
+            };
+            draftsWarningScope.cancel = function () {
+                ngDialog.close(dialog.id);
+            };
+        }
+
+        function isLogoutDraftsWarningEnabled () {
+            var appDescriptor = appService.getAppDescriptor();
+            return !!(appDescriptor && appDescriptor.getConfigValue('enableFormDraftFeature'));
+        }
+
+        function attemptLogout (scope) {
+            if (isAttemptingLogout) {
+                return;
+            }
+            isAttemptingLogout = true;
+            if (!isLogoutDraftsWarningEnabled()) {
+                isAttemptingLogout = false;
+                logoutUser();
+                return;
+            }
+            var providerUuid = $rootScope.currentProvider && $rootScope.currentProvider.uuid;
+            formDraftService.hasDraftsForProvider(providerUuid).then(function (hasDrafts) {
+                isAttemptingLogout = false;
+                if (hasDrafts) {
+                    showDraftsWarning(scope);
+                } else {
+                    logoutUser();
+                }
+            }, function (error) {
+                isAttemptingLogout = false;
+                $log.error('Failed to check for drafts before logout', error);
+                logoutUser();
+            });
+        }
+
+        return {
+            attemptLogout: attemptLogout
+        };
+    }]).directive('logOut', ['$rootScope', '$window', 'logoutService', function ($rootScope, $window, logoutService) {
+        function handleKeyPress (event, scope) {
+            if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+                logoutService.attemptLogout(scope);
             }
         }
         return {
             link: function (scope, element) {
                 element.bind('click', function () {
-                    scope.$apply(function () {
-                        logoutUser();
-                    });
+                    logoutService.attemptLogout(scope);
                 });
-                $window.addEventListener('keydown', handleKeyPress);
+                var keyPressHandler = function (event) {
+                    handleKeyPress(event, scope);
+                };
+                $window.addEventListener('keydown', keyPressHandler);
                 scope.$on('$destroy', function () {
-                    $window.removeEventListener('keydown', handleKeyPress);
+                    $window.removeEventListener('keydown', keyPressHandler);
                 });
             }
         };

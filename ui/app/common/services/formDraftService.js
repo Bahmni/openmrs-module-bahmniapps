@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.services')
-    .factory('formDraftService', ['$http', '$window', function ($http, $window) {
+    .factory('formDraftService', ['$http', '$window', '$q', function ($http, $window, $q) {
         var formDraftUrl = Bahmni.Common.Constants.RESTWS_V1 + '/bahmnicore/formdraft';
         var DRAFT_UPDATES_CHANNEL = 'bahmni-draft-indicator-update';
 
@@ -34,6 +34,22 @@ angular.module('bahmni.common.services')
                     providerUuid: providerUuid
                 },
                 suppressError: true
+            });
+        };
+
+        var hasDraftsForProvider = function (providerUuid) {
+            if (!providerUuid) {
+                return $q.when(false);
+            }
+            return $http.get(formDraftUrl + '/list', {
+                params: {
+                    providerUuid: providerUuid
+                },
+                suppressError: true
+            }).then(function (response) {
+                return !!(response.data && response.data.length > 0);
+            }, function () {
+                return false;
             });
         };
 
@@ -90,6 +106,7 @@ angular.module('bahmni.common.services')
             discardDraft: discardDraft,
             markDraftAsSaved: markDraftAsSaved,
             parseDraftObs: parseDraftObs,
-            getFormNamesFromDraft: getFormNamesFromDraft
+            getFormNamesFromDraft: getFormNamesFromDraft,
+            hasDraftsForProvider: hasDraftsForProvider
         };
     }]);

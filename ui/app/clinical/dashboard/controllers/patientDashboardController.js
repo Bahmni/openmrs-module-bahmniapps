@@ -78,7 +78,8 @@ angular.module('bahmni.clinical')
                 var dialog = ngDialog.open({
                     template: 'dashboard/views/discardDraftConfirmation.html',
                     scope: dialogScope,
-                    className: 'ngdialog-theme-default discard-draft-modal'
+                    className: 'ngdialog-theme-default discard-draft-modal',
+                    showClose: false
                 });
                 dialogScope.cancel = function () {
                     ngDialog.close(dialog.id);

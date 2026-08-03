@@ -5,6 +5,7 @@ describe('FormDraftService', function () {
     var mockHttp;
     var mockChannel;
     var mockWindow;
+    var $rootScope;
 
     beforeEach(function () {
         mockHttp = jasmine.createSpyObj('$http', ['get', 'post', 'patch', 'delete']);
@@ -19,8 +20,9 @@ describe('FormDraftService', function () {
             $provide.value('$window', mockWindow);
         });
 
-        inject(['formDraftService', function (formDraftServiceInjected) {
+        inject(['formDraftService', '$rootScope', function (formDraftServiceInjected, _$rootScope_) {
             formDraftService = formDraftServiceInjected;
+            $rootScope = _$rootScope_;
         }]);
     });
 
@@ -152,6 +154,47 @@ describe('FormDraftService', function () {
             expect(mockChannel.postMessage).toHaveBeenCalledWith({type: 'drafts-changed'});
             expect(mockChannel.close).toHaveBeenCalled();
             done();
+        });
+    });
+
+    describe('hasDraftsForProvider', function () {
+        it('should GET the formdraft list endpoint with providerUuid and resolve true when drafts exist', function (done) {
+            var providerUuid = 'provider-uuid-456';
+            var mockResponse = {data: [{uuid: 'draft-uuid'}]};
+            mockHttp.get.and.returnValue(specUtil.respondWith(mockResponse));
+
+            formDraftService.hasDraftsForProvider(providerUuid).then(function (hasDrafts) {
+                expect(mockHttp.get).toHaveBeenCalledWith(
+                    '/openmrs/ws/rest/v1/bahmnicore/formdraft/list',
+                    {
+                        params: {
+                            providerUuid: providerUuid
+                        },
+                        suppressError: true
+                    }
+                );
+                expect(hasDrafts).toBe(true);
+                done();
+            });
+        });
+
+        it('should resolve false when no drafts exist for the provider', function (done) {
+            var mockResponse = {data: []};
+            mockHttp.get.and.returnValue(specUtil.respondWith(mockResponse));
+
+            formDraftService.hasDraftsForProvider('provider-uuid-456').then(function (hasDrafts) {
+                expect(hasDrafts).toBe(false);
+                done();
+            });
+        });
+
+        it('should resolve false without making a request when providerUuid is not provided', function (done) {
+            formDraftService.hasDraftsForProvider(null).then(function (hasDrafts) {
+                expect(hasDrafts).toBe(false);
+                expect(mockHttp.get).not.toHaveBeenCalled();
+                done();
+            });
+            $rootScope.$digest();
         });
     });
 });

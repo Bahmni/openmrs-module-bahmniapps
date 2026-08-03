@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "草稿正在进行中",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "您有未保存的观察表单。确定要退出登录吗？",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "取消",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "退出登录"
+}
