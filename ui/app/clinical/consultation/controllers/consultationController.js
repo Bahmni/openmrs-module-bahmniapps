@@ -138,7 +138,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.gotoPatientDashboard = function () {
-                if (!isFormValid()) {
+                if (!isFormValid($scope.currentBoard && $scope.currentBoard.id)) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
@@ -358,12 +358,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 if ($scope.currentBoard === board) {
                     return;
                 }
+                var fromBoardId = $scope.currentBoard && $scope.currentBoard.id;
                 $scope.isObservationPage = board.id == "bahmni.clinical.consultation.observations" ? true : false;
                 $scope.isSave = false;
-                if ($scope.currentBoard) {
-                    $scope.isSwitchedFromObservationToOtherPage = $scope.currentBoard.id == "bahmni.clinical.consultation.observations" ? true : false;
-                }
-                if (!isFormValid()) {
+                if (!isFormValid(fromBoardId)) {
                     $scope.$parent.$broadcast("event:errorsOnForm");
                     return;
                 }
@@ -502,32 +500,32 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return valid;
             };
 
-            var checkForObservationPageError = function (shouldAllow, contxChange) {
+            var errorBoardId = null;
+
+            var checkForObservationPageError = function (shouldAllow, contxChange, fromBoardId) {
                 if (!$scope.isSave) {
-                    if ($scope.isSwitchedFromObservationToOtherPage && !shouldAllow) {
+                    if (!shouldAllow) {
+                        errorBoardId = fromBoardId;
                         $scope.isErrorPresentInObsTab = true;
                         shouldAllow = true;
-                    } else if ($scope.isSwitchedFromObservationToOtherPage && shouldAllow) {
+                    } else if (errorBoardId && errorBoardId === fromBoardId) {
+                        errorBoardId = null;
                         $scope.isErrorPresentInObsTab = false;
                     }
                 } else if ($scope.isSave) {
                     if ($scope.isErrorPresentInObsTab) {
-                        if (!$scope.isObservationPage) {
-                            var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
-                            messagingService.showMessage('error', errorMessage);
-                        } else if ($scope.isObservationPage) {
-                            $scope.isErrorPresentInObsTab = false;
-                        }
+                        var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+                        messagingService.showMessage('error', errorMessage);
                     }
                 }
                 return shouldAllow;
             };
 
-            var isFormValid = function () {
+            var isFormValid = function (fromBoardId) {
                 var contxChange = contextChange();
                 var shouldAllow = contxChange["allow"];
                 var discontinuedDrugOrderValidationMessage = discontinuedDrugOrderValidation($scope.consultation.discontinuedDrugs);
-                shouldAllow = checkForObservationPageError(shouldAllow, contxChange);
+                shouldAllow = checkForObservationPageError(shouldAllow, contxChange, fromBoardId);
                 if (!shouldAllow) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
                     messagingService.showMessage('error', errorMessage);

@@ -496,6 +496,83 @@ describe("ConsultationController", function () {
             scope.showBoard(1);
             expect(scope.currentBoard.label).toBe('Treatment');
         });
+
+        describe("switching between two non-observation tabs (e.g. other consultations tabs)", function () {
+            var diagnosisTab, treatmentIdx, diagnosisIdx, observationsIdx;
+            beforeEach(function () {
+                diagnosisTab = {
+                    extensionPointId: "org.bahmni.clinical.consultation.board",
+                    id: "bahmni.clinical.diagnosis",
+                    label: "Diagnosis",
+                    order: 8,
+                    type: "link",
+                    url: "diagnosis"
+                };
+                boards.push(diagnosisTab);
+                createController();
+                observationsIdx = _.findIndex(scope.availableBoards, {id: "bahmni.clinical.consultation.observations"});
+                treatmentIdx = _.findIndex(scope.availableBoards, {id: "bahmni.clinical.billing.treatment"});
+                diagnosisIdx = scope.availableBoards.indexOf(diagnosisTab);
+                scope.consultation = {
+                    discontinuedDrugs: [{dateStopped: new Date()}],
+                    preSaveHandler: new Bahmni.Clinical.Notifier(),
+                    postSaveHandler: new Bahmni.Clinical.Notifier(),
+                    observations: [], conditions: []
+                };
+                scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            });
+            afterEach(function () {
+                boards.pop();
+            });
+
+            it("should allow navigating away from an invalid non-observation tab instead of blocking it", function () {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+
+                expect(scope.currentBoard.label).toBe('Diagnosis');
+                expect(scope.isErrorPresentInObsTab).toBeTruthy();
+            });
+
+            it("should block save while the originating tab's error is unresolved", function (done) {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+                spyOn(scope.$parent.$parent, '$broadcast');
+
+                scope.save({toState: {}}).then(function () {
+                    expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                    done();
+                });
+            });
+
+            it("should not clear the error just because Observations tab is reached; only the originating tab clears it", function (done) {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+                contextChangeHandler.execute = function () { return {allow: true}; };
+                scope.showBoard(observationsIdx);
+
+                expect(scope.isErrorPresentInObsTab).toBeTruthy();
+                spyOn(scope.$parent.$parent, '$broadcast');
+                scope.save({toState: {}}).then(function () {
+                    expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                    done();
+                });
+            });
+
+            it("should clear the error once the user returns to the originating tab and fixes it", function () {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+
+                contextChangeHandler.execute = function () { return {allow: true}; };
+                scope.showBoard(treatmentIdx);
+                scope.showBoard(diagnosisIdx);
+
+                expect(scope.isErrorPresentInObsTab).toBeFalsy();
+            });
+        });
     });
 
     describe("showSaveConfirmDialogConfig", function () {
