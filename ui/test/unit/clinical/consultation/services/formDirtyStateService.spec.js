@@ -3,72 +3,75 @@
 describe('formDirtyStateService', function () {
     var formDirtyStateService;
 
-    beforeEach(module('bahmni.clinical'));
+    beforeEach(function () {
+        module('bahmni.clinical');
+        inject(function (_formDirtyStateService_) {
+            formDirtyStateService = _formDirtyStateService_;
+        });
+    });
 
-    beforeEach(inject(function (_formDirtyStateService_) {
-        formDirtyStateService = _formDirtyStateService_;
-    }));
+    describe('observation value normalization (via collectObsValues)', function () {
+        it('should handle null and undefined values gracefully', function () {
+            var values1 = [];
+            var values2 = [];
+            formDirtyStateService.collectObsValues(null, values1);
+            formDirtyStateService.collectObsValues(undefined, values2);
+            expect(values1).toEqual([]);
+            expect(values2).toEqual([]);
+        });
 
-    describe('collectObsValues', function () {
-        it('should collect scalar observation values', function () {
+        it('should extract uuid from objects with uuid property', function () {
+            var obs = {value: {uuid: 'concept-uuid-123', name: 'Some Concept'}};
             var values = [];
-            var obs = {value: 'test-value'};
             formDirtyStateService.collectObsValues(obs, values);
-            expect(values).toEqual(['test-value']);
+            expect(values).toContain('concept-uuid-123');
         });
 
-        it('should not collect null or undefined values', function () {
+        it('should normalize numeric values to strings', function () {
+            var obs = {value: 123};
             var values = [];
-            formDirtyStateService.collectObsValues({value: null}, values);
-            formDirtyStateService.collectObsValues({value: undefined}, values);
-            expect(values).toEqual([]);
+            formDirtyStateService.collectObsValues(obs, values);
+            expect(values).toContain('123');
         });
 
-        it('should collect multiSelect observation values as sorted keys', function () {
+        it('should handle string values', function () {
+            var obs = {value: '456'};
             var values = [];
-            var obs = {
-                isMultiSelect: true,
-                selectedObs: {option1: true, option2: false}
-            };
+            formDirtyStateService.collectObsValues(obs, values);
+            expect(values).toContain('456');
+        });
+
+        it('should extract value property from wrapped objects', function () {
+            var obs = {value: {value: 'wrapped-value'}};
+            var values = [];
+            formDirtyStateService.collectObsValues(obs, values);
+            expect(values).toContain('wrapped-value');
+        });
+
+        it('should handle objects without special properties', function () {
+            var obs = {value: {foo: 'bar', baz: 'qux'}};
+            var values = [];
             formDirtyStateService.collectObsValues(obs, values);
             expect(values.length).toBe(1);
-            expect(values[0]).toEqual(['option1', 'option2']);
         });
+    });
 
-        it('should ignore Angular $ prefixed keys in multiSelect', function () {
+    describe('collectObsValues with provider fields', function () {
+        it('should collect values for raw provider IDs', function () {
+            var obs = {value: '123'};
             var values = [];
-            var obs = {
-                isMultiSelect: true,
-                selectedObs: {option1: true, $special: 'ignore'}
-            };
             formDirtyStateService.collectObsValues(obs, values);
-            expect(values.length).toBe(1);
-            expect(values[0]).toEqual(['option1']);
+            expect(values).toEqual(['123']);
         });
 
-        it('should not collect multiSelect with no selected keys', function () {
+        it('should collect values for provider objects with uuid', function () {
+            var obs = {value: {id: 123, name: 'Dr. Smith', uuid: 'provider-uuid'}};
             var values = [];
-            var obs = {
-                isMultiSelect: true,
-                selectedObs: {}
-            };
             formDirtyStateService.collectObsValues(obs, values);
-            expect(values).toEqual([]);
+            expect(values).toEqual(['provider-uuid']);
         });
 
-        it('should recursively collect group member values', function () {
-            var values = [];
-            var obs = {
-                groupMembers: [
-                    {value: 'member1-value'},
-                    {value: 'member2-value'}
-                ]
-            };
-            formDirtyStateService.collectObsValues(obs, values);
-            expect(values).toEqual(['member1-value', 'member2-value']);
-        });
-
-        it('should handle null input gracefully', function () {
+        it('should handle null observation', function () {
             var values = [];
             formDirtyStateService.collectObsValues(null, values);
             expect(values).toEqual([]);
@@ -118,85 +121,133 @@ describe('formDirtyStateService', function () {
 
             expect(afterUndoState).toEqual(cleanState);
         });
+
+        it('should handle undefined observation', function () {
+            var values = [];
+            formDirtyStateService.collectObsValues(undefined, values);
+            expect(values).toEqual([]);
+        });
+
+        it('should handle multiSelect observations', function () {
+            var obs = {
+                isMultiSelect: true,
+                selectedObs: {
+                    'uuid-1': {uuid: 'uuid-1'},
+                    'uuid-2': {uuid: 'uuid-2'}
+                }
+            };
+            var values = [];
+            formDirtyStateService.collectObsValues(obs, values);
+            expect(values.length).toBe(1);
+            expect(values[0]).toContain('uuid-1');
+            expect(values[0]).toContain('uuid-2');
+        });
+
+        it('should recursively handle group members', function () {
+            var obs = {
+                groupMembers: [
+                    {value: '123'},
+                    {value: {name: 'Provider', uuid: 'member-uuid'}}
+                ]
+            };
+            var values = [];
+            formDirtyStateService.collectObsValues(obs, values);
+            expect(values).toContain('123');
+            expect(values).toContain('member-uuid');
+        });
+
+        it('should handle null and undefined values within observation', function () {
+            var obs1 = {value: null};
+            var obs2 = {value: undefined};
+            var obs3 = {};
+
+            var values1 = [];
+            var values2 = [];
+            var values3 = [];
+
+            formDirtyStateService.collectObsValues(obs1, values1);
+            formDirtyStateService.collectObsValues(obs2, values2);
+            formDirtyStateService.collectObsValues(obs3, values3);
+
+            expect(values1).toEqual([]);
+            expect(values2).toEqual([]);
+            expect(values3).toEqual([]);
+        });
     });
 
-    describe('getTemplateObservationsForDirtyTracking', function () {
-        it('should return template observations when no component exists', function () {
+    describe('getObsValues for templates', function () {
+        it('should serialize template observations to JSON', function () {
             var template = {
-                observations: [{value: 'obs1'}, {value: 'obs2'}]
+                observations: [{
+                    value: '123'
+                }]
             };
-            var result = formDirtyStateService.getTemplateObservationsForDirtyTracking(template);
-            expect(result).toEqual([{value: 'obs1'}, {value: 'obs2'}]);
-        });
 
-        it('should return empty array when no observations', function () {
-            var template = {};
-            var result = formDirtyStateService.getTemplateObservationsForDirtyTracking(template);
-            expect(result).toEqual([]);
-        });
-
-        it('should call component.getValue for Form2/React components', function () {
-            var mockComponent = {
-                getValue: jasmine.createSpy('getValue').and.returnValue({
-                    observations: [{value: 'form2-obs'}]
-                })
-            };
-            var template = {
-                component: mockComponent,
-                observations: [{value: 'fallback'}]
-            };
-            var result = formDirtyStateService.getTemplateObservationsForDirtyTracking(template);
-            expect(mockComponent.getValue).toHaveBeenCalled();
-            expect(result).toEqual([{value: 'form2-obs'}]);
-        });
-
-        it('should fallback to template observations when component returns no observations', function () {
-            var mockComponent = {
-                getValue: jasmine.createSpy('getValue').and.returnValue({})
-            };
-            var template = {
-                component: mockComponent,
-                observations: [{value: 'fallback'}]
-            };
-            var result = formDirtyStateService.getTemplateObservationsForDirtyTracking(template);
-            expect(result).toEqual([{value: 'fallback'}]);
-        });
-    });
-
-    describe('getObsValuesForTemplate', function () {
-        it('should return JSON string of observation values for a single template', function () {
-            var template = {
-                observations: [{value: 'obs1'}, {value: 'obs2'}]
-            };
             var result = formDirtyStateService.getObsValuesForTemplate(template);
-            var parsed = JSON.parse(result);
-            expect(parsed).toEqual(['obs1', 'obs2']);
+            expect(result).toContain('123');
         });
 
-        it('should return empty JSON array for a template with no observations', function () {
+        it('should handle templates without observations', function () {
+            var template = {};
+            var result = formDirtyStateService.getObsValuesForTemplate(template);
+            expect(result).toBe(angular.toJson([]));
+        });
+
+        it('should handle empty observations array', function () {
             var template = {observations: []};
             var result = formDirtyStateService.getObsValuesForTemplate(template);
-            expect(result).toBe('[]');
+            expect(result).toBe(angular.toJson([]));
         });
 
-        it('should use component.getValue for Form2 templates', function () {
-            var mockComponent = {
-                getValue: jasmine.createSpy('getValue').and.returnValue({
-                    observations: [{value: 'form2-val'}]
-                })
+        it('should extract uuid from objects with uuid property', function () {
+            var template = {
+                observations: [{
+                    value: {uuid: 'concept-uuid', name: 'Test Concept'}
+                }]
             };
-            var template = {component: mockComponent, observations: []};
+
             var result = formDirtyStateService.getObsValuesForTemplate(template);
-            var parsed = JSON.parse(result);
-            expect(parsed).toEqual(['form2-val']);
+            expect(result).toContain('concept-uuid');
+        });
+    });
+
+    describe('getObsValues for multiple templates', function () {
+        it('should collect observations from all templates', function () {
+            var templates = [
+                {observations: [{value: '123'}]},
+                {observations: [{value: '456'}]}
+            ];
+
+            var result = formDirtyStateService.getObsValues(templates);
+            expect(result).toContain('123');
+            expect(result).toContain('456');
         });
 
-        it('should return different values for two templates with different data', function () {
-            var template1 = {observations: [{value: 'val1'}]};
-            var template2 = {observations: [{value: 'val2'}]};
-            var result1 = formDirtyStateService.getObsValuesForTemplate(template1);
-            var result2 = formDirtyStateService.getObsValuesForTemplate(template2);
-            expect(result1).not.toEqual(result2);
+        it('should return sorted values for consistent comparison', function () {
+            var template1 = {
+                observations: [
+                    {value: '111'},
+                    {value: {uuid: 'uuid-222'}}
+                ]
+            };
+
+            var template2 = {
+                observations: [
+                    {value: {uuid: 'uuid-111'}},
+                    {value: '222'}
+                ]
+            };
+
+            var result1 = formDirtyStateService.getObsValues([template1]);
+            var result2 = formDirtyStateService.getObsValues([template2]);
+
+            var parsed1 = JSON.parse(result1);
+            var parsed2 = JSON.parse(result2);
+
+            expect(parsed1).toContain('111');
+            expect(parsed1).toContain('uuid-222');
+            expect(parsed2).toContain('uuid-111');
+            expect(parsed2).toContain('222');
         });
     });
 

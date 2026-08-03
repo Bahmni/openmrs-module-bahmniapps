@@ -3,6 +3,34 @@
 angular.module('bahmni.clinical')
     .factory('formDirtyStateService', [function () {
         /**
+         * Normalizes observation values for consistent comparison.
+         */
+        var normalizeObsValue = function (value) {
+            if (value === null || value === undefined) {
+                return value;
+            }
+            if (typeof value === 'object') {
+                if (value.uuid) {
+                    return value.uuid;
+                }
+
+                if (value.value !== undefined && value.value !== null) {
+                    return normalizeObsValue(value.value);
+                }
+
+                try {
+                    return angular.toJson(value);
+                } catch (e) {
+                    return value;
+                }
+            }
+            if (angular.isNumber(value)) {
+                return String(value);
+            }
+            return value;
+        };
+
+        /**
          * Recursively collects observation values from an obs tree.
          * Handles multiSelect fields, group members, and scalar values.
          * Ignores Angular $-prefixed keys.
@@ -29,14 +57,9 @@ angular.module('bahmni.clinical')
             if (obs.value !== null && obs.value !== undefined) {
                 if (obs.voided) {
                     values.push(null);
-                } else {
-                    var val = obs.value;
-                    if (val && typeof val === 'object' && val.uuid) {
-                        values.push(val.uuid);
-                    } else {
-                        values.push(val);
-                    }
+                    return;
                 }
+                values.push(normalizeObsValue(obs.value));
             }
         };
 
@@ -45,13 +68,21 @@ angular.module('bahmni.clinical')
          * Form2/React components (via getValue()) and traditional templates.
          */
         var getTemplateObservationsForDirtyTracking = function (template) {
+            var templateObs = template.observations || [];
+            if (templateObs.length > 0) {
+                return templateObs;
+            }
+
+            // Fallback: check if Form2/React component has live state
             if (template.component && angular.isFunction(template.component.getValue)) {
                 var formValue = template.component.getValue() || {};
-                if (formValue.observations && formValue.observations.length > 0) {
-                    return formValue.observations;
+                var componentObs = formValue.observations || [];
+                if (componentObs && componentObs.length > 0) {
+                    return componentObs;
                 }
             }
-            return template.observations || [];
+
+            return [];
         };
 
         var getObsValuesForTemplate = function (template) {
@@ -60,6 +91,7 @@ angular.module('bahmni.clinical')
             _.each(observations, function (obs) {
                 collectObsValues(obs, values);
             });
+            values = _.sortBy(values, function (v) { return String(v); });
             return angular.toJson(values);
         };
 
@@ -79,6 +111,7 @@ angular.module('bahmni.clinical')
                     }
                 });
             }
+            values = _.sortBy(values, function (v) { return String(v); });
             return angular.toJson(values);
         };
 

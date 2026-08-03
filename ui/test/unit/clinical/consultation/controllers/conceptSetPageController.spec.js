@@ -800,22 +800,17 @@ describe('ConceptSetPageController', function () {
 
             createControllerWithTimeoutAndFilter(timeoutMock);
 
-            scope.consultation.selectedObsTemplate = [{
-                component: {
-                    getValue: function () {
-                        return {
-                            observations: [{value: observationValue}]
-                        };
-                    }
-                },
-                observations: []
-            }];
+            var template = {
+                observations: [{value: 'initial-value'}]
+            };
+            scope.consultation.selectedObsTemplate = [template];
 
-            scope.$digest();
+            scope.$apply();
             expect(scope.formDraft.isDirty).toBe(false);
 
-            observationValue = 'updated-value';
-            scope.$digest();
+            // Simulate form component value change
+            template.observations[0].value = 'updated-value';
+            scope.$apply();
             expect(scope.formDraft.isDirty).toBe(true);
         });
 
@@ -830,9 +825,8 @@ describe('ConceptSetPageController', function () {
             mockConceptSetService(conceptResponseData);
             mockformService({});
 
-            var observationValue;
             var timeoutMock = function (callback, delay) {
-                if (delay === 0) {
+                if (delay === 0 || delay === undefined) {
                     callback();
                 }
                 return {$$timeoutId: delay};
@@ -841,23 +835,18 @@ describe('ConceptSetPageController', function () {
 
             createControllerWithTimeoutAndFilter(timeoutMock);
 
-            scope.consultation.selectedObsTemplate = [{
-                component: {
-                    getValue: function () {
-                        return {
-                            observations: [{value: observationValue}]
-                        };
-                    }
-                },
-                observations: []
-            }];
+            var template = {
+                observations: [{value: 'initial-value'}]
+            };
+            scope.consultation.selectedObsTemplate = [template];
 
-            scope.$digest();
+            scope.$apply();
             expect(scope.formDraft.isDirty).toBe(false);
             expect(state.dirtyConsultationForm).toBeFalsy();
 
-            observationValue = 'new-change-after-draft-resume';
-            scope.$digest();
+            // Simulate form component value change
+            template.observations[0].value = 'new-change-after-draft-resume';
+            scope.$apply();
             expect(scope.formDraft.isDirty).toBe(true);
             expect(state.dirtyConsultationForm).toBe(true);
         });
@@ -2702,19 +2691,16 @@ describe('ConceptSetPageController', function () {
                 mockConceptSetService({results: [{setMembers: [{name: {name: 'Test Form'}, uuid: conceptUuid}]}]});
                 mockformService({});
 
-                var observationValue;
                 createControllerWithTimeoutAndFilter(timeoutMock);
 
-                // Add component.getValue to the existing template object (same reference captured by WeakMap at init)
                 var template = _.find(scope.consultation.selectedObsTemplate, function (t) { return t.uuid === conceptUuid; });
-                template.component = {
-                    getValue: function () { return {observations: [{value: observationValue}]}; }
-                };
+                template.observations = [{value: 'initial-value'}];
 
                 scope.$digest();
                 expect(template.hasUnsavedFormObservations).toBeFalsy();
 
-                observationValue = 'some-value';
+                // Change observation value
+                template.observations[0].value = 'some-value';
                 scope.$digest();
                 expect(template.hasUnsavedFormObservations).toBe(true);
             });
@@ -2726,17 +2712,24 @@ describe('ConceptSetPageController', function () {
                 ]}]});
                 mockformService({});
 
-                var formAValue;
                 createControllerWithTimeoutAndFilter(timeoutMock);
 
-                // Add component.getValue to existing template objects (same references captured by WeakMap at init)
                 var templateA = _.find(scope.consultation.selectedObsTemplate, function (t) { return t.uuid === 'uuid-a'; });
                 var templateB = _.find(scope.consultation.selectedObsTemplate, function (t) { return t.uuid === 'uuid-b'; });
-                templateA.component = {getValue: function () { return {observations: [{value: formAValue}]}; }};
+
+                // Only initialize templateA with observations
+                templateA.observations = [{value: 'initial-a'}];
+                // TemplateB has no observations or empty observations
+                if (!templateB.observations) {
+                    templateB.observations = [];
+                }
 
                 scope.$digest();
+                expect(templateA.hasUnsavedFormObservations).toBeFalsy();
+                expect(templateB.hasUnsavedFormObservations).toBeFalsy();
 
-                formAValue = 'changed';
+                // Change only templateA
+                templateA.observations[0].value = 'changed';
                 scope.$digest();
 
                 expect(templateA.hasUnsavedFormObservations).toBe(true);
@@ -3024,3 +3017,92 @@ describe('ConceptSetPageController', function () {
     });
 });
 
+        it('should show error when formUuid is provided but no matching template is found', function () {
+            inject(function ($timeout) {
+                var mockObsConcept = {
+                    data: {
+                        results: [{
+                            setMembers: [{
+                                uuid: 'concept-uuid-1',
+                                name: {name: 'Template 1', display: 'Template 1'},
+                                set: true,
+                                setMembers: [],
+                                formUuid: 'form-uuid-1'
+                            }]
+                        }]
+                    }
+                };
+                var mockFormResponse = {
+                    data: [{
+                        name: 'Form1',
+                        version: '1',
+                        uuid: 'form-uuid-1',
+                        resources: [{value: '{}'}]
+                    }]
+                };
+
+                conceptSetService.getConcept.and.returnValue({then: function (callback) {
+                    callback(mockObsConcept);
+                    return {then: function (next) { return {then: function () {}}; }};
+                }});
+                formService.getFormList.and.returnValue({then: function (callback) {
+                    callback(mockFormResponse);
+                    return {then: function () {}};
+                }});
+
+                stateParams.formUuid = 'missing-form-uuid';
+
+                createController();
+                $timeout.flush();
+
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Form not found. Please contact your administrator.');
+            });
+        });
+
+        it('should preserve saved form values when returning to observations page within encounter time', function () {
+            inject(function ($timeout) {
+                var conceptResponseData = {
+                    results: [{setMembers: [{name: {name: "Template 1"}, uuid: 'concept-uuid-1', set: true, setMembers: []}]}]
+                };
+                mockConceptSetService(conceptResponseData);
+                mockformService([]);
+
+                rootScope.currentUser = {isFavouriteObsTemplate: function () { return false; }};
+                createController();
+
+                scope.consultation.selectedObsTemplate = [{
+                    uuid: 'template-uuid-1',
+                    label: 'Template 1',
+                    observations: [{uuid: 'obs-uuid-1', concept: {uuid: 'concept-1'}, value: 'saved-value'}]
+                }];
+
+                var savedTemplate = _.find(scope.consultation.selectedObsTemplate, function (t) {
+                    return t.uuid === 'template-uuid-1';
+                });
+                expect(savedTemplate.observations[0].value).toEqual('saved-value');
+            });
+        });
+
+        it('should track observations from display control and not duplicate them when saving', function () {
+            inject(function ($timeout) {
+                var conceptResponseData = {
+                    results: [{setMembers: [{name: {name: "Template 1"}, uuid: 'concept-uuid-1', set: true, setMembers: []}]}]
+                };
+                mockConceptSetService(conceptResponseData);
+                mockformService([]);
+
+                rootScope.currentUser = {isFavouriteObsTemplate: function () { return false; }};
+                createController();
+
+                var templateObs = [{uuid: 'obs-uuid-1', concept: {uuid: 'concept-1'}, value: 'template-value'}];
+                var displayControlObs = [{uuid: 'obs-uuid-2', concept: {uuid: 'concept-2'}, value: 'display-value'}];
+
+                scope.consultation.selectedObsTemplate = [{uuid: 'template-uuid-1', label: 'Template 1', observations: templateObs}];
+                scope.consultation.observations = templateObs.concat(displayControlObs);
+
+                expect(scope.consultation.selectedObsTemplate[0].observations[0].uuid).toEqual('obs-uuid-1');
+                expect(scope.consultation.observations.length).toBe(2);
+            });
+        });
+    });
+});
