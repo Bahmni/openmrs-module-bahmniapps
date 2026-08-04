@@ -409,12 +409,12 @@ describe("Loading Dose", () => {
         });
     });
 
-    it("clicking loading dose toggle shows rate and additives when dosing rule is ml/kg", async () => {
-        const { container } = renderModal({ ...defaultHostData, dosingRules: ["ml/kg"] });
+    it("clicking loading dose toggle shows rate and additives when units is ml", async () => {
+        const { container } = renderModal();
         await waitFor(() => screen.getByText("Order Drug - Variable Dosage Protocol"));
 
-        openBahmniDropdown(container, "variable-dose-dosing-rule");
-        fireEvent.click(screen.getByText("ml/kg"));
+        openBahmniDropdown(container, "variable-dose-units");
+        fireEvent.click(screen.getByText("ml"));
 
         const toggle = container.querySelector("#loading-dose-toggle");
         fireEvent.click(toggle);

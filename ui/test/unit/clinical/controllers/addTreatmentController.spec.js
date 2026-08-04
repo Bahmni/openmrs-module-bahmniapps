@@ -2469,7 +2469,6 @@ describe("AddTreatmentController", function () {
                 expect(entry.drugName).toBe("Vancomycin");
                 expect(entry.hasLoadingDose).toBe(false);
                 expect(entry.stages.length).toBe(1);
-                expect(entry.stages[0].isLoadingDose).toBe(false);
             });
 
             it("should prepend a loading dose stage when loadingDose is provided", function () {
@@ -2489,9 +2488,7 @@ describe("AddTreatmentController", function () {
                 var entry = scope.consultation.variableDoseTreatments[0];
                 expect(entry.hasLoadingDose).toBe(true);
                 expect(entry.drugName).toBe("Custom Drug");
-                expect(entry.stages[0].isLoadingDose).toBe(true);
                 expect(entry.stages[0].stageName).toBe("Loading Dose");
-                expect(entry.stages[1].isLoadingDose).toBe(false);
             });
 
             it("should fall back to the base dose when getCalculatedDose is rejected", function () {

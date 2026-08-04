@@ -157,7 +157,7 @@ export function VariableDoseProtocolModalInner({ hostData, hostApi }) {
     }, [stages.length]);
 
     const loadingDoseUnitName = units?.value || "Units";
-    const showRateAndAdditives = dosingRule?.value === "ml/kg";
+    const showRateAndAdditives = units?.value?.toLowerCase().includes("ml");
 
     const isStageValid = (stage) =>
         stage.dose > 0 && stage.frequency !== null && stage.duration > 0 && stage.durationUnit !== null;

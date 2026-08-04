@@ -84,6 +84,9 @@ function VariableDoseProtocolTableInner(props) {
         return stage.stageName || '';
     };
 
+    var anyStageHasDetails = hostData.stages.some(function (stage) {
+        return detailFields.some(function (f) { return !!stage[f.key]; });
+    });
     var allExpanded = hostData.stages.every(function (_, i) { return !!expandedRows[i]; });
 
     const COLLAPSE_ALL = intl.formatMessage({ id: "VARIABLE_DOSE_TABLE_COLLAPSE_ALL", defaultMessage: "Collapse all rows" });
@@ -114,14 +117,16 @@ function VariableDoseProtocolTableInner(props) {
                 <TableHead>
                     <TableRow>
                         <TableHeader className="vdp-expand-col">
-                            <button
-                                type="button"
-                                className="vdp-expand-btn"
-                                onClick={toggleAll}
-                                aria-label={allExpanded ? COLLAPSE_ALL : EXPAND_ALL}
-                            >
-                                {allExpanded ? <ChevronUp16 /> : <ChevronDown16 />}
-                            </button>
+                            {anyStageHasDetails && (
+                                <button
+                                    type="button"
+                                    className="vdp-expand-btn"
+                                    onClick={toggleAll}
+                                    aria-label={allExpanded ? COLLAPSE_ALL : EXPAND_ALL}
+                                >
+                                    {allExpanded ? <ChevronUp16 /> : <ChevronDown16 />}
+                                </button>
+                            )}
                         </TableHeader>
                         {vdpHeaders.map(function (h) {
                             return (
