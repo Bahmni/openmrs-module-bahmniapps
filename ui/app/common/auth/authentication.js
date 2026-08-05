@@ -237,7 +237,7 @@ angular.module('authentication')
         return {
             authenticateUser: authenticateUser
         };
-    }]).factory('logoutService', ['$rootScope', 'sessionService', '$window', 'auditLogService', 'formDraftService', 'ngDialog', 'appService', '$log', function ($rootScope, sessionService, $window, auditLogService, formDraftService, ngDialog, appService, $log) {
+    }]).factory('logoutService', ['$rootScope', 'sessionService', '$window', 'auditLogService', 'formDraftService', 'ngDialog', '$log', function ($rootScope, sessionService, $window, auditLogService, formDraftService, ngDialog, $log) {
         var isAttemptingLogout = false;
         function logoutUser () {
             auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
@@ -265,8 +265,7 @@ angular.module('authentication')
         }
 
         function isLogoutDraftsWarningEnabled () {
-            var appDescriptor = appService.getAppDescriptor();
-            return !!(appDescriptor && appDescriptor.getConfigValue('enableFormDraftFeature'));
+            return !!$rootScope.formDraftFeatureEnabled;
         }
 
         function attemptLogout (scope) {

@@ -1,7 +1,7 @@
 'use strict';
 
 describe("logOut directive", function () {
-    var $compile, $rootScope, sessionService, formDraftService, ngDialog, auditLogService, appService, appConfig, mockWindow, element, scope, fakeDialog, keydownHandler;
+    var $compile, $rootScope, sessionService, formDraftService, ngDialog, auditLogService, mockWindow, element, scope, fakeDialog, keydownHandler;
 
     beforeEach(module('authentication'));
     beforeEach(module(function ($provide) {
@@ -9,11 +9,6 @@ describe("logOut directive", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
         auditLogService.log.and.returnValue(specUtil.respondWith({}));
-
-        appConfig = jasmine.createSpyObj('appConfig', ['getConfigValue']);
-        appConfig.getConfigValue.and.returnValue(true);
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appService.getAppDescriptor.and.returnValue(appConfig);
 
         fakeDialog = {id: 'logout-drafts-warning-dialog'};
         ngDialog.open.and.returnValue(fakeDialog);
@@ -29,7 +24,6 @@ describe("logOut directive", function () {
         $provide.value('formDraftService', formDraftService);
         $provide.value('ngDialog', ngDialog);
         $provide.value('auditLogService', auditLogService);
-        $provide.value('appService', appService);
         $provide.value('$window', mockWindow);
         $provide.value('$bahmniCookieStore', jasmine.createSpyObj('$bahmniCookieStore', ['get', 'put', 'remove']));
     }));
@@ -42,6 +36,7 @@ describe("logOut directive", function () {
 
         $rootScope.currentProvider = {uuid: 'provider-uuid-456'};
         $rootScope.quickLogoutComboKey = 'l';
+        $rootScope.formDraftFeatureEnabled = true;
         scope = $rootScope.$new();
         element = $compile('<a log-out></a>')(scope);
         scope.$digest();
@@ -111,7 +106,7 @@ describe("logOut directive", function () {
     });
 
     it("should logout directly without checking for drafts when enableFormDraftFeature config is false", function (done) {
-        appConfig.getConfigValue.and.returnValue(false);
+        $rootScope.formDraftFeatureEnabled = false;
 
         element.triggerHandler('click');
 
@@ -124,20 +119,7 @@ describe("logOut directive", function () {
     });
 
     it("should logout directly without checking for drafts when the app config has no toggle value (null defaults to disabled)", function (done) {
-        appConfig.getConfigValue.and.returnValue(null);
-
-        element.triggerHandler('click');
-
-        setTimeout(function () {
-            expect(formDraftService.hasDraftsForProvider).not.toHaveBeenCalled();
-            expect(ngDialog.open).not.toHaveBeenCalled();
-            expect(sessionService.destroy).toHaveBeenCalled();
-            done();
-        }, 0);
-    });
-
-    it("should logout directly when the app descriptor is not yet available (defaults to disabled)", function (done) {
-        appService.getAppDescriptor.and.returnValue(undefined);
+        $rootScope.formDraftFeatureEnabled = null;
 
         element.triggerHandler('click');
 
@@ -204,7 +186,7 @@ describe("logOut directive", function () {
     });
 
     it("should logout directly via the keyboard shortcut when enableFormDraftFeature config is false", function (done) {
-        appConfig.getConfigValue.and.returnValue(false);
+        $rootScope.formDraftFeatureEnabled = false;
 
         keydownHandler({metaKey: true, key: 'l'});
 
