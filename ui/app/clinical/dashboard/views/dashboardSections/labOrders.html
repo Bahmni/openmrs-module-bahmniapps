@@ -1,4 +1,5 @@
 <div ng-controller="PatientDashboardLabOrdersController" class="dashboard-laborders-section">
+<ul show-if-privilege="{{::dashboardConfig.requiredPrivilege}}">
     <div>
         <h2 ng-dialog="dashboard/views/dashboardSections/labSummary.html"
             ng-dialog-data="{{dialogData}}"
@@ -9,4 +10,5 @@
         </h2>
         <investigation-results params="dashboardConfig"></investigation-results>
     </div>
+</ul>	
 </div>

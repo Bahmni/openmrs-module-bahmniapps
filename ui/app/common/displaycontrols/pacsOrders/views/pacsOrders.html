@@ -1,4 +1,5 @@
 <section class="dashboard-section ng-scope pacs-orders">
+<ul show-if-privilege="{{::config.requiredPrivilege}}">
     <h2 class="section-title">{{::section | titleTranslate}}</h2>
     <div>
         <section ng-hide="noOrdersMessage">
@@ -22,4 +23,5 @@
             <div class="placeholder-text" ><p translate="DISPLAY_CONTROL_ERROR_MESSAGE_KEY" translate-values="{displayControl : '{{noOrdersMessage}}'}"></p></div>
         </div>
     </div>
+</ul>	
 </section>
