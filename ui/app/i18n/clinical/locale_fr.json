@@ -389,5 +389,7 @@
     "CDSS_ALERT_SAVE_ERROR": "Une alerte critique du CDSS doit être traitée dans l'onglet Médicaments avant de poursuivre l'opération d'enregistrement.",
     "CDSS_ACTION": "Veuillez consulter l'onglet Médicaments pour prendre d'autres mesures.",
     "MEDICATION_PRINT": "Imprimer",
-    "DAYS_ADMITTED_MESSAGE": "Jours d'hospitalisation"
+    "DAYS_ADMITTED_MESSAGE": "Jours d'hospitalisation",
+    "ADDITIONAL_INSTRUCTIONS": "Instructions supplémentaires",
+    "VARIABLE_DOSAGE_HEADER": "Dosaggio Variabile"
 }

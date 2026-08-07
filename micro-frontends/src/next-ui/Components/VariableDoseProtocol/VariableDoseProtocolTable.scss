@@ -1,0 +1,90 @@
+.vdp-section {
+  padding: 6px 10px 10px;
+  box-sizing: border-box;
+
+  .vdp-title {
+    color: #264478;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 0 0 6px;
+    margin: 0;
+    font-family: inherit;
+  }
+
+  .bx--data-table-container,
+  .vdp-table {
+    border: 1px solid #c6c6c6;
+    width: 100%;
+  }
+}
+
+.vdp-expand-btn {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 2px !important;
+  cursor: pointer;
+  color: #525252;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: none !important;
+    opacity: 0.7;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.vdp-expand-col,
+.vdp-expand-cell {
+  width: 40px;
+  padding: 0 8px !important;
+}
+
+.vdp-table tbody .vdp-data-row:nth-child(odd) td {
+  background-color: #ffffff !important;
+}
+
+.vdp-table tbody .vdp-data-row:nth-child(even) td {
+  background-color: #f4f4f4 !important;
+}
+
+.vdp-table tbody .vdp-expanded-content-row td {
+  background-color: #ffffff !important;
+}
+
+.vdp-table th,
+.vdp-table td {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.vdp-expanded-details {
+  padding: 4px 0;
+}
+
+.vdp-detail-item {
+  padding: 6px 0;
+
+  &.vdp-detail-item--separator {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+    margin-bottom: 2px;
+  }
+}
+
+.vdp-detail-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #525252;
+  margin-bottom: 2px;
+}
+
+.vdp-detail-value {
+  font-size: 12px;
+  color: #161616;
+}

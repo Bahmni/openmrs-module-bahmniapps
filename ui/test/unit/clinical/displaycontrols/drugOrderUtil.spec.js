@@ -67,6 +67,16 @@ describe("DrugOrderUtil", function () {
             expect(continuousTreatments.length).toBe(2);
         });
 
+        it("should not merge variable dose orders even when other fields match", function () {
+            var treatment1 = sampleTreatment("drug.uuid", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)");
+            var treatment2 = sampleTreatment("drug.uuid", "instructions", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)");
+            treatment1.isVariableDoseOrder = true;
+            treatment2.isVariableDoseOrder = true;
+
+            var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments([treatment1, treatment2]);
+            expect(continuousTreatments.length).toBe(2);
+        });
+
         it("should not merge continuous drug's if instruction's are different", function () {
             var treatment1 = sampleTreatment("drug.uuid", "instructions", 1, "doseUnits", "frequency", "route", 1420088400000, 1420261200000, 3, "Day(s)");
             var treatment2 = sampleTreatment("drug.uuid", "instructions1", 1, "doseUnits", "frequency", "route", 1420347600000, 1420520400000, 3, "Day(s)");

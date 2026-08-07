@@ -99,6 +99,17 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
             consultation.drugOrders = consultation.drugOrders.concat(consultation.removableDrugs);
         }
 
+        var variableDoseTreatments = consultation.variableDoseTreatments;
+        if (variableDoseTreatments && variableDoseTreatments.length > 0) {
+            variableDoseTreatments.forEach(function (vdt) {
+                if (vdt.action === Bahmni.Clinical.Constants.orderActions.revise && vdt.previousOrderUuid) {
+                    consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFhirDrugOrderRevise(vdt));
+                } else {
+                    consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt));
+                }
+            });
+        }
+
         encounterData.drugOrders = consultation.drugOrders;
 
         encounterData.disposition = consultation.disposition;
