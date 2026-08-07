@@ -217,4 +217,67 @@ describe("DrugOrder", function() {
 			expect(administrationInstructions.additives).toBe(null);
 		});
 	});
+
+	describe("createFhirDrugOrder", function () {
+		var buildVdt = function (overrides) {
+			return Object.assign({
+				drug: { uuid: 'drug-uuid', name: 'Prednisolone' },
+				units: 'mg',
+				route: 'Oral',
+				startDate: new Date('2026-01-01'),
+				careSetting: 'OUTPATIENT',
+				stages: [
+					{
+						stageName: 'Stage 1',
+						sequence: 1,
+						isLoadingDose: false,
+						dose: '5',
+						unit: 'mg',
+						frequency: 'Once a day',
+						frequencyPerDay: 1,
+						duration: '3',
+						durationUnit: 'Day(s)',
+						instructions: '',
+						rate: '',
+						additives: '',
+						additionalInstructions: '',
+						startDate: new Date('2026-01-01')
+					}
+				]
+			}, overrides || {});
+		};
+
+		it("should map drug when a coded drug is provided", function () {
+			var vdt = buildVdt();
+			var drugOrder = Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt);
+			expect(drugOrder.drug).toEqual({ uuid: 'drug-uuid', name: 'Prednisolone' });
+			expect(drugOrder.drugNonCoded).toBeNull();
+			expect(drugOrder.concept).toBeNull();
+		});
+
+		it("should map drugNonCoded and concept when a non-coded drug is provided", function () {
+			var nonCodedConcept = { uuid: 'noncoded-concept-uuid', name: 'Non-coded Drug Concept' };
+			var vdt = buildVdt({
+				drug: null,
+				drugNonCoded: 'Herbal Mixture 500mg',
+				concept: nonCodedConcept
+			});
+			var drugOrder = Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt);
+			expect(drugOrder.drug).toBeNull();
+			expect(drugOrder.drugNonCoded).toBe('Herbal Mixture 500mg');
+			expect(drugOrder.concept).toEqual(nonCodedConcept);
+		});
+
+		it("should use vdt.totalDurationUnit as the durationUnits when provided", function () {
+			var vdt = buildVdt({totalDurationUnit: 'Day(s)'});
+			var drugOrder = Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt);
+			expect(drugOrder.durationUnits).toBe('Day(s)');
+		});
+
+		it("should fall back to 'Days' as the durationUnits when vdt.totalDurationUnit is not provided", function () {
+			var vdt = buildVdt();
+			var drugOrder = Bahmni.Clinical.DrugOrder.createFhirDrugOrder(vdt);
+			expect(drugOrder.durationUnits).toBe('Days');
+		});
+	});
 });

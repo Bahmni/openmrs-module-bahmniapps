@@ -292,10 +292,25 @@ describe("AddTreatmentController", function () {
             { name: "Month(s)", factor: 30 }
         ],
         inputOptionsConfig: {},
-        orderSet: {}
+        orderSet: {},
+        getDoseUnits: function () {
+            return ["mg", "ml"];
+        },
+        getRoutes: function () {
+            return ["Oral", "IV"];
+        },
+        getDosingInstructions: function () {
+            return ["As directed"];
+        },
+        getFrequencies: function () {
+            return this.frequencies;
+        },
+        getDurationUnits: function () {
+            return this.durationUnits;
+        }
     };
 
-    var initController = function () {
+    var initController = function (configOverrides) {
         inject(function ($controller, $rootScope, _$q_) {
             $q = _$q_;
             scope = $rootScope.$new();
@@ -343,6 +358,9 @@ describe("AddTreatmentController", function () {
             appService.getAppDescriptor.and.returnValue(appConfig);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigForPage.and.returnValue(medicationConfig);
+            appDescriptor.getConfigValue.and.callFake(function (key) {
+                return (configOverrides && configOverrides.hasOwnProperty(key)) ? configOverrides[key] : undefined;
+            });
             orderSets = [{
                 "orderSetId": 3,
                 "uuid": "497b959b-101b-41a8-8154-3f252b2771d7",
@@ -410,7 +428,9 @@ describe("AddTreatmentController", function () {
             scope.getFilteredOrderSets('dumm');
         });
     };
-    beforeEach(initController);
+    beforeEach(function () {
+        initController();
+    });
 
     describe("DosingUnitsFractions()", function () {
         it("should return true if mantissa available", function () {
@@ -1726,6 +1746,140 @@ describe("AddTreatmentController", function () {
         });
     });
 
+    describe("Refill All excludes variable-dose orders", function () {
+        beforeEach(function () {
+            scope.treatments = [];
+        });
+
+        it("should refill a regular drug order when it has an effectiveStopDate", function () {
+            var refillCalled = false;
+            var regularOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: false,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () {
+                    refillCalled = true;
+                    return { drug: { name: 'Aspirin' } };
+                }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [regularOrder]);
+            expect(refillCalled).toBe(true);
+            expect(scope.treatments.length).toBe(1);
+        });
+
+        it("should NOT refill a variable-dose order even when it has an effectiveStopDate", function () {
+            var refillCalled = false;
+            var variableDoseOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: true,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () {
+                    refillCalled = true;
+                    return { drug: { name: 'Prednisolone' } };
+                }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [variableDoseOrder]);
+            expect(refillCalled).toBe(false);
+            expect(scope.treatments.length).toBe(0);
+        });
+
+        it("should refill regular orders but skip variable-dose orders in a mixed list", function () {
+            var refillCount = 0;
+            var regularOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: false,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () { refillCount++; return { drug: { name: 'Aspirin' } }; }
+            };
+            var variableDoseOrder = {
+                effectiveStopDate: new Date('2026-06-01'),
+                isVariableDoseOrder: true,
+                concept: null,
+                isNonCodedDrug: false,
+                refill: function () { refillCount++; return { drug: { name: 'Prednisolone' } }; }
+            };
+            rootScope.$broadcast("event:refillDrugOrders", [regularOrder, variableDoseOrder]);
+            expect(refillCount).toBe(1);
+            expect(scope.treatments.length).toBe(1);
+        });
+    });
+
+    describe("VDP conflict detection when adding a regular drug order", function () {
+        var encounterDate;
+        beforeEach(function () {
+            scope.treatments = [];
+            encounterDate = DateUtil.parse("2026-01-10");
+        });
+
+        // buildWith defaults drug.form to "Tablet", so getDisplayName() returns "abc (Tablet)".
+        // VDP proxy uses vdp.drugName directly, so drugName must match getDisplayName() output.
+        it("should show conflict modal when adding a regular drug order for the same drug as an unsaved VDP", function () {
+            scope.consultation.variableDoseTreatments = [{
+                drugName: 'abc (Tablet)',
+                startDate: DateUtil.parse("2026-01-10"),
+                totalDays: 7
+            }];
+
+            var newOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: { name: 'abc', uuid: '123' },
+                effectiveStartDate: DateUtil.parse("2026-01-12"),
+                effectiveStopDate: DateUtil.parse("2026-01-15"),
+                durationInDays: 3
+            }, encounterDate);
+
+            scope.treatment = newOrder;
+            scope.add();
+
+            expect(ngDialog.open).toHaveBeenCalled();
+            expect(scope.treatments.length).toEqual(0);
+        });
+
+        it("should allow adding a regular drug order when the VDP does not overlap", function () {
+            scope.consultation.variableDoseTreatments = [{
+                drugName: 'abc (Tablet)',
+                startDate: DateUtil.parse("2026-01-01"),
+                totalDays: 5
+            }];
+
+            var newOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: { name: 'abc', uuid: '123' },
+                effectiveStartDate: DateUtil.parse("2026-01-20"),
+                effectiveStopDate: DateUtil.parse("2026-01-25"),
+                durationInDays: 5
+            }, encounterDate);
+
+            scope.treatment = newOrder;
+            scope.add();
+
+            expect(ngDialog.open).not.toHaveBeenCalled();
+            expect(scope.treatments.length).toEqual(1);
+        });
+
+        it("should not conflict when drugs are different", function () {
+            scope.consultation.variableDoseTreatments = [{
+                drugName: 'differentDrug (Tablet)',
+                startDate: DateUtil.parse("2026-01-10"),
+                totalDays: 7
+            }];
+
+            var newOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
+                drug: { name: 'abc', uuid: '123' },
+                effectiveStartDate: DateUtil.parse("2026-01-12"),
+                effectiveStopDate: DateUtil.parse("2026-01-15"),
+                durationInDays: 3
+            }, encounterDate);
+
+            scope.treatment = newOrder;
+            scope.add();
+
+            expect(ngDialog.open).not.toHaveBeenCalled();
+            expect(scope.treatments.length).toEqual(1);
+        });
+    });
+
     describe("After selection from ng-dialog", function () {
 
         beforeEach(function () {
@@ -2255,6 +2409,196 @@ describe("AddTreatmentController", function () {
             drugOrder1.dosingRule = "mg/Kg";
             const treatment = scope.calculateDose(drugOrder1);
             expect(treatment).toBe(drugOrder1);
+        });
+    });
+
+    describe("Variable Dose Protocol", function () {
+        var $timeout;
+
+        beforeEach(function () {
+            initController({ enableVariableDoseProtocol: true });
+            inject(function (_$timeout_) {
+                $timeout = _$timeout_;
+            });
+            scope.consultation.activeAndScheduledDrugOrders = [];
+            scope.consultation.variableDoseTreatments = [];
+            scope.treatments = [];
+        });
+
+        it("should enable showVariableDoseProtocol and build the initial host data", function () {
+            expect(scope.showVariableDoseProtocol).toBe(true);
+            expect(scope.variableDoseHostData.doseUnits).toEqual(treatmentConfig.getDoseUnits());
+            expect(scope.variableDoseHostData.frequencies).toEqual(treatmentConfig.getFrequencies());
+        });
+
+        describe("onSave", function () {
+            var stage = function (overrides) {
+                return angular.extend({
+                    stageName: "Stage 1",
+                    dose: "10",
+                    frequency: "Twice a day",
+                    duration: "2",
+                    durationUnit: "Day(s)"
+                }, overrides || {});
+            };
+
+            it("should add a new variable dose entry without a loading dose", function () {
+                var data = {
+                    drug: { name: "Vancomycin", dosageForm: { display: "Injection" } },
+                    units: "mg",
+                    route: "IV",
+                    startDate: new Date("2024-01-01"),
+                    stages: [stage()]
+                };
+
+                scope.variableDoseHostApi.onSave(data, false);
+                $timeout.flush();
+                scope.$digest();
+
+                expect(scope.consultation.variableDoseTreatments.length).toBe(1);
+                var entry = scope.consultation.variableDoseTreatments[0];
+                expect(entry.drugName).toBe("Vancomycin");
+                expect(entry.hasLoadingDose).toBe(false);
+                expect(entry.stages.length).toBe(1);
+            });
+
+            it("should prepend a loading dose stage when loadingDose is provided", function () {
+                var data = {
+                    drugNonCoded: "Custom Drug",
+                    isNonCodedDrug: true,
+                    units: "mg",
+                    startDate: new Date("2024-01-01"),
+                    loadingDose: { dose: "50" },
+                    stages: [stage()]
+                };
+
+                scope.variableDoseHostApi.onSave(data, false);
+                $timeout.flush();
+                scope.$digest();
+
+                var entry = scope.consultation.variableDoseTreatments[0];
+                expect(entry.hasLoadingDose).toBe(true);
+                expect(entry.drugName).toBe("Custom Drug");
+                expect(entry.stages[0].stageName).toBe("Loading Dose");
+            });
+
+            it("should fall back to the base dose when getCalculatedDose is rejected", function () {
+                orderSetService.getCalculatedDose.and.returnValue($q.reject("calc-failed"));
+                var data = {
+                    drug: { name: "Vancomycin" },
+                    units: "mg",
+                    startDate: new Date("2024-01-01"),
+                    dosingRule: "mg/kg",
+                    stages: [stage()]
+                };
+
+                scope.variableDoseHostApi.onSave(data, false);
+                $timeout.flush();
+                scope.$digest();
+
+                var entry = scope.consultation.variableDoseTreatments[0];
+                expect(entry.stages[0].dose).toBe("10");
+            });
+
+            it("should replace the entry being edited when editingVariableDoseIndex >= 0", function () {
+                scope.consultation.variableDoseTreatments = [{ drugName: "OldDrug" }];
+                scope.variableDoseHostApi.openModal = jasmine.createSpy("openModal");
+                scope.$broadcast("event:editVariableDoseOrder", 0);
+
+                var data = {
+                    drug: { name: "NewDrug" },
+                    units: "mg",
+                    startDate: new Date("2024-01-01"),
+                    stages: [stage()]
+                };
+                scope.variableDoseHostApi.onSave(data, false);
+                $timeout.flush();
+                scope.$digest();
+
+                expect(scope.consultation.variableDoseTreatments.length).toBe(1);
+                expect(scope.consultation.variableDoseTreatments[0].drugName).toBe("NewDrug");
+            });
+
+            it("should mark the entry as a revise action when isSavedOrder is true", function () {
+                var drugOrder = { uuid: "order-uuid", drug: { name: "ExistingDrug" } };
+                scope.variableDoseHostApi.openModal = jasmine.createSpy("openModal");
+                scope.$broadcast("event:reviseVariableDoseOrder", drugOrder);
+                expect(drugOrder.isBeingEdited).toBe(true);
+
+                var data = {
+                    drug: { name: "ExistingDrug" },
+                    units: "mg",
+                    startDate: new Date("2024-01-01"),
+                    stages: [stage()]
+                };
+                scope.variableDoseHostApi.onSave(data, true);
+                $timeout.flush();
+                scope.$digest();
+
+                var entry = scope.consultation.variableDoseTreatments[0];
+                expect(entry.previousOrderUuid).toBe("order-uuid");
+                expect(entry.action).toBe(Bahmni.Clinical.Constants.orderActions.revise);
+                expect(drugOrder.isBeingEdited).toBe(false);
+            });
+
+            it("should open the conflict dialog and not save when an overlapping active order exists", function () {
+                scope.consultation.activeAndScheduledDrugOrders = [{
+                    getDisplayName: function () { return "Vancomycin"; },
+                    careSetting: Bahmni.Clinical.Constants.careSetting.outPatient,
+                    overlappingScheduledWith: function () { return true; }
+                }];
+
+                var data = {
+                    drug: { name: "Vancomycin" },
+                    units: "mg",
+                    startDate: new Date("2024-01-02"),
+                    stages: [stage()]
+                };
+                scope.variableDoseHostApi.onSave(data, false);
+
+                expect(ngDialog.open).toHaveBeenCalled();
+                expect(scope.popupActive).toBe(true);
+                expect(scope.consultation.variableDoseTreatments.length).toBe(0);
+            });
+
+            it("should not save when patient weight is required but not captured", function () {
+                scope.addTreatmentWithPatientWeight = { duration: 604800, conceptNames: ["Weight"] };
+                scope.obs = [];
+                scope.currentEpoch = 1000;
+
+                var data = { drug: { name: "Vancomycin" }, units: "mg", startDate: new Date(), stages: [] };
+                scope.variableDoseHostApi.onSave(data, false);
+
+                expect(scope.consultation.variableDoseTreatments.length).toBe(0);
+            });
+        });
+
+        describe("onClose", function () {
+            it("should reset host data and clear the revising drug order state", function () {
+                var drugOrder = { uuid: "order-uuid", drug: { name: "ExistingDrug" } };
+                scope.variableDoseHostApi.openModal = jasmine.createSpy("openModal");
+                scope.$broadcast("event:reviseVariableDoseOrder", drugOrder);
+                expect(drugOrder.isBeingEdited).toBe(true);
+
+                scope.variableDoseHostApi.onClose();
+
+                expect(drugOrder.isBeingEdited).toBe(false);
+            });
+        });
+
+        describe("event:editVariableDoseOrder", function () {
+            it("should build initial values and open the modal for the entry being edited", function () {
+                scope.consultation.variableDoseTreatments = [
+                    { drugName: "Drug1", dosingRule: "mg/kg", stages: [] }
+                ];
+                scope.variableDoseHostApi.openModal = jasmine.createSpy("openModal");
+
+                scope.$broadcast("event:editVariableDoseOrder", 0);
+
+                expect(scope.variableDoseHostApi.openModal).toHaveBeenCalled();
+                expect(scope.variableDoseHostData.editMode).toBe(true);
+                expect(scope.variableDoseHostData.initialValues.dosingRule).toBe("mg/kg");
+            });
         });
     });
 });

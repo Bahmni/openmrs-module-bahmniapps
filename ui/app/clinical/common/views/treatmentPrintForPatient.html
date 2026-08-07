@@ -13,12 +13,23 @@
             <tr>
                 <td>{{$index + 1}}.</td>
                 <td class="drug-name" bo-text="drugOrder.getDisplayName()" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}"></td>
-                <td class="dosage-form">
+                <td class="dosage-form" ng-if="!drugOrder.isVariableDoseOrder">
                     <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}"></span>
                     <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
                     <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{::drugOrder.effectiveStopDate | bahmniDate}}</span>
                 </td>
-                <td bo-text="(drugOrder.effectiveStartDate | bahmniDate)"></td>
+                <td class="dosage-form" ng-if="drugOrder.isVariableDoseOrder" colspan="2">
+                    <div class="vdp-stage" ng-repeat="stage in drugOrder.stages" style="display: flex; margin-bottom: 4px;">
+                        <div style="flex: 1;">
+                            <span style="float: none; display: inline-block; width: 12px; vertical-align: top;">&#8226;</span>
+                            <span bo-text="stage | dosageString:drugOrder" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}" style="float: none; display: inline; white-space: normal;"></span>
+                            <div ng-if="stage.additionalInstructions" class="inline-notes notes"><strong>{{'ADDITIONAL_INSTRUCTIONS'|translate}}: </strong>{{stage.additionalInstructions}}</div>
+                        </div>
+                        <div style="flex-shrink: 0; width: 2.2cm;" bo-text="(stage.startDate | bahmniDate)"></div>
+                    </div>
+                    <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{::drugOrder.effectiveStopDate | bahmniDate}}</span>
+                </td>
+                <td ng-if="!drugOrder.isVariableDoseOrder" bo-text="(drugOrder.effectiveStartDate | bahmniDate)"></td>
             </tr>
             <tr ng-if="::drugOrder.additionalInstructions">
                 <td></td><td></td>
