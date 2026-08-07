@@ -389,5 +389,8 @@
     "CDSS_ALERT_SAVE_ERROR": "A CDSS Critical Alert needs to be addressed in Medications Tab before continuing with Save operation",
     "CDSS_ACTION": "Please go to Medications Tab to take further action",
     "MEDICATION_PRINT": "Print",
-    "DAYS_ADMITTED_MESSAGE": "Days in hospital"
+    "DAYS_ADMITTED_MESSAGE": "Days in hospital",
+    "MEDICATION_CONFIRM_REVIEW": "Confirm Review",
+    "MEDICATION_PHARMACIST_REVIEW_HEADING": "New Medications Available to be Dispensed",
+    "MEDICATION_PHARMACIST_REVIEW_SUBTEXT": "Please review the patient's weight, allergies, and prescriptions to continue with dispensing."
 }
