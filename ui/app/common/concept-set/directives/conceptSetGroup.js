@@ -18,8 +18,10 @@ angular.module('bahmni.common.conceptSet')
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var init = function () {
-                $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
-                contextChangeHandler.add($scope.validationHandler.validate);
+                if ($scope.consultation && $scope.allTemplates) {
+                    $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates, $scope.consultation);
+                    contextChangeHandler.add($scope.validationHandler.validate);
+                }
             };
             $scope.toggleSideBar = function () {
                 $rootScope.showLeftpanelToggle = !$rootScope.showLeftpanelToggle;
@@ -122,25 +124,88 @@ angular.module('bahmni.common.conceptSet')
                 return false;
             };
 
+            var clearTemplateState = function (template) {
+                if (!template) return;
+                template.observations = [];
+                template.hasUnsavedFormObservations = false;
+                template.draftValidationPassed = undefined;
+                template.validate = null;
+                template.component = null;
+                template.errorMessage = null;
+                template.isValid = undefined;
+                template.isAdded = false;
+                template.isOpen = false;
+                template.klass = "";
+                template.isLoaded = false;
+                if (template.formUuid) {
+                    template.formData = null;
+                }
+            };
+
+            var isTemplateMatch = function (template, templateId) {
+                return (template.uuid || template.formUuid || template.id) === templateId;
+            };
+
             $scope.remove = function (index) {
                 var label = $scope.allTemplates[index].label;
                 var currentTemplate = $scope.allTemplates[index];
-                var anotherTemplate = _.find($scope.allTemplates, function (template) {
-                    return template.label == currentTemplate.label && template !== currentTemplate;
-                });
-                if (anotherTemplate) {
-                    $scope.allTemplates.splice(index, 1);
+                var templateId = currentTemplate.uuid || currentTemplate.formUuid || currentTemplate.id;
+                var isFormPinned = currentTemplate.alwaysShow;
+
+                clearTemplateState(currentTemplate);
+
+                if (!isFormPinned) {
+                    if ($scope.consultation) {
+                        if (!$scope.consultation.deletedFormIds) {
+                            $scope.consultation.deletedFormIds = [];
+                        }
+                        if (!_.includes($scope.consultation.deletedFormIds, templateId)) {
+                            $scope.consultation.deletedFormIds.push(templateId);
+                        }
+                    }
+                    if ($scope.consultation && $scope.consultation.selectedObsTemplate) {
+                        _.remove($scope.consultation.selectedObsTemplate, function (template) {
+                            return isTemplateMatch(template, templateId);
+                        });
+                    }
                 }
-                else {
-                    $scope.allTemplates[index].isAdded = false;
-                    var clonedObj = $scope.allTemplates[index].clone();
-                    $scope.allTemplates[index] = clonedObj;
-                    $scope.allTemplates[index].isAdded = false;
-                    $scope.allTemplates[index].isOpen = false;
-                    $scope.allTemplates[index].klass = "";
-                    $scope.allTemplates[index].isLoaded = false;
+
+                if ($scope.consultation && $scope.consultation.observations) {
+                    $scope.consultation.observations = _.filter($scope.consultation.observations, function (observation) {
+                        if (!observation) return true;
+                        if (observation.concept && observation.concept.uuid === templateId) {
+                            return false;
+                        }
+                        if (observation.formFieldPath && currentTemplate.formName) {
+                            return !observation.formFieldPath.startsWith(currentTemplate.formName + '.');
+                        }
+                        return true;
+                    });
                 }
-                $scope.leftPanelConceptSet = "";
+
+                if ($scope.consultation && $scope.consultation.observationForms) {
+                    if (!isFormPinned) {
+                        _.remove($scope.consultation.observationForms, function (observationForm) {
+                            return isTemplateMatch(observationForm, templateId);
+                        });
+                    } else {
+                        _.each($scope.consultation.observationForms, function (observationForm) {
+                            if (isTemplateMatch(observationForm, templateId)) {
+                                clearTemplateState(observationForm);
+                            }
+                        });
+                    }
+                }
+
+                if ($scope.consultation && ($scope.consultation.lastvisited === currentTemplate.id || $scope.consultation.lastvisited === currentTemplate.formUuid)) {
+                    $scope.consultation.lastvisited = null;
+                }
+
+                if ($scope.leftPanelConceptSet && $scope.leftPanelConceptSet.uuid === currentTemplate.uuid &&
+                    $scope.leftPanelConceptSet.formUuid === currentTemplate.formUuid) {
+                    $scope.leftPanelConceptSet = "";
+                }
+
                 messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY", {label: label}));
             };
 

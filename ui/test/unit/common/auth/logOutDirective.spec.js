@@ -131,6 +131,19 @@ describe("logOut directive", function () {
         }, 0);
     });
 
+    it("should logout directly when the app descriptor is not yet available (defaults to disabled)", function (done) {
+        $rootScope.formDraftFeatureEnabled = false;
+
+        element.triggerHandler('click');
+
+        setTimeout(function () {
+            expect(formDraftService.hasDraftsForProvider).not.toHaveBeenCalled();
+            expect(ngDialog.open).not.toHaveBeenCalled();
+            expect(sessionService.destroy).toHaveBeenCalled();
+            done();
+        }, 0);
+    });
+
     it("should logout without blocking when the drafts check fails", function (done) {
         formDraftService.hasDraftsForProvider.and.returnValue({
             then: function (success, failure) {
