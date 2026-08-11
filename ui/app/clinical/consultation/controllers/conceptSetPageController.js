@@ -1030,8 +1030,8 @@ angular.module('bahmni.clinical')
                 $rootScope.draftData = null;
                 clearDraftStatus(true);
                 var deletedFormIds = getRootDeletedFormIds();
-                if (deletedFormIds && Array.isArray(deletedFormIds) && deletedFormIds.length > 0 && 
-                    $scope.allTemplates && Array.isArray($scope.allTemplates)) {
+                if (deletedFormIds && angular.isArray(deletedFormIds) && deletedFormIds.length > 0 &&
+                    $scope.allTemplates && angular.isArray($scope.allTemplates)) {
                     _.each($scope.allTemplates, function (template) {
                         if (!template) return;
                         var templateId = getFormId(template);
