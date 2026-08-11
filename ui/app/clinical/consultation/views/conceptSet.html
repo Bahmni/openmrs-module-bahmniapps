@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                                 <ul class="template-icons">
-                                    <li ng-repeat="template in filterTemplates()">
+                                    <li ng-repeat="template in filterTemplates()" ng-if="!template.isDeleted">
                                         <button id="{{getNormalized(template.label)}}" ng-disabled = "((template.isAdded || template.alwaysShow) && !template.allowAddMore)" ng-click="addTemplate(template)">
                                             {{::template.label}}
                                         </button>

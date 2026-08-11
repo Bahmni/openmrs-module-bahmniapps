@@ -539,10 +539,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var copyConsultationToScope = function (consultationWithDiagnosis) {
                 consultationWithDiagnosis.preSaveHandler = $scope.consultation.preSaveHandler;
                 consultationWithDiagnosis.postSaveHandler = $scope.consultation.postSaveHandler;
-                if ($scope.consultation.deletedFormIds && $scope.consultation.deletedFormIds.length > 0) {
+                if ($scope.consultation && $scope.consultation.deletedFormIds && 
+                    Array.isArray($scope.consultation.deletedFormIds) && $scope.consultation.deletedFormIds.length > 0) {
                     consultationWithDiagnosis.deletedFormIds = $scope.consultation.deletedFormIds;
-                    if (consultationWithDiagnosis.observationForms) {
+                    if (consultationWithDiagnosis && consultationWithDiagnosis.observationForms && 
+                        Array.isArray(consultationWithDiagnosis.observationForms)) {
                         _.each(consultationWithDiagnosis.observationForms, function (form) {
+                            if (!form) return;
                             var formId = form.formUuid || form.uuid || form.id;
                             if (formId && _.includes(consultationWithDiagnosis.deletedFormIds, formId)) {
                                 form.isAdded = false;
