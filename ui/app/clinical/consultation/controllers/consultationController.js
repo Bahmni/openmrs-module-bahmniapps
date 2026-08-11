@@ -539,6 +539,25 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var copyConsultationToScope = function (consultationWithDiagnosis) {
                 consultationWithDiagnosis.preSaveHandler = $scope.consultation.preSaveHandler;
                 consultationWithDiagnosis.postSaveHandler = $scope.consultation.postSaveHandler;
+                if ($scope.consultation.deletedFormIds && $scope.consultation.deletedFormIds.length > 0) {
+                    consultationWithDiagnosis.deletedFormIds = $scope.consultation.deletedFormIds;
+                    if (consultationWithDiagnosis.observationForms) {
+                        _.each(consultationWithDiagnosis.observationForms, function (form) {
+                            var formId = form.formUuid || form.uuid || form.id;
+                            if (formId && _.includes(consultationWithDiagnosis.deletedFormIds, formId)) {
+                                form.isAdded = false;
+                                form.observations = [];
+                                form.hasUnsavedFormObservations = false;
+                                form.draftValidationPassed = undefined;
+                                form.component = null;
+                                form.isOpen = false;
+                                form.isLoaded = false;
+                                form.klass = '';
+                                form.isDeleted = true;
+                            }
+                        });
+                    }
+                }
                 $scope.$parent.consultation = consultationWithDiagnosis;
                 $scope.$parent.consultation.postSaveHandler.fire();
                 $scope.dashboardDirty = true;

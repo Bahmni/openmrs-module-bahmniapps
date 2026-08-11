@@ -1029,6 +1029,17 @@ angular.module('bahmni.clinical')
                 $scope.formDraft.showSpinner = false;
                 $rootScope.draftData = null;
                 clearDraftStatus(true);
+                var deletedFormIds = getRootDeletedFormIds();
+                if (deletedFormIds && deletedFormIds.length > 0 && $scope.allTemplates) {
+                    _.each($scope.allTemplates, function (template) {
+                        var templateId = getFormId(template);
+                        if (templateId && _.includes(deletedFormIds, templateId)) {
+                            template.isDeleted = true;
+                            template.isAdded = false;
+                            template.observations = [];
+                        }
+                    });
+                }
                 if (dirtyTrackingState.postSaveRefreshTimeout) {
                     $timeout.cancel(dirtyTrackingState.postSaveRefreshTimeout);
                 }

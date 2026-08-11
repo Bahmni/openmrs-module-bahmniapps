@@ -207,6 +207,10 @@ angular.module('bahmni.common.conceptSet')
                 }
 
                 messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY", {label: label}));
+                var currentFormUuid = $stateParams.formUuid;
+                if (currentFormUuid && templateId === currentFormUuid) {
+                    $state.go('patient.dashboard.show.observations', {}, { notify: false, location: 'replace' });
+                }
             };
 
             $scope.openActiveForm = function (conceptSet) {
