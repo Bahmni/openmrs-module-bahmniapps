@@ -2,5 +2,9 @@
     "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Draft in Progress",
     "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "You have unsaved observation forms. Are you sure you want to logout ?",
     "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Cancel",
-    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Logout"
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Logout",
+    "CLOSE_VISIT_DRAFTS_WARNING_TITLE_KEY": "Draft in Progress",
+    "CLOSE_VISIT_DRAFTS_WARNING_MESSAGE_KEY": "You have unsaved observation forms. Are you sure you want to close the visit?",
+    "CLOSE_VISIT_DRAFTS_WARNING_CANCEL_KEY": "Cancel",
+    "CLOSE_VISIT_DRAFTS_WARNING_LOGOUT_KEY": "Close visit"
 }

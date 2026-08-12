@@ -247,10 +247,15 @@ angular.module('authentication')
             });
         }
 
-        function showDraftsWarning (scope) {
+        function showDraftsWarning (scope, config) {
             var draftsWarningScope = scope.$new();
+            draftsWarningScope.titleKey = config.titleKey;
+            draftsWarningScope.messageKey = config.messageKey;
+            draftsWarningScope.cancelBtnKey = config.cancelBtnKey;
+            draftsWarningScope.confirmBtnKey = config.confirmBtnKey;
+
             var dialog = ngDialog.open({
-                template: '../common/auth/views/logoutDraftsWarning.html',
+                template: '../common/auth/views/discardDraftsWarning.html',
                 scope: draftsWarningScope,
                 className: 'ngdialog-theme-default discard-draft-modal',
                 showClose: false
@@ -299,10 +304,16 @@ angular.module('authentication')
                 return;
             }
             var providerUuid = $rootScope.currentProvider && $rootScope.currentProvider.uuid;
+            var config = {
+                titleKey: 'LOGOUT_DRAFTS_WARNING_TITLE_KEY',
+                messageKey: 'LOGOUT_DRAFTS_WARNING_MESSAGE_KEY',
+                cancelBtnKey: 'LOGOUT_DRAFTS_WARNING_CANCEL_KEY',
+                confirmBtnKey: 'LOGOUT_DRAFTS_WARNING_LOGOUT_KEY'
+            };
             formDraftService.hasDraftsForProvider(providerUuid).then(function (hasDrafts) {
                 isAttemptingLogout = false;
                 if (hasDrafts) {
-                    showDraftsWarning(scope);
+                    showDraftsWarning(scope, config);
                 } else {
                     logoutUser();
                 }
