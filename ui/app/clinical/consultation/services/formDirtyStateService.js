@@ -190,6 +190,12 @@ angular.module('bahmni.clinical')
         };
 
         /**
+         * Persistent baseline store for dirty tracking across controller instances.
+         * Key: patientUuid, Value: {cleanState: string, extraObservations: string}
+         */
+        var persistentBaseline = {};
+
+        /**
          * Deep-merges a single draft observation onto the live template observation.
          * Handles value, comment, isMultiSelect/selectedObs, and recursive groupMembers.
          */
@@ -218,6 +224,28 @@ angular.module('bahmni.clinical')
                         populateObservationValues(matchedMember, draftMember);
                     }
                 });
+            }
+        };
+
+        /**
+         * Sets persistent baseline for a patient's clean state.
+         * Called on first controller load or after successful save.
+         */
+        var setPersistentBaseline = function (patientUuid, cleanState, cleanStateExtras) {
+            if (patientUuid) {
+                persistentBaseline[patientUuid] = {
+                    cleanState: cleanState,
+                    extraObservations: cleanStateExtras
+                };
+            }
+        };
+        var getPersistentBaseline = function (patientUuid) {
+            return (patientUuid && persistentBaseline[patientUuid]) ? persistentBaseline[patientUuid] : null;
+        };
+
+        var clearPersistentBaseline = function (patientUuid) {
+            if (patientUuid) {
+                delete persistentBaseline[patientUuid];
             }
         };
 
@@ -269,6 +297,9 @@ angular.module('bahmni.clinical')
             unregisterForm2SyncListeners: unregisterForm2SyncListeners,
             serializeFormData: serializeFormData,
             populateObservationValues: populateObservationValues,
-            populateFormWithDraftData: populateFormWithDraftData
+            populateFormWithDraftData: populateFormWithDraftData,
+            setPersistentBaseline: setPersistentBaseline,
+            getPersistentBaseline: getPersistentBaseline,
+            clearPersistentBaseline: clearPersistentBaseline
         };
     }]);
