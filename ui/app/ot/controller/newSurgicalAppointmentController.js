@@ -20,8 +20,8 @@ angular.module('bahmni.ot')
                 $scope.currentLanguage = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
                 $scope.conceptFormatAttributeDropdownOptions = [];
                 $scope.conceptFormatAttributeDropdownOptionsMap = {};
-                var additionalTranslations = appService.getAppDescriptor().getConfigValue("additionalSurgeryAttributeTranslations");
-                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(additionalTranslations);
+                var surgeryAttributeTranslations = appService.getAppDescriptor().getConfigValue("surgeryAttributeTranslations") || [];
+                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(surgeryAttributeTranslations);
                 return $q.all([surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.attributeTypes = response[0].data.results;
                     $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();

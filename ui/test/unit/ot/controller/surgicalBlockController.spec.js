@@ -98,7 +98,7 @@ describe("surgicalBlockController", function () {
             "value": {
                 "id": 47,
                 "person": {
-                    id:"patientUuid",
+                    id: "patientUuid",
                     display: "Eman"
                 }
             }
@@ -192,7 +192,6 @@ describe("surgicalBlockController", function () {
         }
     };
 
-
     var q = jasmine.createSpyObj('$q', ['all']);
     var state = jasmine.createSpyObj('$state', ['go']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
@@ -210,52 +209,52 @@ describe("surgicalBlockController", function () {
             return ["provider1", "provider2"];
         }
         if (value === 'calendarView') {
-            return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'}
+            return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'};
         }
-        if (value === 'listViewTranslations') {
+        if (value === 'surgeryAttributeTranslations') {
             return [];
         }
         return null;
     });
 
-    var appointmentAttributeTypes ={data: {results: [
-                {
-                    "uuid": "bde7e794-3f81-11e7-97ea-0800274a5156",
-                    "name": "procedure"
-                },
-                {
-                    "uuid": "bde80e15-3f81-11e7-97ea-0800274a5156",
-                    "name": "estTimeHours"
-                },
-                {
-                    "uuid": "bde85c99-3f81-11e7-97ea-0800274a5156",
-                    "name": "estTimeMinutes"
-                },
-                {
-                    "uuid": "bde8c614-3f81-11e7-97ea-0800274a5156",
-                    "name": "cleaningTime"
-                },
-                {
-                    "uuid": "bde8faf8-3f81-11e7-97ea-0800274a5156",
-                    "name": "otherSurgeon"
-                },
-                {
-                    "uuid": "bde92009-3f81-11e7-97ea-0800274a5156",
-                    "name": "surgicalAssistant"
-                },
-                {
-                    "uuid": "bde9429e-3f81-11e7-97ea-0800274a5156",
-                    "name": "anaesthetist"
-                },
-                {
-                    "uuid": "bde96224-3f81-11e7-97ea-0800274a5156",
-                    "name": "scrubNurse"
-                },
-                {
-                    "uuid": "bde9821c-3f81-11e7-97ea-0800274a5156",
-                    "name": "circulatingNurse"
-                }
-            ]}};
+    var appointmentAttributeTypes = {data: {results: [
+        {
+            "uuid": "bde7e794-3f81-11e7-97ea-0800274a5156",
+            "name": "procedure"
+        },
+        {
+            "uuid": "bde80e15-3f81-11e7-97ea-0800274a5156",
+            "name": "estTimeHours"
+        },
+        {
+            "uuid": "bde85c99-3f81-11e7-97ea-0800274a5156",
+            "name": "estTimeMinutes"
+        },
+        {
+            "uuid": "bde8c614-3f81-11e7-97ea-0800274a5156",
+            "name": "cleaningTime"
+        },
+        {
+            "uuid": "bde8faf8-3f81-11e7-97ea-0800274a5156",
+            "name": "otherSurgeon"
+        },
+        {
+            "uuid": "bde92009-3f81-11e7-97ea-0800274a5156",
+            "name": "surgicalAssistant"
+        },
+        {
+            "uuid": "bde9429e-3f81-11e7-97ea-0800274a5156",
+            "name": "anaesthetist"
+        },
+        {
+            "uuid": "bde96224-3f81-11e7-97ea-0800274a5156",
+            "name": "scrubNurse"
+        },
+        {
+            "uuid": "bde9821c-3f81-11e7-97ea-0800274a5156",
+            "name": "circulatingNurse"
+        }
+    ]}};
 
     var surgeonList = {data: {results: [{uuid: "uuid1", person: {display: "provider1"}}, {uuid: "uuid2", person: {display: "provider2"}}]}};
     surgicalAppointmentService.getSurgeons.and.callFake(function () {
@@ -777,7 +776,7 @@ describe("surgicalBlockController", function () {
             if (value === 'calendarView') {
                 return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'}
             }
-            if (value === 'listViewTranslations') {
+            if (value === 'surgeryAttributeTranslations') {
                 return [];
             }
             if (value === 'surgeryAttributes') {
