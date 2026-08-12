@@ -392,7 +392,7 @@
     "DAYS_ADMITTED_MESSAGE": "Days in hospital",
     "MEDICATION_CONFIRM_REVIEW": "Confirm Review",
     "MEDICATION_PHARMACIST_REVIEW_HEADING": "New Medications Available to be Dispensed",
-    "MEDICATION_PHARMACIST_REVIEW_SUBTEXT": "Please review the patient's weight, allergies, and prescriptions to continue with dispensing."
+    "MEDICATION_PHARMACIST_REVIEW_SUBTEXT": "Please review the patient's weight, allergies, and prescriptions to continue with dispensing.",
     "ADDITIONAL_INSTRUCTIONS": "Additional Instructions",
     "VARIABLE_DOSAGE_HEADER": "Variable Dosage"
 }
