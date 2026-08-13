@@ -66,7 +66,7 @@ describe("logOut directive", function () {
             expect(sessionService.destroy).not.toHaveBeenCalled();
 
             var dialogConfig = ngDialog.open.calls.mostRecent().args[0];
-            expect(dialogConfig.template).toBe('../common/auth/views/logoutDraftsWarning.html');
+            expect(dialogConfig.template).toBe('../common/auth/views/discardDraftsWarning.html');
             expect(dialogConfig.className).toBe('ngdialog-theme-default discard-draft-modal');
             done();
         }, 0);

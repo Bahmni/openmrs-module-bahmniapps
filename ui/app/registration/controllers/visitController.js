@@ -215,8 +215,13 @@ angular.module('bahmni.registration')
                     cancelBtnKey: 'CLOSE_VISIT_DRAFTS_WARNING_CANCEL_KEY',
                     confirmBtnKey: 'CLOSE_VISIT_DRAFTS_WARNING_LOGOUT_KEY'
                 };
-                formDraftService.hasDraftsForProvider(providerUuid).then(function (hasDrafts) {
-                    if (hasDrafts) {
+
+                formDraftService.getProviderDrafts(providerUuid).then(function (providerDrafts) {
+                    const hasDraftsOfCurrentPatient = providerDrafts.find(function (draft) {
+                        return draft.patientUuid == patientUuid;
+                    });
+
+                    if (hasDraftsOfCurrentPatient) {
                         showDraftsWarningBeforeCloseVisit(visitType, config);
                     } else {
                         closeVisit(visitType);

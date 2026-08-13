@@ -12,7 +12,8 @@
 describe('VisitController', function () {
     var scope, $controller, success, encounterService, patientService, patient, dateUtil, $timeout, spinner,
         getEncounterPromise, getPatientPromise, stateParams, patientMapper, q, state, appService, appDescriptor,
-        sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore, auditLogService, messageParams, formService, formDraftService;
+        sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore,
+        auditLogService, messageParams, formService, formDraftService, logoutService, ngDialog;
 
     var compile, provide;
     var html = '<div class="submit-btn-container"><button type="button" class="cancel" tabindex="-1" ng-click="cancelFunction()"></button><div class="right"><button ng-click="back()"></button><button single-click="clickFunction()" class="confirm"></button></div></div>';
@@ -124,7 +125,8 @@ describe('VisitController', function () {
         };
         state = $state;
         $controller = $injector.get('$controller');
-        scope = {"$watch": jasmine.createSpy()};
+        scope = $rootScope.$new();
+        scope.$watch = jasmine.createSpy();
         patientService = jasmine.createSpyObj('patientService', ['get', 'updateImage']);
         visitService = jasmine.createSpyObj('visitService', ['search', 'endVisit', 'getVisitSummary', 'getVisitType']);
         appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
@@ -155,10 +157,15 @@ describe('VisitController', function () {
         patientService.get.and.returnValue(getPatientPromise);
         formService = jasmine.createSpyObj('formService', ['getFormList']);
         formService.getFormList.and.returnValue(specUtil.respondWithPromise(q, { data: observationForms }));
-        formDraftService = jasmine.createSpyObj('formDraftService', ['discardDraft']);
+        formDraftService = jasmine.createSpyObj('formDraftService', ['discardDraft', 'getProviderDrafts']);
         formDraftService.discardDraft.and.returnValue(specUtil.simplePromise({}));
+        formDraftService.getProviderDrafts.and.returnValue(specUtil.simplePromise([]));
+        logoutService = jasmine.createSpyObj('logoutService', ['attemptLogout']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+        ngDialog.open.and.returnValue({ id: 'dialog-id' });
         scope.currentProvider = {uuid: ''};
         patientMapper.map.and.returnValue(patient);
+
 
         rootScope.currentUser = { privileges: [], isFavouriteObsTemplate: function() { return false; } };
         visitService.search.and.returnValue(searchActiveVisits([]));
@@ -185,7 +192,9 @@ describe('VisitController', function () {
             $location: location,
             auditLogService: auditLogService,
             formService: formService,
-            formDraftService: formDraftService
+            formDraftService: formDraftService,
+            logoutService: logoutService,
+            ngDialog: ngDialog
         });
     }
 
@@ -351,6 +360,23 @@ describe('VisitController', function () {
             scope.closeVisitIfDischarged();
 
             expect(formDraftService.discardDraft).toHaveBeenCalledWith(stateParams.patientUuid, 'provider-uuid');
+        });
+
+        it("should show a draft warning dialog before closing when the patient has a draft", function () {
+            rootScope.formDraftFeatureEnabled = true;
+            rootScope.currentProvider = {uuid: 'provider-uuid'};
+            var visitSummary = {admissionDetails: null, dischargeDetails: null, visitType: 'OPD'};
+            visitService.getVisitSummary.and.returnValue(getVisitSummaryForUuid(visitSummary));
+            formDraftService.getProviderDrafts.and.returnValue(specUtil.simplePromise([{patientUuid: stateParams.patientUuid}]));
+            createController();
+            visitController.visitUuid = 'visitUuid';
+
+            scope.closeVisitIfDischarged();
+
+            expect(formDraftService.getProviderDrafts).toHaveBeenCalledWith('provider-uuid');
+            expect(ngDialog.open).toHaveBeenCalled();
+            expect(window.confirm).not.toHaveBeenCalled();
+            expect(visitService.endVisit).not.toHaveBeenCalled();
         });
 
         it("should not discard draft when visit close is cancelled", function () {
