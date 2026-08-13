@@ -2,5 +2,9 @@
     "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Borrador en progreso",
     "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Tiene formularios de observación sin guardar. ¿Está seguro de que desea cerrar sesión?",
     "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Cancelar",
-    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Cerrar sesión"
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Cerrar sesión",
+    "CLOSE_VISIT_DRAFTS_WARNING_TITLE_KEY": "Borrador en progreso",
+    "CLOSE_VISIT_DRAFTS_WARNING_MESSAGE_KEY": "Tienes formularios de observación sin guardar. ¿Estás seguro de que quieres cerrar la visita?",
+    "CLOSE_VISIT_DRAFTS_WARNING_CANCEL_KEY": "Cancelar",
+    "CLOSE_VISIT_DRAFTS_WARNING_LOGOUT_KEY": "Confirmar"
 }
