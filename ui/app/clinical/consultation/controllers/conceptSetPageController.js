@@ -88,6 +88,16 @@ angular.module('bahmni.clinical')
                         $timeout(function () {
                             $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
                         }, 0);
+                        var deletedFormIds = getRootDeletedFormIds();
+                        if (!_.includes(deletedFormIds, formUuidParam)) {
+                            if (!_.find($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
+                                targetForm.isAdded = true;
+                                $scope.consultation.selectedObsTemplate.push(targetForm);
+                            }
+                            $timeout(function () {
+                                $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
+                            }, 0);
+                        }
                     } else {
                         messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
                     }
