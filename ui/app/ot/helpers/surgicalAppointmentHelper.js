@@ -96,11 +96,8 @@ angular.module('bahmni.ot')
             });
         };
 
-        this.getDefaultAttributeTranslations = function (additionalTranslations) {
-            if (additionalTranslations == null) {
-                additionalTranslations = [];
-            }
-            const map = [['procedure', "OT_SURGICAL_APPOINTMENT_PROCEDURE"],
+        this.getDefaultAttributeTranslations = function () {
+            return new Map([['procedure', "OT_SURGICAL_APPOINTMENT_PROCEDURE"],
             ['estTimeHours', "OT_SURGICAL_APPOINTMENT_HOURS"], ['estTimeMinutes', "OT_SURGICAL_APPOINTMENT_MINUTES"],
             ['cleaningTime', "OT_SURGICAL_APPOINTMENT_CLEANING_TIME"], ['otherSurgeon', "OT_SURGICAL_APPOINTMENT_OTHER_SURGEON"],
             ['surgicalAssistant', "OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT"], ['anaesthetist', "OT_SURGICAL_APPOINTMENT_ANAESTHETIST"],
@@ -113,8 +110,7 @@ angular.module('bahmni.ot')
             ['Surgeon', "OT_PROVIDER_SURGEON"], ['Status Change Notes', "OT_SURGICAL_APPOINTMENT_STATUS_CHANGE_NOTES"],
             ['Bed Location', "OT_SURGICAL_APPOINTMENT_BED_LOCATION"],
             ['Bed ID', "OT_SURGICAL_APPOINTMENT_BED_ID"]
-            ].concat(additionalTranslations);
-            return new Map(map);
+            ]);
         };
 
         this.getSurgicalAttributes = function (surgicalAppointment) {
