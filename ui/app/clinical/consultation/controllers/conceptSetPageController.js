@@ -70,14 +70,6 @@ angular.module('bahmni.clinical')
                         openTemplate(templateToBeOpened);
                     }
                 }
-                if (draftFormData) {
-                    populateFormWithDraftData(draftFormData);
-                }
-                $scope.consultation._draftCleanState = undefined;
-                if ($rootScope.resumeDraftOnLoad) {
-                    $rootScope.resumeDraftOnLoad = false;
-                    $rootScope.resumeDraftPatientUuid = null;
-                }
 
                 var formUuidParam = $stateParams.formUuid;
                 var FORM_PRELOAD_DIRTY_TRACKING_DELAY_MS = 1000;
