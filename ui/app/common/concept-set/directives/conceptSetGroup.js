@@ -12,10 +12,10 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner', 'messagingService',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate',
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate', '$state',
         function ($scope, contextChangeHandler, spinner, messagingService, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, retrospectiveEntryService, userService,
-                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate) {
+                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate, $state) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
             var init = function () {
                 $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
@@ -178,11 +178,31 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
                 $scope.leftPanelConceptSet.isAdded = true;
                 $scope.consultation.lastvisited = selectedConceptSet.id || selectedConceptSet.formUuid;
+                var currentFormUuid = $state.params.formUuid;
+                if (selectedConceptSet.formUuid) {
+                    if (currentFormUuid !== selectedConceptSet.formUuid) {
+                        $state.go('patient.dashboard.show.observations.form',
+                            { formUuid: selectedConceptSet.formUuid },
+                            { notify: false, location: 'replace' }
+                        );
+                    }
+                } else {
+                    if (currentFormUuid) {
+                        $state.go('patient.dashboard.show.observations',
+                            {},
+                            { notify: false, location: 'replace' }
+                        );
+                    }
+                }
                 if ($rootScope.showLeftpanelToggle) {
                     $rootScope.showLeftpanelToggle = false;
                 }
                 $(window).scrollTop(0);
             };
+
+            $scope.$on('event:openFormByUuid', function (event, data) {
+                $scope.showLeftPanelConceptSet(data.form);
+            });
 
             $scope.focusOnErrors = function () {
                 var errorMessage = $scope.leftPanelConceptSet.errorMessage ? $scope.leftPanelConceptSet.errorMessage : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";

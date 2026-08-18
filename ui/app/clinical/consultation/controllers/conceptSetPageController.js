@@ -66,8 +66,38 @@ angular.module('bahmni.clinical')
                     var templateToBeOpened = getLastVisitedTemplate() ||
                         _.first($scope.consultation.selectedObsTemplate);
 
-                    if (templateToBeOpened) {
+                    if (templateToBeOpened && !$stateParams.formUuid) {
                         openTemplate(templateToBeOpened);
+                    }
+                }
+                if (draftFormData) {
+                    populateFormWithDraftData(draftFormData);
+                }
+                $scope.consultation._draftCleanState = undefined;
+                if ($rootScope.resumeDraftOnLoad) {
+                    $rootScope.resumeDraftOnLoad = false;
+                    $rootScope.resumeDraftPatientUuid = null;
+                }
+
+                var formUuidParam = $stateParams.formUuid;
+                var FORM_PRELOAD_DIRTY_TRACKING_DELAY_MS = 1000;
+
+                $timeout(setupDirtyTracking, formUuidParam ? FORM_PRELOAD_DIRTY_TRACKING_DELAY_MS : 0);
+
+                if (formUuidParam) {
+                    var targetForm = _.find($scope.allTemplates, function (t) {
+                        return t.formUuid === formUuidParam;
+                    });
+                    if (targetForm) {
+                        if (!_.find($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
+                            targetForm.isAdded = true;
+                            $scope.consultation.selectedObsTemplate.push(targetForm);
+                        }
+                        $timeout(function () {
+                            $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
+                        }, 0);
+                    } else {
+                        messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
                     }
                 }
             };

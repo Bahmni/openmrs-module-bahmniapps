@@ -11,6 +11,7 @@ Bahmni.Clinical.StateNameEvenTypeMap = {
     "search.patientsearch": "VIEWED_CLINICAL_PATIENT_SEARCH",
     "patient.dashboard.show": "VIEWED_CLINICAL_DASHBOARD",
     "patient.dashboard.show.observations": "VIEWED_OBSERVATIONS_TAB",
+    "patient.dashboard.show.observations.form": "VIEWED_OBSERVATIONS_FORM_TAB",
     "patient.dashboard.show.diagnosis": "VIEWED_DIAGNOSIS_TAB",
     "patient.dashboard.show.treatment.page": "VIEWED_TREATMENT_TAB",
     "patient.dashboard.show.disposition": "VIEWED_DISPOSITION_TAB",
