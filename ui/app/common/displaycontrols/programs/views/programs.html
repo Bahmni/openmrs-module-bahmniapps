@@ -18,7 +18,7 @@
                         <span class="program-attribute-value fl">{{::getAttributeValue(attribute)}}</span>
                     </div>
                     <div class="program-attribute" ng-if="::program.location">
-                        <strong>{{::'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{::program.location}}
+                        <strong>{{::'PROGRAM_DISPLAY_CONTROL_FACILITY_OF_ENROLLMENT_KEY' | translate}}</strong> : {{::locationName(program.location)}}
                     </div>
                 </div>
 

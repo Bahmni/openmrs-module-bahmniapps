@@ -78,6 +78,20 @@ angular.module('bahmni.common.displaycontrol.programs')
                     var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(program.description, Bahmni.Common.Constants.program, $translate);
                     return translatedName;
                 };
+
+                $scope.locationName = function (location) {
+                    if (location == undefined || location == null) {
+                        return "";
+                    }
+
+                    if (location && location.name) {
+                        return location.name;
+                    }
+                    if (location && location instanceof String) {
+                        return location;
+                    }
+                    return "";
+                };
             };
 
             var link = function ($scope, element) {
