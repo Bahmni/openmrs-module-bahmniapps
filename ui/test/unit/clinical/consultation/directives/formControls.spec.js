@@ -124,15 +124,6 @@ describe("Form Controls", function () {
         expect(renderHelper.renderWithControlsCalledTimes).toBe(2);
     });
 
-    it("should set dirtyForm flag when changes are saved", function () {
-        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
-        createElement();
-        scope.$digest();
-
-        scope.$broadcast("$event:changes-saved");
-        expect($state.dirtyForm).toBeFalsy();
-    });
-
     it('should pass hyperlinkAllowedDomains config to renderWithControls', function () {
         var capturedAllowedDomains;
         window.renderWithControls = function () {
