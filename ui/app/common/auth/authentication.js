@@ -268,11 +268,31 @@ angular.module('authentication')
             return !!$rootScope.formDraftFeatureEnabled;
         }
 
+        function closePatientControlPanel () {
+            try {
+                var controlPanel = document.querySelector('aside.visit-history');
+                if (controlPanel) {
+                    controlPanel.classList.add('ng-hide');
+                }
+                var overlay = document.querySelector('.patient-control-panel .overlay');
+                if (overlay) {
+                    overlay.classList.add('ng-hide');
+                }
+                if (window.$ && window.$.fn) {
+                    $('aside.visit-history').addClass('ng-hide');
+                    $('.patient-control-panel .overlay').addClass('ng-hide');
+                }
+            } catch (e) {
+                $log.debug('Error closing patient control panel:', e);
+            }
+        }
+
         function attemptLogout (scope) {
             if (isAttemptingLogout) {
                 return;
             }
             isAttemptingLogout = true;
+            closePatientControlPanel();
             if (!isLogoutDraftsWarningEnabled()) {
                 isAttemptingLogout = false;
                 logoutUser();
