@@ -78,8 +78,7 @@ angular.module('bahmni.common.conceptSet')
                         allowedDomains = (domainsData || '').split(',').map(function (d) { return d.trim(); }).filter(function (d) { return d; });
                         loadForm();
                     })
-                    .catch(function (error) {
-                        console.error('Failed to fetch hyperlink allowed domains:', error);
+                    .catch(function () {
                         loadForm();
                     });
 

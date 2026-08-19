@@ -110,7 +110,7 @@ angular.module('bahmni.common.domain')
                     return data;
                 }]
             }).catch(function () {
-                return '';
+                return { data: '' };
             });
         };
 
