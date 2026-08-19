@@ -84,12 +84,14 @@ angular.module('bahmni.common.displaycontrol.programs')
                         return "";
                     }
 
-                    if (location && location.name) {
-                        return location.name;
-                    }
-                    if (location && location instanceof String) {
+                    if (typeof location === 'string') {
                         return location;
                     }
+
+                    if (location.name) {
+                        return location.name;
+                    }
+                    
                     return "";
                 };
             };
