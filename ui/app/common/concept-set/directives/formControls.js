@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService', 'appService', '$http', 'configurationService',
-        function (formService, spinner, $timeout, $translate, $state, messagingService, appService, $http, configurationService) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'configurationService',
+        function (formService, spinner, $timeout, $translate, configurationService) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -84,7 +84,7 @@ angular.module('bahmni.common.conceptSet')
                     });
 
                 $scope.$watch('form.collapseInnerSections', function () {
-                    var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
+                    collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
                         renderForm(loadedFormDetails[formUuid], loadedFormTranslations[formUuid]);
                     }

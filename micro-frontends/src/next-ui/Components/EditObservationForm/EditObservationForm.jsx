@@ -80,8 +80,12 @@ const EditObservationForm = (props) => {
 
                 const [latestForms, allowedDomainsData] = await Promise.all([
                     getLatestPublishedForms(),
-                    axios.get(GLOBAL_PROPERTY_URL, { params: { property: 'bahmni.forms.hyperlink.allowedDomains' } })
-                        .then(res => res.data || '')
+                    axios.get(GLOBAL_PROPERTY_URL, {
+                            params: { property: 'bahmni.forms.hyperlink.allowedDomains' },
+                            withCredentials: true,
+                            headers: { Accept: 'text/plain' }
+                        })
+                        .then(res => String(res.data || ''))
                         .catch(() => '')
                 ]);
 

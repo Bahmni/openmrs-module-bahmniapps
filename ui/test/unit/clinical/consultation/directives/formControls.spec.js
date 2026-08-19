@@ -10,7 +10,7 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, formService, appService, renderHelper, translate, $state;
+    var element, scope, $compile, spinner, provide, formService, renderHelper, translate, $state;
 
     beforeEach(
         function () {
@@ -30,21 +30,11 @@ describe("Form Controls", function () {
                     }
                 };
                 configurationService.getConfigurations.and.returnValue(promiseMock);
-                appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-                appService.getAppDescriptor.and.returnValue({
-                    getConfigValue: function (key) {
-                        if (key === 'hyperlinkAllowedDomains') {
-                            return [];
-                        }
-                        return null;
-                    }
-                });
                 $state = {
                     patientUuid: 'patientUuid',
                     dirtyConsultationForm: false
                 };
                 provide.value('formService', formService);
-                provide.value('appService', appService);
                 provide.value('configurationService', configurationService);
                 translate = {
                     use: function(){ return 'en' }
