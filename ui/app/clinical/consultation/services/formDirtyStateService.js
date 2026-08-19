@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('formDirtyStateService', [function () {
-        /**
-         * Normalizes observation values for consistent comparison.
-         */
+    .factory('formDirtyStateService', ['$timeout', function ($timeout) {
+        var form2State = {interacted: false, syncTimeout: null};
+
         var normalizeObsValue = function (value) {
             if (value === null || value === undefined) {
                 return value;
@@ -30,11 +29,6 @@ angular.module('bahmni.clinical')
             return value;
         };
 
-        /**
-         * Recursively collects observation values from an obs tree.
-         * Handles multiSelect fields, group members, and scalar values.
-         * Ignores Angular $-prefixed keys.
-         */
         var collectObsValues = function (obs, values) {
             if (!obs) {
                 return;
@@ -63,23 +57,19 @@ angular.module('bahmni.clinical')
             }
         };
 
-        /**
-         * Extracts observations from a template, handling both
-         * Form2/React components (via getValue()) and traditional templates.
-         */
         var getTemplateObservationsForDirtyTracking = function (template) {
+            if (template.component && angular.isFunction(template.component.getValue)) {
+                try {
+                    var formValue = template.component.getValue() || {};
+                    var componentObs = formValue.observations || [];
+                    if (componentObs && componentObs.length > 0) {
+                        return componentObs;
+                    }
+                } catch (e) { }
+            }
             var templateObs = template.observations || [];
             if (templateObs.length > 0) {
                 return templateObs;
-            }
-
-            // Fallback: check if Form2/React component has live state
-            if (template.component && angular.isFunction(template.component.getValue)) {
-                var formValue = template.component.getValue() || {};
-                var componentObs = formValue.observations || [];
-                if (componentObs && componentObs.length > 0) {
-                    return componentObs;
-                }
             }
 
             return [];
@@ -95,10 +85,6 @@ angular.module('bahmni.clinical')
             return angular.toJson(values);
         };
 
-        /**
-         * Returns a JSON string representing all observation values across all templates.
-         * This is the "clean state" baseline for dirty tracking.
-         */
         var getObsValues = function (selectedObsTemplates) {
             var values = [];
             if (selectedObsTemplates) {
@@ -115,10 +101,6 @@ angular.module('bahmni.clinical')
             return angular.toJson(values);
         };
 
-        /**
-         * Syncs Form2/React component observations into the Angular model.
-         * Called during $evalAsync to pull component state into the digest cycle.
-         */
         var syncForm2Observations = function (observationForms) {
             if (observationForms) {
                 _.each(observationForms, function (form) {
@@ -136,10 +118,6 @@ angular.module('bahmni.clinical')
             }
         };
 
-        /**
-         * Registers DOM capture-phase listeners for Form2/React interactions.
-         * Returns a state object for later deregistration.
-         */
         var registerForm2SyncListeners = function (onSyncCallback) {
             var form2SyncEvents = ['input', 'change', 'keyup', 'click'];
             var doc = window.document;
@@ -148,7 +126,14 @@ angular.module('bahmni.clinical')
             }
 
             var syncOnForm2Interaction = function () {
-                onSyncCallback();
+                form2State.interacted = true;
+                if (form2State.syncTimeout) {
+                    $timeout.cancel(form2State.syncTimeout);
+                }
+                form2State.syncTimeout = $timeout(function () {
+                    form2State.syncTimeout = null;
+                    onSyncCallback();
+                }, 0);
             };
 
             _.each(form2SyncEvents, function (eventName) {
@@ -162,10 +147,11 @@ angular.module('bahmni.clinical')
             };
         };
 
-        /**
-         * Removes DOM listeners registered by registerForm2SyncListeners.
-         */
         var unregisterForm2SyncListeners = function (listenerState) {
+            if (form2State.syncTimeout) {
+                $timeout.cancel(form2State.syncTimeout);
+                form2State.syncTimeout = null;
+            }
             var doc = window.document;
             if (listenerState && listenerState.registered && doc && doc.removeEventListener && listenerState.listener) {
                 _.each(listenerState.events, function (eventName) {
@@ -174,10 +160,24 @@ angular.module('bahmni.clinical')
             }
         };
 
-        /**
-         * Serializes all observations from selectedObsTemplates into a JSON string.
-         * Used to create the draft POST payload.
-         */
+        var hasForm2Interaction = function () {
+            return form2State.interacted;
+        };
+
+        var resetForm2Interaction = function () {
+            form2State.interacted = false;
+        };
+
+        var isRealTemplateChange = function (template, cachedVal, currentVal) {
+            if (currentVal === cachedVal) {
+                return false;
+            }
+            if (cachedVal === angular.toJson([]) && template.component && !form2State.interacted) {
+                return false;
+            }
+            return true;
+        };
+
         var serializeFormData = function (selectedObsTemplates) {
             var observations = [];
             if (selectedObsTemplates) {
@@ -188,17 +188,8 @@ angular.module('bahmni.clinical')
             }
             return angular.toJson(observations);
         };
-
-        /**
-         * Persistent baseline store for dirty tracking across controller instances.
-         * Key: patientUuid, Value: {cleanState: string, extraObservations: string}
-         */
         var persistentBaseline = {};
 
-        /**
-         * Deep-merges a single draft observation onto the live template observation.
-         * Handles value, comment, isMultiSelect/selectedObs, and recursive groupMembers.
-         */
         var populateObservationValues = function (templateObs, draftObs) {
             if (!templateObs || !draftObs) {
                 return;
@@ -227,10 +218,6 @@ angular.module('bahmni.clinical')
             }
         };
 
-        /**
-         * Sets persistent baseline for a patient's clean state.
-         * Called on first controller load or after successful save.
-         */
         var setPersistentBaseline = function (patientUuid, cleanState, cleanStateExtras) {
             if (patientUuid) {
                 persistentBaseline[patientUuid] = {
@@ -249,11 +236,6 @@ angular.module('bahmni.clinical')
             }
         };
 
-        /**
-         * Parses serialized draft data and merges observations onto selectedObsTemplates.
-         * Returns a result object {success: bool, error?: string}.
-         * The caller is responsible for writing to $scope.formDraft.*.
-         */
         var populateFormWithDraftData = function (draftFormData, selectedObsTemplates) {
             try {
                 var draftData = angular.fromJson(draftFormData);
@@ -295,6 +277,9 @@ angular.module('bahmni.clinical')
             syncForm2Observations: syncForm2Observations,
             registerForm2SyncListeners: registerForm2SyncListeners,
             unregisterForm2SyncListeners: unregisterForm2SyncListeners,
+            hasForm2Interaction: hasForm2Interaction,
+            resetForm2Interaction: resetForm2Interaction,
+            isRealTemplateChange: isRealTemplateChange,
             serializeFormData: serializeFormData,
             populateObservationValues: populateObservationValues,
             populateFormWithDraftData: populateFormWithDraftData,

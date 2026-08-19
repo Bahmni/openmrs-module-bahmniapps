@@ -159,7 +159,7 @@ describe('ConceptSetPageController - Provider Field Dirty State', function () {
             expect(state).toContain('provider-value-from-component');
         });
 
-        it('should prioritize template.observations over component.getValue()', function () {
+        it('should prefer live component.getValue() over stale template.observations for dirty tracking', function () {
             var mockComponent = {
                 getValue: function () {
                     return {
@@ -180,8 +180,8 @@ describe('ConceptSetPageController - Provider Field Dirty State', function () {
             };
 
             var state = formDirtyStateService.getObsValuesForTemplate(template);
-            expect(state).toContain('template-value');
-            expect(state).not.toContain('component-value');
+            expect(state).toContain('component-value');
+            expect(state).not.toContain('template-value');
         });
 
         it('should handle observations in different orders (server-side inconsistency)', function () {

@@ -4,7 +4,6 @@ angular.module('bahmni.common.services')
     .factory('formDraftService', ['$http', '$window', '$q', function ($http, $window, $q) {
         var formDraftUrl = Bahmni.Common.Constants.RESTWS_V1 + '/bahmnicore/formdraft';
         var DRAFT_UPDATES_CHANNEL = 'bahmni-draft-indicator-update';
-
         function notifyDraftChange () {
             if (angular.isUndefined($window.BroadcastChannel)) {
                 return;
@@ -26,14 +25,41 @@ angular.module('bahmni.common.services')
                 return response;
             });
         };
+        var inFlightDraft = null;
 
         var getDraft = function (patientUuid, providerUuid) {
-            return $http.get(formDraftUrl, {
+            var key = patientUuid + ':' + providerUuid;
+            if (inFlightDraft && inFlightDraft.key === key) {
+                return inFlightDraft.promise;
+            }
+            var clearInFlight = function () {
+                if (inFlightDraft && inFlightDraft.key === key) {
+                    inFlightDraft = null;
+                }
+            };
+            var promise = $http.get(formDraftUrl, {
                 params: {
                     patientUuid: patientUuid,
                     providerUuid: providerUuid
                 },
                 suppressError: true
+            }).then(function (response) {
+                clearInFlight();
+                return response;
+            }, function (error) {
+                clearInFlight();
+                return $q.reject(error);
+            });
+            inFlightDraft = {key: key, promise: promise};
+            return promise;
+        };
+
+        var getResumableDraft = function (patientUuid, providerUuid) {
+            return getDraft(patientUuid, providerUuid).then(function (response) {
+                var draft = response && response.data;
+                return (draft && draft.uuid && !draft.markedAsSaved) ? draft : null;
+            }, function () {
+                return null;
             });
         };
 
@@ -85,8 +111,17 @@ angular.module('bahmni.common.services')
         var parseDraftObs = function (draftData) {
             if (draftData && draftData.uuid && !draftData.markedAsSaved && draftData.formData) {
                 try {
-                    return angular.fromJson(draftData.formData);
-                } catch (e) { /* ignore */ }
+                    var parsed = angular.fromJson(draftData.formData);
+                    if (angular.isString(parsed)) {
+                        parsed = angular.fromJson(parsed);
+                    }
+                    if (angular.isArray(parsed)) {
+                        return parsed;
+                    }
+                    console.warn('formDraftService: draft formData is not an observation array', draftData.uuid);
+                } catch (e) {
+                    console.warn('formDraftService: could not parse draft formData', draftData.uuid, e.message);
+                }
             }
             return [];
         };
@@ -103,6 +138,7 @@ angular.module('bahmni.common.services')
         return {
             saveDraft: saveDraft,
             getDraft: getDraft,
+            getResumableDraft: getResumableDraft,
             discardDraft: discardDraft,
             markDraftAsSaved: markDraftAsSaved,
             parseDraftObs: parseDraftObs,

@@ -371,22 +371,34 @@ describe('formDirtyStateService', function () {
             expect(state.events).toEqual(['input', 'change', 'keyup', 'click']);
         });
 
-        it('should return listener function that invokes callback', function () {
+        it('should return listener function that invokes callback', inject(function ($timeout) {
             var state = formDirtyStateService.registerForm2SyncListeners(callbackSpy);
 
             expect(state.listener).toBeDefined();
             state.listener();
+            $timeout.flush();
 
             expect(callbackSpy).toHaveBeenCalled();
-        });
+        }));
 
-        it('should handle multiple callback executions', function () {
+        it('should coalesce rapid interactions into one callback', inject(function ($timeout) {
             var state = formDirtyStateService.registerForm2SyncListeners(callbackSpy);
             state.listener();
             state.listener();
+            $timeout.flush();
+
+            expect(callbackSpy.calls.count()).toBe(1);
+        }));
+
+        it('should invoke the callback again for a later, separate interaction', inject(function ($timeout) {
+            var state = formDirtyStateService.registerForm2SyncListeners(callbackSpy);
+            state.listener();
+            $timeout.flush();
+            state.listener();
+            $timeout.flush();
 
             expect(callbackSpy.calls.count()).toBe(2);
-        });
+        }));
     });
 
     describe('unregisterForm2SyncListeners', function () {
@@ -645,5 +657,199 @@ describe('formDirtyStateService', function () {
             expect(result.success).toBe(true);
             expect(templates[0].observations[0].groupMembers[0].value).toBe('new');
         });
+    });
+
+    describe('getObsValuesForTemplate - shorter value detection', function () {
+        it('should detect value changes even when the new serialized value is shorter', function () {
+            var template = {
+                observations: [
+                    {concept: {name: 'Height'}, value: 100}
+                ]
+            };
+
+            var cleanState = formDirtyStateService.getObsValuesForTemplate(template);
+
+            template.observations[0].value = 5;
+            var currentVal = formDirtyStateService.getObsValuesForTemplate(template);
+
+            expect(currentVal).not.toEqual(cleanState);
+            expect(currentVal.length).toBeLessThan(cleanState.length);
+        });
+
+        it('should detect value changes when the new serialized value is longer', function () {
+            var template = {
+                observations: [
+                    {concept: {name: 'Height'}, value: 5}
+                ]
+            };
+
+            var cleanState = formDirtyStateService.getObsValuesForTemplate(template);
+
+            template.observations[0].value = 100;
+            var currentVal = formDirtyStateService.getObsValuesForTemplate(template);
+
+            expect(currentVal).not.toEqual(cleanState);
+            expect(currentVal.length).toBeGreaterThan(cleanState.length);
+        });
+
+        it('should detect multi-select value changes', function () {
+            var template = {
+                observations: [
+                    {
+                        isMultiSelect: true,
+                        selectedObs: {
+                            'Fever': {uuid: 'obs-1', value: {name: 'Fever'}}
+                        }
+                    }
+                ]
+            };
+
+            var cleanState = formDirtyStateService.getObsValuesForTemplate(template);
+
+            template.observations[0].selectedObs = {
+                'Fever': {uuid: 'obs-1', value: {name: 'Fever'}},
+                'Cough': {uuid: 'obs-2', value: {name: 'Cough'}}
+            };
+            var currentVal = formDirtyStateService.getObsValuesForTemplate(template);
+
+            expect(currentVal).not.toEqual(cleanState);
+        });
+    });
+
+    describe('form2 dirty tracking integration', function () {
+        it('should detect dirty after syncForm2Observations populates observations into an empty template', function () {
+            var template = {observations: [], component: {getValue: function () {}}};
+            var cleanState = formDirtyStateService.getObsValuesForTemplate(template);
+
+            var mockComponent = {
+                getValue: jasmine.createSpy('getValue').and.returnValue({
+                    observations: [{value: 'user-selection'}]
+                })
+            };
+            template.component = mockComponent;
+
+            formDirtyStateService.syncForm2Observations([template]);
+
+            var currentVal = formDirtyStateService.getObsValuesForTemplate(template);
+            expect(currentVal).not.toEqual(cleanState);
+        });
+
+        it('should detect dirty when form2 component changes after initial sync', function () {
+            var template = {
+                observations: [{value: 'first-selection'}],
+                component: {getValue: function () {return {observations: [{value: 'first-selection'}]};}}
+            };
+            var cleanState = formDirtyStateService.getObsValuesForTemplate(template);
+
+            template.component = {
+                getValue: jasmine.createSpy('getValue').and.returnValue({
+                    observations: [{value: 'second-selection'}]
+                })
+            };
+            formDirtyStateService.syncForm2Observations([template]);
+
+            var currentVal = formDirtyStateService.getObsValuesForTemplate(template);
+            expect(currentVal).not.toEqual(cleanState);
+        });
+
+        it('should detect dirty via getObsValues when a form2 template in a multi-template array changes', function () {
+            var regularTemplate = {observations: [{value: 'regular-obs'}]};
+            var form2Template = {observations: [], component: null};
+            var templates = [regularTemplate, form2Template];
+
+            var baseline = formDirtyStateService.getObsValues(templates);
+
+            form2Template.component = {
+                getValue: jasmine.createSpy('getValue').and.returnValue({
+                    observations: [{value: 'form2-value'}]
+                })
+            };
+            formDirtyStateService.syncForm2Observations([form2Template]);
+
+            var afterSync = formDirtyStateService.getObsValues(templates);
+            expect(afterSync).not.toEqual(baseline);
+        });
+    });
+
+    describe('isRealTemplateChange', function () {
+        var emptyBaseline = angular.toJson([]);
+
+        afterEach(function () {
+            formDirtyStateService.resetForm2Interaction();
+        });
+
+        it('should report no change when the value is identical', function () {
+            expect(formDirtyStateService.isRealTemplateChange({}, '["a"]', '["a"]')).toBe(false);
+        });
+
+        it('should report a real change for a plain template', function () {
+            expect(formDirtyStateService.isRealTemplateChange({}, '["100"]', '["5"]')).toBe(true);
+        });
+
+        it('should report a real change when the new value serializes shorter', function () {
+            expect(formDirtyStateService.isRealTemplateChange({}, '["100"]', '["5"]')).toBe(true);
+        });
+
+        it('should ignore a Form2 template filling in from an empty baseline before any interaction', function () {
+            var template = {component: {getValue: function () {}}};
+            expect(formDirtyStateService.isRealTemplateChange(template, emptyBaseline, '["hydrated"]')).toBe(false);
+        });
+
+        it('should report a real change for a Form2 template once the user has interacted', function () {
+            var template = {component: {getValue: function () {}}};
+            var listenerState = formDirtyStateService.registerForm2SyncListeners(function () {});
+            listenerState.listener();
+
+            expect(formDirtyStateService.hasForm2Interaction()).toBe(true);
+            expect(formDirtyStateService.isRealTemplateChange(template, emptyBaseline, '["typed"]')).toBe(true);
+
+            formDirtyStateService.unregisterForm2SyncListeners(listenerState);
+        });
+
+        it('should report a real change for a Form2 template whose baseline was not empty', function () {
+            var template = {component: {getValue: function () {}}};
+            expect(formDirtyStateService.isRealTemplateChange(template, '["old"]', '["new"]')).toBe(true);
+        });
+
+        it('should forget interaction once a new baseline is captured', function () {
+            var listenerState = formDirtyStateService.registerForm2SyncListeners(function () {});
+            listenerState.listener();
+            expect(formDirtyStateService.hasForm2Interaction()).toBe(true);
+
+            formDirtyStateService.resetForm2Interaction();
+            expect(formDirtyStateService.hasForm2Interaction()).toBe(false);
+
+            formDirtyStateService.unregisterForm2SyncListeners(listenerState);
+        });
+    });
+
+    describe('registerForm2SyncListeners debouncing', function () {
+        it('should collapse a burst of interactions into a single sync', inject(function ($timeout) {
+            var syncSpy = jasmine.createSpy('onSync');
+            var listenerState = formDirtyStateService.registerForm2SyncListeners(syncSpy);
+
+            listenerState.listener();
+            listenerState.listener();
+            listenerState.listener();
+            expect(syncSpy).not.toHaveBeenCalled();
+
+            $timeout.flush();
+            expect(syncSpy.calls.count()).toBe(1);
+
+            formDirtyStateService.unregisterForm2SyncListeners(listenerState);
+            formDirtyStateService.resetForm2Interaction();
+        }));
+
+        it('should drop a pending sync on deregistration', inject(function ($timeout) {
+            var syncSpy = jasmine.createSpy('onSync');
+            var listenerState = formDirtyStateService.registerForm2SyncListeners(syncSpy);
+
+            listenerState.listener();
+            formDirtyStateService.unregisterForm2SyncListeners(listenerState);
+            $timeout.verifyNoPendingTasks();
+
+            expect(syncSpy).not.toHaveBeenCalled();
+            formDirtyStateService.resetForm2Interaction();
+        }));
     });
 });
