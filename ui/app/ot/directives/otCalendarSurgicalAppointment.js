@@ -10,9 +10,10 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', 'appService', '$window', function (surgicalAppointmentHelper, appService, $window) {
+    .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', 'appService', '$window', 'otUtils', function (surgicalAppointmentHelper, appService, $window, otUtils) {
         var link = function ($scope) {
             $scope.attributes = surgicalAppointmentHelper.getSurgicalAttributes($scope.surgicalAppointment);
+            $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
             var patientUrls = appService.getAppDescriptor().getConfigValue("patientDashboardUrl");
             $scope.patientDashboardUrl = patientUrls && patientUrls.link && appService.getAppDescriptor().formatUrl(patientUrls.link, {'patientUuid': $scope.surgicalAppointment.patient.uuid});
             $scope.goToForwardUrl = function ($event) {
@@ -76,7 +77,6 @@ angular.module('bahmni.ot')
                 heightPerMin: "=",
                 backgroundColor: "=",
                 filterParams: "="
-
             },
             templateUrl: "../ot/views/calendarSurgicalAppointment.html"
         };

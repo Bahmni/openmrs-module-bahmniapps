@@ -10,14 +10,16 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('surgicalBlockController', ['$scope', '$q', '$state', '$stateParams', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'surgicalBlockHelper', 'ngDialog',
-        function ($scope, $q, $state, $stateParams, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, surgicalBlockHelper, ngDialog) {
+    .controller('surgicalBlockController', ['$scope', '$q', '$state', '$stateParams', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'surgicalBlockHelper', 'ngDialog', 'otUtils',
+        function ($scope, $q, $state, $stateParams, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, surgicalBlockHelper, ngDialog, otUtils) {
             var init = function () {
                 $scope.surgicalForm = {
                     surgicalAppointments: []
                 };
                 $scope.configuredSurgeryAttributeNames = appService.getAppDescriptor().getConfigValue("surgeryAttributes");
-                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations();
+                var surgeryAttributeTranslations = appService.getAppDescriptor().getConfigValue("surgeryAttributeTranslations") || [];
+                $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(surgeryAttributeTranslations);
+                $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
                 var providerNamesFromConfig = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                 return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater"), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNamesFromConfig, response[0].data.results);
@@ -239,7 +241,6 @@ angular.module('bahmni.ot')
                 };
                 return !$scope.surgicalForm.id || surgicalBlockWithCompletedAppointments();
             };
-
             $scope.addNewSurgicalAppointment = function (surgicalAppointment) {
                 ngDialog.open({
                     template: "views/surgicalAppointment.html",
