@@ -297,6 +297,12 @@
     }
     p {
       font-size: 12px;
+      &[ng-if*="conceptFormatAttributeName"] {
+        background: #fff;
+        display: inline-block;
+        padding: 2px 2px;
+        border-radius: 4px;
+      }
     }
     .surgicalblock-patientname {
       font-weight: 600;
@@ -309,7 +315,7 @@
       p {
         overflow: hidden;
         text-overflow: ellipsis;
-        padding: 2px 0;
+        padding: 2px 4px;
       }
     }
   }

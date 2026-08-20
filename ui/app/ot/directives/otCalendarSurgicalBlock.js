@@ -97,7 +97,6 @@ angular.module('bahmni.ot')
                             ? getCalendarEndDateTime($scope.viewDate) : surgicalAppointment.derivedAttributes.expectedEndDatetime
                     );
                     surgicalAppointment.primaryDiagnosis = new Bahmni.OT.SurgicalBlockMapper().mapPrimaryDiagnoses(surgicalAppointment.patientObservations);
-
                     nextAppointmentStartDatetime = surgicalAppointment.derivedAttributes.expectedEndDatetime;
                     return surgicalAppointment;
                 });
