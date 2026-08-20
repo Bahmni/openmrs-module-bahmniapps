@@ -19,9 +19,7 @@ Bahmni.OT.Constants = (function () {
         defaultWeekStartDayName: 'Sunday',
         providerSurgicalAttributeFormat: 'org.openmrs.Provider',
         notesUrl: RESTWS_V1 + '/notes',
-        conceptFormatAttributeName: 'Blood Transfusion Requested for Surgery?',
-        defaultObservationValidityDays: 30,
-        notApplicableValues: ['Not Applicable', 'Non applicable']
+        defaultObservationValidityDays: 30
     };
 })();
 

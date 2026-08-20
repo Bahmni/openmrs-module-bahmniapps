@@ -202,6 +202,8 @@ describe("surgicalBlockController", function () {
     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+    var otUtils = jasmine.createSpyObj('otUtils', ['getConceptFormatAttributeName']);
+    otUtils.getConceptFormatAttributeName.and.returnValue(null);
     appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     appDescriptor.getConfigValue.and.callFake(function (value) {
@@ -306,7 +308,8 @@ describe("surgicalBlockController", function () {
             appService: appService,
             messagingService: messagingService,
             surgicalAppointmentHelper: surgicalAppointmentHelper,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            otUtils: otUtils
         });
     };
 

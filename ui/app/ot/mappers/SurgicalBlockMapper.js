@@ -51,19 +51,14 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             if (obs.concept && obs.concept.display === conceptDisplayName) {
                 var currentObsDate = obs.obsDatetime;
                 var parsedDate = currentObsDate && Bahmni.Common.Util.DateUtil.parseServerDateToDate(currentObsDate);
-                if (!latestDate || (parsedDate && parsedDate > latestDate)) {
-                    if (obs.value) {
-                        latestValue = obs.value.display || obs.value;
-                    }
-                    if (parsedDate) {
-                        latestDate = parsedDate;
-                    }
+                if (parsedDate && (!latestDate || parsedDate > latestDate)) {
+                    latestValue = obs.value ? (obs.value.display || obs.value.name || (angular.isObject(obs.value) ? '' : obs.value)) : null;
+                    latestDate = parsedDate;
                 }
             }
         });
         if (latestDate && validityDays) {
-            var now = new Date();
-            var diffDays = (now - latestDate) / (1000 * 60 * 60 * 24);
+            var diffDays = Bahmni.Common.Util.DateUtil.diffInDaysRegardlessOfTime(latestDate, new Date());
             if (diffDays > validityDays) {
                 return { value: '', date: null };
             }
@@ -74,8 +69,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     var mapObservations = function (patientObservations, conceptConfigs) {
         var result = {};
         _.each(conceptConfigs, function (config) {
-            result[config.conceptName] = mapConcepts(patientObservations, config.conceptName, config.validityDays)
-                || { date: null, value: "" };
+            result[config.conceptName] = mapConcepts(patientObservations, config.conceptName, config.validityDays);
         });
         return result;
     };

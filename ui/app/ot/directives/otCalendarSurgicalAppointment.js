@@ -13,10 +13,7 @@ angular.module('bahmni.ot')
     .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', 'appService', '$window', 'otUtils', function (surgicalAppointmentHelper, appService, $window, otUtils) {
         var link = function ($scope) {
             $scope.attributes = surgicalAppointmentHelper.getSurgicalAttributes($scope.surgicalAppointment);
-            if (!$scope.conceptFormatAttributeName) {
-                $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
-            }
-            $scope.conceptFormatDropdownConstants = Bahmni.OT.Constants.notApplicableValues;
+            $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
             var patientUrls = appService.getAppDescriptor().getConfigValue("patientDashboardUrl");
             $scope.patientDashboardUrl = patientUrls && patientUrls.link && appService.getAppDescriptor().formatUrl(patientUrls.link, {'patientUuid': $scope.surgicalAppointment.patient.uuid});
             $scope.goToForwardUrl = function ($event) {
@@ -79,9 +76,7 @@ angular.module('bahmni.ot')
                 operationTheatre: "=",
                 heightPerMin: "=",
                 backgroundColor: "=",
-                filterParams: "=",
-                conceptFormatAttributeName: "=?"
-
+                filterParams: "="
             },
             templateUrl: "../ot/views/calendarSurgicalAppointment.html"
         };

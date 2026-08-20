@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('surgicalBlockController', ['$scope', '$q', '$state', '$stateParams', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'surgicalBlockHelper', 'ngDialog',
-        function ($scope, $q, $state, $stateParams, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, surgicalBlockHelper, ngDialog) {
+    .controller('surgicalBlockController', ['$scope', '$q', '$state', '$stateParams', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'surgicalBlockHelper', 'ngDialog', 'otUtils',
+        function ($scope, $q, $state, $stateParams, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, surgicalBlockHelper, ngDialog, otUtils) {
             var init = function () {
                 $scope.surgicalForm = {
                     surgicalAppointments: []
@@ -19,7 +19,7 @@ angular.module('bahmni.ot')
                 $scope.configuredSurgeryAttributeNames = appService.getAppDescriptor().getConfigValue("surgeryAttributes");
                 var surgeryAttributeTranslations = appService.getAppDescriptor().getConfigValue("surgeryAttributeTranslations") || [];
                 $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(surgeryAttributeTranslations);
-                $scope.conceptFormatAttributeName = surgicalAppointmentHelper.getConceptFormatAttributeName ? surgicalAppointmentHelper.getConceptFormatAttributeName() : Bahmni.OT.Constants.conceptFormatAttributeName;
+                $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
                 var providerNamesFromConfig = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                 return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater"), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNamesFromConfig, response[0].data.results);

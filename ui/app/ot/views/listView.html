@@ -27,7 +27,7 @@
                 {{appointment.status}}
             </td>
             <td>
-                {{conceptFormatAttributeName && appointment.surgicalAppointmentAttributes[conceptFormatAttributeName] ? (conceptFormatDropdownConstants.indexOf((appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate)) === -1 ? (appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate) : '') : ''}}
+                {{conceptFormatAttributeName && appointment.surgicalAppointmentAttributes[conceptFormatAttributeName] ? (appointment.surgicalAppointmentAttributes[conceptFormatAttributeName].value | translate) : ''}}
             </td>
             <td ng-repeat="obsColumn in filteredObservationColumns"
                 ng-init="obsData=appointment.observationMap[obsColumn.conceptName]">

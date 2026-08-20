@@ -781,6 +781,40 @@ describe("SurgicalBlockMapper", function () {
             var result = surgicalBlockMapper.mapObservations(observations, []);
             expect(Object.keys(result).length).toBe(0);
         });
+
+        it('should update value and date atomically — newer obs with null value should not retain older value', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { display: 'Yes' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                },
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: null,
+                    obsDatetime: getDateString(5),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBeNull();
+        });
+
+        it('should return empty string when obs value is an object without display or name', function () {
+            var observations = [
+                {
+                    concept: { display: 'Pre Anaesthesia Assessed for Surgery?' },
+                    value: { uuid: 'some-uuid' },
+                    obsDatetime: getDateString(10),
+                    display: 'Pre Anaesthesia Assessed for Surgery?'
+                }
+            ];
+            var conceptConfigs = [{ conceptName: 'Pre Anaesthesia Assessed for Surgery?', validityDays: 30 }];
+            var result = surgicalBlockMapper.mapObservations(observations, conceptConfigs);
+            expect(result['Pre Anaesthesia Assessed for Surgery?'].value).toBe('');
+        });
     });
 });
 

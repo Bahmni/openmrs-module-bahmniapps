@@ -18,7 +18,6 @@ angular.module('bahmni.ot')
             var surgeryAttributeTranslations = appService.getAppDescriptor().getConfigValue("surgeryAttributeTranslations") || [];
             $scope.defaultAttributeTranslations = surgicalAppointmentHelper.getDefaultAttributeTranslations(surgeryAttributeTranslations);
             $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
-            $scope.conceptFormatDropdownConstants = Bahmni.OT.Constants.notApplicableValues;
             $scope.filteredSurgicalAttributeTypes = getFilteredSurgicalAttributeTypes();
 
             var listViewObservationColumns = appService.getAppDescriptor().getConfigValue("listViewObservationColumns") || [];

@@ -29,9 +29,6 @@ describe("newSurgicalAppointmentController", function () {
     conceptService.getAnswersForConceptName.and.returnValue(specUtil.simplePromise([]));
     var ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
     _window = jasmine.createSpyObj('$window', ['open', 'location']);
-    _window.localStorage = {
-        "NG_TRANSLATE_LANG_KEY": "en"
-    };
 
     var attributeTypes = {
         "results": [
@@ -159,6 +156,7 @@ describe("newSurgicalAppointmentController", function () {
     });
 
     it("should convert object values to string for concept format attributes", function () {
+        conceptService.getAnswersForConceptName.and.returnValue(specUtil.simplePromise([{ name: { name: "Requested" } }]));
         scope.ngDialogData = {
             patient: { uuid: "patientUuid", display: "Test Patient" },
             surgicalAppointmentAttributes: {
@@ -172,10 +170,22 @@ describe("newSurgicalAppointmentController", function () {
                 }
             }
         };
-        
+
         createController();
-        
+
         expect(scope.attributes.conceptFormatAttributeName.value).toBe("Requested");
+    });
+
+    it("should not add concept format attribute to conceptFormatAttributeNames when answers are empty", function () {
+        conceptService.getAnswersForConceptName.and.returnValue(specUtil.simplePromise([]));
+        createController();
+        expect(scope.conceptFormatAttributeNames).toEqual([]);
+    });
+
+    it("should add concept format attribute to conceptFormatAttributeNames only after answers are confirmed", function () {
+        conceptService.getAnswersForConceptName.and.returnValue(specUtil.simplePromise([{ name: { name: "Requested" } }]));
+        createController();
+        expect(scope.conceptFormatAttributeNames).toContain("conceptFormatAttributeName");
     });
 
     it("should keep string values as-is for concept format attributes", function () {

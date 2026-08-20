@@ -71,9 +71,9 @@
                     <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_PATIENT_WEIGHT' | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
                     <input type="text" id="{{attribute.surgicalAppointmentAttributeType.patientWeight}}" ng-model="attribute.value" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">
                 </p>
-                <p ng-switch-when="anesthesic">
+                <p ng-switch-when="anaesthetist">
                     <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>
-                    <input type="text" id="{{attribute.surgicalAppointmentAttributeType.anesthesic}}" ng-model="attribute.value" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">
+                    <input type="text" id="{{attribute.surgicalAppointmentAttributeType.anaesthetist}}" ng-model="attribute.value" ng-required="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">
                 </p>
                 <p ng-switch-default ng-if="attributeTypeName != 'estTimeMinutes' && conceptFormatAttributeNames.indexOf(attributeTypeName) === -1">
                     <label class="surgeon-block surgeon-text">{{(defaultAttributeTranslations.get(attributeTypeName) | translate) || attribute.surgicalAppointmentAttributeType.name}}<span class="asterick" ng-if="requiredConceptAttributes.indexOf(attributeTypeName) !== -1">*</span></label>

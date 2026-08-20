@@ -17,7 +17,6 @@ angular.module('bahmni.ot')
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
                 $scope.patient = $scope.ngDialogData && $scope.ngDialogData.patient && ($scope.ngDialogData.patient.value || $scope.ngDialogData.patient.display);
                 $scope.otherSurgeons = _.cloneDeep($scope.surgeons);
-                $scope.currentLanguage = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
                 $scope.conceptFormatAttributeDropdownOptions = [];
                 $scope.conceptFormatAttributeDropdownOptionsMap = {};
                 var surgeryAttributeTranslations = appService.getAppDescriptor().getConfigValue("surgeryAttributeTranslations") || [];
@@ -25,20 +24,21 @@ angular.module('bahmni.ot')
                 return $q.all([surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.attributeTypes = response[0].data.results;
                     $scope.conceptFormatAttributeName = otUtils.getConceptFormatAttributeName();
-                    $scope.conceptFormatAttributeNames = otUtils.getConceptFormatAttributeNames();
+                    $scope.conceptFormatAttributeNames = [];
+                    var conceptFormatCandidates = otUtils.getConceptFormatAttributeNames();
                     var configuredRequired = appService.getAppDescriptor().getConfigValue("requiredSurgeryAttributes");
                     $scope.requiredConceptAttributes = configuredRequired || [];
                     var attributes = {};
                     var mapAttributes = new Bahmni.OT.SurgicalBlockMapper().mapAttributes(attributes, $scope.attributeTypes);
                     $scope.attributes = $scope.ngDialogData && $scope.ngDialogData.surgicalAppointmentAttributes || mapAttributes;
-                    $scope.conceptFormatAttributeNames.forEach(function (attrName) {
+                    conceptFormatCandidates.forEach(function (attrName) {
                         conceptService.getAnswersForConceptName({
                             answersConceptName: attrName
                         }).then(function (answers) {
                             if (!answers || answers.length === 0) {
-                                $scope.conceptFormatAttributeNames = $scope.conceptFormatAttributeNames.filter(function (n) { return n !== attrName; });
                                 return;
                             }
+                            $scope.conceptFormatAttributeNames.push(attrName);
                             $scope.conceptFormatAttributeDropdownOptionsMap[attrName] = answers.map(function (answer) {
                                 var conceptName = answer.name.name || answer.name;
                                 return { label: conceptName, value: conceptName };
