@@ -76,6 +76,17 @@ angular.module('bahmni.clinical')
                 template.klass = "active";
             };
 
+            var mergeObservationForms = function (newForms) {
+                var existingForms = $scope.consultation.observationForms || [];
+                return _.map(newForms, function (newForm) {
+                    var newFormId = getFormId(newForm);
+                    var existingForm = newFormId && _.find(existingForms, function (form) {
+                        return form && getFormId(form) === newFormId;
+                    });
+                    return existingForm || newForm;
+                });
+            };
+
             var init = function () {
                 if ($rootScope.draftDiscarded) {
                     var preservedDeletedFormIds = getDeletedFormIds();
@@ -101,7 +112,7 @@ angular.module('bahmni.clinical')
 
                     spinner.forPromise(formService.getFormList($scope.consultation.encounterUuid)
                         .then(function (response) {
-                            $scope.consultation.observationForms = getObservationForms(response.data);
+                            $scope.consultation.observationForms = mergeObservationForms(getObservationForms(response.data));
                             loadDraftThenConcat();
                         }, function () {
                             loadDraftThenConcat();

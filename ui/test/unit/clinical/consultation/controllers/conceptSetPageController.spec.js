@@ -260,6 +260,82 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.observationForms[1].formVersion).toEqual( form2Data[1].version);
         });
 
+        describe('observation forms merge on re-entry', function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            var admissionFormData = [{
+                name: "Admission Order", uuid: "admission-form-uuid", version: "1",
+                published: true, id: null, resources: null, nameTranslation: null, privileges: []
+            }];
+
+            beforeEach(function () {
+                mockConceptSetService(conceptResponseData);
+                rootScope.currentUser = {
+                    isFavouriteObsTemplate: function () {
+                        return false;
+                    }
+                };
+            });
+
+            it('should preserve existing observationForm model when the form list is refetched on re-entry', function () {
+                var existingForm = new Bahmni.ObservationForm('admission-form-uuid', rootScope.currentUser,
+                    'Admission Order', '1', [], 'Admission Order', {});
+                var unsavedObs = [{
+                    concept: {uuid: 'obs-uuid'}, value: 'unsaved-value',
+                    formNamespace: 'Bahmni', formFieldPath: 'Admission Order.1/1-0'
+                }];
+                existingForm.observations = angular.copy(unsavedObs);
+                existingForm.component = {getValue: function () { return {observations: angular.copy(unsavedObs)}; }};
+                existingForm.isOpen = true;
+                existingForm.added = true;
+                scope.consultation.observationForms = [existingForm];
+                mockformService(admissionFormData);
+
+                createController();
+
+                expect(scope.consultation.observationForms.length).toBe(1);
+                expect(scope.consultation.observationForms[0]).toBe(existingForm);
+                expect(scope.consultation.observationForms[0].observations.length).toBe(1);
+                expect(scope.consultation.observationForms[0].observations[0].value).toBe('unsaved-value');
+                expect(scope.consultation.observationForms[0].component).toBeDefined();
+                expect(scope.consultation.observationForms[0].isOpen).toBe(true);
+            });
+
+            it('should create a fresh model only for forms that were not loaded before', function () {
+                var existingForm = new Bahmni.ObservationForm('admission-form-uuid', rootScope.currentUser,
+                    'Admission Order', '1', [], 'Admission Order', {});
+                scope.consultation.observationForms = [existingForm];
+                mockformService(admissionFormData.concat([{
+                    name: 'Brand New Form', uuid: 'new-form-uuid', version: '1',
+                    published: true, id: null, resources: null, nameTranslation: null, privileges: []
+                }]));
+
+                createController();
+
+                expect(scope.consultation.observationForms.length).toBe(2);
+                expect(scope.consultation.observationForms[0]).toBe(existingForm);
+                expect(scope.consultation.observationForms[1].formUuid).toBe('new-form-uuid');
+                expect(scope.consultation.observationForms[1].formName).toBe('Brand New Form');
+                expect(scope.consultation.observationForms[1]).not.toBe(existingForm);
+            });
+
+            it('should build all fresh models when no observationForms were loaded before', function () {
+                mockformService(admissionFormData);
+
+                createController();
+
+                expect(scope.consultation.observationForms.length).toBe(1);
+                expect(scope.consultation.observationForms[0].formUuid).toBe('admission-form-uuid');
+                expect(scope.consultation.observationForms[0].formName).toBe('Admission Order');
+                expect(scope.consultation.observationForms[0].observations.length).toBe(0);
+            });
+        });
+
         it("should load all obs templates along with forms from implementers interface", function () {
             var conceptResponseData = {
                 results: [
