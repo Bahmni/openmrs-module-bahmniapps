@@ -304,6 +304,7 @@ describe('ConceptSetPageController', function () {
                 expect(scope.consultation.observationForms[0].observations[0].value).toBe('unsaved-value');
                 expect(scope.consultation.observationForms[0].component).toBeDefined();
                 expect(scope.consultation.observationForms[0].isOpen).toBe(true);
+                expect(scope.consultation.observationForms[0].isAdded).toBe(true);
             });
 
             it('should create a fresh model only for forms that were not loaded before', function () {
@@ -333,6 +334,49 @@ describe('ConceptSetPageController', function () {
                 expect(scope.consultation.observationForms[0].formUuid).toBe('admission-form-uuid');
                 expect(scope.consultation.observationForms[0].formName).toBe('Admission Order');
                 expect(scope.consultation.observationForms[0].observations.length).toBe(0);
+            });
+
+            it('should leave existing observationForms untouched when the form list request fails', function () {
+                var existingForm = new Bahmni.ObservationForm('admission-form-uuid', rootScope.currentUser,
+                    'Admission Order', '1', [], 'Admission Order', {});
+                scope.consultation.observationForms = [existingForm];
+                formService.getFormList.and.callFake(function () {
+                    return {
+                        then: function (success, error) {
+                            if (error) { error(); }
+                        }
+                    };
+                });
+
+                createController();
+
+                expect(scope.consultation.observationForms.length).toBe(1);
+                expect(scope.consultation.observationForms[0]).toBe(existingForm);
+            });
+
+            it('should drop forms that are no longer present in the server response', function () {
+                var existingForm = new Bahmni.ObservationForm('admission-form-uuid', rootScope.currentUser,
+                    'Admission Order', '1', [], 'Admission Order', {});
+                scope.consultation.observationForms = [existingForm];
+                mockformService([]);
+
+                createController();
+
+                expect(scope.consultation.observationForms.length).toBe(0);
+            });
+
+            it('should build all fresh models when a draft discard reset occurred', function () {
+                var existingForm = new Bahmni.ObservationForm('admission-form-uuid', rootScope.currentUser,
+                    'Admission Order', '1', [], 'Admission Order', {});
+                scope.consultation.observationForms = [existingForm];
+                rootScope.draftDiscarded = true;
+                mockformService(admissionFormData);
+
+                createController();
+
+                expect(scope.consultation.observationForms.length).toBe(1);
+                expect(scope.consultation.observationForms[0]).not.toBe(existingForm);
+                expect(scope.consultation.observationForms[0].formUuid).toBe('admission-form-uuid');
             });
         });
 

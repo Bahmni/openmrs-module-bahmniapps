@@ -76,13 +76,15 @@ angular.module('bahmni.clinical')
                 template.klass = "active";
             };
 
+            // Order follows server list; existing form references preserved by formUuid
+            // to retain component and unsaved observations.
             var mergeObservationForms = function (newForms) {
                 var existingForms = $scope.consultation.observationForms || [];
                 return _.map(newForms, function (newForm) {
                     var newFormId = getFormId(newForm);
-                    var existingForm = newFormId && _.find(existingForms, function (form) {
+                    var existingForm = newFormId ? _.find(existingForms, function (form) {
                         return form && getFormId(form) === newFormId;
-                    });
+                    }) : null;
                     return existingForm || newForm;
                 });
             };
