@@ -104,28 +104,9 @@ describe('VisitController', function () {
             }
         });
         scope.currentProvider = {uuid: ''};
-        controller =   $controller('VisitController', {
-                $scope: scope,
-                $rootScope: {quickLogoutComboKey: 'Escape', cookieExpiryTime: 30},
-                $state: state,
-                encounterService: encounterService,
-                clinicalAppConfigService: clinicalAppConfigService,
-                visitSummary: {},
-                configurations: configurations,
-                $timeout: $timeout,
-                printer: {},
-                visitConfig: visitTabConfig,
-                visitHistory:[],
-                $stateParams: {},
-                locationService: locationService,
-                visitService: visitService,
-                appService: appService,
-                allergyService: allergyService,
-                auditLogService: auditLogService,
-                sessionService: sessionService,
-                $location: $location,
-                $window: window
-            });
+        rootScope.quickLogoutComboKey = 'Escape';
+        rootScope.cookieExpiryTime = 30;
+        controller = createController(rootScope);
     }]));
 
     var defaultTab = {
@@ -412,30 +393,6 @@ describe('VisitController', function () {
             expect(state.go).toHaveBeenCalledWith('patient.dashboard.visit', {visitUuid: 'test-visit-uuid'});
         });
     });
-
-    function createController(rootScope) {
-        return $controller('VisitController', {
-            $scope: scope,
-            $rootScope: rootScope,
-            $state: state,
-            encounterService: encounterService,
-            clinicalAppConfigService: clinicalAppConfigService,
-            visitSummary: {},
-            configurations: configurations,
-            $timeout: $timeout,
-            printer: {},
-            visitConfig: visitTabConfig,
-            visitHistory: [],
-            $stateParams: {},
-            locationService: locationService,
-            appService: appService,
-            allergyService: allergyService,
-            auditLogService: auditLogService,
-            sessionService: sessionService,
-            $location: $location,
-            $window: window
-        });
-        }
 
     describe('privileges handling', function () {
         it('should set empty privileges array when rootScope.currentUser is undefined', function () {
