@@ -3918,7 +3918,7 @@ bahmni-carbon-ui@0.1.6:
     prop-types "^15.8.1"
     react-intl "^6.4.4"
 
-bahmni-form-controls@1.0.2:
+bahmni-form-controls@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-1.0.2.tgz#f46842bef1f77a82d0ab90b9912d94067d8dc946"
   integrity sha512-/f8FGDmBSjl7AusttOuJlx+Y3cn4HhpU/KLJDmep5HwzHn+JlK2Ql2DgQyonKghpdo5gUlYrgSL1UE86JlYLww==
