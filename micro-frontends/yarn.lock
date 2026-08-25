@@ -3918,16 +3918,18 @@ bahmni-carbon-ui@0.1.6:
     prop-types "^15.8.1"
     react-intl "^6.4.4"
 
-bahmni-form-controls@^0.94.0:
-  version "0.94.0"
-  resolved "https://registry.npmjs.org/bahmni-form-controls/-/bahmni-form-controls-0.94.0.tgz#726dc8701bb1bc06c972f2bcc5d4d2f75f110fe9"
-  integrity sha512-CsSFIJNNKxu0Opfp/rYrMDYuVd+cOmsMulWyCfP21qvS8y2aY4hHo+b+oxmA58J3nF8ANJB20i60guW1TSOY8Q==
+bahmni-form-controls@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-1.0.2.tgz#f46842bef1f77a82d0ab90b9912d94067d8dc946"
+  integrity sha512-/f8FGDmBSjl7AusttOuJlx+Y3cn4HhpU/KLJDmep5HwzHn+JlK2Ql2DgQyonKghpdo5gUlYrgSL1UE86JlYLww==
   dependencies:
     base64-inline-loader "^1.1.0"
     classnames "^2.2.5"
     enzyme-adapter-react-16 "^1.1.0"
+    html-entities "^2.6.0"
     immutable "3.8.1"
     lodash "4.17.12"
+    moment "^2.29.1"
     prop-types "^15.6.2"
     react-intl "^3.12.0"
     react-select "^1.0.0-rc.2"
@@ -6908,6 +6910,11 @@ html-entities@^2.1.0:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.4.0.tgz#edd0cee70402584c8c76cc2c0556db09d1f45061"
   integrity sha512-igBTJcNNNhvZFRtm8uA6xMY6xYleeDwn3PeBCkDz7tHttv4F2hsDI2aPgNERWzvRcNYHNT3ymRaQzllmXj4YsQ==
 
+html-entities@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.6.0.tgz#7c64f1ea3b36818ccae3d3fb48b6974208e984f8"
+  integrity sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==
+
 html-escaper@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/html-escaper/-/html-escaper-2.0.2.tgz#dfd60027da36a36dfcbe236262c00a5822681453"
@@ -8748,6 +8755,11 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
+moment@^2.29.1:
+  version "2.30.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.30.1.tgz#f8c91c07b7a786e30c59926df530b4eac96974ae"
+  integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
 
 moment@^2.29.4:
   version "2.29.4"
