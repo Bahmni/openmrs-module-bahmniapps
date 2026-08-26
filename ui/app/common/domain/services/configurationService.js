@@ -100,6 +100,20 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.hyperlinkAllowedDomains = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: {
+                    property: 'bahmni.forms.hyperlink.allowedDomains'
+                },
+                withCredentials: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            }).catch(function () {
+                return { data: '' };
+            });
+        };
+
         configurationFunctions.radiologyImpressionConfig = function () {
             var radiologyImpressionConfig = $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 method: "GET",

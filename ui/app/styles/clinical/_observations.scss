@@ -276,6 +276,19 @@ concept-set {
 
 .form-controls-container {
   padding-top: 10px;
+
+  [data-bahmni-hyperlink] {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .obs-attached-label {
+    display: block;
+    text-align: right;
+  }
 }
 
 .vitals {

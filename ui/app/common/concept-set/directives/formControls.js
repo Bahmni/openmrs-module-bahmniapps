@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate',
-        function (formService, spinner, $timeout, $translate) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'configurationService',
+        function (formService, spinner, $timeout, $translate, configurationService) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -29,48 +29,64 @@ angular.module('bahmni.common.conceptSet')
                 var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                 var validateForm = $scope.validateForm || false;
                 var locale = $translate.use();
+                var allowedDomains = [];
 
-                if (!loadedFormDetails[formUuid]) {
-                    spinner.forPromise(formService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
-                        .then(function (response) {
-                            var formDetailsAsString = _.get(response, 'data.resources[0].value');
-                            if (formDetailsAsString) {
-                                var formDetails = JSON.parse(formDetailsAsString);
-                                formDetails.version = formVersion;
-                                loadedFormDetails[formUuid] = formDetails;
-                                var formParams = { formName: formName, formVersion: formVersion, locale: locale, formUuid: formUuid };
-                                $scope.form.events = formDetails.events;
-                                spinner.forPromise(formService.getFormTranslations(formDetails.translationsUrl, formParams)
-                                    .then(function (response) {
-                                        var formTranslations = !_.isEmpty(response.data) ? response.data[0] : {};
-                                        loadedFormTranslations[formUuid] = formTranslations;
-                                        $scope.form.component = renderWithControls(formDetails, formObservations,
-                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations);
-                                    }, function () {
-                                        var formTranslations = {};
-                                        loadedFormTranslations[formUuid] = formTranslations;
-                                        $scope.form.component = renderWithControls(formDetails, formObservations,
-                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations);
-                                    })
-                                );
-                            }
+                var renderForm = function (formDetails, formTranslations) {
+                    $scope.form.component = renderWithControls(formDetails, formObservations,
+                        formUuid, collapse, $scope.patient, validateForm, locale, formTranslations,
+                        allowedDomains);
+                };
+
+                var loadForm = function () {
+                    if (!loadedFormDetails[formUuid]) {
+                        spinner.forPromise(formService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
+                            .then(function (response) {
+                                var formDetailsAsString = _.get(response, 'data.resources[0].value');
+                                if (formDetailsAsString) {
+                                    var formDetails = JSON.parse(formDetailsAsString);
+                                    formDetails.version = formVersion;
+                                    loadedFormDetails[formUuid] = formDetails;
+                                    var formParams = { formName: formName, formVersion: formVersion, locale: locale, formUuid: formUuid };
+                                    $scope.form.events = formDetails.events;
+                                    spinner.forPromise(formService.getFormTranslations(formDetails.translationsUrl, formParams)
+                                        .then(function (response) {
+                                            var formTranslations = !_.isEmpty(response.data) ? response.data[0] : {};
+                                            loadedFormTranslations[formUuid] = formTranslations;
+                                            renderForm(formDetails, formTranslations);
+                                        }, function () {
+                                            var formTranslations = {};
+                                            loadedFormTranslations[formUuid] = formTranslations;
+                                            renderForm(formDetails, formTranslations);
+                                        })
+                                    );
+                                }
+                                unMountReactContainer($scope.form.formUuid);
+                            })
+                        );
+                    } else {
+                        $timeout(function () {
+                            $scope.form.events = loadedFormDetails[formUuid].events;
+                            renderForm(loadedFormDetails[formUuid], loadedFormTranslations[formUuid]);
                             unMountReactContainer($scope.form.formUuid);
-                        })
-                    );
-                } else {
-                    $timeout(function () {
-                        $scope.form.events = loadedFormDetails[formUuid].events;
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations,
-                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid]);
-                        unMountReactContainer($scope.form.formUuid);
-                    }, 0, false);
-                }
+                        }, 0, false);
+                    }
+                };
+
+                configurationService.getConfigurations(['hyperlinkAllowedDomains'])
+                    .then(function (configurations) {
+                        var domainsData = configurations.hyperlinkAllowedDomains || '';
+                        allowedDomains = (domainsData || '').split(',').map(function (d) { return d.trim(); }).filter(function (d) { return d; });
+                        loadForm();
+                    })
+                    .catch(function (error) {
+                        console.debug('Failed to fetch hyperlink allowed domains:', error);
+                        loadForm();
+                    });
 
                 $scope.$watch('form.collapseInnerSections', function () {
-                    var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
+                    collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations,
-                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid]);
+                        renderForm(loadedFormDetails[formUuid], loadedFormTranslations[formUuid]);
                     }
                 });
 

@@ -9,6 +9,7 @@
 
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
+import axios from 'axios';
 import { getLocale } from "../i18n/utils";
 import { getFormByFormName, getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
@@ -17,6 +18,7 @@ import { Modal, Loading } from 'carbon-components-react';
 import { FormattedMessage } from "react-intl";
 import { I18nProvider } from '../i18n/I18nProvider';
 import ErrorNotification from '../ErrorNotification/ErrorNotification';
+import { GLOBAL_PROPERTY_URL } from '../../constants';
 
 import "./EditObservationForm.scss";
 
@@ -28,15 +30,15 @@ const EditObservationForm = (props) => {
         />
     );
 
-    const { 
-        formName, 
+    const {
+        formName,
         formNameTranslations,
-        closeEditObservationForm, 
+        closeEditObservationForm,
         isEditFormLoading,
-        setEditFormLoading, 
-        patient, 
-        formData, 
-        encounterUuid, 
+        setEditFormLoading,
+        patient,
+        formData,
+        encounterUuid,
         consultationMapper,
         handleEditSave,
         editErrorMessage
@@ -75,14 +77,25 @@ const EditObservationForm = (props) => {
             if( formData.length > 0 && encounterUuid !== null) {
                 const encounterTransaction = await findByEncounterUuid(encounterUuid);
                 setEncounter(consultationMapper.map(encounterTransaction));
-                
-                const latestForms = await getLatestPublishedForms();
+
+                const [latestForms, allowedDomainsData] = await Promise.all([
+                    getLatestPublishedForms(),
+                    axios.get(GLOBAL_PROPERTY_URL, {
+                            params: { property: 'bahmni.forms.hyperlink.allowedDomains' },
+                            withCredentials: true,
+                            headers: { Accept: 'text/plain' }
+                        })
+                        .then(res => String(res.data || ''))
+                        .catch(() => '')
+                ]);
+
                 const formVersion = getFormVersion(latestForms, formName);
                 const observationForm = getFormByFormName(latestForms, formName, formVersion);
                 const formUuid = observationForm.uuid;
                 const locale = getLocale();
                 const validateForm = false;
                 const collapse = false;
+                const allowedDomains = (allowedDomainsData || '').split(',').map(d => d.trim()).filter(d => d);
 
                 if (!loadedFormDetails[formUuid]) {
                     var formDetails = await getFormDetail(formUuid);
@@ -90,13 +103,13 @@ const EditObservationForm = (props) => {
                     formDetails = JSON.parse(formDetailsAsString);
                     formDetails.version = formVersion;
                     setLoadedFormDetails((prevDetails) => ({ ...prevDetails, [formUuid]: formDetails }));
-                    
+
                     const formParams = { formName: formName, formVersion: formVersion, locale: locale, formUuid: formUuid };
                     const formTranslations = await getFormTranslations(formDetails.translationsUrl, formParams);
                     setLoadedFormTranslations((prevTranslations) => ({ ...prevTranslations, [formUuid]: formTranslations }));
 
                     setEditFormLoading(false);
-                    setUpdatedObservations(window.renderWithControls(formDetails, formData, nodeId, collapse, patient, validateForm, locale, formTranslations));
+                    setUpdatedObservations(window.renderWithControls(formDetails, formData, nodeId, collapse, patient, validateForm, locale, formTranslations, allowedDomains));
                 }
             }
         };

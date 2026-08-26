@@ -10,7 +10,7 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, formService, renderHelper, translate;
+    var element, scope, $compile, spinner, provide, formService, renderHelper, translate, $state;
 
     beforeEach(
         function () {
@@ -19,12 +19,29 @@ describe("Form Controls", function () {
                 provide = $provide;
                 formService = jasmine.createSpyObj('formService', ['getFormDetail', 'getFormTranslations']);
                 spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+                var configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
+                var promiseMock = {
+                    then: function (callback) {
+                        callback({ hyperlinkAllowedDomains: '' });
+                        return promiseMock;
+                    },
+                    catch: function (callback) {
+                        return promiseMock;
+                    }
+                };
+                configurationService.getConfigurations.and.returnValue(promiseMock);
+                $state = {
+                    patientUuid: 'patientUuid',
+                    dirtyConsultationForm: false
+                };
                 provide.value('formService', formService);
+                provide.value('configurationService', configurationService);
                 translate = {
                     use: function(){ return 'en' }
                 };
                 provide.value('spinner', spinner);
                 provide.value('$translate', translate);
+                provide.value('$state', $state);
             });
 
             inject(function (_$compile_, $rootScope) {
@@ -72,6 +89,23 @@ describe("Form Controls", function () {
         })
     }
 
+    function mockObservationServiceWithTranslationFailure(data) {
+        formService.getFormDetail.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({ data: data });
+                }
+            }
+        });
+        formService.getFormTranslations.and.callFake(function () {
+            return {
+                then: function (successCallback, errorCallback) {
+                    return errorCallback();
+                }
+            }
+        })
+    }
+
     it('should call formService.getFormDetail', function () {
         mockObservationService({});
         createElement();
@@ -88,6 +122,75 @@ describe("Form Controls", function () {
         mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
         expect(renderHelper.renderWithControlsCalledTimes).toBe(2);
+    });
+
+    it('should pass hyperlinkAllowedDomains config to renderWithControls', function () {
+        var capturedAllowedDomains;
+        window.renderWithControls = function () {
+            capturedAllowedDomains = arguments[8];
+            renderHelper.renderWithControlsCalledTimes += 1;
+        };
+        inject(function (configurationService) {
+            var promiseMock = {
+                then: function (callback) {
+                    callback({ hyperlinkAllowedDomains: '*.example.com' });
+                    return promiseMock;
+                },
+                catch: function (callback) {
+                    return promiseMock;
+                }
+            };
+            configurationService.getConfigurations.and.returnValue(promiseMock);
+        });
+        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        createElement();
+        expect(capturedAllowedDomains).toEqual(['*.example.com']);
+    });
+
+    it('should pass empty allowedDomains when hyperlinkAllowedDomains config is absent', function () {
+        var capturedAllowedDomains;
+        window.renderWithControls = function () {
+            capturedAllowedDomains = arguments[8];
+            renderHelper.renderWithControlsCalledTimes += 1;
+        };
+        inject(function (configurationService) {
+            var promiseMock = {
+                then: function (callback) {
+                    callback({ hyperlinkAllowedDomains: '' });
+                    return promiseMock;
+                },
+                catch: function (callback) {
+                    return promiseMock;
+                }
+            };
+            configurationService.getConfigurations.and.returnValue(promiseMock);
+        });
+        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        createElement();
+        expect(capturedAllowedDomains).toEqual([]);
+    });
+
+    it('should pass allowedDomains to renderWithControls even when translation fetch fails', function () {
+        var capturedAllowedDomains;
+        window.renderWithControls = function () {
+            capturedAllowedDomains = arguments[8];
+            renderHelper.renderWithControlsCalledTimes += 1;
+        };
+        inject(function (configurationService) {
+            var promiseMock = {
+                then: function (callback) {
+                    callback({ hyperlinkAllowedDomains: '*.example.com' });
+                    return promiseMock;
+                },
+                catch: function (callback) {
+                    return promiseMock;
+                }
+            };
+            configurationService.getConfigurations.and.returnValue(promiseMock);
+        });
+        mockObservationServiceWithTranslationFailure({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        createElement();
+        expect(capturedAllowedDomains).toEqual(['*.example.com']);
     });
 
     var createElement = function () {

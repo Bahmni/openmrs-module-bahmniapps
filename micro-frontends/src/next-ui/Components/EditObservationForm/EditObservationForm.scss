@@ -7,6 +7,9 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
+$hyperlink-color: #0066cc;
+$hyperlink-visited-color: #663399;
+
 .edit-observation-form-modal {
     .bx--modal-container {
       background: #f0f0f0;
@@ -73,5 +76,19 @@
 
 .bx--modal-content {
     padding-top: 0;
+}
+
+a[data-bahmni-hyperlink="true"] {
+    color: $hyperlink-color;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:visited {
+        color: $hyperlink-visited-color;
+    }
 }
   
