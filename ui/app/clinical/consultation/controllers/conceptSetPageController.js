@@ -72,16 +72,15 @@ angular.module('bahmni.clinical')
                 }
 
                 var formUuidParam = $stateParams.formUuid;
-                var FORM_PRELOAD_DIRTY_TRACKING_DELAY_MS = 1000;
 
-                // $timeout(setupDirtyTracking, formUuidParam ? FORM_PRELOAD_DIRTY_TRACKING_DELAY_MS : 0);
+                $timeout(setupDirtyTracking, formUuidParam ? 1000 : 0);
 
                 if (formUuidParam) {
                     var targetForm = _.find($scope.allTemplates, function (t) {
                         return t.formUuid === formUuidParam;
                     });
                     if (targetForm) {
-                        if (!_.find($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
+                        if (!_.some($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
                             targetForm.isAdded = true;
                             $scope.consultation.selectedObsTemplate.push(targetForm);
                         }

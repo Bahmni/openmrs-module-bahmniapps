@@ -26,10 +26,10 @@ angular.module('bahmni.clinical')
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
             });
-            var dashboardView = $state.current.views && $state.current.views['dashboard-content'];
-            var printView = $state.current.views && $state.current.views['print-content'];
-            var view = (dashboardView && dashboardView.templateUrl) ? dashboardView : printView;
-            $scope.currentVisitUrl = view && view.templateUrl ? view.templateUrl : null;
+            var dashboardView = $state.current.views?.['dashboard-content'];
+            var printView = $state.current.views?.['print-content'];
+            var view = dashboardView?.templateUrl ? dashboardView : printView;
+            $scope.currentVisitUrl = view?.templateUrl ?? null;
             var showProviderInfo = appService.getAppDescriptor().getConfigValue('showProviderInfoinVisits');
             $scope.showProviderInfo = showProviderInfo !== false ? true : showProviderInfo;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
