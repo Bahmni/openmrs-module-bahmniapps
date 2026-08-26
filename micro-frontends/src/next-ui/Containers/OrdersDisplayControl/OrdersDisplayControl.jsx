@@ -7,14 +7,7 @@ import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import { ViewOrders } from "../../Components/ViewOrders/ViewOrders";
 import axios from "axios";
-import {
-    FHIR_EXT_CREATED_BY,
-    FHIR_EXT_TASK_CREATED_ON,
-    FHIR_EXT_TASK_NOTE,
-    FHIR_EXT_TASK_OWNER,
-    FHIR_EXT_ORDER_STATUS,
-    FHIR_EXT_ORDER_SHORT_NAME,
-} from "../../constants";
+import { FHIR_URL, FHIR_SERVICE_REQUEST_URL, FHIR_EXT_ORDER_SHORT_NAME } from "../../constants";
 
 const extractOrderIdFromReference = (reference) => {
     if (!reference || typeof reference !== 'string') {
@@ -24,7 +17,32 @@ const extractOrderIdFromReference = (reference) => {
     return parts.length === 2 ? parts[1] : null;
 };
 
-const transformOrders = (entries = []) => {
+const buildTasksByOrderId = (taskEntries = []) => {
+    const tasksByOrderId = new Map();
+    taskEntries.forEach(entry => {
+        const task = entry.resource;
+        if (task?.basedOn && Array.isArray(task.basedOn) && task.basedOn.length > 0) {
+            const orderId = extractOrderIdFromReference(task.basedOn[0].reference);
+            if (orderId && !tasksByOrderId.has(orderId)) {
+                tasksByOrderId.set(orderId, task);
+            }
+        }
+    });
+    return tasksByOrderId;
+};
+
+const getOrderName = (resource) => {
+    const extensions = resource?.extension;
+    if (Array.isArray(extensions)) {
+        const shortNameExt = extensions.find(ext => ext?.url?.endsWith(FHIR_EXT_ORDER_SHORT_NAME));
+        if (shortNameExt?.valueString) {
+            return shortNameExt.valueString;
+        }
+    }
+    return resource?.code?.text || "";
+};
+
+const transformOrders = (entries = [], tasksByOrderId = new Map()) => {
     const cancelledOrderIds = new Set();
     entries.forEach(entry => {
         const replaces = entry.resource?.replaces;
@@ -36,45 +54,25 @@ const transformOrders = (entries = []) => {
         }
     });
 
-    const orders = []
+    const orders = [];
     entries.forEach(entry => {
         const resource = entry.resource;
         const orderId = resource.id;
-        const extensions = resource.extension || [];
-        let updatedAt, orderStatus, owner, notes, updatedBy, shortName;
 
         const isReplacementOrder = Array.isArray(resource.replaces) && resource.replaces.length > 0;
         const isCancelledOrder = cancelledOrderIds.has(orderId);
 
         if(resource.status !== "unknown" && !isReplacementOrder && !isCancelledOrder) {
-            extensions.forEach(extension => {
-                if (extension.url) {
-                    if (extension.url.endsWith(FHIR_EXT_TASK_CREATED_ON)) {
-                        updatedAt = new Date(extension.valueDateTime).getTime()
-                    } else if (extension.url.endsWith(FHIR_EXT_ORDER_STATUS)) {
-                        orderStatus = extension.valueString
-                    } else if (extension.url.endsWith(FHIR_EXT_TASK_OWNER)) {
-                        owner = extension.valueReference.display
-                    } else if (extension.url.endsWith(FHIR_EXT_TASK_NOTE)) {
-                        notes = extension.valueAnnotation.text ? extension.valueAnnotation.text.split('\n').join(' | ') : ""
-                    } else if (extension.url.endsWith(FHIR_EXT_CREATED_BY)) {
-                        updatedBy = extension.valueReference.display
-                    } else if (extension.url.endsWith(FHIR_EXT_ORDER_SHORT_NAME)) {
-                        shortName = extension.valueString
-                    }
-                }
-            })
+            const relatedTask = tasksByOrderId.get(orderId);
+
             orders.push({
-                name: shortName || resource.code?.text || "",
+                name: getOrderName(resource),
                 createdBy: resource.requester?.display || "",
                 createdAt: resource.authoredOn || "",
-                updatedAt: updatedAt,
-                orderStatus: orderStatus,
-                statusUpdatedBy: orderStatus ? updatedBy : undefined,
-                owner: owner,
-                ownerUpdatedBy: owner ? updatedBy : undefined,
-                notes: notes,
-                notesUpdatedBy: notes ? updatedBy : undefined,
+                updatedAt: relatedTask?.meta?.lastUpdated ? new Date(relatedTask.meta.lastUpdated).getTime() : undefined,
+                orderStatus: relatedTask?.status ? relatedTask.status.toUpperCase() : undefined,
+                owner: relatedTask?.owner?.display,
+                notes: relatedTask?.note?.[0]?.text ? relatedTask.note[0].text.split('\n').join(' | ') : undefined,
             });
         }
     });
@@ -86,24 +84,49 @@ export function OrdersDisplayControl({hostData}) {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        const payload = {
-            category: orderType.uuid,
-            patient: patient.uuid,
-        }
-        if(numberOfVisits){
-            payload.numberOfVisits = numberOfVisits;
-        }
-        axios.get("/openmrs/ws/fhir2/R4/ServiceRequest", {
-            params: payload
-        }).then(res => {
-            const entries = res.data?.entry || [];
-            const data = transformOrders(entries);
-            data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setOrders(data);
-        }).catch(err => {
-            console.log(err);
-            setOrders([]);
-        });
+        const fetchOrdersAndTasks = async () => {
+            try {
+                const payload = {
+                    category: orderType.uuid,
+                    patient: patient.uuid,
+                    _count: 100
+                };
+                if(numberOfVisits){
+                    payload.numberOfVisits = numberOfVisits;
+                }
+
+                const serviceRequestRes = await axios.get(FHIR_SERVICE_REQUEST_URL, { params: payload });
+                const serviceRequestEntries = serviceRequestRes.data?.entry || [];
+
+                const orderUuids = serviceRequestEntries.map(e => e.resource?.id).filter(Boolean);
+                let taskEntries = [];
+
+                if (orderUuids.length > 0) {
+                    try {
+                        const basedOnFilter = orderUuids.map(id => `ServiceRequest/${id}`).join(',');
+                        const tasksRes = await axios.get(FHIR_URL, {
+                            params: {
+                                'based-on': basedOnFilter,
+                                _count: 100
+                            }
+                        });
+                        taskEntries = tasksRes.data?.entry || [];
+                    } catch (taskErr) {
+                        console.warn(`Failed to fetch task data for patient ${patient.uuid}:`, taskErr);
+                    }
+                }
+
+                const tasksByOrderId = buildTasksByOrderId(taskEntries);
+                const data = transformOrders(serviceRequestEntries, tasksByOrderId);
+                data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setOrders(data);
+            } catch (err) {
+                console.error(`Failed to fetch orders for patient ${patient.uuid}:`, err);
+                setOrders([]);
+            }
+        };
+
+        fetchOrdersAndTasks();
     }, []);
 
     return <I18nProvider>

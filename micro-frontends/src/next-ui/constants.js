@@ -44,12 +44,8 @@ export const SAVE_ALLERGIES_URL =  RESTWS_V1 + "/patient/{patientId}/allergy";
 export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
 export const NO_KNOWN_ALLERGY = "No Known Allergy";
 export const GLOBAL_PROPERTY_URL = RESTWS_V1 + "/bahmnicore/sql/globalproperty";
-export const FHIR_EXT_TASK_CREATED_ON = "task-created-on"
-export const FHIR_EXT_ORDER_STATUS = "order-status"
-export const FHIR_EXT_TASK_OWNER = "task-owner"
-export const FHIR_EXT_TASK_NOTE = "task-note"
-export const FHIR_EXT_CREATED_BY = "created-by"
 export const FHIR_URL = "/openmrs/ws/fhir2/R4/Task";
+export const FHIR_SERVICE_REQUEST_URL = "/openmrs/ws/fhir2/R4/ServiceRequest";
 export const FHIR_EXT_ORDER_SHORT_NAME = "order-short-name"
 export const FHIR_TASK_STATUS_TO_UI_STATUS = {
     DRAFT: 'New',
