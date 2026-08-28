@@ -212,6 +212,14 @@ angular.module('bahmni.adt')
                 }
             };
 
+            var setButtonClicked = function () {
+                $scope.buttonClicked = true;
+            };
+
+            var unsetButtonClicked = function () {
+                $scope.buttonClicked = false;
+            };
+
             var createEncounterAndContinue = function () {
                 var currentVisitTypeUuid = getCurrentVisitTypeUuid();
                 if (currentVisitTypeUuid !== null) {
@@ -234,6 +242,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.admit = function () {
+                setButtonClicked();
                 if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName) {
                     if ($scope.enableAutoConvertToIPDVisit) {
                         messagingService.showMessage("info", $translate.instant("MESSAGE_AUTO_CONVERT_TO_IPD_VISIT", {visitType: $scope.defaultVisitTypeName}));
@@ -242,7 +251,8 @@ angular.module('bahmni.adt')
                         ngDialog.openConfirm({
                             template: 'views/visitChangeConfirmation.html',
                             scope: $scope,
-                            closeByEscape: true
+                            closeByEscape: true,
+                            preCloseCallback: unsetButtonClicked
                         });
                     }
                 } else {
@@ -253,6 +263,7 @@ angular.module('bahmni.adt')
 
             $scope.cancelConfirmationDialog = function () {
                 ngDialog.close();
+                unsetButtonClicked();
             };
 
             var logVisit = function (patientUuid, eventType) {
@@ -320,6 +331,10 @@ angular.module('bahmni.adt')
                     logEncounter($scope.patient.uuid, params.encounterUuid, admissionEncounterType['name']);
                     forwardUrl(params, "onAdmissionForwardTo");
                 });
+            };
+
+            $scope.disableAdmitButton = function () {
+                return !$scope.patient || $scope.buttonClicked;
             };
 
             spinner.forPromise(init());
