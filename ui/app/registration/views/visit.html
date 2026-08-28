@@ -21,7 +21,7 @@
                                 <label class="control-label" for="patientName">{{ ::'REGISTRATION_LABEL_PATIENT_NAME' | translate}} : </label>
                             </div>
                             <div class="field-value">
-                                <label class="control-label"><strong>{{::patient.name}}</strong></label>
+                                <label class="control-label"><strong>{{::patient.name}}</strong><span ng-if="patient.isDead || patientContext.isDead" style="color:red; font-weight:bold; margin-left: 5px;">(Deceased)</span></label>
                             </div>
                         </div>
                     </section>
