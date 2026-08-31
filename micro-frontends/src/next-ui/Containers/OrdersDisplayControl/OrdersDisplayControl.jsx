@@ -112,7 +112,7 @@ export function OrdersDisplayControl({hostData}) {
                         });
                         taskEntries = tasksRes.data?.entry || [];
                     } catch (taskErr) {
-                        console.warn(`Failed to fetch task data for patient ${patient.uuid}:`, taskErr);
+                        console.warn('Failed to fetch task data for patient:', patient.uuid, taskErr);
                     }
                 }
 
@@ -121,7 +121,7 @@ export function OrdersDisplayControl({hostData}) {
                 data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setOrders(data);
             } catch (err) {
-                console.error(`Failed to fetch orders for patient ${patient.uuid}:`, err);
+                console.error('Failed to fetch orders for patient:', patient.uuid, err);
                 setOrders([]);
             }
         };
