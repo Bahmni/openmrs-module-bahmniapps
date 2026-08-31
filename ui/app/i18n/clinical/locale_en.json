@@ -279,6 +279,8 @@
     "OKAY_LABEL": "OK",
     "ORDER_CAN_NOT_EDIT_AFTER_SAVE_MESSAGE": "Can't edit the notes after saving.",
     "ENTER_ORDER_NOTE_LABEL": "Enter notes for",
+    "FUTURE_ORDER": "This order is intended for a follow up visit (Future Order)",
+    "REQUESTED_BY_KEY": "Requested by",
     "BACTERIOLOGY_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE": "<strong>Bacteriology</strong> entry is <strong>NOT allowed</strong> in retrospective mode",
     "ORDER_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE": "<strong>Order</strong> entry is <strong>NOT allowed</strong> in retrospective mode",
     "DISPOSITION_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE": "<strong>Disposition</strong> entry is <strong>NOT allowed</strong> in retrospective mode",

@@ -21,6 +21,9 @@ angular.module('bahmni.clinical')
             $scope.enableLabOrderOptions = LabOrderOptionsConfig ? LabOrderOptionsConfig.value : null;
             var testConceptToParentsMapping = {}; // A child concept could be part of multiple parent panels
             $scope.hideLabTests = true;
+            $scope.noteOptions = appService.getAppDescriptor().getConfigValue("orderNotes");
+            $scope.requestedByOptions = appService.getAppDescriptor().getConfigValue("orderRequestedBy") || [];
+            $scope.requestedBy = "";
 
             var collapseExistingActiveSection = function (section) {
                 if (section) {
@@ -260,6 +263,27 @@ angular.module('bahmni.clinical')
             $scope.$on('ngDialog.closed', function () {
                 $('body').removeClass('show-controller-back');
             });
+
+            $scope.shouldShowNoteOptions = function (orderId, noteName) {
+                var configuredOptions = $scope.noteOptions;
+                return _.some(configuredOptions, function (option) {
+                    return option.label.toLowerCase() === noteName.toLowerCase();
+                })
+                    && !orderId;
+            };
+
+            $scope.getTranslation = function (key) {
+                return $translate.instant(key);
+            };
+
+            $scope.appendNotes = function (order, noteKey) {
+                const notesToAppend = $translate.instant(noteKey);
+                if (order.previousNote && !order.previousNote.includes(notesToAppend)) {
+                    $scope.orderNoteText = ((order.previousNote + '\n') || '') + notesToAppend;
+                } else if (!($scope.orderNoteText || '').includes(notesToAppend)) {
+                    $scope.orderNoteText = ($scope.orderNoteText ? $scope.orderNoteText + '\n' : '') + notesToAppend;
+                }
+            };
 
             $scope.appendPrintNotes = function (order) {
                 var printNotes = $translate.instant("CLINICAL_ORDER_RADIOLOGY_NEED_PRINT");
