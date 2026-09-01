@@ -124,6 +124,20 @@ angular.module('bahmni.common.services')
             });
         };
 
+        var getDiscardOnSaveConfig = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: { property: 'bahmni.formDraft.discardOnSave' },
+                suppressError: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            }).then(function (response) {
+                return response.data === 'true';
+            }, function () {
+                return false;
+            });
+        };
+
         var parseDraftObs = function (draftData) {
             if (draftData && draftData.uuid && !draftData.markedAsSaved && draftData.formData) {
                 try {
@@ -157,6 +171,7 @@ angular.module('bahmni.common.services')
             getResumableDraft: getResumableDraft,
             discardDraft: discardDraft,
             markDraftAsSaved: markDraftAsSaved,
+            getDiscardOnSaveConfig: getDiscardOnSaveConfig,
             parseDraftObs: parseDraftObs,
             getFormNamesFromDraft: getFormNamesFromDraft,
             hasDraftsForProvider: hasDraftsForProvider,

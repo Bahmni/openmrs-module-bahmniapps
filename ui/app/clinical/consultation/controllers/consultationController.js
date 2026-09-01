@@ -186,6 +186,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
             };
 
+            var discardDraftOnSave = false;
+
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
                 $scope.adtNavigationConfig = {forwardUrl: Bahmni.Clinical.Constants.adtForwardUrl, title: $translate.instant("CLINICAL_GO_TO_DASHBOARD_LABEL"), privilege: Bahmni.Clinical.Constants.adtPrivilege };
@@ -194,6 +196,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var adtNavigationConfig = appService.getAppDescriptor().getConfigValue('adtNavigationConfig');
                 Object.assign($scope.adtNavigationConfig, adtNavigationConfig);
                 setCurrentBoardBasedOnPath();
+                formDraftService.getDiscardOnSaveConfig().then(function (enabled) {
+                    discardDraftOnSave = enabled;
+                });
             };
 
             $scope.shouldDisplaySaveConfirmDialogForStateChange = function (toState, toParams, fromState, fromParams) {
@@ -637,8 +642,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                             var patientUuid = $scope.patient ? $scope.patient.uuid : null;
                                             var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                                             if (patientUuid && providerUuid) {
-                                                formDraftService.markDraftAsSaved(patientUuid, providerUuid).catch(function () {
-                                                });
+                                                if (discardDraftOnSave) {
+                                                    formDraftService.discardDraft(patientUuid, providerUuid).catch(function () {
+                                                    });
+                                                } else {
+                                                    formDraftService.markDraftAsSaved(patientUuid, providerUuid).catch(function () {
+                                                    });
+                                                }
                                                 $rootScope.draftData = null;
                                             }
                                             $rootScope.$broadcast('event:save-successful');
