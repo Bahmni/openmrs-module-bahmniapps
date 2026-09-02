@@ -389,5 +389,6 @@
     "CDSS_ALERT_SAVE_ERROR": "يجب معالجة تنبيه حرج من نظام دعم اتخاذ القرار السريري (CDSS) في تبويب الادوية قبل متابعة عملية الحفظ",
     "CDSS_ACTION": "يرجى النقر على تبويب الادوية لاتخاذ اجرائات اضافية",
     "MEDICATION_PRINT": "طباعة",
-    "DAYS_ADMITTED_MESSAGE": "عدد الايام في المستشفى"
+    "DAYS_ADMITTED_MESSAGE": "عدد الايام في المستشفى",
+    "CLINICAL_FORM_NOT_FOUND_MESSAGE_KEY": "المريض/النموذج غير موجود"
 }

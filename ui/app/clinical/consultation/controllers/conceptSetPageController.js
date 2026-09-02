@@ -28,6 +28,11 @@ angular.module('bahmni.clinical')
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
             var allConceptSections = [];
 
+            // Track deleted/removed form UUIDs to prevent re-rendering blank forms when navigating back
+            var getRootDeletedFormIds = function () {
+                return $rootScope.deletedFormIds || [];
+            };
+
             var init = function () {
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
@@ -72,8 +77,6 @@ angular.module('bahmni.clinical')
                 }
 
                 var formUuidParam = $stateParams.formUuid;
-
-                $timeout(setupDirtyTracking, formUuidParam ? 1000 : 0);
 
                 if (formUuidParam) {
                     var targetForm = _.find($scope.allTemplates, function (t) {

@@ -746,6 +746,64 @@ describe('ConceptSetPageController', function () {
                 expect(scope.consultation.selectedObsTemplate.length).toBe(initialLength);
                 expect(scope.consultation.selectedObsTemplate.length).toBe(1);
             });
+
+            it('should handle cold browser load / shared deeplink with formUuid - parent state instantiation', function () {
+                // AC2 requirement: verify cold browser load / deeplink to .../form/:formUuid properly instantiates parent view
+                // This simulates a user navigating directly to a deeplink or browser refresh at form/:formUuid URL
+                inject(function ($timeout) {
+                    var mockObsConcept = {
+                        data: {
+                            results: [{
+                                setMembers: [
+                                    {
+                                        uuid: 'concept-uuid-shared',
+                                        name: {name: 'Shared Form', display: 'Shared Form'},
+                                        set: true,
+                                        setMembers: [],
+                                        formUuid: 'shared-form-uuid'
+                                    }
+                                ]
+                            }]
+                        }
+                    };
+                    var mockFormResponse = {
+                        data: [
+                            {
+                                name: 'SharedForm',
+                                version: '1',
+                                uuid: 'shared-form-uuid',
+                                resources: [{value: '{}'}]
+                            }
+                        ]
+                    };
+
+                    conceptSetService.getConcept.and.returnValue({then: function (callback) {
+                        callback(mockObsConcept);
+                        return {then: function (next) { return {then: function () {}}; }};
+                    }});
+                    formService.getFormList.and.returnValue({then: function (callback) {
+                        callback(mockFormResponse);
+                        return {then: function () {}};
+                    }});
+
+                    // Simulate cold load with formUuid in URL params (parent state will read this)
+                    stateParams.formUuid = 'shared-form-uuid';
+
+                    createController();
+                    $timeout.flush();
+
+                    // Verify parent controller properly instantiated and read the formUuid param
+                    expect(scope.consultation).toBeDefined();
+                    expect(scope.allTemplates).toBeDefined();
+
+                    // Verify the form with matching formUuid is added to selectedObsTemplate
+                    var formInSelected = _.find(scope.consultation.selectedObsTemplate, function(t) {
+                        return t.formUuid === 'shared-form-uuid';
+                    });
+                    expect(formInSelected).toBeDefined();
+                    expect(formInSelected.label).toEqual('SharedForm');
+                });
+            });
         });
     });
 });
