@@ -12,10 +12,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService',
+        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-                  contextChangeHandler, $q, $translate, formService) {
+                  contextChangeHandler, $q, $translate, formService, $timeout) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -27,6 +27,11 @@ angular.module('bahmni.clinical')
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
             var allConceptSections = [];
+
+            // Track deleted/removed form UUIDs to prevent re-rendering blank forms when navigating back
+            var getRootDeletedFormIds = function () {
+                return $rootScope.deletedFormIds || [];
+            };
 
             var init = function () {
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
@@ -66,8 +71,37 @@ angular.module('bahmni.clinical')
                     var templateToBeOpened = getLastVisitedTemplate() ||
                         _.first($scope.consultation.selectedObsTemplate);
 
-                    if (templateToBeOpened) {
+                    if (templateToBeOpened && !$stateParams.formUuid) {
                         openTemplate(templateToBeOpened);
+                    }
+                }
+
+                var formUuidParam = $stateParams.formUuid;
+
+                if (formUuidParam) {
+                    var targetForm = _.find($scope.allTemplates, function (t) {
+                        return t.formUuid === formUuidParam;
+                    });
+                    if (targetForm) {
+                        if (!_.some($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
+                            targetForm.isAdded = true;
+                            $scope.consultation.selectedObsTemplate.push(targetForm);
+                        }
+                        $timeout(function () {
+                            $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
+                        }, 0);
+                        var deletedFormIds = getRootDeletedFormIds();
+                        if (!_.includes(deletedFormIds, formUuidParam)) {
+                            if (!_.find($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
+                                targetForm.isAdded = true;
+                                $scope.consultation.selectedObsTemplate.push(targetForm);
+                            }
+                            $timeout(function () {
+                                $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
+                            }, 0);
+                        }
+                    } else {
+                        messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
                     }
                 }
             };

@@ -489,4 +489,321 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[1].klass).toBe("active");
         })
     })
+
+    describe('Draft loading when visit is closed', function () {
+        var conceptResponseData;
+
+        beforeEach(function () {
+            var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appDescriptor.getConfigValue.and.returnValue(true);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+
+            scope.patient = {uuid: 'test-patient-uuid'};
+            rootScope.currentProvider = {uuid: 'test-provider-uuid'};
+
+            conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 'obs-uuid'}]}]};
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+        });
+
+        it('should clear stale rootScope draft state and draft obs from templates when visit is closed (else branch)', function () {
+            rootScope.draftData = {uuid: 'stale-draft', formData: 'stale-data', markedAsSaved: false};
+            rootScope.resumeDraftOnLoad = false;
+            scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', hasUnsavedFormObservations: true, observations: [{value: 'draft-val'}]}];
+            scope.visitHistory = {activeVisit: null};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBe(false);
+            var hasAnyUnsaved = _.some(scope.consultation.selectedObsTemplate, function (t) { return t.hasUnsavedFormObservations; });
+            expect(hasAnyUnsaved).toBe(false);
+        });
+
+        it('should not pre-populate the form when visit is closed even if GET returns valid draft', function () {
+            formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: 'draft-uuid', formData: angular.toJson([{concept: {uuid: 'obs-uuid'}, value: 'draft-value'}]), markedAsSaved: false, timestamp: Date.now()}});
+                    return {catch: function () { return this; }};
+                }
+            });
+
+            scope.visitHistory = {activeVisit: null};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBeFalsy();
+        });
+
+        it('should reset resumeDraftOnLoad and clear draftData when GET returns null draft', function () {
+            formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: null, formData: null, markedAsSaved: null, timestamp: null}});
+                    return {catch: function () { return this; }};
+                }
+            });
+
+            rootScope.draftData = {uuid: 'stale-draft', formData: 'stale-data', markedAsSaved: false};
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBe(false);
+        });
+
+        it('should clear draft obs from templates when visit closes between GET condition check and response', function () {
+            formDraftService.getDraft.and.callFake(function () {
+                return {
+                    then: function (success) {
+                        scope.visitHistory = {activeVisit: null};
+                        success({data: {uuid: 'draft-uuid', formData: angular.toJson([{concept: {uuid: 'obs-uuid'}, value: 'draft-value'}]), markedAsSaved: false, timestamp: Date.now()}});
+                        return {catch: function () { return this; }};
+                    }
+                };
+            });
+
+            scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', hasUnsavedFormObservations: true, observations: [{value: 'stale-draft-val'}]}];
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+
+            createController();
+
+            expect(rootScope.draftData).toBeNull();
+            expect(rootScope.resumeDraftOnLoad).toBeFalsy();
+            var hasAnyUnsaved = _.some(scope.consultation.selectedObsTemplate, function (t) { return t.hasUnsavedFormObservations; });
+            expect(hasAnyUnsaved).toBe(false);
+        });
+
+        it('should not set draftData from checkForExistingDrafts when visit is closed', function () {
+            formDraftService.getDraft.and.returnValue({
+                then: function (success) {
+                    success({data: {uuid: 'draft-uuid', formData: 'some-data', markedAsSaved: false, timestamp: Date.now()}});
+                    return {catch: function () { return this; }};
+                }
+            });
+
+            scope.visitHistory = {activeVisit: null};
+
+            createController();
+
+            expect(scope.formDraft.hasDrafts).toBeFalsy();
+            expect(rootScope.draftData).toBeNull();
+        });
+
+        it('should clear stale hasUnsavedFormObservations in concatObservationForms when isDraftResumeValid is false and activeVisit is present', function () {
+            rootScope.resumeDraftOnLoad = false;
+            rootScope.draftData = null;
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+            // Pre-populate selectedObsTemplate so initializeDefaultTemplates is skipped,
+            // and set a stale unsaved form obs on observationForms to exercise the stale-obs guard
+            scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', label: 'Template 1'}];
+            scope.consultation.observationForms = [{
+                formName: 'Form1',
+                hasUnsavedFormObservations: true,
+                observations: [{value: 'stale-form-val'}],
+                privileges: [],
+                isDefault: function () { return false; }
+            }];
+
+            createController();
+
+            var hasAnyFormUnsaved = _.some(scope.consultation.observationForms, function (f) { return f.hasUnsavedFormObservations; });
+            expect(hasAnyFormUnsaved).toBe(false);
+            expect(scope.consultation.observationForms[0].observations.length).toBe(0);
+        });
+    });
+
+    describe('Form Navigation with formUuid', function () {
+        it('should add form to selectedObsTemplate when formUuid is provided in stateParams', function () {
+            inject(function ($timeout) {
+                var mockObsConcept = {
+                    data: {
+                        results: [{
+                            setMembers: [
+                                {
+                                    uuid: 'concept-uuid-1',
+                                    name: {name: 'Template 1', display: 'Template 1'},
+                                    set: true,
+                                    setMembers: [],
+                                    formUuid: 'form-uuid-1'
+                                }
+                            ]
+                        }]
+                    }
+                };
+                var mockFormResponse = {
+                    data: [
+                        {
+                            name: 'Form1',
+                            version: '1',
+                            uuid: 'form-uuid-1',
+                            resources: [{value: '{}'}]
+                        }
+                    ]
+                };
+
+                conceptSetService.getConcept.and.returnValue({then: function (callback) {
+                    callback(mockObsConcept);
+                    return {then: function (next) { return {then: function () {}}; }};
+                }});
+                formService.getFormList.and.returnValue({then: function (callback) {
+                    callback(mockFormResponse);
+                    return {then: function () {}};
+                }});
+
+                stateParams.formUuid = 'form-uuid-1';
+
+                createController();
+                $timeout.flush();
+
+                var isInSelected = _.find(scope.consultation.selectedObsTemplate, function(t) {
+                    return t.formUuid === 'form-uuid-1';
+                });
+                expect(isInSelected).toBeDefined();
+            });
+        });
+
+        it('should show error when formUuid is provided but no matching template is found', function () {
+            inject(function ($timeout) {
+                var mockObsConcept = {
+                    data: {
+                        results: [{
+                            setMembers: [{
+                                uuid: 'concept-uuid-1',
+                                name: {name: 'Template 1', display: 'Template 1'},
+                                set: true,
+                                setMembers: [],
+                                formUuid: 'form-uuid-1'
+                            }]
+                        }]
+                    }
+                };
+                var mockFormResponse = {
+                    data: [{
+                        name: 'Form1',
+                        version: '1',
+                        uuid: 'form-uuid-1',
+                        resources: [{value: '{}'}]
+                    }]
+                };
+
+                conceptSetService.getConcept.and.returnValue({then: function (callback) {
+                    callback(mockObsConcept);
+                    return {then: function (next) { return {then: function () {}}; }};
+                }});
+                formService.getFormList.and.returnValue({then: function (callback) {
+                    callback(mockFormResponse);
+                    return {then: function () {}};
+                }});
+
+                stateParams.formUuid = 'missing-form-uuid';
+
+                createController();
+                $timeout.flush();
+
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Form not found. Please contact your administrator.');
+            });
+        });
+
+        it('should broadcast openFormByUuid even when form is already in selectedObsTemplate', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'Test Form'}, uuid: 'form-uuid-123', formUuid: 'form-uuid-123'}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                var timeoutCallbacks = [];
+                var timeoutMock = function (callback, delay) {
+                    timeoutCallbacks.push(callback);
+                    return {$$timeoutId: timeoutCallbacks.length};
+                };
+                timeoutMock.cancel = jasmine.createSpy('cancel');
+
+                createControllerWithTimeoutAndFilter(timeoutMock);
+                stateParams.formUuid = 'form-uuid-123';
+                var testForm = {uuid: 'form-uuid-123', label: 'Test Form', formUuid: 'form-uuid-123'};
+                scope.consultation.selectedObsTemplate = [testForm];
+
+                var broadcastSpy = spyOn(rootScope, '$broadcast');
+                scope.$digest();
+                _.each(timeoutCallbacks, function (callback) {
+                    callback();
+                });
+
+                expect(broadcastSpy).toHaveBeenCalledWith('event:openFormByUuid', jasmine.any(Object));
+            });
+
+            it('should not add form to selectedObsTemplate twice when form is already selected', function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'Test Form'}, uuid: 'form-uuid-456', formUuid: 'form-uuid-456'}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+
+                var testForm = {uuid: 'form-uuid-456', label: 'Test Form', formUuid: 'form-uuid-456'};
+                scope.consultation.selectedObsTemplate = [testForm];
+
+                var initialLength = scope.consultation.selectedObsTemplate.length;
+                scope.$digest();
+
+                expect(scope.consultation.selectedObsTemplate.length).toBe(initialLength);
+                expect(scope.consultation.selectedObsTemplate.length).toBe(1);
+            });
+
+            it('should handle cold browser load / shared deeplink with formUuid - parent state instantiation', function () {
+                // AC2 requirement: verify cold browser load / deeplink to .../form/:formUuid properly instantiates parent view
+                // This simulates a user navigating directly to a deeplink or browser refresh at form/:formUuid URL
+                inject(function ($timeout) {
+                    var mockObsConcept = {
+                        data: {
+                            results: [{
+                                setMembers: [
+                                    {
+                                        uuid: 'concept-uuid-shared',
+                                        name: {name: 'Shared Form', display: 'Shared Form'},
+                                        set: true,
+                                        setMembers: [],
+                                        formUuid: 'shared-form-uuid'
+                                    }
+                                ]
+                            }]
+                        }
+                    };
+                    var mockFormResponse = {
+                        data: [
+                            {
+                                name: 'SharedForm',
+                                version: '1',
+                                uuid: 'shared-form-uuid',
+                                resources: [{value: '{}'}]
+                            }
+                        ]
+                    };
+
+                    conceptSetService.getConcept.and.returnValue({then: function (callback) {
+                        callback(mockObsConcept);
+                        return {then: function (next) { return {then: function () {}}; }};
+                    }});
+                    formService.getFormList.and.returnValue({then: function (callback) {
+                        callback(mockFormResponse);
+                        return {then: function () {}};
+                    }});
+
+                    // Simulate cold load with formUuid in URL params (parent state will read this)
+                    stateParams.formUuid = 'shared-form-uuid';
+
+                    createController();
+                    $timeout.flush();
+
+                    // Verify parent controller properly instantiated and read the formUuid param
+                    expect(scope.consultation).toBeDefined();
+                    expect(scope.allTemplates).toBeDefined();
+
+                    // Verify the form with matching formUuid is added to selectedObsTemplate
+                    var formInSelected = _.find(scope.consultation.selectedObsTemplate, function(t) {
+                        return t.formUuid === 'shared-form-uuid';
+                    });
+                    expect(formInSelected).toBeDefined();
+                    expect(formInSelected.label).toEqual('SharedForm');
+                });
+            });
+        });
+    });
 });

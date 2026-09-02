@@ -391,5 +391,6 @@
     "MEDICATION_PRINT": "Imprimer",
     "DAYS_ADMITTED_MESSAGE": "Jours d'hospitalisation",
     "ADDITIONAL_INSTRUCTIONS": "Instructions supplémentaires",
-    "VARIABLE_DOSAGE_HEADER": "Dosaggio Variabile"
+    "VARIABLE_DOSAGE_HEADER": "Dosaggio Variabile",
+    "CLINICAL_FORM_NOT_FOUND_MESSAGE_KEY": "Patient/Formulaire introuvable"
 }

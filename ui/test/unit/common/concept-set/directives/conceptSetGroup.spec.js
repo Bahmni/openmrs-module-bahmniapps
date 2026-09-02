@@ -45,6 +45,7 @@ describe("conceptSetGroup", function () {
             $provide.value('spinner', spinner);
             $provide.value('$translate', translate);
             $provide.value('$timeout', timeout);
+            $provide.value('$state', { go: jasmine.createSpy('go'), current: { name: '' }, params: {} });
             _provide = $provide;
         });
         inject(function ($compile, $rootScope, $httpBackend) {
