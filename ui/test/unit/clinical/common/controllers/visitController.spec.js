@@ -123,6 +123,9 @@ describe('VisitController', function () {
                 $location: $location,
                 $window: window
             });
+        rootScope.quickLogoutComboKey = 'Escape';
+        rootScope.cookieExpiryTime = 30;
+        controller = createController(rootScope);
     }]));
 
     var defaultTab = {
@@ -433,6 +436,44 @@ describe('VisitController', function () {
             spyOn(state, 'go');
             scope.loadVisit('test-visit-uuid');
             expect(state.go).toHaveBeenCalledWith('patient.dashboard.visit', {visitUuid: 'test-visit-uuid'});
+        });
+    });
+
+    describe('privileges handling', function () {
+        it('should set empty privileges array when rootScope.currentUser is undefined', function () {
+            rootScope.currentUser = undefined;
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
+        });
+
+        it('should set empty privileges array when rootScope.currentUser.privileges is undefined', function () {
+            rootScope.currentUser = {
+                uuid: 'user-uuid',
+                username: 'testuser'
+            };
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
+        });
+
+        it('should handle empty privileges array from rootScope.currentUser', function () {
+            rootScope.currentUser = {
+                uuid: 'user-uuid',
+                username: 'testuser',
+                privileges: []
+            };
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData.privileges).toEqual([]);
+        });
+
+        it('should ensure privileges are included in ipdDashboard.hostData structure', function () {
+            var mockPrivileges = [{ name: 'Test Privilege' }];
+            rootScope.currentUser = {
+                privileges: mockPrivileges
+            };
+            createController(rootScope);
+            expect(scope.ipdDashboard.hostData).toBeDefined();
+            expect(scope.ipdDashboard.hostData.privileges).toBeDefined();
+            expect(scope.ipdDashboard.hostData.privileges).toEqual(mockPrivileges);
         });
     });
 

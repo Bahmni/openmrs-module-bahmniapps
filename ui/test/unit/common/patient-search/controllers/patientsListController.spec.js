@@ -445,6 +445,63 @@ describe("PatientsListController", function () {
             expect(_window.open).toHaveBeenCalledWith("formattedUrl", "_self");
         });
 
+        it("should pass medicationAdministrationUuid and medicationAdministrationEpoch to formatUrl options when present on the patient", function () {
+            scope.search.searchType = {
+                "id": "bahmni.clinical.patients.all",
+                "extensionPointId": "org.bahmni.patient.search",
+                "type": "config",
+                "extensionParams": {
+                    "display": "All patients",
+                    "refreshTime": "10"
+                },
+                "forwardUrl": "#/patient/{{patientUuid}}/visit/{{visitUuid}}",
+                "linkColumn": "action",
+                "label": "All patients",
+                "order": 1,
+                "requiredPrivilege": "app:clinical"
+            };
+
+            scope.$apply();
+            var patient = {
+                identifier: 'GAN1234',
+                name: 'Ram Singh',
+                uuid: 'p-uuid-1',
+                activeVisitUuid: 'v-uuid-1',
+                medicationAdministrationUuid: 'ma-uuid-1',
+                medicationAdministrationEpoch: 1700000000000
+            };
+            scope.forwardPatient(patient, "action");
+            expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith("#/patient/{{patientUuid}}/visit/{{visitUuid}}", jasmine.objectContaining({
+                medicationAdministrationUuid: 'ma-uuid-1',
+                medicationAdministrationEpoch: 1700000000000
+            }), true);
+        });
+
+        it("should default medicationAdministrationUuid and medicationAdministrationEpoch to null when absent on the patient", function () {
+            scope.search.searchType = {
+                "id": "bahmni.clinical.patients.all",
+                "extensionPointId": "org.bahmni.patient.search",
+                "type": "config",
+                "extensionParams": {
+                    "display": "All patients",
+                    "refreshTime": "10"
+                },
+                "forwardUrl": "#/patient/{{patientUuid}}/visit/{{visitUuid}}",
+                "linkColumn": "action",
+                "label": "All patients",
+                "order": 1,
+                "requiredPrivilege": "app:clinical"
+            };
+
+            scope.$apply();
+            var patient = {identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'};
+            scope.forwardPatient(patient, "action");
+            expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith("#/patient/{{patientUuid}}/visit/{{visitUuid}}", jasmine.objectContaining({
+                medicationAdministrationUuid: null,
+                medicationAdministrationEpoch: null
+            }), true);
+        });
+
         it("should take the forwardUrl from the query results, if one returned from the query", function () {
             scope.search.searchType = {
                 "id": "bahmni.clinical.patients.all",
