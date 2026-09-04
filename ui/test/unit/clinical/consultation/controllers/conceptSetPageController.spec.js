@@ -3322,7 +3322,6 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.observationForms[0].observations.length).toBe(1);
         });
     });
-});
 
         it('should show error when formUuid is provided but no matching template is found', function () {
             inject(function ($timeout) {
@@ -3599,4 +3598,3 @@ describe('ConceptSetPageController', function () {
             });
         });
     });
-});
