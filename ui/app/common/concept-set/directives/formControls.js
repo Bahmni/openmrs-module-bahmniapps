@@ -63,14 +63,12 @@ angular.module('bahmni.common.conceptSet')
                                         })
                                     );
                                 }
-                                unMountReactContainer($scope.form.formUuid);
                             })
                         );
                     } else {
                         $timeout(function () {
                             $scope.form.events = loadedFormDetails[formUuid].events;
                             renderForm(loadedFormDetails[formUuid], loadedFormTranslations[formUuid]);
-                            unMountReactContainer($scope.form.formUuid);
                         }, 0, false);
                     }
                 };

@@ -274,7 +274,7 @@ describe("ConsultationController", function () {
     beforeEach(module('bahmni.common.util'));
     beforeEach(module('bahmni.clinical'));
     beforeEach(module(function ($provide) {
-        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved']));
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved', 'getDiscardOnSaveConfig']));
         $provide.value('autoSaveService', jasmine.createSpyObj('autoSaveService', ['start', 'stop', 'getIntervalMs']));
     }));
     beforeEach(function () {
@@ -284,6 +284,7 @@ describe("ConsultationController", function () {
             rootScope = $rootScope;
             controller = $controller;
             formDraftService.markDraftAsSaved.and.returnValue($q.when({}));
+            formDraftService.getDiscardOnSaveConfig.and.returnValue($q.when(false));
         });
         appDescriptor = {
             formatUrl: function (url) {
