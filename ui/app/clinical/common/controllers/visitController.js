@@ -38,7 +38,7 @@ angular.module('bahmni.clinical')
             $scope.visitUuid = $stateParams.visitUuid;
             $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD";
             $scope.isIpdReadMode = true;
-            if ($scope.visitSummary.stopDateTime === null) {
+            if ($scope.isActiveIpdVisit && $scope.visitSummary.stopDateTime === null) {
                 $scope.isIpdReadMode = false;
             }
             var privileges = ($rootScope.currentUser && $rootScope.currentUser.privileges) || [];

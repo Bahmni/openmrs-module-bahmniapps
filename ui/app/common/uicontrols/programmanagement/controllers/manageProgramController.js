@@ -10,9 +10,9 @@
 'use strict';
 
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
+    .controller('ManageProgramController', ['$scope', '$rootScope', 'retrospectiveEntryService', '$window', 'programService',
         'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', '$state', 'formDraftService',
-        function ($scope, retrospectiveEntryService, $window, programService,
+        function ($scope, $rootScope, retrospectiveEntryService, $window, programService,
             spinner, messagingService, $stateParams, $q, confirmBox, $state, formDraftService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
