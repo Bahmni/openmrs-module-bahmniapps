@@ -237,7 +237,8 @@ angular.module('authentication')
         return {
             authenticateUser: authenticateUser
         };
-    }]).directive('logOut', ['$rootScope', 'sessionService', '$window', 'configurationService', 'auditLogService', function ($rootScope, sessionService, $window, configurationService, auditLogService) {
+    }]).factory('logoutService', ['$rootScope', 'sessionService', '$window', 'auditLogService', 'formDraftService', 'ngDialog', '$log', function ($rootScope, sessionService, $window, auditLogService, formDraftService, ngDialog, $log) {
+        var isAttemptingLogout = false;
         function logoutUser () {
             auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
                 sessionService.destroy().then(function () {
@@ -246,21 +247,103 @@ angular.module('authentication')
             });
         }
 
-        function handleKeyPress (event) {
-            if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+        function showDraftsWarning (scope, config) {
+            var draftsWarningScope = scope.$new();
+            draftsWarningScope.titleKey = config.titleKey;
+            draftsWarningScope.messageKey = config.messageKey;
+            draftsWarningScope.cancelBtnKey = config.cancelBtnKey;
+            draftsWarningScope.confirmBtnKey = config.confirmBtnKey;
+
+            var dialog = ngDialog.open({
+                template: '../common/auth/views/discardDraftsWarning.html',
+                scope: draftsWarningScope,
+                className: 'ngdialog-theme-default discard-draft-modal',
+                showClose: false
+            });
+            draftsWarningScope.logout = function () {
+                ngDialog.close(dialog.id);
                 logoutUser();
+            };
+            draftsWarningScope.cancel = function () {
+                ngDialog.close(dialog.id);
+            };
+        }
+
+        function isLogoutDraftsWarningEnabled () {
+            return !!$rootScope.formDraftFeatureEnabled;
+        }
+
+        function closePatientControlPanel () {
+            try {
+                var controlPanel = document.querySelector('aside.visit-history');
+                if (controlPanel) {
+                    controlPanel.classList.add('ng-hide');
+                }
+                var overlay = document.querySelector('.patient-control-panel .overlay');
+                if (overlay) {
+                    overlay.classList.add('ng-hide');
+                }
+                if (window.$ && window.$.fn) {
+                    $('aside.visit-history').addClass('ng-hide');
+                    $('.patient-control-panel .overlay').addClass('ng-hide');
+                }
+            } catch (e) {
+                $log.debug('Error closing patient control panel:', e);
+            }
+        }
+
+        function attemptLogout (scope) {
+            if (isAttemptingLogout) {
+                return;
+            }
+            isAttemptingLogout = true;
+            closePatientControlPanel();
+            if (!isLogoutDraftsWarningEnabled()) {
+                isAttemptingLogout = false;
+                logoutUser();
+                return;
+            }
+            var providerUuid = $rootScope.currentProvider && $rootScope.currentProvider.uuid;
+            var config = {
+                titleKey: 'LOGOUT_DRAFTS_WARNING_TITLE_KEY',
+                messageKey: 'LOGOUT_DRAFTS_WARNING_MESSAGE_KEY',
+                cancelBtnKey: 'LOGOUT_DRAFTS_WARNING_CANCEL_KEY',
+                confirmBtnKey: 'LOGOUT_DRAFTS_WARNING_LOGOUT_KEY'
+            };
+            formDraftService.hasDraftsForProvider(providerUuid).then(function (hasDrafts) {
+                isAttemptingLogout = false;
+                if (hasDrafts) {
+                    showDraftsWarning(scope, config);
+                } else {
+                    logoutUser();
+                }
+            }, function (error) {
+                isAttemptingLogout = false;
+                $log.error('Failed to check for drafts before logout', error);
+                logoutUser();
+            });
+        }
+
+        return {
+            attemptLogout: attemptLogout
+        };
+    }]).directive('logOut', ['$rootScope', '$window', 'logoutService', function ($rootScope, $window, logoutService) {
+        function handleKeyPress (event, scope) {
+            if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+                logoutService.attemptLogout(scope);
             }
         }
         return {
             link: function (scope, element) {
                 element.bind('click', function () {
-                    scope.$apply(function () {
-                        logoutUser();
-                    });
+                    logoutService.attemptLogout(scope);
                 });
-                $window.addEventListener('keydown', handleKeyPress);
+                var keyPressHandler = function (event) {
+                    handleKeyPress(event, scope);
+                };
+                $window.addEventListener('keydown', keyPressHandler);
                 scope.$on('$destroy', function () {
-                    $window.removeEventListener('keydown', handleKeyPress);
+                    $window.removeEventListener('keydown', keyPressHandler);
                 });
             }
         };

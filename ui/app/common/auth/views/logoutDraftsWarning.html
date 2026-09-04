@@ -1,0 +1,15 @@
+<div class="discard-draft-dialog">
+    <div class="discard-draft-header">
+        <h2 class="discard-draft-title">{{'LOGOUT_DRAFTS_WARNING_TITLE_KEY' | translate}}</h2>
+        <button class="ngdialog-close" aria-label="Close dialog" ng-click="cancel()">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 32 32" class="bx--modal-close__icon"><path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"></path></svg>
+        </button>
+    </div>
+    <div class="discard-draft-body">
+        <p>{{'LOGOUT_DRAFTS_WARNING_MESSAGE_KEY' | translate}}</p>
+    </div>
+    <div class="discard-draft-buttons">
+        <button id="logout-drafts-warning-cancel-button" class="discard-draft-cancel-btn" ng-click="cancel()">{{'LOGOUT_DRAFTS_WARNING_CANCEL_KEY' | translate}}</button>
+        <button id="logout-drafts-warning-logout-button" class="discard-draft-confirm-btn" ng-click="logout()">{{'LOGOUT_DRAFTS_WARNING_LOGOUT_KEY' | translate}}</button>
+    </div>
+</div>

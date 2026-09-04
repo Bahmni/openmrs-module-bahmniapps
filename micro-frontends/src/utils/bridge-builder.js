@@ -126,6 +126,12 @@ function translationForwardingController($scope, $translate, appService) {
   $scope.hostApi = vm.hostApi;
   $scope.tx = $translate.instant.bind($translate);
   $scope.appService = appService;
+
+  // $onChanges is not called for '=' bindings in AngularJS, so watch
+  // vm.hostData explicitly to propagate reference changes to the template.
+  $scope.$watch(function () { return vm.hostData; }, function (newVal) {
+    $scope.hostData = newVal;
+  });
 }
 
 translationForwardingController.$inject = ["$scope", "$translate","appService"];

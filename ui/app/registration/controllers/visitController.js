@@ -11,8 +11,8 @@
 
 angular.module('bahmni.registration')
     .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
-        'auditLogService', 'formService',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, auditLogService, formService) {
+        'auditLogService', 'formService', 'formDraftService', 'logoutService', 'ngDialog',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, auditLogService, formService, formDraftService, logoutService, ngDialog) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -155,21 +155,82 @@ angular.module('bahmni.registration')
                         var messageParams = {visitUuid: vm.visitUuid, visitType: visitSummary.visitType};
                         auditLogService.log(patientUuid, 'CLOSE_VISIT_FAILED', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
                     } else {
-                        closeVisit(visitSummary.visitType);
+                        attemptCloseVisit(visitSummary.visitType);
                     }
+                });
+            };
+
+            var handleVisitCloseSuccess = function (visitType) {
+                visitService.endVisit(vm.visitUuid).then(function () {
+                    var providerUuid = selectedProvider ? selectedProvider.uuid : null;
+                    formDraftService.discardDraft(patientUuid, providerUuid);
+                    $location.url(Bahmni.Registration.Constants.patientSearchURL);
+                    var messageParams = {visitUuid: vm.visitUuid, visitType: visitType};
+                    auditLogService.log(patientUuid, 'CLOSE_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
                 });
             };
 
             var closeVisit = function (visitType) {
                 var confirmed = $window.confirm($translate.instant("REGISTRATION_CONFIRM_CLOSE_VISIT"));
                 if (confirmed) {
-                    visitService.endVisit(vm.visitUuid).then(function () {
-                        $location.url(Bahmni.Registration.Constants.patientSearchURL);
-                        var messageParams = {visitUuid: vm.visitUuid, visitType: visitType};
-                        auditLogService.log(patientUuid, 'CLOSE_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
-                    });
+                    handleVisitCloseSuccess(visitType);
                 }
             };
+
+            var showDraftsWarningBeforeCloseVisit = function (visitType, config) {
+                var draftsWarningScope = $scope.$new();
+                draftsWarningScope.titleKey = config.titleKey;
+                draftsWarningScope.messageKey = config.messageKey;
+                draftsWarningScope.cancelBtnKey = config.cancelBtnKey;
+                draftsWarningScope.confirmBtnKey = config.confirmBtnKey;
+
+                var dialog = ngDialog.open({
+                    template: '../common/auth/views/discardDraftsWarning.html',
+                    scope: draftsWarningScope,
+                    className: 'ngdialog-theme-default discard-draft-modal',
+                    showClose: false
+                });
+                draftsWarningScope.confirm = function () {
+                    ngDialog.close(dialog.id);
+                    handleVisitCloseSuccess(visitType);
+                };
+                draftsWarningScope.cancel = function () {
+                    ngDialog.close(dialog.id);
+                };
+            };
+
+            function isDraftFeatureEnabled () {
+                return !!$rootScope.formDraftFeatureEnabled;
+            }
+
+            var attemptCloseVisit = function (visitType) {
+                if (!isDraftFeatureEnabled()) {
+                    closeVisit(visitType);
+                    return;
+                }
+                var providerUuid = selectedProvider ? selectedProvider.uuid : null;
+                var config = {
+                    titleKey: 'CLOSE_VISIT_DRAFTS_WARNING_TITLE_KEY',
+                    messageKey: 'CLOSE_VISIT_DRAFTS_WARNING_MESSAGE_KEY',
+                    cancelBtnKey: 'CLOSE_VISIT_DRAFTS_WARNING_CANCEL_KEY',
+                    confirmBtnKey: 'CLOSE_VISIT_DRAFTS_WARNING_LOGOUT_KEY'
+                };
+
+                formDraftService.getProviderDrafts(providerUuid).then(function (providerDrafts) {
+                    const hasDraftsOfCurrentPatient = providerDrafts.find(function (draft) {
+                        return draft.patientUuid == patientUuid;
+                    });
+
+                    if (hasDraftsOfCurrentPatient) {
+                        showDraftsWarningBeforeCloseVisit(visitType, config);
+                    } else {
+                        closeVisit(visitType);
+                    }
+                }, function () {
+                    closeVisit(visitType);
+                });
+            };
+
             $scope.getTranslatedPrimaryIdentifierInVisit = function (primaryIdentifierName) {
                 var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(primaryIdentifierName, Bahmni.Common.Constants.registration, $translate);
                 return translatedName;

@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "ຮ່າງກຳລັງດຳເນີນການ",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "ທ່ານມີແບບຟອມການສັງເກດການທີ່ຍັງບໍ່ໄດ້ບັນທຶກ. ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກລະບົບ?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "ຍົກເລີກ",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "ອອກຈາກລະບົບ"
+}

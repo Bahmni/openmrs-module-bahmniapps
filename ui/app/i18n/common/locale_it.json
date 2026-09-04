@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Bozza in corso",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Ci sono moduli di osservazione non salvati. Sei sicuro di voler uscire?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Annulla",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Esci"
+}

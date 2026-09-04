@@ -18,7 +18,8 @@ angular.module('bahmni.common.conceptSet')
             scope: { ngModel: '=',
                 obs: '=',
                 ngClass: '=',
-                focusMe: '='
+                focusMe: '=',
+                onChange: '&'
             },
             template: '<div class="stepper clearfix">' +
                         '<button ng-click="decrement()" class="stepper__btn stepper__minus" ng-disabled="obs.disabled">-</button>' +
@@ -73,6 +74,9 @@ angular.module('bahmni.common.conceptSet')
                         currValue = parseInt(ngModelController.$viewValue);
                     }
                     ngModelController.$setViewValue(currValue + offset);
+                    if (typeof scope.onChange === 'function') {
+                        scope.onChange();
+                    }
                 }
             }
         };

@@ -27,7 +27,7 @@
 @import "bahmni-components/loader";
 @import "bahmni-components/splitButton";
 @import "bahmni-components/table";
-@import "bahmni-components/typography";
+@import "bahmni-components/ngDialog";
 
 @import "bahmni-layout/layout";
 
@@ -37,6 +37,7 @@
 @import "common/directives";
 @import "common/angularFix";
 @import "common/noTouch";
+@import "common/discardDraftConfirmation";
 
 
 
