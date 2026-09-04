@@ -160,7 +160,7 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var handleVisitCloseSuccess = (visitType) => {
+            var handleVisitCloseSuccess = function (visitType) {
                 visitService.endVisit(vm.visitUuid).then(function () {
                     var providerUuid = selectedProvider ? selectedProvider.uuid : null;
                     formDraftService.discardDraft(patientUuid, providerUuid);
