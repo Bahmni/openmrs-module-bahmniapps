@@ -326,7 +326,7 @@ describe('VisitController', function () {
             expect(scope.isActiveIpdVisit).toBe(true);
         });
 
-        it('should set isIpdReadMode to true when visit is not IPD', function () {
+        it('should set isActiveIpdVisit to false when visit is not IPD', function () {
             var visitSummary = {visitType: 'OPD', stopDateTime: null};
             $controller('VisitController', {
                 $scope: scope,
@@ -350,7 +350,7 @@ describe('VisitController', function () {
                 $location: $location,
                 $window: window
             });
-            expect(scope.isIpdReadMode).toBe(true);
+            expect(scope.isIpdReadMode).toBe(false);
             expect(scope.isActiveIpdVisit).toBe(false);
         });
     });
