@@ -270,8 +270,7 @@ describe('VisitController', function () {
     });
 
     describe('IPD visit mode logic', function () {
-        it('should set isIpdReadMode to false when visit is IPD and not stopped', function () {
-            const visitSummary = {visitType: 'IPD', stopDateTime: null};
+        var createControllerFor = function (visitSummary) {
             $controller('VisitController', {
                 $scope: scope,
                 $rootScope: rootScope,
@@ -294,62 +293,25 @@ describe('VisitController', function () {
                 $location: $location,
                 $window: window
             });
+        };
+
+        it('should set isIpdReadMode to false when visit is IPD and not stopped', function () {
+            createControllerFor({visitType: 'IPD', stopDateTime: null});
+
             expect(scope.isIpdReadMode).toBe(false);
             expect(scope.isActiveIpdVisit).toBe(true);
         });
 
         it('should set isIpdReadMode to true when visit is IPD and stopped', function () {
-            const visitSummary = {visitType: 'IPD', stopDateTime: '2024-01-01'};
-            $controller('VisitController', {
-                $scope: scope,
-                $rootScope: rootScope,
-                $state: state,
-                encounterService: encounterService,
-                clinicalAppConfigService: clinicalAppConfigService,
-                visitSummary: visitSummary,
-                configurations: configurations,
-                $timeout: $timeout,
-                printer: {},
-                visitConfig: visitTabConfig,
-                visitHistory: [],
-                $stateParams: {},
-                locationService: locationService,
-                visitService: visitService,
-                appService: appService,
-                allergyService: allergyService,
-                auditLogService: auditLogService,
-                logoutService: logoutService,
-                $location: $location,
-                $window: window
-            });
+            createControllerFor({visitType: 'IPD', stopDateTime: '2024-01-01'});
+
             expect(scope.isIpdReadMode).toBe(true);
             expect(scope.isActiveIpdVisit).toBe(true);
         });
 
         it('should set isActiveIpdVisit to false when visit is not IPD', function () {
-            var visitSummary = {visitType: 'OPD', stopDateTime: null};
-            $controller('VisitController', {
-                $scope: scope,
-                $rootScope: rootScope,
-                $state: state,
-                encounterService: encounterService,
-                clinicalAppConfigService: clinicalAppConfigService,
-                visitSummary: visitSummary,
-                configurations: configurations,
-                $timeout: $timeout,
-                printer: {},
-                visitConfig: visitTabConfig,
-                visitHistory: [],
-                $stateParams: {},
-                locationService: locationService,
-                visitService: visitService,
-                appService: appService,
-                allergyService: allergyService,
-                auditLogService: auditLogService,
-                logoutService: logoutService,
-                $location: $location,
-                $window: window
-            });
+            createControllerFor({visitType: 'OPD', stopDateTime: null});
+
             expect(scope.isIpdReadMode).toBe(false);
             expect(scope.isActiveIpdVisit).toBe(false);
         });

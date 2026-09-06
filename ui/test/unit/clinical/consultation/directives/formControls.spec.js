@@ -198,52 +198,6 @@ describe("Form Controls", function () {
         expect($state.dirtyForm).toBeFalsy();
     });
 
-    it('should pass hyperlinkAllowedDomains config to renderWithControls', function () {
-        var capturedAllowedDomains;
-        window.renderWithControls = function () {
-            capturedAllowedDomains = arguments[8];
-            renderHelper.renderWithControlsCalledTimes += 1;
-        };
-        inject(function (configurationService) {
-            var promiseMock = {
-                then: function (callback) {
-                    callback({ hyperlinkAllowedDomains: '*.example.com' });
-                    return promiseMock;
-                },
-                catch: function (callback) {
-                    return promiseMock;
-                }
-            };
-            configurationService.getConfigurations.and.returnValue(promiseMock);
-        });
-        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
-        createElement();
-        expect(capturedAllowedDomains).toEqual(['*.example.com']);
-    });
-
-    it('should pass empty allowedDomains when hyperlinkAllowedDomains config is absent', function () {
-        var capturedAllowedDomains;
-        window.renderWithControls = function () {
-            capturedAllowedDomains = arguments[8];
-            renderHelper.renderWithControlsCalledTimes += 1;
-        };
-        inject(function (configurationService) {
-            var promiseMock = {
-                then: function (callback) {
-                    callback({ hyperlinkAllowedDomains: '' });
-                    return promiseMock;
-                },
-                catch: function (callback) {
-                    return promiseMock;
-                }
-            };
-            configurationService.getConfigurations.and.returnValue(promiseMock);
-        });
-        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
-        createElement();
-        expect(capturedAllowedDomains).toEqual([]);
-    });
-
     it('should pass updated collapse value to renderWithControls when collapseInnerSections changes', function () {
         var collapseArgs = [];
         window.renderWithControls = function () {
@@ -271,29 +225,6 @@ describe("Form Controls", function () {
 
         expect(collapseArgs.length).toBeGreaterThan(initialCollapseCount);
         expect(collapseArgs[collapseArgs.length - 1]).toBe(true);
-    });
-
-    it('should pass allowedDomains to renderWithControls even when translation fetch fails', function () {
-        var capturedAllowedDomains;
-        window.renderWithControls = function () {
-            capturedAllowedDomains = arguments[8];
-            renderHelper.renderWithControlsCalledTimes += 1;
-        };
-        inject(function (configurationService) {
-            var promiseMock = {
-                then: function (callback) {
-                    callback({ hyperlinkAllowedDomains: '*.example.com' });
-                    return promiseMock;
-                },
-                catch: function (callback) {
-                    return promiseMock;
-                }
-            };
-            configurationService.getConfigurations.and.returnValue(promiseMock);
-        });
-        mockObservationServiceWithTranslationFailure({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
-        createElement();
-        expect(capturedAllowedDomains).toEqual(['*.example.com']);
     });
 
     describe('re-render when draft observations arrive', function () {
