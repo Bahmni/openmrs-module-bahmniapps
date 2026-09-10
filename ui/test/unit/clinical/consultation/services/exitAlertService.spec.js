@@ -39,24 +39,33 @@ describe('exitAlertService', function () {
         });
     });
 
-    it('should show exit alert when isNavigating is true and dirtyConsultationForm is true', function () {
+    it('should show exit alert when isNavigating is true and dirtyConsultationForm is true and hasActiveVisit is true', function () {
         var event = {
             preventDefault: jasmine.createSpy('preventDefault')
         };
-        exitAlertService.showExitAlert(true, true, event, 'spinnerToken');
+        exitAlertService.showExitAlert(true, true, true, event, 'spinnerToken');
         expect(messagingService.showMessage).toHaveBeenCalledWith('alert', jasmine.any(String));
         expect(event.preventDefault).toHaveBeenCalled();
         expect(spinner.hide).toHaveBeenCalledWith('spinnerToken');
     });
 
     it('should not show exit alert when isNavigating is false or dirtyConsultationForm is false', function () {
-        exitAlertService.showExitAlert(false, true, {}, 'spinnerToken');
+        exitAlertService.showExitAlert(false, true, true, {}, 'spinnerToken');
         expect(messagingService.showMessage).not.toHaveBeenCalled();
         expect(spinner.hide).not.toHaveBeenCalled();
 
-        exitAlertService.showExitAlert(true, false, {}, 'spinnerToken');
+        exitAlertService.showExitAlert(true, false, true, {}, 'spinnerToken');
         expect(messagingService.showMessage).not.toHaveBeenCalled();
         expect(spinner.hide).not.toHaveBeenCalled();
+    });
+
+    it('should not show exit alert when there is no active visit', function () {
+        var event = {
+            preventDefault: jasmine.createSpy('preventDefault')
+        };
+        exitAlertService.showExitAlert(true, true, false, event, 'spinnerToken');
+        expect(messagingService.showMessage).not.toHaveBeenCalled();
+        expect(event.preventDefault).not.toHaveBeenCalled();
     });
 
     it('should set isPatientSearch correctly in setIsNavigating function', function () {

@@ -10,7 +10,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService, appService, formDraftService, autoSaveService;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService, appService, formDraftService, autoSaveService, visitService;
     stateParams = {conceptSetGroupName: "concept set group name"};
     var extension = {"extension": {
         extensionParams: {}
@@ -62,7 +62,8 @@ describe('ConceptSetPageController', function () {
         };
 
         state = {
-            params: {}
+            params: {},
+            reload: jasmine.createSpy('reload')
         };
 
         encounterConfig = jasmine.createSpyObj("encounterConfig", ["getVisitTypeByUuid"]);
@@ -83,7 +84,11 @@ describe('ConceptSetPageController', function () {
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         translate = jasmine.createSpyObj('$translate', ['instant']);
-        formDraftService = jasmine.createSpyObj('formDraftService', ['saveDraft', 'getDraft', 'getResumableDraft', 'parseDraftObs']);
+        formDraftService = jasmine.createSpyObj('formDraftService', ['saveDraft', 'getDraft', 'getResumableDraft', 'parseDraftObs', 'discardDraft']);
+        visitService = jasmine.createSpyObj('visitService', ['getVisit']);
+        visitService.getVisit.and.callFake(function () {
+            return {then: function (success) { success({data: {uuid: 'active-visit-uuid', stopDatetime: null}}); return this; }};
+        });
         formDraftService.parseDraftObs.and.callFake(function (draftData) {
             if (draftData && draftData.uuid && !draftData.markedAsSaved && draftData.formData) {
                 try {
@@ -152,7 +157,8 @@ describe('ConceptSetPageController', function () {
             $translate: translate,
             appService: appService,
             formDraftService: formDraftService,
-            autoSaveService: autoSaveService
+            autoSaveService: autoSaveService,
+            visitService: visitService
         });
     };
 
@@ -965,7 +971,8 @@ describe('ConceptSetPageController', function () {
                     appService: appService,
                     $timeout: timeoutMock || $timeout,
                     $filter: filterMock || defaultFilterMock,
-                    formDraftService: formDraftServiceMock || formDraftService
+                    formDraftService: formDraftServiceMock || formDraftService,
+                    visitService: visitService
                 });
             };
             scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
@@ -2667,7 +2674,8 @@ describe('ConceptSetPageController', function () {
                     $timeout: timeoutMock || defaultTimeoutMock,
                     $filter: function () { return function () { return 'mocked-time'; }; },
                     formDraftService: formDraftServiceMock || formDraftService,
-                    autoSaveService: autoSaveService
+                    autoSaveService: autoSaveService,
+                    visitService: visitService
                 });
             };
 
@@ -2893,7 +2901,8 @@ describe('ConceptSetPageController', function () {
                     appService: appService,
                     $timeout: timeoutMock,
                     $filter: function () { return function () { return 'mocked-time'; }; },
-                    formDraftService: formDraftService
+                    formDraftService: formDraftService,
+                    visitService: visitService
                 });
                 scope.$digest();
                 expect(addEventListenerSpy).toHaveBeenCalledWith('input', jasmine.any(Function), true);
@@ -2924,7 +2933,8 @@ describe('ConceptSetPageController', function () {
                     appService: appService,
                     $timeout: timeoutMock,
                     $filter: function () { return function () { return 'mocked-time'; }; },
-                    formDraftService: formDraftService
+                    formDraftService: formDraftService,
+                    visitService: visitService
                 });
                 scope.$digest();
                 expect(addEventListenerSpy).toHaveBeenCalledWith('input', jasmine.any(Function), true);
@@ -2965,7 +2975,8 @@ describe('ConceptSetPageController', function () {
                     appService: appService,
                     $timeout: timeoutMock,
                     $filter: function () { return function () { return 'mocked-time'; }; },
-                    formDraftService: formDraftService
+                    formDraftService: formDraftService,
+                    visitService: visitService
                 });
                 scope.$digest();
 
@@ -3250,25 +3261,29 @@ describe('ConceptSetPageController', function () {
             expect(rootScope.resumeDraftOnLoad).toBe(false);
         });
 
-        it('should clear draft obs from templates when visit closes between GET condition check and response', function () {
-            formDraftService.getDraft.and.callFake(function () {
-                return {
-                    then: function (success) {
-                        scope.visitHistory = {activeVisit: null};
-                        success({data: {uuid: 'draft-uuid', formData: angular.toJson([{concept: {uuid: 'obs-uuid'}, value: 'draft-value'}]), markedAsSaved: false, timestamp: Date.now()}});
-                        return {catch: function () { return this; }};
-                    }
-                };
+        it('should discard draft and reload state when visitService reveals the visit is closed', function () {
+            visitService.getVisit.and.callFake(function () {
+                return {then: function (success) { success({data: {uuid: 'active-visit-uuid', stopDatetime: '2026-09-09T10:00:00.000+0000'}}); return this; }};
             });
-            scope.consultation.selectedObsTemplate = [{uuid: 'tmpl-1', hasUnsavedFormObservations: true, observations: [{value: 'stale-draft-val'}]}];
             scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
 
             createController();
 
-            expect(rootScope.draftData).toBeNull();
-            expect(rootScope.resumeDraftOnLoad).toBeFalsy();
-            var hasAnyUnsaved = _.some(scope.consultation.selectedObsTemplate, function (t) { return t.hasUnsavedFormObservations; });
-            expect(hasAnyUnsaved).toBe(false);
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('test-patient-uuid', 'test-provider-uuid');
+            expect(state.reload).toHaveBeenCalled();
+        });
+
+        it('should reload state when visit is closed even if resumeDraftOnLoad was already true', function () {
+            visitService.getVisit.and.callFake(function () {
+                return {then: function (success) { success({data: {uuid: 'active-visit-uuid', stopDatetime: '2026-09-09T10:00:00.000+0000'}}); return this; }};
+            });
+            rootScope.resumeDraftOnLoad = true;
+            rootScope.draftData = {uuid: 'cached-draft', formData: angular.toJson([{value: 'cached-value'}])};
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+
+            createController();
+
+            expect(state.reload).toHaveBeenCalled();
         });
 
         it('should not set draftData from checkForExistingDrafts when visit is closed', function () {

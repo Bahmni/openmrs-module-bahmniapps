@@ -162,7 +162,8 @@ angular.module('bahmni.registration')
 
             var handleVisitCloseSuccess = function (visitType) {
                 visitService.endVisit(vm.visitUuid).then(function () {
-                    var providerUuid = selectedProvider ? selectedProvider.uuid : null;
+                    var currentProvider = $rootScope.currentProvider || selectedProvider;
+                    var providerUuid = currentProvider ? currentProvider.uuid : null;
                     formDraftService.discardDraft(patientUuid, providerUuid);
                     $location.url(Bahmni.Registration.Constants.patientSearchURL);
                     var messageParams = {visitUuid: vm.visitUuid, visitType: visitType};
@@ -208,7 +209,8 @@ angular.module('bahmni.registration')
                     closeVisit(visitType);
                     return;
                 }
-                var providerUuid = selectedProvider ? selectedProvider.uuid : null;
+                var currentProvider = $rootScope.currentProvider || selectedProvider;
+                var providerUuid = currentProvider ? currentProvider.uuid : null;
                 var config = {
                     titleKey: 'CLOSE_VISIT_DRAFTS_WARNING_TITLE_KEY',
                     messageKey: 'CLOSE_VISIT_DRAFTS_WARNING_MESSAGE_KEY',

@@ -32,6 +32,7 @@ describe('alertOnExit Directive', function () {
             $compile = _$compile_;
             $state = _$state_;
             $scope = $rootScope.$new();
+            $scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
         });
     });
 
@@ -45,7 +46,7 @@ describe('alertOnExit Directive', function () {
         var event = $rootScope.$broadcast('$stateChangeStart', next, current);
 
         expect(exitAlertService.setIsNavigating).toHaveBeenCalledWith(next, 'currentPatientUuid', 'previousPatientUuid');
-        expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(true, true, event, 'spinner');
+        expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(true, true, true, event, 'spinner');
     });
 
     it('should not show popup after main save when navigating away', function () {
@@ -100,7 +101,7 @@ describe('alertOnExit Directive', function () {
             var event = $rootScope.$broadcast('$stateChangeStart', next, current);
 
             expect($state.dirtyConsultationForm).toBe(false);
-            expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(false, false, event, 'spinner');
+            expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(false, false, true, event, 'spinner');
         });
 
         it('should suppress popup when form refreshes during post-save window', function () {
@@ -112,7 +113,7 @@ describe('alertOnExit Directive', function () {
             var event = $rootScope.$broadcast('$stateChangeStart', next, current);
 
             expect($state.dirtyConsultationForm).toBe(false);
-            expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(true, false, event, 'spinner');
+            expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(true, false, true, event, 'spinner');
         });
 
         it('should show popup when user makes new edits after save', function () {
@@ -125,7 +126,7 @@ describe('alertOnExit Directive', function () {
             var event = $rootScope.$broadcast('$stateChangeStart', next, current);
 
             expect($state.dirtyConsultationForm).toBe(true);
-            expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(true, true, event, 'spinner');
+            expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(true, true, true, event, 'spinner');
         });
 
         it('should clear justSaved flag when navigating between patients after save', function () {

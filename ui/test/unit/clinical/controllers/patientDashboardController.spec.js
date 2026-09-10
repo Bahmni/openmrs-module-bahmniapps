@@ -12,12 +12,12 @@
 describe("patient dashboard controller", function () {
     beforeEach(module('bahmni.clinical'));
     beforeEach(module(function ($provide) {
-        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved', 'discardDraft']));
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved', 'discardDraft', 'getResumableDraft']));
         $provide.value('ngDialog', jasmine.createSpyObj('ngDialog', ['open', 'close']));
     }));
 
     var scope, spinner, _clinicalDashboardConfig, _clinicalAppConfigService, _state, _appService, _diseaseTemplateService,
-        _stateParams, _controller, _appConfig, location, filter, _rootScope, _formDraftService, _ngDialog, _timeout;
+        _stateParams, _controller, _appConfig, location, filter, _rootScope, _formDraftService, _ngDialog;
     var diseaseTemplates;
     location = {
         path: function () {
@@ -90,14 +90,13 @@ describe("patient dashboard controller", function () {
                 return value;
             });
         });
-        inject(function ($controller, $rootScope, $filter, formDraftService, ngDialog, $timeout) {
+        inject(function ($controller, $rootScope, $filter, formDraftService, ngDialog) {
             scope = $rootScope.$new();
             scope.patient = {};
             scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
             _rootScope = $rootScope;
             _formDraftService = formDraftService;
             _ngDialog = ngDialog;
-            _timeout = $timeout;
 
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             filter = $filter;
@@ -243,7 +242,7 @@ describe("patient dashboard controller", function () {
                 clinicalAppConfigService: _clinicalAppConfigService,
                 clinicalDashboardConfig: _clinicalDashboardConfig,
                 visitSummary: {},
-            printer: printerMock || {},
+                printer: printerMock || {},
                 $state: _state,
                 spinner: spinner,
                 appService: _appService,
@@ -446,20 +445,33 @@ describe("patient dashboard controller", function () {
         describe("resumeDraft", function () {
             beforeEach(function () {
                 _state.go = jasmine.createSpy('go');
+                _state.reload = jasmine.createSpy('reload');
                 _formDraftService.getDraft.and.returnValue({
                     then: function () { return this; },
                     catch: function () { return this; }
                 });
             });
 
-            it("should navigate to observations page when feature is enabled", function () {
+            it("should navigate to observations page when draft is resumable, or reload state when draft no longer exists", function () {
                 _appConfig.getConfigValue.and.returnValue(true);
+                _rootScope.currentProvider = {uuid: 'provider-uuid'};
+                _formDraftService.getResumableDraft.and.returnValue({
+                    then: function (success) { success({uuid: 'draft-uuid'}); return this; }
+                });
                 createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
-                scope.resumeDraft();
 
+                scope.resumeDraft();
                 expect(_state.go).toHaveBeenCalledWith('patient.dashboard.show.observations', {
                     conceptSetGroupName: 'All Observation Templates'
                 });
+                expect(_state.reload).not.toHaveBeenCalled();
+
+                _formDraftService.getResumableDraft.and.returnValue({
+                    then: function (success) { success(null); return this; }
+                });
+
+                scope.resumeDraft();
+                expect(_state.reload).toHaveBeenCalled();
             });
 
             it("should not navigate when enableFormDraftFeature is false", function () {
@@ -476,6 +488,7 @@ describe("patient dashboard controller", function () {
             beforeEach(function () {
                 fakeDialog = {id: 'dialog-1'};
                 _ngDialog.open.and.returnValue(fakeDialog);
+                _state.reload = jasmine.createSpy('reload');
                 _formDraftService.getDraft.and.returnValue({
                     then: function () { return this; },
                     catch: function () { return this; }
@@ -520,7 +533,7 @@ describe("patient dashboard controller", function () {
                 expect(_formDraftService.discardDraft).not.toHaveBeenCalled();
             });
 
-            it("should call discardDraft service and clear state when discard is confirmed", function () {
+            it("should call discardDraft service, close dialog and reload state when discard is confirmed", function () {
                 _formDraftService.discardDraft.and.returnValue({
                     then: function (success) {
                         success();
@@ -529,44 +542,14 @@ describe("patient dashboard controller", function () {
                 });
                 _rootScope.currentProvider = {uuid: 'provider-uuid'};
                 createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
-                scope.formDraft.hasDrafts = true;
-                scope.formDraft.draftDate = '10 Apr 2026';
-                scope.formDraft.draftTime = '10:00 AM';
-                _rootScope.draftData = {uuid: 'some-draft'};
 
                 scope.confirmDiscardDraft();
                 var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
                 dialogScope.discardDraft();
 
                 expect(_formDraftService.discardDraft).toHaveBeenCalledWith('patient-uuid', 'provider-uuid');
-                expect(scope.formDraft.hasDrafts).toBe(false);
-                expect(scope.formDraft.draftDate).toBeNull();
-                expect(scope.formDraft.draftTime).toBeNull();
-                expect(scope.formDraft.discardSuccess).toBe(true);
-                expect(_rootScope.draftData).toBeNull();
-                expect(_rootScope.resumeDraftOnLoad).toBe(false);
-                expect(_rootScope.resumeDraftPatientUuid).toBeNull();
-                expect(_rootScope.hasVisitedConsultation).toBe(false);
-                expect(_rootScope.draftDiscarded).toBe(true);
-            });
-
-            it("should hide success banner after 5 seconds", function () {
-                _formDraftService.discardDraft.and.returnValue({
-                    then: function (success) {
-                        success();
-                        return this;
-                    }
-                });
-                _rootScope.currentProvider = {uuid: 'provider-uuid'};
-                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
-
-                scope.confirmDiscardDraft();
-                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
-                dialogScope.discardDraft();
-
-                expect(scope.formDraft.discardSuccess).toBe(true);
-                _timeout.flush(5000);
-                expect(scope.formDraft.discardSuccess).toBe(false);
+                expect(_ngDialog.close).toHaveBeenCalledWith(fakeDialog.id);
+                expect(_state.reload).toHaveBeenCalled();
             });
 
             it("should close dialog only after discard API call succeeds", function () {
@@ -606,26 +589,6 @@ describe("patient dashboard controller", function () {
 
                 expect(_ngDialog.close).toHaveBeenCalledWith(fakeDialog.id);
                 expect(scope.formDraft.hasDrafts).toBe(true);
-            });
-
-            it("should cancel success banner timeout on scope destroy", function () {
-                _formDraftService.discardDraft.and.returnValue({
-                    then: function (success) {
-                        success();
-                        return this;
-                    }
-                });
-                _rootScope.currentProvider = {uuid: 'provider-uuid'};
-                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
-
-                scope.confirmDiscardDraft();
-                var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
-                dialogScope.discardDraft();
-
-                expect(scope.formDraft.discardSuccess).toBe(true);
-                scope.$destroy();
-                try { _timeout.flush(5000); } catch (e) {}
-                expect(scope.formDraft.discardSuccess).toBe(true);
             });
         });
 
@@ -698,7 +661,6 @@ describe("patient dashboard controller", function () {
 
             expect(scope).toBeDefined();
         });
-
     });
 
     var breastCancerDiseaseTemplate =

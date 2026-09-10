@@ -28,7 +28,8 @@ angular.module('bahmni.clinical')
                             $state.dirtyConsultationForm = $state.discardChanges ? false : $state.dirtyConsultationForm;
                         }
 
-                        exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
+                        var hasActiveVisit = !!($scope.visitHistory && $scope.visitHistory.activeVisit);
+                        exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, hasActiveVisit, event, next.spinnerToken);
                     });
                 }
             };

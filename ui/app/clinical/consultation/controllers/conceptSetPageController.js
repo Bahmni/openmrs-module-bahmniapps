@@ -12,10 +12,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout', '$filter', 'appService', 'formDraftService', 'formDirtyStateService', 'autoSaveService',
+        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout', '$filter', 'appService', 'formDraftService', 'formDirtyStateService', 'autoSaveService', 'visitService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-            contextChangeHandler, $q, $translate, formService, $timeout, $filter, appService, formDraftService, formDirtyStateService, autoSaveService) {
+            contextChangeHandler, $q, $translate, formService, $timeout, $filter, appService, formDraftService, formDirtyStateService, autoSaveService, visitService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -145,20 +145,33 @@ angular.module('bahmni.clinical')
             var loadDraftThenConcat = function () {
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
                 var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                if ($scope.enableFormDraftFeature && !$rootScope.resumeDraftOnLoad && patientUuid && providerUuid && $scope.visitHistory && $scope.visitHistory.activeVisit) {
-                    formDraftService.getResumableDraft(patientUuid, providerUuid).then(function (draft) {
-                        var visitClosed = !($scope.visitHistory && $scope.visitHistory.activeVisit);
+                var activeVisit = $scope.visitHistory && $scope.visitHistory.activeVisit;
+                if ($scope.enableFormDraftFeature && patientUuid && providerUuid && activeVisit) {
+                    visitService.getVisit(activeVisit.uuid, 'custom:(uuid,stopDatetime)').then(function (response) {
+                        var visitClosed = response.data && !!response.data.stopDatetime;
                         if (visitClosed) {
-                            clearDraftObsFromTemplates();
-                        } else if (draft) {
-                            $rootScope.draftData = draft;
-                            $rootScope.resumeDraftOnLoad = true;
-                            $rootScope.resumeDraftPatientUuid = patientUuid;
+                            formDraftService.discardDraft(patientUuid, providerUuid);
+                            $state.reload();
+                        } else if (!$rootScope.resumeDraftOnLoad) {
+                            formDraftService.getResumableDraft(patientUuid, providerUuid).then(function (draft) {
+                                if (draft) {
+                                    $rootScope.draftData = draft;
+                                    $rootScope.resumeDraftOnLoad = true;
+                                    $rootScope.resumeDraftPatientUuid = patientUuid;
+                                } else {
+                                    $rootScope.draftData = null;
+                                    $rootScope.resumeDraftOnLoad = false;
+                                    $rootScope.resumeDraftPatientUuid = null;
+                                }
+                                $scope.formDraft.isDraftSaveAllowed = true;
+                                concatObservationForms();
+                            });
                         } else {
-                            $rootScope.draftData = null;
-                            $rootScope.resumeDraftOnLoad = false;
-                            $rootScope.resumeDraftPatientUuid = null;
+                            $scope.formDraft.isDraftSaveAllowed = true;
+                            concatObservationForms();
                         }
+                    }, function () {
+                        $scope.formDraft.isDraftSaveAllowed = true;
                         concatObservationForms();
                     });
                 } else {
@@ -644,7 +657,8 @@ angular.module('bahmni.clinical')
                 statusParams: {},
                 statusError: false,
                 isDirty: false,
-                hasDrafts: false
+                hasDrafts: false,
+                isDraftSaveAllowed: false
             };
 
             var dirtyTrackingState = {

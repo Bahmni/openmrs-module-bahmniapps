@@ -255,7 +255,7 @@ angular.module('authentication')
             draftsWarningScope.confirmBtnKey = config.confirmBtnKey;
 
             var dialog = ngDialog.open({
-                template: '../common/auth/views/discardDraftsWarning.html',
+                template: '../common/auth/views/logoutDraftsWarning.html',
                 scope: draftsWarningScope,
                 className: 'ngdialog-theme-default discard-draft-modal',
                 showClose: false
