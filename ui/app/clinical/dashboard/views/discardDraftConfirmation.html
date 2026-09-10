@@ -1,0 +1,15 @@
+<div class="discard-draft-dialog">
+    <div class="discard-draft-header">
+        <h2 class="discard-draft-title">{{'DISCARD_DRAFT' | translate}}</h2>
+        <button class="ngdialog-close" aria-label="Close dialog" ng-click="cancel()">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 32 32" class="bx--modal-close__icon"><path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"></path></svg>
+        </button>
+    </div>
+    <div class="discard-draft-body">
+        <p>{{'DISCARD_DRAFT_CONFIRM_MESSAGE' | translate}}</p>
+    </div>
+    <div class="discard-draft-buttons">
+        <button id="discard-draft-cancel-button" class="discard-draft-cancel-btn" ng-click="cancel()">{{'CANCEL' | translate}}</button>
+        <button id="discard-draft-confirm-button" class="discard-draft-confirm-btn" ng-click="discardDraft()">{{'DISCARD' | translate}}</button>
+    </div>
+</div>

@@ -9,7 +9,7 @@
 
 'use strict';
 
-Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler = function (conceptSetSections) {
+Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler = function (conceptSetSections, consultation) {
     this.add = function (validation) {
         var conceptSetPanel = getActiveConceptSet();
         if (conceptSetPanel.length == 1) {
@@ -23,11 +23,25 @@ Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler = function (conceptS
         });
     };
 
+    var isFormSelected = function (conceptSet) {
+        var selectedObsTemplate = consultation && consultation.selectedObsTemplate ? consultation.selectedObsTemplate : [];
+        if (!selectedObsTemplate || selectedObsTemplate.length === 0) {
+            return true;
+        }
+        return _.find(selectedObsTemplate, function (template) {
+            return template === conceptSet || template.uuid === conceptSet.uuid || template.id === conceptSet.id;
+        });
+    };
+
     this.validate = function () {
         var errorMessage = "";
         var allConceptSetSectionsValid = true;
 
         _.forEach(conceptSetSections, function (conceptSet) {
+            if (!isFormSelected(conceptSet)) {
+                return;
+            }
+
             if (conceptSet.validate && typeof conceptSet.validate == 'function') {
                 var validationReturn = conceptSet.validate();
                 conceptSet.isValid = validationReturn["allow"];

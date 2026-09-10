@@ -29,13 +29,17 @@
                                   ng-dialog-scope="this">
                                 <i class="fa fa-eye"></i>
                             </span>
-                            <span ng-show="doesUserHaveAccessToTheForm(data, 'edit')" class="has-link fl formDataEdit"
+                            <span ng-show="doesUserHaveAccessToTheForm(data, 'edit') && !hasFormDraft(data)" class="has-link fl formDataEdit"
                                   ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                   ng-dialog-data="{{getEditObsData(data)}}"
                                   ng-dialog-scope="this"
                                   ng-dialog-controller="EditObservationFormController"
                                   ng-dialog-pre-close-callback="directivePreCloseCallback">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                            <span ng-show="doesUserHaveAccessToTheForm(data, 'edit') && showEditForActiveEncounter(data.encounterUuid) && hasFormDraft(data)"
+                                  class="fl formDataEdit pencil-disabled">
                                 <i class="fa fa-pencil"></i>
                             </span>
                         </span>

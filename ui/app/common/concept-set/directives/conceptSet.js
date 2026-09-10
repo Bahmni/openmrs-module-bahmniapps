@@ -292,7 +292,7 @@ angular.module('bahmni.common.conceptSet')
                     return conceptSetService.getConcept({
                         name: conceptSetName,
                         v: "bahmni"
-                    }).then(function (response) {
+                    }, true).then(function (response) {
                         $scope.conceptSet = response.data.results[0];
                         $scope.rootObservation = $scope.conceptSet ? observationMapper.map($scope.observations, $scope.conceptSet, conceptSetUIConfig) : null;
                         if ($scope.rootObservation) {

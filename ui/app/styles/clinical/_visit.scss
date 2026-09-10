@@ -132,6 +132,12 @@
                 padding: 0 !important;
             }
 
+            .pencil-disabled {
+                opacity: 0.4;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+
             @media screen and (max-width: 1024px) {
                 width: 214px;
             }

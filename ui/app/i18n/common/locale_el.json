@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Πρόχειρο σε εξέλιξη",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Έχετε μη αποθηκευμένες φόρμες παρατηρήσεων. Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Άκυρο",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Αποσύνδεση"
+}

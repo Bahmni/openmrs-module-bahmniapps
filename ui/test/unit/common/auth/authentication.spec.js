@@ -213,3 +213,57 @@ describe("Authentication", function () {
     });
 
 });
+
+describe("logoutService", function () {
+    var logoutService, $rootScope, $log, sessionService, auditLogService, formDraftService, ngDialog, $window, $timeout, $q;
+
+    beforeEach(module('authentication'));
+    beforeEach(module(function ($provide) {
+        auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+        formDraftService = jasmine.createSpyObj('formDraftService', ['hasDraftsForProvider']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+        sessionService = jasmine.createSpyObj('sessionService', ['destroy']);
+
+        $provide.value('auditLogService', auditLogService);
+        $provide.value('formDraftService', formDraftService);
+        $provide.value('ngDialog', ngDialog);
+        $provide.value('sessionService', sessionService);
+    }));
+
+    beforeEach(inject(function (_logoutService_, _$rootScope_, _$log_, _$window_, _$timeout_, _$q_) {
+        logoutService = _logoutService_;
+        $rootScope = _$rootScope_;
+        $log = _$log_;
+        $window = _$window_;
+        $timeout = _$timeout_;
+        $q = _$q_;
+
+        auditLogService.log.and.returnValue($q.when({}));
+        sessionService.destroy.and.returnValue($q.when({}));
+    }));
+
+    describe("closePatientControlPanel", function () {
+
+        it("should add ng-hide class to visit-history element", function () {
+            var mockControlPanel = {
+                classList: { add: jasmine.createSpy('add') }
+            };
+            spyOn(document, 'querySelector').and.returnValue(mockControlPanel);
+
+            logoutService.attemptLogout($rootScope);
+
+            expect(mockControlPanel.classList.add).toHaveBeenCalledWith('ng-hide');
+        });
+
+        it("should handle errors gracefully", function () {
+            spyOn(document, 'querySelector').and.throwError('DOM Error');
+            spyOn($log, 'debug');
+
+            expect(function () {
+                logoutService.attemptLogout($rootScope);
+            }).not.toThrow();
+        });
+
+    });
+
+});

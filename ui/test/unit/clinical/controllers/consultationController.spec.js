@@ -273,12 +273,18 @@ describe("ConsultationController", function () {
     };
     beforeEach(module('bahmni.common.util'));
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module(function ($provide) {
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['getDraft', 'saveDraft', 'markDraftAsSaved', 'getDiscardOnSaveConfig']));
+        $provide.value('autoSaveService', jasmine.createSpyObj('autoSaveService', ['start', 'stop', 'getIntervalMs']));
+    }));
     beforeEach(function () {
-        inject(function ($controller, $rootScope, _$window_) {
+        inject(function ($controller, $rootScope, _$window_, $q, formDraftService) {
             _window_ = _$window_;
             scope = $rootScope.$new();
             rootScope = $rootScope;
             controller = $controller;
+            formDraftService.markDraftAsSaved.and.returnValue($q.when({}));
+            formDraftService.getDiscardOnSaveConfig.and.returnValue($q.when(false));
         });
         appDescriptor = {
             formatUrl: function (url) {
@@ -439,11 +445,48 @@ describe("ConsultationController", function () {
         });
 
         it("should validate the current tab drug orders", function () {
-            scope.consultation = {discontinuedDrugs: [{concept: {name: "Paracetmol"}}]};
+            scope.consultation = {discontinuedDrugs: [{concept: {name: "Paracetmol"}, _effectiveStartDate: moment().subtract(1, 'days')}]};
             spyOn(scope.$parent, '$broadcast');
 
             scope.showBoard(1);
             expect(scope.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+        });
+
+        it("should allow tab switching even when Form2 observation form has mandatory field errors", function () {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                observationForms: [{component: {getValue: function () { return {errors: {}}; }}}]
+            };
+            spyOn(scope.$parent, '$broadcast');
+            scope.showBoard(1);
+            expect(scope.$parent.$broadcast).not.toHaveBeenCalledWith('event:errorsOnForm');
+            expect(scope.currentBoard.label).toBe('Treatment');
+        });
+
+        it("should allow tab switching from observations even when concept-set mandatory fields are not filled", function () {
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}]};
+            scope.currentBoard = scope.availableBoards[0]; // observations board
+            spyOn(scope.$parent, '$broadcast');
+            scope.showBoard(1);
+            expect(scope.$parent.$broadcast).not.toHaveBeenCalledWith('event:errorsOnForm');
+            expect(scope.currentBoard.label).toBe('Treatment');
+        });
+
+        it("should block save when concept-set mandatory errors were present during tab switch", function (done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [], conditions: []
+            };
+            scope.currentBoard = scope.availableBoards[0];
+            scope.isErrorPresentInObsTab = true;
+            scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            spyOn(scope.$parent.$parent, '$broadcast');
+            scope.save({toState: {}}).then(function () {
+                expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                done();
+            });
         });
 
         it("should be on currentBoard if click on same tab", function () {
@@ -453,6 +496,83 @@ describe("ConsultationController", function () {
 
             scope.showBoard(1);
             expect(scope.currentBoard.label).toBe('Treatment');
+        });
+
+        describe("switching between two non-observation tabs (e.g. other consultations tabs)", function () {
+            var diagnosisTab, treatmentIdx, diagnosisIdx, observationsIdx;
+            beforeEach(function () {
+                diagnosisTab = {
+                    extensionPointId: "org.bahmni.clinical.consultation.board",
+                    id: "bahmni.clinical.diagnosis",
+                    label: "Diagnosis",
+                    order: 8,
+                    type: "link",
+                    url: "diagnosis"
+                };
+                boards.push(diagnosisTab);
+                createController();
+                observationsIdx = _.findIndex(scope.availableBoards, {id: "bahmni.clinical.consultation.observations"});
+                treatmentIdx = _.findIndex(scope.availableBoards, {id: "bahmni.clinical.billing.treatment"});
+                diagnosisIdx = scope.availableBoards.indexOf(diagnosisTab);
+                scope.consultation = {
+                    discontinuedDrugs: [{dateStopped: new Date()}],
+                    preSaveHandler: new Bahmni.Clinical.Notifier(),
+                    postSaveHandler: new Bahmni.Clinical.Notifier(),
+                    observations: [], conditions: []
+                };
+                scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            });
+            afterEach(function () {
+                boards.pop();
+            });
+
+            it("should allow navigating away from an invalid non-observation tab instead of blocking it", function () {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+
+                expect(scope.currentBoard.label).toBe('Diagnosis');
+                expect(scope.isErrorPresentInObsTab).toBeTruthy();
+            });
+
+            it("should block save while the originating tab's error is unresolved", function (done) {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+                spyOn(scope.$parent.$parent, '$broadcast');
+
+                scope.save({toState: {}}).then(function () {
+                    expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                    done();
+                });
+            });
+
+            it("should not clear the error just because Observations tab is reached; only the originating tab clears it", function (done) {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+                contextChangeHandler.execute = function () { return {allow: true}; };
+                scope.showBoard(observationsIdx);
+
+                expect(scope.isErrorPresentInObsTab).toBeTruthy();
+                spyOn(scope.$parent.$parent, '$broadcast');
+                scope.save({toState: {}}).then(function () {
+                    expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                    done();
+                });
+            });
+
+            it("should clear the error once the user returns to the originating tab and fixes it", function () {
+                scope.showBoard(treatmentIdx);
+                contextChangeHandler.execute = function () { return {allow: false, errorMessage: "Treatment invalid"}; };
+                scope.showBoard(diagnosisIdx);
+
+                contextChangeHandler.execute = function () { return {allow: true}; };
+                scope.showBoard(treatmentIdx);
+                scope.showBoard(diagnosisIdx);
+
+                expect(scope.isErrorPresentInObsTab).toBeFalsy();
+            });
         });
     });
 
@@ -811,6 +931,134 @@ describe("ConsultationController", function () {
                 done();
             });
         });
+
+        it("should fallback to [ERROR] when non-array form save error does not include message", function (done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                observationForms: [{
+                    isAdded: true,
+                    component: {
+                        getValue: function () {
+                            return {}
+                        },
+                        state: {data: {}},
+                        props: {patient: {}},
+                    },
+                    events: {
+                        onFormSave: 'Save event'
+                    }
+                }],
+                conditions: [{uuid: undefined, conditionNonCoded: "fever"}]
+            };
+            window.runEventScript = function () {
+                throw {};
+            };
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.getEncounterType).not.toHaveBeenCalled();
+                expect(encounterService.create).not.toHaveBeenCalled();
+                expect(conditionsService.save).not.toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', '[ERROR]');
+                done();
+            });
+        });
+    });
+
+    describe("isObservationFormValid — draftValidationPassed tracking", function () {
+        var makeConsultation = function (observationForms) {
+            return {
+                discontinuedDrugs: [],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                conditions: [],
+                observationForms: observationForms || []
+            };
+        };
+
+        it("should block save and set draftValidationPassed=false when rendered form has errors", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: { getValue: function () { return {errors: {field: 'required'}}; } }
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            spyOn(scope.$parent.$parent, '$broadcast');
+
+            scope.save({toState: {}}).then(function () {
+                expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                expect(form.draftValidationPassed).toBe(false);
+                done();
+            });
+        });
+
+        it("should allow save and set draftValidationPassed=true when rendered form has no errors", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: { getValue: function () { return {}; } }
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.create).toHaveBeenCalled();
+                expect(form.draftValidationPassed).toBe(true);
+                done();
+            });
+        });
+
+        it("should block save when form has no component, hasUnsavedFormObservations=true, and draftValidationPassed is undefined", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: undefined,
+                draftValidationPassed: undefined
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            scope.$parent = {$parent: {$broadcast: function () { return {}; }}};
+            spyOn(scope.$parent.$parent, '$broadcast');
+
+            scope.save({toState: {}}).then(function () {
+                expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                done();
+            });
+        });
+
+        it("should allow save when form has no component and hasUnsavedFormObservations=false", function (done) {
+            var form = {
+                hasUnsavedFormObservations: false,
+                component: undefined
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.create).toHaveBeenCalled();
+                done();
+            });
+        });
+
+        it("should allow save when form has no component, hasUnsavedFormObservations=true, but draftValidationPassed=true (previously validated clean)", function (done) {
+            var form = {
+                hasUnsavedFormObservations: true,
+                component: undefined,
+                draftValidationPassed: true
+            };
+            scope.consultation = makeConsultation([form]);
+            scope.patient = {uuid: 'patient-uuid'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.create).toHaveBeenCalled();
+                done();
+            });
+        });
     });
 
     describe("startAdhocTeleconsultationLink", function ()  {
@@ -893,5 +1141,102 @@ describe("ConsultationController", function () {
         expect(scope.adtNavigationConfig.privilege).toBe("app:ipd");
         expect(scope.adtNavigationConfig.title).toBe("Go to ADT Dashboard");
         expect(scope.adtNavigationConfig.forwardUrl).toBe("../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/");
+    });
+
+    it("should call markDraftAsSaved when save is successful with both patient and provider UUIDs", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: 'patient-uuid-123'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(formDraftService.markDraftAsSaved).toHaveBeenCalledWith('patient-uuid-123', 'provider-uuid-123');
+                done();
+            });
+        });
+    });
+
+    it("should not call markDraftAsSaved when save is successful but patient UUID is null", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: null};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(formDraftService.markDraftAsSaved).not.toHaveBeenCalled();
+                done();
+            });
+        });
+    });
+
+    it("should not call markDraftAsSaved when save is successful but provider UUID is null", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = null;
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: 'patient-uuid-123'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(formDraftService.markDraftAsSaved).not.toHaveBeenCalled();
+                done();
+            });
+        });
+    });
+
+    it("should clear draftData from rootScope after successful save when provider and patient exist", function (done) {
+        inject(function(formDraftService) {
+            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
+            rootScope.draftData = {uuid: 'draft-uuid', formData: '{}'};
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+            scope.patient = {uuid: 'patient-uuid-123'};
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+            scope.save({toState: {}}).then(function () {
+                expect(rootScope.draftData).toBeNull();
+                done();
+            });
+        });
+    });
+
+    it("should broadcast event:save-successful after save completes", function (done) {
+        spyOn(rootScope, '$broadcast');
+        scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+        scope.patient = {uuid: 'patient-uuid-123'};
+        diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+        scope.save({toState: {}}).then(function () {
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:save-successful');
+            done();
+        });
+    });
+
+    it("should open targetUrl when save is successful and targetUrl is set", function (done) {
+        spyOn(_window_, 'open');
+        scope.targetUrl = '/some/target/url';
+        scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+        scope.patient = {uuid: 'patient-uuid-123'};
+        diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+        scope.save({toState: {}}).then(function () {
+            expect(_window_.open).toHaveBeenCalledWith('/some/target/url', '_self');
+            done();
+        });
+    });
+
+    it("should transition using current state and params when save is called without toStateConfig", function (done) {
+        spyOn(state, 'transitionTo').and.callThrough();
+        scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+        scope.patient = {uuid: 'patient-uuid-123'};
+        diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+
+        scope.save().then(function () {
+            expect(state.transitionTo).toHaveBeenCalled();
+            var args = state.transitionTo.calls.mostRecent().args;
+            expect(args[0]).toBe(state.current);
+            expect(args[2]).toEqual({inherit: false, notify: true, reload: false});
+            done();
+        });
     });
 });

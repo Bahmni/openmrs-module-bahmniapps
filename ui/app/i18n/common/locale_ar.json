@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "المسودة قيد التقدم",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "لديك نماذج ملاحظات غير محفوظة. هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "إلغاء",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "تسجيل الخروج"
+}

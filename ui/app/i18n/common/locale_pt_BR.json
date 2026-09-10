@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Rascunho em andamento",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Você tem formulários de observação não salvos. Tem certeza de que deseja sair?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Cancelar",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Sair"
+}

@@ -372,5 +372,51 @@ describe("ensure that the directive edit-observation works properly", function (
 
         expect(messageServiceMock.showMessage).toHaveBeenCalledWith('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
     });
+
+    it("should set dirtyConsultationForm and justSaved flags after successful save when no drafts pending", function () {
+        scope = rootScope.$new();
+        scope.observation = observation;
+        rootScope.draftData = null;
+
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+
+        var compiledEle = compile(html)(scope);
+
+        scope.$digest();
+        httpBackend.flush();
+
+        var compiledScope = compiledEle.isolateScope();
+        scope.$digest();
+
+        compiledScope.save();
+        scope.$digest();
+
+        expect(rootScope.hasVisitedConsultation).toBe(false);
+        expect(state.dirtyConsultationForm).toBe(false);
+        expect(state.justSaved).toBe(true);
+    });
+
+    it("should NOT set dirtyConsultationForm and justSaved flags if drafts are pending", function () {
+        scope = rootScope.$new();
+        scope.observation = observation;
+        rootScope.draftData = {uuid: "draft-uuid", timestamp: 1234567890};
+
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+
+        var compiledEle = compile(html)(scope);
+
+        scope.$digest();
+        httpBackend.flush();
+
+        var compiledScope = compiledEle.isolateScope();
+        scope.$digest();
+
+        compiledScope.save();
+        scope.$digest();
+
+        expect(rootScope.hasVisitedConsultation).toBe(false);
+        expect(state.dirtyConsultationForm).toBeUndefined();
+        expect(state.justSaved).toBeUndefined();
+    });
 });
 

@@ -151,6 +151,7 @@
                      ng-class="{'duration': observation.durationObs, 'computed-field': observation.isComputedAndEditable()}">
                     <span class="for-separator fl">for</span>
                     <duration ng-model="observation.durationObs.value" disabled="!observation.primaryObs.hasValue()"
+                              on-change="handleUpdate()"
                               illegal-value="observation.isDurationRequired() && observation.doesNotHaveDuration()"></duration>
                 </div>
                 <div class="fl" ng-include src="'../common/concept-set/views/observationDataTypes/removeClone.html'" ng-if="observation.getControlType() != 'video'"></div>

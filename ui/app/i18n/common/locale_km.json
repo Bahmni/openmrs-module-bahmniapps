@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "សេចក្តីព្រាងកំពុងដំណើរការ",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "អ្នកមានទម្រង់សង្កេតដែលមិនទាន់រក្សាទុក។ តើអ្នកប្រាកដជាចង់ចាកចេញឬ?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "បោះបង់",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "ចាកចេញ"
+}

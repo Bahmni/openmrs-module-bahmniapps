@@ -28,5 +28,20 @@ angular.module('bahmni.common.config')
                 }
             }
         };
+    }])
+    .directive('showIfHasPrivilege', ['$rootScope', function ($rootScope) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function (scope, element, attrs) {
+                var privilege = attrs.showIfHasPrivilege;
+                var hasPrivilege = $rootScope.currentUser
+                    ? _.some($rootScope.currentUser.privileges, {name: privilege})
+                    : false;
+                if (!hasPrivilege) {
+                    element.hide();
+                }
+            }
+        };
     }]);
 

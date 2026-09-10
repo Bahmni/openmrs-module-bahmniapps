@@ -92,7 +92,8 @@ Bahmni.Clinical.Constants = (function () {
         adtForwardUrl: "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
         certificateHeader: "Print Header",
         careSetting: careSetting,
-        millisecondsPerDay: 86400000
+        millisecondsPerDay: 86400000,
+        autoSaveIntervalMs: 15 * 60 * 1000
     };
 })();
 

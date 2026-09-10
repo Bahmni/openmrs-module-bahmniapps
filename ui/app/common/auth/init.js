@@ -11,4 +11,4 @@
 var Bahmni = Bahmni || {};
 Bahmni.Auth = Bahmni.Auth || {};
 
-angular.module('authentication', ['ui.router']);
+angular.module('authentication', ['ui.router', 'bahmni.common.services', 'ngDialog']);

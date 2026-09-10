@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Черновик в процессе",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "У вас есть несохранённые формы наблюдений. Вы уверены, что хотите выйти?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Отмена",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Выход"
+}
