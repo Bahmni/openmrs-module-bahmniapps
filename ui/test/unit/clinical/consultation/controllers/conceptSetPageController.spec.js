@@ -806,4 +806,3 @@ describe('ConceptSetPageController', function () {
             });
         });
     });
-});
