@@ -44,7 +44,18 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$sco
         $scope.discardChanges = function (level) {
             $state.discardChanges = true;
             $scope.hideMessage(level);
-            return $state.isPatientSearch ? $location.path('/default/patient/search') : $location.path('/default/patient/' + $state.newPatientUuid + "/dashboard");
+            var navigate = function () {
+                $state.isPatientSearch ? $location.path('/default/patient/search') : $location.path('/default/patient/' + $state.newPatientUuid + "/dashboard");
+            };
+            if ($state.saveFormDraftIfDirty) {
+                $state.saveFormDraftIfDirty().then(navigate, navigate);
+            } else {
+                navigate();
+            }
         };
+
+        $scope.$on('$stateChangeSuccess', function () {
+            $state.discardChanges = false;
+        });
     }
 ]);

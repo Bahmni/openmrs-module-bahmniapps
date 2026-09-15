@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Rascunho em andamento",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Tem formulários de observação não guardados. Tem a certeza de que pretende terminar sessão?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Cancelar",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Terminar sessão"
+}

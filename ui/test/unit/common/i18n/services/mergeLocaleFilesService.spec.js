@@ -63,4 +63,45 @@ describe('mergeLocaleFilesService', function () {
             done();
         });
     });
+
+    it('should fall back to the shared common translations for keys not present in the app-specific file', function (done) {
+        var commonFile = {"LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Draft(s) in Progress"};
+
+        _$http.get.and.callFake(function (param) {
+            if (param.indexOf('bahmni_config') !== -1) {
+                return specUtil.createFakePromise(undefined);
+            } else if (param.indexOf('i18n/common/') !== -1) {
+                return specUtil.createFakePromise(commonFile);
+            }
+            return specUtil.createFakePromise(baseFile);
+        });
+
+        var promise = mergeLocaleFilesService({app: 'clinical', shouldMerge: true, key: 'en'});
+
+        promise.then(function (response) {
+            expect(response.data).toEqual(angular.extend({}, commonFile, baseFile));
+            done();
+        });
+    });
+
+    it('should let an app-specific key override the same key defined in the shared common file', function (done) {
+        var commonFile = {"LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Draft(s) in Progress"};
+        var appFileOverridingCommonKey = {"LOGOUT_DRAFTS_WARNING_TITLE_KEY": "App Specific Override"};
+
+        _$http.get.and.callFake(function (param) {
+            if (param.indexOf('bahmni_config') !== -1) {
+                return specUtil.createFakePromise(undefined);
+            } else if (param.indexOf('i18n/common/') !== -1) {
+                return specUtil.createFakePromise(commonFile);
+            }
+            return specUtil.createFakePromise(appFileOverridingCommonKey);
+        });
+
+        var promise = mergeLocaleFilesService({app: 'clinical', shouldMerge: true, key: 'en'});
+
+        promise.then(function (response) {
+            expect(response.data.LOGOUT_DRAFTS_WARNING_TITLE_KEY).toEqual('App Specific Override');
+            done();
+        });
+    });
 });

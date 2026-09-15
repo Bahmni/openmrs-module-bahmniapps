@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Entwurf in Bearbeitung",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Sie haben ungespeicherte Beobachtungsformulare. Möchten Sie sich wirklich abmelden?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Abbrechen",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Abmelden"
+}

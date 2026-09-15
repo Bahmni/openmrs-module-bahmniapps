@@ -11,7 +11,7 @@
 
 describe("AdtController", function () {
     var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService,
-        encounterService, ngDialog, window, messagingService, spinnerService, auditLogService, translate;
+        encounterService, ngDialog, window, messagingService, spinnerService, auditLogService, translate, formDraftService;
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -67,6 +67,8 @@ describe("AdtController", function () {
         sessionService.getLoginLocationUuid.and.returnValue("someLocationUuid");
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
         auditLogService.log.and.returnValue(specUtil.createFakePromise({}));
+        formDraftService = jasmine.createSpyObj('formDraftService', ['discardDraft']);
+        formDraftService.discardDraft.and.returnValue(specUtil.createFakePromise({}));
     });
 
     var createController = function () {
@@ -93,7 +95,8 @@ describe("AdtController", function () {
             messagingService: messagingService,
             spinner: spinnerService,
             auditLogService: auditLogService,
-            $translate: translate
+            $translate: translate,
+            formDraftService: formDraftService
         });
     };
 
@@ -182,6 +185,86 @@ describe("AdtController", function () {
         expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'CLOSE_VISIT', messageParamsForVisit, 'MODULE_LABEL_INPATIENT_KEY');
         expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParamsForEncounter, 'MODULE_LABEL_INPATIENT_KEY');
         expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'OPEN_VISIT', messageParamsForVisit, 'MODULE_LABEL_INPATIENT_KEY');
+    });
+
+    describe("draft discard on visit close", function () {
+        var stubEndVisitPromise = function () {
+            return {
+                then: function (successFn) {
+                    successFn({});
+                }
+            };
+        };
+
+        it("should discard draft when startNewVisit ends the current visit", function () {
+            scope.visitSummary = {visitType: "OPD", uuid: "visitUuid"};
+            scope.patient = {uuid: '123'};
+            scope.adtObservations = [];
+            rootScope.currentProvider = {uuid: 'provider-uuid'};
+            visitService.endVisit.and.callFake(stubEndVisitPromise);
+            encounterService.create.and.returnValue({success: function () {}});
+            createController();
+
+            scope.startNewVisit('visitTypeUuid');
+
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', 'provider-uuid');
+        });
+
+        it("should discard draft when closeCurrentVisitAndStartNewVisit closes the current visit", function () {
+            scope.visitSummary = {visitType: "OPD", uuid: "visitUuid"};
+            scope.patient = {uuid: '123'};
+            scope.adtObservations = [];
+            rootScope.currentProvider = {uuid: 'provider-uuid'};
+            var encounterResponse = {patientUuid: '123', encounterUuid: 'uuid', encounterType: 'ADMISSION'};
+            visitService.endVisitAndCreateEncounter.and.returnValue(specUtil.createFakePromise(encounterResponse));
+            encounterService.buildEncounter.and.returnValue(encounterResponse);
+            createController();
+
+            scope.closeCurrentVisitAndStartNewVisit();
+
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', 'provider-uuid');
+        });
+
+        it("should not discard draft when startNewVisit is called with no existing visit", function () {
+            scope.visitSummary = null;
+            scope.patient = {uuid: '123'};
+            rootScope.currentProvider = {uuid: 'provider-uuid'};
+            encounterService.create.and.returnValue({success: function () {}});
+            createController();
+
+            scope.startNewVisit('visitTypeUuid');
+
+            expect(formDraftService.discardDraft).not.toHaveBeenCalled();
+        });
+
+        it("should call discardDraft with null providerUuid when currentProvider is missing on startNewVisit", function () {
+            scope.visitSummary = {visitType: "OPD", uuid: "visitUuid"};
+            scope.patient = {uuid: '123'};
+            scope.adtObservations = [];
+            rootScope.currentProvider = null;
+            visitService.endVisit.and.callFake(stubEndVisitPromise);
+            encounterService.create.and.returnValue({success: function () {}});
+            createController();
+
+            scope.startNewVisit('visitTypeUuid');
+
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', null);
+        });
+
+        it("should call discardDraft with null providerUuid when currentProvider is missing on closeCurrentVisitAndStartNewVisit", function () {
+            scope.visitSummary = {visitType: "OPD", uuid: "visitUuid"};
+            scope.patient = {uuid: '123'};
+            scope.adtObservations = [];
+            rootScope.currentProvider = null;
+            var encounterResponse = {patientUuid: '123', encounterUuid: 'uuid', encounterType: 'ADMISSION'};
+            visitService.endVisitAndCreateEncounter.and.returnValue(specUtil.createFakePromise(encounterResponse));
+            encounterService.buildEncounter.and.returnValue(encounterResponse);
+            createController();
+
+            scope.closeCurrentVisitAndStartNewVisit();
+
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', null);
+        });
     });
 
     it("Should close the confirmation dialog if cancelled", function () {
@@ -462,9 +545,10 @@ describe("AdtController", function () {
     });
 
     describe('Discharge', function () {
-        it('should discharge patient and log the encounter when audit log is enabled', function () {
+        var encounterResponse;
+        beforeEach(function () {
             scope.patient = {uuid: "patient Uuid"};
-            var encounterResponse = {
+            encounterResponse = {
                 patientUuid: scope.patient.uuid,
                 encounterUuid: 'encounterUuid',
                 encounterType: 'DISCHARGE'
@@ -477,10 +561,17 @@ describe("AdtController", function () {
                 };
             });
             createController();
+        });
 
+        it('should discharge patient and log the encounter when audit log is enabled', function () {
             scope.discharge();
             var messageParams = {encounterUuid: encounterResponse.encounterUuid, encounterType: encounterResponse.encounterType};
             expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParams, 'MODULE_LABEL_INPATIENT_KEY');
+        });
+
+        it('should not discard draft on discharge since visit is not closed', function () {
+            scope.discharge();
+            expect(formDraftService.discardDraft).not.toHaveBeenCalled();
         });
     });
 

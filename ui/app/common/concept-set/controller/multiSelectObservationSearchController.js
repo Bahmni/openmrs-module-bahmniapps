@@ -64,11 +64,17 @@ angular.module('bahmni.common.conceptSet').controller('multiSelectObservationSea
             return value.uuid !== item.uuid;
         });
         $scope.observation.toggleSelection(item);
+        if (typeof $scope.handleUpdate === 'function') {
+            $scope.handleUpdate();
+        }
     };
 
     $scope.removeItem = function (item) {
         unselectedValues.push(item);
         $scope.observation.toggleSelection(item);
+        if (typeof $scope.handleUpdate === 'function') {
+            $scope.handleUpdate();
+        }
     };
 
     $scope.setLabel = function (answer) {

@@ -1,4 +1,32 @@
 <patient-context patient="patient" show-name-and-image="tabBeingPrinted.printing.showNameAndImage" class="dashboard-consultation" is-consultation="!stateChange()"></patient-context>
+
+<div ng-if="enableFormDraftFeature && formDraft.discardSuccess" class="draft-discard-success-container">
+    <div class="bx--inline-notification bx--inline-notification--success bx--inline-notification--low-contrast" role="status">
+        <div class="bx--inline-notification__details">
+            <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" class="bx--inline-notification__icon">
+                <path d="M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2ZM14,21.5l-5-5,1.41-1.41L14,18.67l7.59-7.58L23,12.5Z"></path>
+            </svg>
+            <div class="bx--inline-notification__text-wrapper">
+                <p class="bx--inline-notification__title">{{ 'DRAFT_DISCARDED_SUCCESS' | translate }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="enableFormDraftFeature && stateChange() && formDraft.hasDrafts" class="bx--inline-notification bx--inline-notification--info draft-notification" role="status">
+    <div class="bx--notification__details">
+        <div class="bx--notification__icon">ℹ</div>
+        <div class="bx--notification__text-wrapper">
+            <h3 class="bx--notification__title">{{ 'FORMS_DRAFT_BANNER_TITLE' | translate }}</h3>
+            <p class="bx--notification__subtitle">{{ 'FORMS_DRAFT_BANNER_SUBTITLE' | translate: {draftDate: formDraft.draftDate, draftTime: formDraft.draftTime} }}</p>
+        </div>
+    </div>
+    <div class="bx--notification__action-button">
+        <button class="draft-action-button draft-resume-button" ng-click="resumeDraft()">{{ 'RESUME' | translate }}</button>
+        <button class="draft-action-button draft-discard-button" ng-click="confirmDiscardDraft()">{{ 'DISCARD_DRAFT' | translate }}</button>
+    </div>
+</div>
+
 <dashboard ng-show ="stateChange()" patient="::patient" config="::isDashboardPrinting ? tabBeingPrinted : clinicalDashboardConfig.currentTab"
            disease-templates="diseaseTemplates" section-groups="sectionGroups" visit-history="visitHistory"
            active-visit-uuid="visitHistory.activeVisit.uuid" visit-summary="visitSummary" enrollment="enrollment" active-encounter-uuid="::consultation.encounterUuid">

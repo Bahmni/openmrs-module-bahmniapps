@@ -71,20 +71,24 @@ describe("conceptSetGroup", function () {
                 {
                     "uuid": "conceptSet1",
                     "label": "Followup1",
+                    "alwaysShow": true,
                     clone: function () {
                         return {
                             "uuid": "conceptSet1",
-                            "label": "Followup1"
+                            "label": "Followup1",
+                            "alwaysShow": true
                         }
                     }
                 },
                 {
                     "uuid" : "conceptSet2",
                     "label": "Followup",
+                    "alwaysShow": true,
                     clone: function () {
                         return {
                             "uuid": "conceptSet2",
-                            "label": "Followup"
+                            "label": "Followup",
+                            "alwaysShow": true
                         }
                     }
                 },
@@ -92,11 +96,13 @@ describe("conceptSetGroup", function () {
                     "uuid" : "conceptSet3",
                     "klass": "active",
                     "label": "Followup",
+                    "alwaysShow": true,
                     clone: function () {
                         return {
                             "uuid": "conceptSet3",
                             "klass": "active",
-                            "label": "Followup"
+                            "label": "Followup",
+                            "alwaysShow": true
                         }
                     },
                     "observations": [{uuid : "uuid"}]
@@ -247,9 +253,9 @@ describe("conceptSetGroup", function () {
         compiledElementScope.remove(0);
         expect(compiledElementScope.allTemplates.length).toEqual(3);
         compiledElementScope.remove(2);
-        expect(compiledElementScope.allTemplates.length).toEqual(2);
+        expect(compiledElementScope.allTemplates.length).toEqual(3);
         compiledElementScope.remove(1);
-        expect(compiledElementScope.allTemplates.length).toEqual(2);
+        expect(compiledElementScope.allTemplates.length).toEqual(3);
     });
 
     it("canRemove should return true only if it is unsaved template", function(){
@@ -286,8 +292,32 @@ describe("conceptSetGroup", function () {
         expect(compiledElementScope.leftPanelConceptSet.name).toEqual("template");
         expect(compiledElementScope.allTemplates[1].label).toEqual("Followup");
         compiledElementScope.remove(1);
+        expect(compiledElementScope.allTemplates.length).toEqual(3);
+        expect(compiledElementScope.allTemplates[1].observations).toEqual([]);
+    });
+
+    it("should remove unpinned form from list immediately", function () {
+        var compiledElementScope = executeDirective();
+        compiledElementScope.allTemplates[1].alwaysShow = false;
+        compiledElementScope.consultation.selectedObsTemplate[1].alwaysShow = false;
+        scope.$digest();
+
+        expect(compiledElementScope.allTemplates.length).toEqual(3);
+        compiledElementScope.remove(1);
         expect(compiledElementScope.allTemplates.length).toEqual(2);
-        expect(compiledElementScope.allTemplates[1].label).toEqual("Followup");
         expect(compiledElementScope.allTemplates[0].label).toEqual("Followup1");
+        expect(compiledElementScope.allTemplates[1].label).toEqual("Followup");
+    });
+
+    it("should keep pinned form in list but clear observations when deleted", function () {
+        var compiledElementScope = executeDirective();
+        scope.$digest();
+
+        expect(compiledElementScope.allTemplates.length).toEqual(3);
+        expect(compiledElementScope.allTemplates[1].alwaysShow).toEqual(true);
+        compiledElementScope.remove(1);
+        expect(compiledElementScope.allTemplates.length).toEqual(3);
+        expect(compiledElementScope.allTemplates[1].observations).toEqual([]);
+        expect(compiledElementScope.allTemplates[1].isOpen).toEqual(false);
     });
 });

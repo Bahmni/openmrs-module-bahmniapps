@@ -108,3 +108,11 @@
 .fa-pencil:hover {
   color: #669999;
 }
+
+.pencil-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+

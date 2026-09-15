@@ -232,6 +232,11 @@ angular.module('bahmni.common.appFramework')
                         promises.push(loadPageConfig(configPage, appDescriptor));
                     });
                 }
+                promises.push($http.get(baseUrl + 'home/app.json').then(function (response) {
+                    $rootScope.formDraftFeatureEnabled = response.data.config.enableFormDraftFeature || false;
+                }, function () {
+                    $rootScope.formDraftFeatureEnabled = false;
+                }));
                 $q.all(promises).then(function (results) {
                     currentUser = results[0];
                     appLoader.resolve(appDescriptor);

@@ -11,7 +11,7 @@
 
 describe("directive: stepper", function () {
 
-    var element, $compile, scope, $exceptionHandler, observation;
+    var element, $compile, $rootScope, scope, $exceptionHandler, observation;
     var html = '<stepper id="123" ng-model="observation.value" obs="observation" />';
 
     beforeEach(module('bahmni.common.conceptSet'));
@@ -19,6 +19,11 @@ describe("directive: stepper", function () {
     beforeEach(module(function ($exceptionHandlerProvider) {
         $exceptionHandlerProvider.mode('log');
     }));
+
+    beforeEach(inject(['$compile', '$rootScope', function (compile, rootScope) {
+        $compile = compile;
+        $rootScope = rootScope;
+    }]));
 
     var injectionFn = function($compile, $rootScope) {
 
@@ -44,6 +49,12 @@ describe("directive: stepper", function () {
         inject(injectionFn);
 
     };
+
+    afterEach(function () {
+        if (scope) {
+            scope.$destroy();
+        }
+    });
 
     it("Stepper With Bounds", function () {
         beforeWithBounds();
@@ -92,5 +103,53 @@ describe("directive: stepper", function () {
         expect(scope.obs.value).toBe(89);
         element.isolateScope().increment();
         expect(scope.obs.value).toBe(90);
+    });
+
+    it("should call onChange callback on increment", function () {
+        var onChangeSpy = jasmine.createSpy('onChange');
+        html = '<stepper id="123" ng-model="observation.value" obs="observation" on-change="onChange()" />';
+        observation = new Bahmni.ConceptSet.Observation({
+            concept: {name: "someConcept", dataType: "Numeric", value: 95}
+        }, null, {});
+        observation.value = 95;
+
+        scope = $rootScope.$new();
+        scope.obs = observation;
+        scope.observation = observation;
+        scope.onChange = onChangeSpy;
+
+        element = angular.element(html);
+        $compile(element)(scope);
+        scope.$apply();
+
+        var isolateScope = element.isolateScope();
+        isolateScope.increment();
+        scope.$apply();
+
+        expect(onChangeSpy).toHaveBeenCalled();
+    });
+
+    it("should call onChange callback on decrement", function () {
+        var onChangeSpy = jasmine.createSpy('onChange');
+        html = '<stepper id="123" ng-model="observation.value" obs="observation" on-change="onChange()" />';
+        observation = new Bahmni.ConceptSet.Observation({
+            concept: {name: "someConcept", dataType: "Numeric", value: 95}
+        }, null, {});
+        observation.value = 95;
+
+        scope = $rootScope.$new();
+        scope.obs = observation;
+        scope.observation = observation;
+        scope.onChange = onChangeSpy;
+
+        element = angular.element(html);
+        $compile(element)(scope);
+        scope.$apply();
+
+        var isolateScope = element.isolateScope();
+        isolateScope.decrement();
+        scope.$apply();
+
+        expect(onChangeSpy).toHaveBeenCalled();
     });
 });

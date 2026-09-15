@@ -10,10 +10,10 @@
 'use strict';
 
 angular.module('bahmni.common.uicontrols.programmanagment')
-    .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
-        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', '$state',
-        function ($scope, retrospectiveEntryService, $window, programService,
-            spinner, messagingService, $stateParams, $q, confirmBox, $state) {
+    .controller('ManageProgramController', ['$scope', '$rootScope', 'retrospectiveEntryService', '$window', 'programService',
+        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', '$state', 'formDraftService',
+        function ($scope, $rootScope, retrospectiveEntryService, $window, programService,
+            spinner, messagingService, $stateParams, $q, confirmBox, $state, formDraftService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -36,8 +36,18 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 patientUuid: $scope.patient.uuid,
                 showEditForActiveEncounter: true,
                 numberOfVisits: observationFormsConfig.numberOfVisits || 10,
-                hasNoHierarchy: $scope.hasNoHierarchy
+                hasNoHierarchy: $scope.hasNoHierarchy,
+                draftFormNames: formDraftService.getFormNamesFromDraft($rootScope.draftData)
             };
+
+            var cleanUpDraftWatch = $rootScope.$watch('draftData', function (newVal, oldVal) {
+                if (newVal === oldVal) { return; }
+                $scope.observationFormData.draftFormNames = formDraftService.getFormNamesFromDraft(newVal);
+            });
+
+            $scope.$on('$destroy', function () {
+                cleanUpDraftWatch();
+            });
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {

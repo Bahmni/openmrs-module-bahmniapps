@@ -1,0 +1,6 @@
+{
+    "LOGOUT_DRAFTS_WARNING_TITLE_KEY": "Bản nháp đang xử lý",
+    "LOGOUT_DRAFTS_WARNING_MESSAGE_KEY": "Bạn có các biểu mẫu quan sát chưa lưu. Bạn có chắc chắn muốn đăng xuất không?",
+    "LOGOUT_DRAFTS_WARNING_CANCEL_KEY": "Hủy",
+    "LOGOUT_DRAFTS_WARNING_LOGOUT_KEY": "Đăng xuất"
+}
