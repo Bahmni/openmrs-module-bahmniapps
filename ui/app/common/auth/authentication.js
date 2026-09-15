@@ -37,7 +37,7 @@ angular.module('authentication')
             });
         });
     }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', '$window', function ($rootScope, $http, $q, $bahmniCookieStore, userService, $window) {
-        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)';
+        var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid,user:(username))';
 
         var getAuthFromServer = function (username, password, otp) {
             var btoa = otp ? username + ':' + password + ':' + otp : username + ':' + password;
@@ -146,29 +146,42 @@ angular.module('authentication')
                 });
                 return deferrable.promise;
             }
-            userService.getUser(currentUser).then(function (data) {
-                userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
-                    if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
-                        $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
-                        $rootScope.currentUser.provider = providers.results[0];
-                        var location = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
-                        if (location) {
-                            $rootScope.currentUser.currentLocation = location.name;
+            self.get().then(function (response) {
+                var sessionUser = response.data && response.data.user;
+                if (!sessionUser || !sessionUser.username || sessionUser.username.toLowerCase() !== currentUser.toLowerCase()) {
+                    self.destroy().finally(function () {
+                        $rootScope.$broadcast('event:auth-loginRequired');
+                        deferrable.reject("Session user changed. Please login again.");
+                    });
+                    return;
+                }
+                userService.getUser(currentUser).then(function (data) {
+                    userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
+                        if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
+                            $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
+                            $rootScope.currentUser.provider = providers.results[0];
+                            var location = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
+                            if (location) {
+                                $rootScope.currentUser.currentLocation = location.name;
+                            }
+                            $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
+                            deferrable.resolve(data.results[0]);
+                        } else {
+                            self.destroy();
+                            deferrable.reject("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER");
                         }
-                        $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
-                        deferrable.resolve(data.results[0]);
-                    } else {
-                        self.destroy();
-                        deferrable.reject("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER");
-                    }
-                },
-               function () {
-                   self.destroy();
-                   deferrable.reject("COULD_NOT_GET_PROVIDER");
-               });
+                    },
+                   function () {
+                       self.destroy();
+                       deferrable.reject("COULD_NOT_GET_PROVIDER");
+                   });
+                }, function () {
+                    self.destroy();
+                    deferrable.reject('Could not get roles for the current user.');
+                });
             }, function () {
                 self.destroy();
-                deferrable.reject('Could not get roles for the current user.');
+                deferrable.reject('Could not get the current session.');
             });
             return deferrable.promise;
         };

@@ -49,14 +49,100 @@ describe("Authentication", function () {
 
 
     describe("Should show error message ", function () {
-        it("to the user when user doesn't select the location for the first time login", inject(['sessionService', '$rootScope', function (sessionService, $rootScope) {
+        it("to the user when user doesn't select the location for the first time login", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
             var deferrable = jasmine.createSpyObj('deferrable', ['reject']);
             $q.defer.and.returnValue(deferrable);
             spyOn(sessionService, 'destroy');
+            $bahmniCookieStore.get.and.callFake(function (cookieName) {
+                if (cookieName == Bahmni.Common.Constants.currentUser) {
+                    return 'superman';
+                }
+            });
+            var fakeHttpGetPromise = {
+                then: function (success, failure) {
+                    success({data: {uuid: 'some-uuid', user: {username: 'superman'}}});
+                }
+            };
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
 
             sessionService.loadCredentials();
 
             expect(deferrable.reject).toHaveBeenCalledWith("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER");
+        }]));
+    });
+
+    describe("loadCredentials", function () {
+        it("should proceed to fetch the user when the cookie username matches the session username case-insensitively", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
+            var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
+            $q.defer.and.returnValue(deferrable);
+            spyOn(sessionService, 'destroy');
+            spyOn($rootScope, '$broadcast');
+            $bahmniCookieStore.get.and.callFake(function (cookieName) {
+                if (cookieName == Bahmni.Common.Constants.currentUser) {
+                    return 'Superman';
+                }
+            });
+            var fakeHttpGetPromise = {
+                then: function (success, failure) {
+                    success({data: {uuid: 'some-uuid', user: {username: 'superman'}}});
+                }
+            };
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
+
+            sessionService.loadCredentials();
+
+            expect(userService.getUser).toHaveBeenCalledWith('Superman');
+            expect($rootScope.$broadcast).not.toHaveBeenCalledWith('event:auth-loginRequired');
+        }]));
+
+        it("should logout when the cookie username does not match the session username", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
+            var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
+            $q.defer.and.returnValue(deferrable);
+            spyOn(sessionService, 'destroy').and.returnValue(specUtil.createFakePromise());
+            spyOn($rootScope, '$broadcast');
+            $bahmniCookieStore.get.and.callFake(function (cookieName) {
+                if (cookieName == Bahmni.Common.Constants.currentUser) {
+                    return 'superman';
+                }
+            });
+            var fakeHttpGetPromise = {
+                then: function (success, failure) {
+                    success({data: {uuid: 'some-uuid', user: {username: 'registration'}}});
+                }
+            };
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
+
+            sessionService.loadCredentials();
+
+            expect(userService.getUser).not.toHaveBeenCalled();
+            expect(sessionService.destroy).toHaveBeenCalled();
+            expect($rootScope.$broadcast).toHaveBeenCalledWith('event:auth-loginRequired');
+            expect(deferrable.reject).toHaveBeenCalledWith("Session user changed. Please login again.");
+        }]));
+
+        it("should logout when the session has no user", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
+            var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
+            $q.defer.and.returnValue(deferrable);
+            spyOn(sessionService, 'destroy').and.returnValue(specUtil.createFakePromise());
+            spyOn($rootScope, '$broadcast');
+            $bahmniCookieStore.get.and.callFake(function (cookieName) {
+                if (cookieName == Bahmni.Common.Constants.currentUser) {
+                    return 'superman';
+                }
+            });
+            var fakeHttpGetPromise = {
+                then: function (success, failure) {
+                    success({data: {uuid: 'some-uuid'}});
+                }
+            };
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
+
+            sessionService.loadCredentials();
+
+            expect(userService.getUser).not.toHaveBeenCalled();
+            expect(sessionService.destroy).toHaveBeenCalled();
+            expect($rootScope.$broadcast).toHaveBeenCalledWith('event:auth-loginRequired');
+            expect(deferrable.reject).toHaveBeenCalledWith("Session user changed. Please login again.");
         }]));
     });
 
@@ -178,7 +264,7 @@ describe("Authentication", function () {
 
             sessionService.resendOTP("userName", "password");
 
-            expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/session?v=custom:(uuid)&resendOTP=true', {
+            expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/session?v=custom:(uuid,user:(username))&resendOTP=true', {
                 headers: {Authorization: 'Basic dXNlck5hbWU6cGFzc3dvcmQ='},
                 cache: false
             })
