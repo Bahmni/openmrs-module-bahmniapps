@@ -5,7 +5,8 @@ exports[`OrderItem should render the component 1`] = `
   <div
     class="order-item-wrapper"
   >
-    <div
+    <button
+      aria-expanded="false"
       class="order-item-header"
     >
       <div>
@@ -32,7 +33,7 @@ exports[`OrderItem should render the component 1`] = `
           />
         </svg>
       </div>
-    </div>
+    </button>
   </div>
 </div>
 `;
@@ -42,7 +43,8 @@ exports[`OrderItemContainer should render the component 1`] = `
   <div
     class="accordion order-item-container"
   >
-    <div
+    <button
+      aria-expanded="true"
       class="accordion-header"
     >
       <span
@@ -66,7 +68,7 @@ exports[`OrderItemContainer should render the component 1`] = `
       <span>
         01 Jan 2024 10:00 AM
       </span>
-    </div>
+    </button>
     <div
       class="accordion-content"
     >
@@ -74,7 +76,8 @@ exports[`OrderItemContainer should render the component 1`] = `
         <div
           class="order-item-wrapper"
         >
-          <div
+          <button
+            aria-expanded="false"
             class="order-item-header"
           >
             <div>
@@ -101,12 +104,13 @@ exports[`OrderItemContainer should render the component 1`] = `
                 />
               </svg>
             </div>
-          </div>
+          </button>
         </div>
         <div
           class="order-item-wrapper"
         >
-          <div
+          <button
+            aria-expanded="false"
             class="order-item-header"
           >
             <div>
@@ -133,12 +137,13 @@ exports[`OrderItemContainer should render the component 1`] = `
                 />
               </svg>
             </div>
-          </div>
+          </button>
         </div>
         <div
           class="order-item-wrapper"
         >
-          <div
+          <button
+            aria-expanded="false"
             class="order-item-header"
           >
             <div>
@@ -165,7 +170,7 @@ exports[`OrderItemContainer should render the component 1`] = `
                 />
               </svg>
             </div>
-          </div>
+          </button>
         </div>
       </div>
     </div>

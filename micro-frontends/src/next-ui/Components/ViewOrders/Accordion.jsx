@@ -12,12 +12,12 @@ export function Accordion({header, children, defaultOpen = false, className = ""
 
     return (
         <div className={`accordion ${className}`}>
-            <div className="accordion-header" onClick={toggleAccordion}>
+            <button className="accordion-header" onClick={toggleAccordion} aria-expanded={isOpen}>
                 <span className="accordion-icon">
                     {isOpen ? <CaretDown/> : <CaretRight/>}
                 </span>
                 {header}
-            </div>
+            </button>
             {isOpen && <div className="accordion-content">{children}</div>}
         </div>
     );

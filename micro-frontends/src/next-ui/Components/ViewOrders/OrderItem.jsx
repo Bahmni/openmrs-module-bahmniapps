@@ -9,11 +9,11 @@ import { FormattedMessage } from "react-intl";
 export function OrderItem({name, value, updatedBy}) {
     const [isOpen, setIsOpen] = useState(false);
     return <div className="order-item-wrapper">
-        <div className="order-item-header" onClick={() => updatedBy && setIsOpen(!isOpen)}>
+        <button className="order-item-header" onClick={() => updatedBy && setIsOpen(!isOpen)} disabled={!updatedBy} aria-expanded={isOpen}>
             <div>{name}</div>
             <div>{value}</div>
             {updatedBy ? <div className="order-item-chevron">{isOpen ? <ChevronUp/> : <ChevronDown/>}</div>: <div/>}
-        </div>
+        </button>
         {isOpen && <div className="order-item-details">{updatedBy}</div>}
     </div>
 }

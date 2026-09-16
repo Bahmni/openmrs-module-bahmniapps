@@ -5,7 +5,8 @@ exports[`Accordion should render the component with header 1`] = `
   <div
     class="accordion "
   >
-    <div
+    <button
+      aria-expanded="false"
       class="accordion-header"
     >
       <span
@@ -29,7 +30,7 @@ exports[`Accordion should render the component with header 1`] = `
       <span>
         Test Header
       </span>
-    </div>
+    </button>
   </div>
 </div>
 `;
@@ -39,7 +40,8 @@ exports[`Accordion should toggle content when header is clicked 1`] = `
   <div
     class="accordion "
   >
-    <div
+    <button
+      aria-expanded="true"
       class="accordion-header"
     >
       <span
@@ -63,7 +65,7 @@ exports[`Accordion should toggle content when header is clicked 1`] = `
       <span>
         Test Header
       </span>
-    </div>
+    </button>
     <div
       class="accordion-content"
     >

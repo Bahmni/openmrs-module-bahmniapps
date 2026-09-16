@@ -42,36 +42,23 @@ describe("OrdersDisplayControl", () => {
 
   const mockHostApi = {};
 
+  const mockOrderResource = (id, text, requester, date, extras = {}) => ({
+    resource: {
+      id,
+      code: { text },
+      requester: { display: requester },
+      authoredOn: date,
+      status: "active",
+      ...extras,
+    },
+  });
+
   const mockServiceRequestResponse = {
     data: {
       entry: [
-        {
-          resource: {
-            id: "order-1",
-            code: { text: "Lab Order 1" },
-            requester: { display: "Dr. Smith" },
-            authoredOn: "2024-01-15T10:00:00.000Z",
-            status: "active",
-          },
-        },
-        {
-          resource: {
-            id: "order-2",
-            code: { text: "Lab Order 2" },
-            requester: { display: "Dr. Johnson" },
-            authoredOn: "2024-01-10T10:00:00.000Z",
-            status: "active",
-          },
-        },
-        {
-          resource: {
-            id: "order-3",
-            code: { text: "Lab Order 3" },
-            requester: { display: "Dr. Brown" },
-            authoredOn: "2024-01-05T10:00:00.000Z",
-            status: "active",
-          },
-        },
+        mockOrderResource("order-1", "Lab Order 1", "Dr. Smith", "2024-01-15T10:00:00.000Z"),
+        mockOrderResource("order-2", "Lab Order 2", "Dr. Johnson", "2024-01-10T10:00:00.000Z"),
+        mockOrderResource("order-3", "Lab Order 3", "Dr. Brown", "2024-01-05T10:00:00.000Z"),
       ],
     },
   };
@@ -211,28 +198,20 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle extensions with missing optional fields", async () => {
-    const responseWithMissingFields = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              code: { text: "Simple Order" },
-              requester: { display: "Dr. Test" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-              extension: [
-                {
-                  url: "http://example.com/fhir/StructureDefinition/task-status",
-                  valueString: "REQUESTED",
-                },
-              ],
-            },
-          },
+          mockOrderResource("order-1", "Simple Order", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+            extension: [
+              {
+                url: "http://example.com/fhir/StructureDefinition/task-status",
+                valueString: "REQUESTED",
+              },
+            ],
+          }),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithMissingFields);
+    });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
 
@@ -242,22 +221,13 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle resource without extension array", async () => {
-    const responseWithoutExtensions = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              code: { text: "Order Without Extensions" },
-              requester: { display: "Dr. Test" },
-              status: "active",
-              authoredOn: "2024-01-15T10:00:00.000Z",
-            },
-          },
+          mockOrderResource("order-1", "Order Without Extensions", "Dr. Test", "2024-01-15T10:00:00.000Z"),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithoutExtensions);
+    });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
 
@@ -267,28 +237,20 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle extensions with invalid URLs", async () => {
-    const responseWithInvalidUrls = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              code: { text: "Order With Invalid URLs" },
-              requester: { display: "Dr. Test" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-              extension: [
-                {
-                  url: "http://example.com/unknown-extension",
-                  valueString: "Some Value",
-                },
-              ],
-            },
-          },
+          mockOrderResource("order-1", "Order With Invalid URLs", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+            extension: [
+              {
+                url: "http://example.com/unknown-extension",
+                valueString: "Some Value",
+              },
+            ],
+          }),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithInvalidUrls);
+    });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
 
@@ -298,7 +260,7 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle resource without code.text", async () => {
-    const responseWithoutCodeText = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
           {
@@ -307,14 +269,11 @@ describe("OrdersDisplayControl", () => {
               requester: { display: "Dr. Test" },
               authoredOn: "2024-01-15T10:00:00.000Z",
               status: "active",
-              extension: [],
             },
           },
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithoutCodeText);
+    });
 
     render(<OrdersDisplayControl hostData={mockHostData} />);
 
@@ -324,7 +283,7 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle resource without requester.display", async () => {
-    const responseWithoutRequester = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
           {
@@ -332,14 +291,11 @@ describe("OrdersDisplayControl", () => {
               code: { text: "Order Without Requester" },
               status: "active",
               authoredOn: "2024-01-15T10:00:00.000Z",
-              extension: [],
             },
           },
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithoutRequester);
+    });
 
     render(<OrdersDisplayControl hostData={mockHostData} />);
 
@@ -349,41 +305,15 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle multiple orders and maintain sorting", async () => {
-    const multipleOrders = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              code: { text: "Order A" },
-              requester: { display: "Dr. A" },
-              authoredOn: "2024-01-20T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              code: { text: "Order B" },
-              requester: { display: "Dr. B" },
-              status: "active",
-              authoredOn: "2024-01-10T10:00:00.000Z",
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              code: { text: "Order C" },
-              requester: { display: "Dr. C" },
-              status: "active",
-              authoredOn: "2024-01-30T10:00:00.000Z",
-              extension: [],
-            },
-          },
+          mockOrderResource("order-1", "Order A", "Dr. A", "2024-01-20T10:00:00.000Z"),
+          mockOrderResource("order-2", "Order B", "Dr. B", "2024-01-10T10:00:00.000Z"),
+          mockOrderResource("order-3", "Order C", "Dr. C", "2024-01-30T10:00:00.000Z"),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(multipleOrders);
+    });
 
     const { container } = render(
       <OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />
@@ -425,39 +355,16 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should filter out replacement orders (orders with replaces field)", async () => {
-    const responseWithReplacementOrder = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              id: "order-1",
-              code: { text: "Active Order" },
-              requester: { display: "Dr. Smith" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "order-2",
-              code: { text: "Replacement Order" },
-              requester: { display: "Dr. Smith" },
-              authoredOn: "2024-01-16T10:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: "ServiceRequest/order-1",
-                },
-              ],
-              extension: [],
-            },
-          },
+          mockOrderResource("order-1", "Active Order", "Dr. Smith", "2024-01-15T10:00:00.000Z"),
+          mockOrderResource("order-2", "Replacement Order", "Dr. Smith", "2024-01-16T10:00:00.000Z", {
+            replaces: [{ reference: "ServiceRequest/order-1" }],
+          }),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithReplacementOrder);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
@@ -469,49 +376,17 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should filter out cancelled orders (orders referenced in replaces field)", async () => {
-    const responseWithCancelledOrder = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              id: "cancelled-order-123",
-              code: { text: "Cancelled Order" },
-              requester: { display: "Dr. Johnson" },
-              authoredOn: "2024-01-10T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "replacement-order-456",
-              code: { text: "Replacement Order" },
-              requester: { display: "Dr. Johnson" },
-              authoredOn: "2024-01-12T10:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: "ServiceRequest/cancelled-order-123",
-                },
-              ],
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "normal-order-789",
-              code: { text: "Normal Order" },
-              requester: { display: "Dr. Brown" },
-              authoredOn: "2024-01-13T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
+          mockOrderResource("cancelled-order-123", "Cancelled Order", "Dr. Johnson", "2024-01-10T10:00:00.000Z"),
+          mockOrderResource("replacement-order-456", "Replacement Order", "Dr. Johnson", "2024-01-12T10:00:00.000Z", {
+            replaces: [{ reference: "ServiceRequest/cancelled-order-123" }],
+          }),
+          mockOrderResource("normal-order-789", "Normal Order", "Dr. Brown", "2024-01-13T10:00:00.000Z"),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithCancelledOrder);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
@@ -524,25 +399,15 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should show orders with empty replaces array", async () => {
-    const responseWithEmptyReplaces = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              id: "order-with-empty-replaces",
-              code: { text: "Order With Empty Replaces" },
-              requester: { display: "Dr. Test" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-              replaces: [],
-              extension: [],
-            },
-          },
+          mockOrderResource("order-with-empty-replaces", "Order With Empty Replaces", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+            replaces: [],
+          }),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithEmptyReplaces);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
@@ -553,54 +418,19 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle malformed reference strings without crashing", async () => {
-    const responseWithMalformedReference = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              id: "order-1",
-              code: { text: "Active Order" },
-              requester: { display: "Dr. Smith" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "order-2",
-              code: { text: "Order With Malformed Reference" },
-              requester: { display: "Dr. Smith" },
-              authoredOn: "2024-01-16T10:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: "InvalidFormat",
-                },
-              ],
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "order-3",
-              code: { text: "Order With Null Reference" },
-              requester: { display: "Dr. Jones" },
-              authoredOn: "2024-01-17T10:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: null,
-                },
-              ],
-              extension: [],
-            },
-          },
+          mockOrderResource("order-1", "Active Order", "Dr. Smith", "2024-01-15T10:00:00.000Z"),
+          mockOrderResource("order-2", "Order With Malformed Reference", "Dr. Smith", "2024-01-16T10:00:00.000Z", {
+            replaces: [{ reference: "InvalidFormat" }],
+          }),
+          mockOrderResource("order-3", "Order With Null Reference", "Dr. Jones", "2024-01-17T10:00:00.000Z", {
+            replaces: [{ reference: null }],
+          }),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithMalformedReference);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
@@ -613,64 +443,20 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle complex replacement chains correctly", async () => {
-    const responseWithReplacementChain = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              id: "original-order",
-              code: { text: "Original Order" },
-              requester: { display: "Dr. A" },
-              authoredOn: "2024-01-10T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "first-replacement",
-              code: { text: "First Replacement" },
-              requester: { display: "Dr. B" },
-              authoredOn: "2024-01-11T10:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: "ServiceRequest/original-order",
-                },
-              ],
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "second-replacement",
-              code: { text: "Second Replacement" },
-              requester: { display: "Dr. C" },
-              authoredOn: "2024-01-12T10:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: "ServiceRequest/first-replacement",
-                },
-              ],
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "independent-order",
-              code: { text: "Independent Order" },
-              requester: { display: "Dr. D" },
-              authoredOn: "2024-01-13T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
+          mockOrderResource("original-order", "Original Order", "Dr. A", "2024-01-10T10:00:00.000Z"),
+          mockOrderResource("first-replacement", "First Replacement", "Dr. B", "2024-01-11T10:00:00.000Z", {
+            replaces: [{ reference: "ServiceRequest/original-order" }],
+          }),
+          mockOrderResource("second-replacement", "Second Replacement", "Dr. C", "2024-01-12T10:00:00.000Z", {
+            replaces: [{ reference: "ServiceRequest/first-replacement" }],
+          }),
+          mockOrderResource("independent-order", "Independent Order", "Dr. D", "2024-01-13T10:00:00.000Z"),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithReplacementChain);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
@@ -684,54 +470,19 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle multiple orders replacing the same order", async () => {
-    const responseWithMultipleReplacements = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              id: "original-order",
-              code: { text: "Original Order" },
-              requester: { display: "Dr. A" },
-              authoredOn: "2024-01-10T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "replacement-1",
-              code: { text: "Replacement 1" },
-              requester: { display: "Dr. B" },
-              authoredOn: "2024-01-11T10:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: "ServiceRequest/original-order",
-                },
-              ],
-              extension: [],
-            },
-          },
-          {
-            resource: {
-              id: "replacement-2",
-              code: { text: "Replacement 2" },
-              requester: { display: "Dr. C" },
-              authoredOn: "2024-01-11T11:00:00.000Z",
-              status: "active",
-              replaces: [
-                {
-                  reference: "ServiceRequest/original-order",
-                },
-              ],
-              extension: [],
-            },
-          },
+          mockOrderResource("original-order", "Original Order", "Dr. A", "2024-01-10T10:00:00.000Z"),
+          mockOrderResource("replacement-1", "Replacement 1", "Dr. B", "2024-01-11T10:00:00.000Z", {
+            replaces: [{ reference: "ServiceRequest/original-order" }],
+          }),
+          mockOrderResource("replacement-2", "Replacement 2", "Dr. C", "2024-01-11T11:00:00.000Z", {
+            replaces: [{ reference: "ServiceRequest/original-order" }],
+          }),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithMultipleReplacements);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
@@ -745,29 +496,20 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should use shortName from FHIR_EXT_ORDER_SHORT_NAME extension instead of code.text when present", async () => {
-    const responseWithShortName = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
-          {
-            resource: {
-              id: "order-with-short-name",
-              code: { text: "Full Long Order Name" },
-              requester: { display: "Dr. Test" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-              extension: [
-                {
-                  url: "http://example.com/fhir/StructureDefinition/order-short-name",
-                  valueString: "Short Name",
-                },
-              ],
-            },
-          },
+          mockOrderResource("order-with-short-name", "Full Long Order Name", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+            extension: [
+              {
+                url: "http://example.com/fhir/StructureDefinition/order-short-name",
+                valueString: "Short Name",
+              },
+            ],
+          }),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithShortName);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
@@ -779,7 +521,7 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle missing resource.id gracefully", async () => {
-    const responseWithMissingId = {
+    axios.get.mockResolvedValueOnce({
       data: {
         entry: [
           {
@@ -788,24 +530,12 @@ describe("OrdersDisplayControl", () => {
               requester: { display: "Dr. Test" },
               authoredOn: "2024-01-15T10:00:00.000Z",
               status: "active",
-              extension: [],
             },
           },
-          {
-            resource: {
-              id: "order-with-id",
-              code: { text: "Order With ID" },
-              requester: { display: "Dr. Test" },
-              authoredOn: "2024-01-16T10:00:00.000Z",
-              status: "active",
-              extension: [],
-            },
-          },
+          mockOrderResource("order-with-id", "Order With ID", "Dr. Test", "2024-01-16T10:00:00.000Z"),
         ],
       },
-    };
-
-    axios.get.mockResolvedValueOnce(responseWithMissingId);
+    });
     axios.get.mockResolvedValueOnce({ data: { entry: [] } });
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
