@@ -103,7 +103,7 @@ describe("AdtController", function () {
 
         scope.admit();
         expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/visitChangeConfirmation.html', scope: scope, closeByEscape: true});
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/visitChangeConfirmation.html', scope: scope, closeByEscape: true, preCloseCallback: jasmine.any(Function)});
     });
 
     it("Should not show confirmation dialog if patient's visit type is defaultVisitType", function () {
