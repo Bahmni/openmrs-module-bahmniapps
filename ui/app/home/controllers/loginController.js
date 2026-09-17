@@ -72,8 +72,8 @@ angular.module('bahmni.home')
                     });
 
                     if (_.isEmpty($scope.locales)) {
-                        var savedLoacale = $translate.use() || "en";
-                        $scope.locales = [findLanguageByLocale(savedLoacale) || {"code": savedLoacale, "nativeName": savedLoacale}];
+                        var savedLocale = $translate.use() || "en";
+                        $scope.locales = [findLanguageByLocale(savedLocale) || {"code": savedLocale, "nativeName": savedLocale}];
                     }
                     $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
                 });
