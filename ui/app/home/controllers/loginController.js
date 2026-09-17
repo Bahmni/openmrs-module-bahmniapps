@@ -80,7 +80,7 @@ angular.module('bahmni.home')
             };
 
             localeService.getLocalesLangs().then(function (response) {
-                localeLanguages = (response.data && response.data.locales) || [];
+                localeLanguages = response.data?.locales || [];
             }).finally(setLocalesFromAllowedList);
 
             localeService.defaultLocale().then(function (response) {

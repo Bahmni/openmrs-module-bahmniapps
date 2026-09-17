@@ -74,25 +74,22 @@ describe('localeService', function () {
         });
     });
 
-    it('should disable caching while fetching the allowed list of locales', function () {
-        _$http.get.and.returnValue(specUtil.respondWith({"data": localesList}));
-
-        localeService.allowedLocalesList();
-
+    function expectNoCacheHeaders() {
         var requestConfig = _$http.get.calls.mostRecent().args[1];
         expect(requestConfig.cache).toBe(false);
         expect(requestConfig.headers['Cache-Control']).toEqual('no-cache');
         expect(requestConfig.headers.Pragma).toEqual('no-cache');
+    }
+
+    it('should disable caching while fetching the allowed list of locales', function () {
+        _$http.get.and.returnValue(specUtil.respondWith({"data": localesList}));
+        localeService.allowedLocalesList();
+        expectNoCacheHeaders();
     });
 
     it('should disable caching while fetching locale languages', function () {
         _$http.get.and.returnValue(specUtil.respondWith({"data": localeLangs}));
-
         localeService.getLocalesLangs();
-
-        var requestConfig = _$http.get.calls.mostRecent().args[1];
-        expect(requestConfig.cache).toBe(false);
-        expect(requestConfig.headers['Cache-Control']).toEqual('no-cache');
-        expect(requestConfig.headers.Pragma).toEqual('no-cache');
+        expectNoCacheHeaders();
     });
 });

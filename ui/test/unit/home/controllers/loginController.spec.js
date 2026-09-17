@@ -160,8 +160,6 @@ describe('loginController', function () {
     });
 
     it('should still populate locales from the allowed list when getLocalesLangs fails', function () {
-        // getLocalesLangs() rejects: its .then(success) is skipped but .finally() still runs,
-        // so the dropdown is built from the allowed list using the locale codes as names.
         var failedLangsPromise = {
             then: function () { return this; },
             finally: function (callback) { callback(); return this; }
