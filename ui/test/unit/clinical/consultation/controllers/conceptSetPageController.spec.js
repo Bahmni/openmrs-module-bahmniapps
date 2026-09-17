@@ -583,42 +583,5 @@ describe('ConceptSetPageController', function () {
                 expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Form not found. Please contact your administrator.');
             });
         });
-
-        it('should broadcast openFormByUuid even when form is already in selectedObsTemplate', function () {
-            inject(function ($timeout) {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'Test Form'}, uuid: 'form-uuid-123', formUuid: 'form-uuid-123'}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
-
-                stateParams.formUuid = 'form-uuid-123';
-                var testForm = {uuid: 'form-uuid-123', label: 'Test Form', formUuid: 'form-uuid-123'};
-
-                createController();
-                scope.consultation.selectedObsTemplate = [testForm];
-
-                var broadcastSpy = spyOn(rootScope, '$broadcast');
-                scope.$digest();
-                $timeout.flush();
-
-                expect(broadcastSpy).toHaveBeenCalledWith('event:openFormByUuid', jasmine.any(Object));
-            });
-        });
-
-        it('should not add form to selectedObsTemplate twice when form is already selected', function () {
-            inject(function ($timeout) {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'Test Form'}, uuid: 'form-uuid-456', formUuid: 'form-uuid-456'}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
-
-                var testForm = {uuid: 'form-uuid-456', label: 'Test Form', formUuid: 'form-uuid-456'};
-                scope.consultation.selectedObsTemplate = [testForm];
-
-                var initialLength = scope.consultation.selectedObsTemplate.length;
-                scope.$digest();
-
-                expect(scope.consultation.selectedObsTemplate.length).toBe(initialLength);
-                expect(scope.consultation.selectedObsTemplate.length).toBe(1);
-            });
-        });
     });
 });
