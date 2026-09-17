@@ -11,6 +11,12 @@
 
 angular.module('bahmni.common.domain')
     .service('localeService', ['$http', function ($http) {
+        var noCacheHeaders = {
+            Accept: 'text/plain',
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+        };
+
         this.allowedLocalesList = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
@@ -19,11 +25,7 @@ angular.module('bahmni.common.domain')
                 },
                 withCredentials: true,
                 cache: false,
-                headers: {
-                    Accept: 'text/plain',
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                }
+                headers: noCacheHeaders
             });
         };
 
@@ -62,11 +64,7 @@ angular.module('bahmni.common.domain')
             return $http.get(Bahmni.Common.Constants.localeLangs, {
                 method: "GET",
                 cache: false,
-                headers: {
-                    Accept: 'text/plain',
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                }
+                headers: noCacheHeaders
             });
         };
     }]);
