@@ -36,7 +36,10 @@ describe('ConceptSetPageController', function () {
         scope.consultation = {
             preSaveHandler: {
                 register: register
-            }
+            },
+            selectedObsTemplate: [],
+            observationForms: [],
+            observations: []
         };
 
         state = {
@@ -489,4 +492,96 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[1].klass).toBe("active");
         })
     })
+
+    describe('Form Navigation with formUuid', function () {
+        it('should add form to selectedObsTemplate when formUuid is provided in stateParams', function () {
+            inject(function ($timeout) {
+                var mockObsConcept = {
+                    data: {
+                        results: [{
+                            setMembers: [
+                                {
+                                    uuid: 'concept-uuid-1',
+                                    name: {name: 'Template 1', display: 'Template 1'},
+                                    set: true,
+                                    setMembers: [],
+                                    formUuid: 'form-uuid-1'
+                                }
+                            ]
+                        }]
+                    }
+                };
+                var mockFormResponse = {
+                    data: [
+                        {
+                            name: 'Form1',
+                            version: '1',
+                            uuid: 'form-uuid-1',
+                            resources: [{value: '{}'}]
+                        }
+                    ]
+                };
+
+                conceptSetService.getConcept.and.returnValue({then: function (callback) {
+                    callback(mockObsConcept);
+                    return {then: function (next) { return {then: function () {}}; }};
+                }});
+                formService.getFormList.and.returnValue({then: function (callback) {
+                    callback(mockFormResponse);
+                    return {then: function () {}};
+                }});
+
+                stateParams.formUuid = 'form-uuid-1';
+
+                createController();
+                $timeout.flush();
+
+                var isInSelected = _.find(scope.consultation.selectedObsTemplate, function(t) {
+                    return t.formUuid === 'form-uuid-1';
+                });
+                expect(isInSelected).toBeDefined();
+            });
+        });
+
+        it('should show error when formUuid is provided but no matching template is found', function () {
+            inject(function ($timeout) {
+                var mockObsConcept = {
+                    data: {
+                        results: [{
+                            setMembers: [{
+                                uuid: 'concept-uuid-1',
+                                name: {name: 'Template 1', display: 'Template 1'},
+                                set: true,
+                                setMembers: [],
+                                formUuid: 'form-uuid-1'
+                            }]
+                        }]
+                    }
+                };
+                var mockFormResponse = {
+                    data: [{
+                        name: 'Form1',
+                        version: '1',
+                        uuid: 'form-uuid-1',
+                        resources: [{value: '{}'}]
+                    }]
+                };
+
+                conceptSetService.getConcept.and.returnValue({then: function (callback) {
+                    callback(mockObsConcept);
+                    return {then: function (next) { return {then: function () {}}; }};
+                }});
+                formService.getFormList.and.returnValue({then: function (callback) {
+                    callback(mockFormResponse);
+                    return {then: function () {}};
+                }});
+
+                stateParams.formUuid = 'missing-form-uuid';
+
+                createController();
+
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Form not found. Please contact your administrator.');
+            });
+        });
+    });
 });

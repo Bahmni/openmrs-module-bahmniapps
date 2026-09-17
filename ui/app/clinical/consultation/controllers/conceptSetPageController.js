@@ -12,10 +12,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService',
+        'contextChangeHandler', '$q', '$translate', 'formService', '$timeout',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-                  contextChangeHandler, $q, $translate, formService) {
+                  contextChangeHandler, $q, $translate, formService, $timeout) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -27,6 +27,11 @@ angular.module('bahmni.clinical')
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
             var allConceptSections = [];
+
+            // Track deleted/removed form UUIDs to prevent re-rendering blank forms when navigating back
+            var getRootDeletedFormIds = function () {
+                return $rootScope.deletedFormIds || [];
+            };
 
             var init = function () {
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
@@ -54,22 +59,58 @@ angular.module('bahmni.clinical')
                     }));
                 }
             };
+            var addFormToTemplateAndBroadcast = function (form) {
+                if (!_.some($scope.consultation.selectedObsTemplate, function (t) { return t === form; })) {
+                    form.isAdded = true;
+                    $scope.consultation.selectedObsTemplate.push(form);
+                }
+                $timeout(function () {
+                    $rootScope.$broadcast('event:openFormByUuid', { form: form });
+                }, 0);
+            };
+
+            var handleFormUuidNavigation = function () {
+                var formUuidParam = $stateParams.formUuid;
+                if (!formUuidParam) {
+                    return;
+                }
+
+                var targetForm = _.find($scope.allTemplates, function (t) {
+                    return t.formUuid === formUuidParam;
+                });
+
+                if (!targetForm) {
+                    messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
+                    return;
+                }
+
+                addFormToTemplateAndBroadcast(targetForm);
+            };
+
+            var initializeTemplatesIfEmpty = function () {
+                if ($scope.consultation.selectedObsTemplate.length > 0) {
+                    return;
+                }
+
+                initializeDefaultTemplates();
+                if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
+                    addTemplatesInSavedOrder();
+                }
+
+                var templateToBeOpened = getLastVisitedTemplate() ||
+                    _.first($scope.consultation.selectedObsTemplate);
+
+                if (templateToBeOpened && !$stateParams.formUuid) {
+                    openTemplate(templateToBeOpened);
+                }
+            };
+
             var concatObservationForms = function () {
                 $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
                 $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
                 $scope.allTemplates = $scope.allTemplates.concat($scope.consultation.observationForms);
-                if ($scope.consultation.selectedObsTemplate.length == 0) {
-                    initializeDefaultTemplates();
-                    if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
-                        addTemplatesInSavedOrder();
-                    }
-                    var templateToBeOpened = getLastVisitedTemplate() ||
-                        _.first($scope.consultation.selectedObsTemplate);
-
-                    if (templateToBeOpened) {
-                        openTemplate(templateToBeOpened);
-                    }
-                }
+                initializeTemplatesIfEmpty();
+                handleFormUuidNavigation();
             };
 
             var addTemplatesInSavedOrder = function () {

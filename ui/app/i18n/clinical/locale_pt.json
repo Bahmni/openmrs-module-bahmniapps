@@ -362,6 +362,6 @@
     "SIGN_SYMPTOM_DURATION_KEY": "Sign/symptom duration",
     "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Chief Complaint Duration",
     "ADDITIONAL_INSTRUCTIONS": "Instruções adicionais",
-
-    "VARIABLE_DOSAGE_HEADER": "Dosagem Variável"
+    "VARIABLE_DOSAGE_HEADER": "Dosagem Variável",
+    "CLINICAL_FORM_NOT_FOUND_MESSAGE_KEY": "Paciente/Formulário não encontrado"
 }
