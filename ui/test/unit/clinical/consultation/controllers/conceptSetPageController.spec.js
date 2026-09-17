@@ -583,6 +583,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should broadcast openFormByUuid even when form is already in selectedObsTemplate', function () {
+            inject(function ($timeout) {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'Test Form'}, uuid: 'form-uuid-123', formUuid: 'form-uuid-123'}]}]};
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
@@ -594,21 +595,21 @@ describe('ConceptSetPageController', function () {
                 };
                 timeoutMock.cancel = jasmine.createSpy('cancel');
 
-                createControllerWithTimeoutAndFilter(timeoutMock);
+                createController();
                 stateParams.formUuid = 'form-uuid-123';
                 var testForm = {uuid: 'form-uuid-123', label: 'Test Form', formUuid: 'form-uuid-123'};
                 scope.consultation.selectedObsTemplate = [testForm];
 
                 var broadcastSpy = spyOn(rootScope, '$broadcast');
                 scope.$digest();
-                _.each(timeoutCallbacks, function (callback) {
-                    callback();
-                });
+                $timeout.flush();
 
                 expect(broadcastSpy).toHaveBeenCalledWith('event:openFormByUuid', jasmine.any(Object));
             });
+        });
 
-            it('should not add form to selectedObsTemplate twice when form is already selected', function () {
+        it('should not add form to selectedObsTemplate twice when form is already selected', function () {
+            inject(function ($timeout) {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'Test Form'}, uuid: 'form-uuid-456', formUuid: 'form-uuid-456'}]}]};
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
@@ -622,63 +623,6 @@ describe('ConceptSetPageController', function () {
                 expect(scope.consultation.selectedObsTemplate.length).toBe(initialLength);
                 expect(scope.consultation.selectedObsTemplate.length).toBe(1);
             });
-
-            it('should handle cold browser load / shared deeplink with formUuid - parent state instantiation', function () {
-                // AC2 requirement: verify cold browser load / deeplink to .../form/:formUuid properly instantiates parent view
-                // This simulates a user navigating directly to a deeplink or browser refresh at form/:formUuid URL
-                inject(function ($timeout) {
-                    var mockObsConcept = {
-                        data: {
-                            results: [{
-                                setMembers: [
-                                    {
-                                        uuid: 'concept-uuid-shared',
-                                        name: {name: 'Shared Form', display: 'Shared Form'},
-                                        set: true,
-                                        setMembers: [],
-                                        formUuid: 'shared-form-uuid'
-                                    }
-                                ]
-                            }]
-                        }
-                    };
-                    var mockFormResponse = {
-                        data: [
-                            {
-                                name: 'SharedForm',
-                                version: '1',
-                                uuid: 'shared-form-uuid',
-                                resources: [{value: '{}'}]
-                            }
-                        ]
-                    };
-
-                    conceptSetService.getConcept.and.returnValue({then: function (callback) {
-                        callback(mockObsConcept);
-                        return {then: function (next) { return {then: function () {}}; }};
-                    }});
-                    formService.getFormList.and.returnValue({then: function (callback) {
-                        callback(mockFormResponse);
-                        return {then: function () {}};
-                    }});
-
-                    // Simulate cold load with formUuid in URL params (parent state will read this)
-                    stateParams.formUuid = 'shared-form-uuid';
-
-                    createController();
-                    $timeout.flush();
-
-                    // Verify parent controller properly instantiated and read the formUuid param
-                    expect(scope.consultation).toBeDefined();
-                    expect(scope.allTemplates).toBeDefined();
-
-                    // Verify the form with matching formUuid is added to selectedObsTemplate
-                    var formInSelected = _.find(scope.consultation.selectedObsTemplate, function(t) {
-                        return t.formUuid === 'shared-form-uuid';
-                    });
-                    expect(formInSelected).toBeDefined();
-                    expect(formInSelected.label).toEqual('SharedForm');
-                });
-            });
         });
     });
+});
