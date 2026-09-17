@@ -576,7 +576,6 @@ describe('ConceptSetPageController', function () {
                 stateParams.formUuid = 'missing-form-uuid';
 
                 createController();
-                $timeout.flush();
 
                 expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Form not found. Please contact your administrator.');
             });
@@ -588,16 +587,10 @@ describe('ConceptSetPageController', function () {
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
 
-                var timeoutCallbacks = [];
-                var timeoutMock = function (callback, delay) {
-                    timeoutCallbacks.push(callback);
-                    return {$$timeoutId: timeoutCallbacks.length};
-                };
-                timeoutMock.cancel = jasmine.createSpy('cancel');
-
-                createController();
                 stateParams.formUuid = 'form-uuid-123';
                 var testForm = {uuid: 'form-uuid-123', label: 'Test Form', formUuid: 'form-uuid-123'};
+
+                createController();
                 scope.consultation.selectedObsTemplate = [testForm];
 
                 var broadcastSpy = spyOn(rootScope, '$broadcast');
