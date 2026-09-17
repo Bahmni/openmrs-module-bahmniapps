@@ -80,6 +80,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.confirmDiscardDraft = function () {
+                if (!$scope.enableFormDraftFeature) {
+                    return;
+                }
                 var dialogScope = $scope.$new();
                 var dialog = ngDialog.open({
                     template: 'dashboard/views/discardDraftConfirmation.html',
@@ -103,6 +106,9 @@ angular.module('bahmni.clinical')
             };
 
             var checkForExistingDrafts = function () {
+                if (!$scope.enableFormDraftFeature) {
+                    return;
+                }
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
                 var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
 

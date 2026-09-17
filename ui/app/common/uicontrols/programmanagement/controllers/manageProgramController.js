@@ -133,7 +133,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 }
                 var paths = path.split('.'), current = obj, i;
                 for (i = 0; i < paths.length; ++i) {
-                    if (current[paths[i]] == undefined) {
+                    if (!Object.prototype.hasOwnProperty.call(current, paths[i]) || current[paths[i]] == undefined) {
                         return undefined;
                     } else {
                         current = current[paths[i]];

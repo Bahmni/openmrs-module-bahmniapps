@@ -495,6 +495,14 @@ describe("patient dashboard controller", function () {
                 });
             });
 
+            it("should not open dialog when enableFormDraftFeature is false", function () {
+                _appConfig.getConfigValue.and.returnValue(false);
+                _rootScope.formDraftFeatureEnabled = false;
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                scope.confirmDiscardDraft();
+                expect(_ngDialog.open).not.toHaveBeenCalled();
+            });
+
             it("should open a confirmation dialog when confirmDiscardDraft is called", function () {
                 createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
                 scope.confirmDiscardDraft();
@@ -589,6 +597,15 @@ describe("patient dashboard controller", function () {
 
                 expect(_ngDialog.close).toHaveBeenCalledWith(fakeDialog.id);
                 expect(scope.formDraft.hasDrafts).toBe(true);
+            });
+        });
+
+        describe("checkForExistingDrafts", function () {
+            it("should not call getDraft when enableFormDraftFeature is false", function () {
+                _appConfig.getConfigValue.and.returnValue(false);
+                _rootScope.formDraftFeatureEnabled = false;
+                createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
+                expect(_formDraftService.getDraft).not.toHaveBeenCalled();
             });
         });
 

@@ -892,7 +892,6 @@ angular.module('bahmni.clinical')
                 var formData = formDirtyStateService.serializeFormData(dirtyTemplates);
                 return formDraftService.saveDraft(patientUuid, providerUuid, formData).then(function (response) {
                     var serverTimestamp = response.data.timestamp;
-                    var savedCleanState = formDirtyStateService.getObsValues($scope.consultation.selectedObsTemplate);
 
                     if (!dirtyTrackingState.postSaveWatchDeregister) {
                         dirtyTrackingState.postSaveWatchDeregister = $scope.$watch(
