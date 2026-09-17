@@ -36,7 +36,10 @@ describe('ConceptSetPageController', function () {
         scope.consultation = {
             preSaveHandler: {
                 register: register
-            }
+            },
+            selectedObsTemplate: [],
+            observationForms: [],
+            observations: []
         };
 
         state = {
