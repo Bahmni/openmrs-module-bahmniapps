@@ -59,51 +59,58 @@ angular.module('bahmni.clinical')
                     }));
                 }
             };
+            var addFormToTemplateAndBroadcast = function (form) {
+                if (!_.some($scope.consultation.selectedObsTemplate, function (t) { return t === form; })) {
+                    form.isAdded = true;
+                    $scope.consultation.selectedObsTemplate.push(form);
+                }
+                $timeout(function () {
+                    $rootScope.$broadcast('event:openFormByUuid', { form: form });
+                }, 0);
+            };
+
+            var handleFormUuidNavigation = function () {
+                var formUuidParam = $stateParams.formUuid;
+                if (!formUuidParam) {
+                    return;
+                }
+
+                var targetForm = _.find($scope.allTemplates, function (t) {
+                    return t.formUuid === formUuidParam;
+                });
+
+                if (!targetForm) {
+                    messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
+                    return;
+                }
+
+                addFormToTemplateAndBroadcast(targetForm);
+            };
+
+            var initializeTemplatesIfEmpty = function () {
+                if ($scope.consultation.selectedObsTemplate.length > 0) {
+                    return;
+                }
+
+                initializeDefaultTemplates();
+                if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
+                    addTemplatesInSavedOrder();
+                }
+
+                var templateToBeOpened = getLastVisitedTemplate() ||
+                    _.first($scope.consultation.selectedObsTemplate);
+
+                if (templateToBeOpened && !$stateParams.formUuid) {
+                    openTemplate(templateToBeOpened);
+                }
+            };
+
             var concatObservationForms = function () {
                 $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
                 $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
                 $scope.allTemplates = $scope.allTemplates.concat($scope.consultation.observationForms);
-                if ($scope.consultation.selectedObsTemplate.length == 0) {
-                    initializeDefaultTemplates();
-                    if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
-                        addTemplatesInSavedOrder();
-                    }
-                    var templateToBeOpened = getLastVisitedTemplate() ||
-                        _.first($scope.consultation.selectedObsTemplate);
-
-                    if (templateToBeOpened && !$stateParams.formUuid) {
-                        openTemplate(templateToBeOpened);
-                    }
-                }
-
-                var formUuidParam = $stateParams.formUuid;
-
-                if (formUuidParam) {
-                    var targetForm = _.find($scope.allTemplates, function (t) {
-                        return t.formUuid === formUuidParam;
-                    });
-                    if (targetForm) {
-                        if (!_.some($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
-                            targetForm.isAdded = true;
-                            $scope.consultation.selectedObsTemplate.push(targetForm);
-                        }
-                        $timeout(function () {
-                            $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
-                        }, 0);
-                        var deletedFormIds = getRootDeletedFormIds();
-                        if (!_.includes(deletedFormIds, formUuidParam)) {
-                            if (!_.find($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
-                                targetForm.isAdded = true;
-                                $scope.consultation.selectedObsTemplate.push(targetForm);
-                            }
-                            $timeout(function () {
-                                $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
-                            }, 0);
-                        }
-                    } else {
-                        messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
-                    }
-                }
+                initializeTemplatesIfEmpty();
+                handleFormUuidNavigation();
             };
 
             var addTemplatesInSavedOrder = function () {
