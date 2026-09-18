@@ -93,6 +93,25 @@ describe("OrdersDisplayControl", () => {
     jest.clearAllMocks();
   });
 
+  const createServiceRequestResponse = (orders) => ({ data: { entry: orders } });
+
+  const mockAxios = (sr, task) => {
+    axios.get.mockResolvedValueOnce(sr);
+    if (task !== undefined) {
+      axios.get.mockResolvedValueOnce(task);
+    }
+  };
+
+  const mockOrdersAndRender = (orders) => {
+    mockAxios(createServiceRequestResponse(orders), createServiceRequestResponse([]));
+    renderComponent();
+  };
+
+  const renderComponent = (withApi = true) =>
+    render(<OrdersDisplayControl hostData={mockHostData} {...(withApi && { hostApi: mockHostApi })} />);
+
+  const assertNoOrdersFound = () => expect(screen.getByText(/No Orders found/)).toBeTruthy();
+
   it("should render the component", async () => {
     axios.get.mockResolvedValueOnce(mockServiceRequestResponse);
     axios.get.mockResolvedValueOnce(mockTaskResponse);
@@ -157,22 +176,22 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should render no orders message when no orders found", async () => {
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
+    mockAxios(createServiceRequestResponse([]));
 
     render(<OrdersDisplayControl hostData={mockHostData} hostApi={{}} />);
 
     await waitFor(() => {
-      expect(screen.getByText(/No Orders found/)).toBeTruthy();
+      assertNoOrdersFound();
     });
   });
 
   it("should render no orders message when API returns undefined entry", async () => {
     axios.get.mockResolvedValueOnce({ data: {} });
 
-    render(<OrdersDisplayControl hostData={mockHostData} />);
+    renderComponent(false);
 
     await waitFor(() => {
-      expect(screen.getByText(/No Orders found/)).toBeTruthy();
+      assertNoOrdersFound();
     });
   });
 
@@ -180,40 +199,36 @@ describe("OrdersDisplayControl", () => {
     const mockError = new Error("API Error");
     axios.get.mockRejectedValueOnce(mockError);
 
-    render(<OrdersDisplayControl hostData={mockHostData} />);
+    renderComponent(false);
 
     await waitFor(() => {
-      expect(screen.getByText(/No Orders found/)).toBeTruthy();
+      assertNoOrdersFound();
     });
   });
 
   it("should set empty orders array when API returns null data", async () => {
     axios.get.mockResolvedValueOnce({ data: null });
 
-    render(<OrdersDisplayControl hostData={mockHostData} />);
+    renderComponent(false);
 
     await waitFor(() => {
-      expect(screen.getByText(/No Orders found/)).toBeTruthy();
+      assertNoOrdersFound();
     });
   });
 
   it("should handle extensions with missing optional fields", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-1", "Simple Order", "Dr. Test", "2024-01-15T10:00:00.000Z", {
-            extension: [
-              {
-                url: "http://example.com/fhir/StructureDefinition/task-status",
-                valueString: "REQUESTED",
-              },
-            ],
-          }),
+    mockAxios(createServiceRequestResponse([
+      mockOrderResource("order-1", "Simple Order", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+        extension: [
+          {
+            url: "http://example.com/fhir/StructureDefinition/task-status",
+            valueString: "REQUESTED",
+          },
         ],
-      },
-    });
+      }),
+    ]));
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    renderComponent();
 
     await waitFor(() => {
       expect(screen.getByText("Simple Order")).toBeTruthy();
@@ -221,15 +236,11 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle resource without extension array", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-1", "Order Without Extensions", "Dr. Test", "2024-01-15T10:00:00.000Z"),
-        ],
-      },
-    });
+    mockAxios(createServiceRequestResponse([
+      mockOrderResource("order-1", "Order Without Extensions", "Dr. Test", "2024-01-15T10:00:00.000Z"),
+    ]));
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    renderComponent();
 
     await waitFor(() => {
       expect(screen.getByText("Order Without Extensions")).toBeTruthy();
@@ -237,22 +248,18 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle extensions with invalid URLs", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-1", "Order With Invalid URLs", "Dr. Test", "2024-01-15T10:00:00.000Z", {
-            extension: [
-              {
-                url: "http://example.com/unknown-extension",
-                valueString: "Some Value",
-              },
-            ],
-          }),
+    mockAxios(createServiceRequestResponse([
+      mockOrderResource("order-1", "Order With Invalid URLs", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+        extension: [
+          {
+            url: "http://example.com/unknown-extension",
+            valueString: "Some Value",
+          },
         ],
-      },
-    });
+      }),
+    ]));
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    renderComponent();
 
     await waitFor(() => {
       expect(screen.getByText("Order With Invalid URLs")).toBeTruthy();
@@ -260,22 +267,18 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle resource without code.text", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          {
-            resource: {
-              code: {},
-              requester: { display: "Dr. Test" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-            },
-          },
-        ],
+    mockAxios(createServiceRequestResponse([
+      {
+        resource: {
+          code: {},
+          requester: { display: "Dr. Test" },
+          authoredOn: "2024-01-15T10:00:00.000Z",
+          status: "active",
+        },
       },
-    });
+    ]));
 
-    render(<OrdersDisplayControl hostData={mockHostData} />);
+    renderComponent(false);
 
     await waitFor(() => {
       expect(screen.getByTestId("view-orders")).toBeTruthy();
@@ -283,21 +286,17 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle resource without requester.display", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          {
-            resource: {
-              code: { text: "Order Without Requester" },
-              status: "active",
-              authoredOn: "2024-01-15T10:00:00.000Z",
-            },
-          },
-        ],
+    mockAxios(createServiceRequestResponse([
+      {
+        resource: {
+          code: { text: "Order Without Requester" },
+          status: "active",
+          authoredOn: "2024-01-15T10:00:00.000Z",
+        },
       },
-    });
+    ]));
 
-    render(<OrdersDisplayControl hostData={mockHostData} />);
+    renderComponent(false);
 
     await waitFor(() => {
       expect(screen.getByText("Order Without Requester")).toBeTruthy();
@@ -305,19 +304,13 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle multiple orders and maintain sorting", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-1", "Order A", "Dr. A", "2024-01-20T10:00:00.000Z"),
-          mockOrderResource("order-2", "Order B", "Dr. B", "2024-01-10T10:00:00.000Z"),
-          mockOrderResource("order-3", "Order C", "Dr. C", "2024-01-30T10:00:00.000Z"),
-        ],
-      },
-    });
+    mockAxios(createServiceRequestResponse([
+      mockOrderResource("order-1", "Order A", "Dr. A", "2024-01-20T10:00:00.000Z"),
+      mockOrderResource("order-2", "Order B", "Dr. B", "2024-01-10T10:00:00.000Z"),
+      mockOrderResource("order-3", "Order C", "Dr. C", "2024-01-30T10:00:00.000Z"),
+    ]));
 
-    const { container } = render(
-      <OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />
-    );
+    const { container } = renderComponent();
 
     await waitFor(() => {
       const orders = container.querySelectorAll("[data-testid^='order-']");
@@ -328,11 +321,9 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should render with padding div when no orders", async () => {
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
+    mockAxios(createServiceRequestResponse([]));
 
-    const { container } = render(
-      <OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />
-    );
+    const { container } = renderComponent();
 
     await waitFor(() => {
       const paddingDiv = container.querySelector("div[style]");
@@ -342,10 +333,9 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should call ViewOrders with transformed orders", async () => {
-    axios.get.mockResolvedValueOnce(mockServiceRequestResponse);
-    axios.get.mockResolvedValueOnce(mockTaskResponse);
+    mockAxios(mockServiceRequestResponse, mockTaskResponse);
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    renderComponent();
 
     await waitFor(() => {
       const viewOrdersComponent = screen.getByTestId("view-orders");
@@ -355,19 +345,14 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should filter out replacement orders (orders with replaces field)", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-1", "Active Order", "Dr. Smith", "2024-01-15T10:00:00.000Z"),
-          mockOrderResource("order-2", "Replacement Order", "Dr. Smith", "2024-01-16T10:00:00.000Z", {
-            replaces: [{ reference: "ServiceRequest/order-1" }],
-          }),
-        ],
-      },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
+    mockAxios(createServiceRequestResponse([
+      mockOrderResource("order-1", "Active Order", "Dr. Smith", "2024-01-15T10:00:00.000Z"),
+      mockOrderResource("order-2", "Replacement Order", "Dr. Smith", "2024-01-16T10:00:00.000Z", {
+        replaces: [{ reference: "ServiceRequest/order-1" }],
+      }),
+    ]), createServiceRequestResponse([]));
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    renderComponent();
 
     await waitFor(() => {
       expect(screen.queryByText("Replacement Order")).toBeNull();
@@ -376,20 +361,13 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should filter out cancelled orders (orders referenced in replaces field)", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("cancelled-order-123", "Cancelled Order", "Dr. Johnson", "2024-01-10T10:00:00.000Z"),
-          mockOrderResource("replacement-order-456", "Replacement Order", "Dr. Johnson", "2024-01-12T10:00:00.000Z", {
-            replaces: [{ reference: "ServiceRequest/cancelled-order-123" }],
-          }),
-          mockOrderResource("normal-order-789", "Normal Order", "Dr. Brown", "2024-01-13T10:00:00.000Z"),
-        ],
-      },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
-
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    mockOrdersAndRender([
+      mockOrderResource("cancelled-order-123", "Cancelled Order", "Dr. Johnson", "2024-01-10T10:00:00.000Z"),
+      mockOrderResource("replacement-order-456", "Replacement Order", "Dr. Johnson", "2024-01-12T10:00:00.000Z", {
+        replaces: [{ reference: "ServiceRequest/cancelled-order-123" }],
+      }),
+      mockOrderResource("normal-order-789", "Normal Order", "Dr. Brown", "2024-01-13T10:00:00.000Z"),
+    ]);
 
     await waitFor(() => {
       expect(screen.queryByText("Cancelled Order")).toBeNull();
@@ -399,18 +377,11 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should show orders with empty replaces array", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-with-empty-replaces", "Order With Empty Replaces", "Dr. Test", "2024-01-15T10:00:00.000Z", {
-            replaces: [],
-          }),
-        ],
-      },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
-
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    mockOrdersAndRender([
+      mockOrderResource("order-with-empty-replaces", "Order With Empty Replaces", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+        replaces: [],
+      }),
+    ]);
 
     await waitFor(() => {
       expect(screen.getByText("Order With Empty Replaces")).toBeTruthy();
@@ -418,22 +389,15 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle malformed reference strings without crashing", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-1", "Active Order", "Dr. Smith", "2024-01-15T10:00:00.000Z"),
-          mockOrderResource("order-2", "Order With Malformed Reference", "Dr. Smith", "2024-01-16T10:00:00.000Z", {
-            replaces: [{ reference: "InvalidFormat" }],
-          }),
-          mockOrderResource("order-3", "Order With Null Reference", "Dr. Jones", "2024-01-17T10:00:00.000Z", {
-            replaces: [{ reference: null }],
-          }),
-        ],
-      },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
-
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    mockOrdersAndRender([
+      mockOrderResource("order-1", "Active Order", "Dr. Smith", "2024-01-15T10:00:00.000Z"),
+      mockOrderResource("order-2", "Order With Malformed Reference", "Dr. Smith", "2024-01-16T10:00:00.000Z", {
+        replaces: [{ reference: "InvalidFormat" }],
+      }),
+      mockOrderResource("order-3", "Order With Null Reference", "Dr. Jones", "2024-01-17T10:00:00.000Z", {
+        replaces: [{ reference: null }],
+      }),
+    ]);
 
     await waitFor(() => {
       expect(screen.getByText("Active Order")).toBeTruthy();
@@ -443,23 +407,16 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle complex replacement chains correctly", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("original-order", "Original Order", "Dr. A", "2024-01-10T10:00:00.000Z"),
-          mockOrderResource("first-replacement", "First Replacement", "Dr. B", "2024-01-11T10:00:00.000Z", {
-            replaces: [{ reference: "ServiceRequest/original-order" }],
-          }),
-          mockOrderResource("second-replacement", "Second Replacement", "Dr. C", "2024-01-12T10:00:00.000Z", {
-            replaces: [{ reference: "ServiceRequest/first-replacement" }],
-          }),
-          mockOrderResource("independent-order", "Independent Order", "Dr. D", "2024-01-13T10:00:00.000Z"),
-        ],
-      },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
-
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    mockOrdersAndRender([
+      mockOrderResource("original-order", "Original Order", "Dr. A", "2024-01-10T10:00:00.000Z"),
+      mockOrderResource("first-replacement", "First Replacement", "Dr. B", "2024-01-11T10:00:00.000Z", {
+        replaces: [{ reference: "ServiceRequest/original-order" }],
+      }),
+      mockOrderResource("second-replacement", "Second Replacement", "Dr. C", "2024-01-12T10:00:00.000Z", {
+        replaces: [{ reference: "ServiceRequest/first-replacement" }],
+      }),
+      mockOrderResource("independent-order", "Independent Order", "Dr. D", "2024-01-13T10:00:00.000Z"),
+    ]);
 
     await waitFor(() => {
       expect(screen.queryByText("Original Order")).toBeNull();
@@ -470,22 +427,15 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle multiple orders replacing the same order", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("original-order", "Original Order", "Dr. A", "2024-01-10T10:00:00.000Z"),
-          mockOrderResource("replacement-1", "Replacement 1", "Dr. B", "2024-01-11T10:00:00.000Z", {
-            replaces: [{ reference: "ServiceRequest/original-order" }],
-          }),
-          mockOrderResource("replacement-2", "Replacement 2", "Dr. C", "2024-01-11T11:00:00.000Z", {
-            replaces: [{ reference: "ServiceRequest/original-order" }],
-          }),
-        ],
-      },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
-
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    mockOrdersAndRender([
+      mockOrderResource("original-order", "Original Order", "Dr. A", "2024-01-10T10:00:00.000Z"),
+      mockOrderResource("replacement-1", "Replacement 1", "Dr. B", "2024-01-11T10:00:00.000Z", {
+        replaces: [{ reference: "ServiceRequest/original-order" }],
+      }),
+      mockOrderResource("replacement-2", "Replacement 2", "Dr. C", "2024-01-11T11:00:00.000Z", {
+        replaces: [{ reference: "ServiceRequest/original-order" }],
+      }),
+    ]);
 
     await waitFor(() => {
       expect(screen.queryByText("Original Order")).toBeNull();
@@ -496,23 +446,16 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should use shortName from FHIR_EXT_ORDER_SHORT_NAME extension instead of code.text when present", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          mockOrderResource("order-with-short-name", "Full Long Order Name", "Dr. Test", "2024-01-15T10:00:00.000Z", {
-            extension: [
-              {
-                url: "http://example.com/fhir/StructureDefinition/order-short-name",
-                valueString: "Short Name",
-              },
-            ],
-          }),
+    mockOrdersAndRender([
+      mockOrderResource("order-with-short-name", "Full Long Order Name", "Dr. Test", "2024-01-15T10:00:00.000Z", {
+        extension: [
+          {
+            url: "http://example.com/fhir/StructureDefinition/order-short-name",
+            valueString: "Short Name",
+          },
         ],
-      },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
-
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+      }),
+    ]);
 
     await waitFor(() => {
       expect(screen.getByText("Short Name")).toBeTruthy();
@@ -521,24 +464,17 @@ describe("OrdersDisplayControl", () => {
   });
 
   it("should handle missing resource.id gracefully", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: {
-        entry: [
-          {
-            resource: {
-              code: { text: "Order Without ID" },
-              requester: { display: "Dr. Test" },
-              authoredOn: "2024-01-15T10:00:00.000Z",
-              status: "active",
-            },
-          },
-          mockOrderResource("order-with-id", "Order With ID", "Dr. Test", "2024-01-16T10:00:00.000Z"),
-        ],
+    mockOrdersAndRender([
+      {
+        resource: {
+          code: { text: "Order Without ID" },
+          requester: { display: "Dr. Test" },
+          authoredOn: "2024-01-15T10:00:00.000Z",
+          status: "active",
+        },
       },
-    });
-    axios.get.mockResolvedValueOnce({ data: { entry: [] } });
-
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+      mockOrderResource("order-with-id", "Order With ID", "Dr. Test", "2024-01-16T10:00:00.000Z"),
+    ]);
 
     await waitFor(() => {
       expect(screen.getByText("Order Without ID")).toBeTruthy();
