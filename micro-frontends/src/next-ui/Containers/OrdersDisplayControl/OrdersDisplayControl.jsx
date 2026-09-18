@@ -66,13 +66,14 @@ const transformOrders = (entries = [], tasksByOrderId = new Map()) => {
             const relatedTask = tasksByOrderId.get(orderId);
 
             orders.push({
+                id: orderId,
                 name: getOrderName(resource),
                 createdBy: resource.requester?.display || "",
                 createdAt: resource.authoredOn || "",
                 updatedAt: relatedTask?.meta?.lastUpdated ? new Date(relatedTask.meta.lastUpdated).getTime() : undefined,
                 orderStatus: relatedTask?.status ? relatedTask.status.toUpperCase() : undefined,
                 owner: relatedTask?.owner?.display,
-                notes: relatedTask?.note?.[0]?.text ? relatedTask.note[0].text.split('\n').join(' | ') : undefined,
+                notes: relatedTask?.note?.[0]?.text ? relatedTask.note[0].text.replaceAll('\n', ' | ') : undefined,
             });
         }
     });
@@ -143,5 +144,4 @@ export function OrdersDisplayControl({hostData}) {
 
 OrdersDisplayControl.propTypes = {
     hostData: PropTypes.object.isRequired,
-    hostApi: PropTypes.object.isRequired,
 };

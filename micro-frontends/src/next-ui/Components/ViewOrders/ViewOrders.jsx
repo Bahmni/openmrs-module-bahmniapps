@@ -29,7 +29,7 @@ export function ViewOrders(props) {
                 );
                 return (
                     <Accordion
-                        key={index}
+                        key={order.id}
                         header={header}
                         defaultOpen={index === 0}
                         className="order-item"
@@ -46,6 +46,7 @@ export function ViewOrders(props) {
 ViewOrders.propTypes = {
     orders: PropTypes.arrayOf(
         PropTypes.shape({
+            id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             createdAt: PropTypes.string.isRequired,
             createdBy: PropTypes.string.isRequired,

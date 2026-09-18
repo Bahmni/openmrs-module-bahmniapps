@@ -107,8 +107,8 @@ describe("OrdersDisplayControl", () => {
     renderComponent();
   };
 
-  const renderComponent = (withApi = true) =>
-    render(<OrdersDisplayControl hostData={mockHostData} {...(withApi && { hostApi: mockHostApi })} />);
+  const renderComponent = () =>
+    render(<OrdersDisplayControl hostData={mockHostData} />);
 
   const assertNoOrdersFound = () => expect(screen.getByText(/No Orders found/)).toBeTruthy();
 
@@ -116,9 +116,7 @@ describe("OrdersDisplayControl", () => {
     axios.get.mockResolvedValueOnce(mockServiceRequestResponse);
     axios.get.mockResolvedValueOnce(mockTaskResponse);
 
-    const { container } = render(
-      <OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />
-    );
+    const { container } = renderComponent();
     await waitFor(() => {
       expect(screen.getByText("TEST_ORDERS")).toBeTruthy();
       expect(screen.getByText("Lab Order 1")).toBeTruthy();
@@ -132,7 +130,7 @@ describe("OrdersDisplayControl", () => {
     axios.get.mockResolvedValueOnce(mockServiceRequestResponse);
     axios.get.mockResolvedValueOnce(mockTaskResponse);
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi} />);
+    renderComponent();
 
     await waitFor(() => {
       expect(axios.get).toHaveBeenCalledWith(
@@ -161,7 +159,7 @@ describe("OrdersDisplayControl", () => {
     axios.get.mockResolvedValueOnce(mockServiceRequestResponse);
     axios.get.mockResolvedValueOnce(mockTaskResponse);
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={mockHostApi}/>);
+    renderComponent();
 
     await waitFor(() => {
       expect(screen.getByText("TEST_ORDERS")).toBeTruthy();
@@ -178,7 +176,7 @@ describe("OrdersDisplayControl", () => {
   it("should render no orders message when no orders found", async () => {
     mockAxios(createServiceRequestResponse([]));
 
-    render(<OrdersDisplayControl hostData={mockHostData} hostApi={{}} />);
+    renderComponent();
 
     await waitFor(() => {
       assertNoOrdersFound();
@@ -188,7 +186,7 @@ describe("OrdersDisplayControl", () => {
   it("should render no orders message when API returns undefined entry", async () => {
     axios.get.mockResolvedValueOnce({ data: {} });
 
-    renderComponent(false);
+    renderComponent();
 
     await waitFor(() => {
       assertNoOrdersFound();
@@ -199,7 +197,7 @@ describe("OrdersDisplayControl", () => {
     const mockError = new Error("API Error");
     axios.get.mockRejectedValueOnce(mockError);
 
-    renderComponent(false);
+    renderComponent();
 
     await waitFor(() => {
       assertNoOrdersFound();
@@ -209,7 +207,7 @@ describe("OrdersDisplayControl", () => {
   it("should set empty orders array when API returns null data", async () => {
     axios.get.mockResolvedValueOnce({ data: null });
 
-    renderComponent(false);
+    renderComponent();
 
     await waitFor(() => {
       assertNoOrdersFound();
@@ -278,7 +276,7 @@ describe("OrdersDisplayControl", () => {
       },
     ]));
 
-    renderComponent(false);
+    renderComponent();
 
     await waitFor(() => {
       expect(screen.getByTestId("view-orders")).toBeTruthy();
@@ -296,7 +294,7 @@ describe("OrdersDisplayControl", () => {
       },
     ]));
 
-    renderComponent(false);
+    renderComponent();
 
     await waitFor(() => {
       expect(screen.getByText("Order Without Requester")).toBeTruthy();

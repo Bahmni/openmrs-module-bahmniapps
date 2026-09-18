@@ -34,7 +34,7 @@ export function OrderItemContainer(props) {
                            name={<FormattedMessage id={"STATUS"} defaultMessage={"Status"}/>}
                            value={FHIR_TASK_STATUS_TO_UI_STATUS[orderStatus] ?? "New"}/>
                 <OrderItem updatedBy={ownerUpdatedBy} name={<FormattedMessage id={"OWNER"} defaultMessage={"Owner"}/>}
-                           value={owner ? owner : "Unassigned"}/>
+                           value={owner || "Unassigned"}/>
                 {notes &&
                     <OrderItem updatedBy={notesUpdatedBy} name={<FormattedMessage id={"NOTES"} defaultMessage={"Notes"}/>}
                                value={notes}/>}
