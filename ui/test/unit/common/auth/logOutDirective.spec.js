@@ -48,7 +48,7 @@ describe("logOut directive", function () {
         element.triggerHandler('click');
 
         setTimeout(function () {
-            expect(formDraftService.hasDraftsForProvider).toHaveBeenCalledWith('provider-uuid-456');
+            expect(formDraftService.hasDraftsForProvider).toHaveBeenCalledWith();
             expect(ngDialog.open).not.toHaveBeenCalled();
             expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
             expect(sessionService.destroy).toHaveBeenCalled();
@@ -179,7 +179,7 @@ describe("logOut directive", function () {
         keydownHandler({metaKey: true, key: 'l'});
 
         setTimeout(function () {
-            expect(formDraftService.hasDraftsForProvider).toHaveBeenCalledWith('provider-uuid-456');
+            expect(formDraftService.hasDraftsForProvider).toHaveBeenCalledWith();
             expect(ngDialog.open).not.toHaveBeenCalled();
             expect(sessionService.destroy).toHaveBeenCalled();
             done();

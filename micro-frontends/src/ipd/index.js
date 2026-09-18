@@ -48,4 +48,4 @@ angular
 
 angular
 .module("bahmni.mfe.ipd")
-.component("mfeIpdDraftIndicator", react2angular(DraftIndicator, ["providerUuid"]));
+.component("mfeIpdDraftIndicator", react2angular(DraftIndicator, ['providerUuid']));

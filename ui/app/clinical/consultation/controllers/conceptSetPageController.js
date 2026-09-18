@@ -144,16 +144,15 @@ angular.module('bahmni.clinical')
 
             var loadDraftThenConcat = function () {
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                 var activeVisit = $scope.visitHistory && $scope.visitHistory.activeVisit;
-                if ($scope.enableFormDraftFeature && patientUuid && providerUuid && activeVisit) {
+                if ($scope.enableFormDraftFeature && patientUuid && activeVisit) {
                     visitService.getVisit(activeVisit.uuid, 'custom:(uuid,stopDatetime)').then(function (response) {
                         var visitClosed = response.data && !!response.data.stopDatetime;
                         if (visitClosed) {
-                            formDraftService.discardDraft(patientUuid, providerUuid);
+                            formDraftService.discardDraft(patientUuid);
                             $state.reload();
                         } else if (!$rootScope.resumeDraftOnLoad) {
-                            formDraftService.getResumableDraft(patientUuid, providerUuid).then(function (draft) {
+                            formDraftService.getResumableDraft(patientUuid).then(function (draft) {
                                 if (draft) {
                                     $rootScope.draftData = draft;
                                     $rootScope.resumeDraftOnLoad = true;
@@ -885,12 +884,11 @@ angular.module('bahmni.clinical')
                 $scope.formDraft.statusError = false;
                 $scope.formDraft.showSpinner = true;
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
                 var dirtyTemplates = _.filter($scope.consultation.selectedObsTemplate, function (t) {
                     return t.hasUnsavedFormObservations;
                 });
                 var formData = formDirtyStateService.serializeFormData(dirtyTemplates);
-                return formDraftService.saveDraft(patientUuid, providerUuid, formData).then(function (response) {
+                return formDraftService.saveDraft(patientUuid, formData).then(function (response) {
                     var serverTimestamp = response.data.timestamp;
 
                     if (!dirtyTrackingState.postSaveWatchDeregister) {
@@ -991,14 +989,14 @@ angular.module('bahmni.clinical')
 
             var deregSaveFailed = $rootScope.$on('event:save-failed', function () {
                 dirtyTrackingState.mainSaveInProgress = false;
+                checkForExistingDrafts();
             });
 
             var draftContextWatchDeregister = null;
             var checkForExistingDrafts = function () {
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
 
-                if (!(patientUuid && providerUuid)) {
+                if (!patientUuid) {
                     return false;
                 }
 
@@ -1009,7 +1007,7 @@ angular.module('bahmni.clinical')
                     return true;
                 }
 
-                formDraftService.getResumableDraft(patientUuid, providerUuid).then(function (draft) {
+                formDraftService.getResumableDraft(patientUuid).then(function (draft) {
                     if (draft && $scope.visitHistory && $scope.visitHistory.activeVisit) {
                         $scope.formDraft.hasDrafts = true;
                         $rootScope.draftData = draft;
@@ -1129,7 +1127,6 @@ angular.module('bahmni.clinical')
 
             var saveStartedListener = $rootScope.$on('event:save-started', function () {
                 $scope.formDraft.showSpinner = false;
-                clearDraftStatus();
             });
 
             $scope.$on('$destroy', function () {

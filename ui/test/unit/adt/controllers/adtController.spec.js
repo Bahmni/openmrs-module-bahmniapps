@@ -207,7 +207,7 @@ describe("AdtController", function () {
 
             scope.startNewVisit('visitTypeUuid');
 
-            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', 'provider-uuid');
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123');
         });
 
         it("should discard draft when closeCurrentVisitAndStartNewVisit closes the current visit", function () {
@@ -222,7 +222,7 @@ describe("AdtController", function () {
 
             scope.closeCurrentVisitAndStartNewVisit();
 
-            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', 'provider-uuid');
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123');
         });
 
         it("should not discard draft when startNewVisit is called with no existing visit", function () {
@@ -237,7 +237,7 @@ describe("AdtController", function () {
             expect(formDraftService.discardDraft).not.toHaveBeenCalled();
         });
 
-        it("should call discardDraft with null providerUuid when currentProvider is missing on startNewVisit", function () {
+        it("should still discard draft when currentProvider is missing on startNewVisit", function () {
             scope.visitSummary = {visitType: "OPD", uuid: "visitUuid"};
             scope.patient = {uuid: '123'};
             scope.adtObservations = [];
@@ -248,10 +248,10 @@ describe("AdtController", function () {
 
             scope.startNewVisit('visitTypeUuid');
 
-            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', null);
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123');
         });
 
-        it("should call discardDraft with null providerUuid when currentProvider is missing on closeCurrentVisitAndStartNewVisit", function () {
+        it("should still discard draft when currentProvider is missing on closeCurrentVisitAndStartNewVisit", function () {
             scope.visitSummary = {visitType: "OPD", uuid: "visitUuid"};
             scope.patient = {uuid: '123'};
             scope.adtObservations = [];
@@ -263,7 +263,7 @@ describe("AdtController", function () {
 
             scope.closeCurrentVisitAndStartNewVisit();
 
-            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123', null);
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('123');
         });
     });
 

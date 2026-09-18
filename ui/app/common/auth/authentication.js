@@ -303,14 +303,13 @@ angular.module('authentication')
                 logoutUser();
                 return;
             }
-            var providerUuid = $rootScope.currentProvider && $rootScope.currentProvider.uuid;
             var config = {
                 titleKey: 'LOGOUT_DRAFTS_WARNING_TITLE_KEY',
                 messageKey: 'LOGOUT_DRAFTS_WARNING_MESSAGE_KEY',
                 cancelBtnKey: 'LOGOUT_DRAFTS_WARNING_CANCEL_KEY',
                 confirmBtnKey: 'LOGOUT_DRAFTS_WARNING_LOGOUT_KEY'
             };
-            formDraftService.hasDraftsForProvider(providerUuid).then(function (hasDrafts) {
+            formDraftService.hasDraftsForProvider().then(function (hasDrafts) {
                 isAttemptingLogout = false;
                 if (hasDrafts) {
                     showDraftsWarning(scope, config);

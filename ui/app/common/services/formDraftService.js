@@ -15,10 +15,9 @@ angular.module('bahmni.common.services')
             } catch (e) { /* unsupported environment */ }
         }
 
-        var saveDraft = function (patientUuid, providerUuid, formData) {
+        var saveDraft = function (patientUuid, formData) {
             return $http.post(formDraftUrl, {
                 patientUuid: patientUuid,
-                providerUuid: providerUuid,
                 formData: formData
             }).then(function (response) {
                 notifyDraftChange();
@@ -27,8 +26,8 @@ angular.module('bahmni.common.services')
         };
         var inFlightDraft = null;
 
-        var getDraft = function (patientUuid, providerUuid) {
-            var key = patientUuid + ':' + providerUuid;
+        var getDraft = function (patientUuid) {
+            var key = patientUuid;
             if (inFlightDraft && inFlightDraft.key === key) {
                 return inFlightDraft.promise;
             }
@@ -39,8 +38,7 @@ angular.module('bahmni.common.services')
             };
             var promise = $http.get(formDraftUrl, {
                 params: {
-                    patientUuid: patientUuid,
-                    providerUuid: providerUuid
+                    patientUuid: patientUuid
                 },
                 suppressError: true
             }).then(function (response) {
@@ -54,8 +52,8 @@ angular.module('bahmni.common.services')
             return promise;
         };
 
-        var getResumableDraft = function (patientUuid, providerUuid) {
-            return getDraft(patientUuid, providerUuid).then(function (response) {
+        var getResumableDraft = function (patientUuid) {
+            return getDraft(patientUuid).then(function (response) {
                 var draft = response && response.data;
                 return (draft && draft.uuid && !draft.markedAsSaved) ? draft : null;
             }, function () {
@@ -63,14 +61,8 @@ angular.module('bahmni.common.services')
             });
         };
 
-        var hasDraftsForProvider = function (providerUuid) {
-            if (!providerUuid) {
-                return $q.when(false);
-            }
+        var hasDraftsForProvider = function () {
             return $http.get(formDraftUrl + '/list', {
-                params: {
-                    providerUuid: providerUuid
-                },
                 suppressError: true
             }).then(function (response) {
                 return !!(response.data && response.data.length > 0);
@@ -79,14 +71,8 @@ angular.module('bahmni.common.services')
             });
         };
 
-        var getProviderDrafts = function (providerUuid) {
-            if (!providerUuid) {
-                return $q.when([]);
-            }
+        var getProviderDrafts = function () {
             return $http.get(formDraftUrl + '/list', {
-                params: {
-                    providerUuid: providerUuid
-                },
                 suppressError: true
             }).then(function (response) {
                 return response.data;
@@ -95,14 +81,13 @@ angular.module('bahmni.common.services')
             });
         };
 
-        var discardDraft = function (patientUuid, providerUuid) {
-            if (!patientUuid || !providerUuid) {
+        var discardDraft = function (patientUuid) {
+            if (!patientUuid) {
                 return;
             }
             return $http.delete(formDraftUrl, {
                 params: {
-                    patientUuid: patientUuid,
-                    providerUuid: providerUuid
+                    patientUuid: patientUuid
                 },
                 suppressError: true
             }).then(function (response) {
@@ -111,11 +96,10 @@ angular.module('bahmni.common.services')
             });
         };
 
-        var markDraftAsSaved = function (patientUuid, providerUuid) {
+        var markDraftAsSaved = function (patientUuid) {
             return $http.patch(formDraftUrl, {}, {
                 params: {
-                    patientUuid: patientUuid,
-                    providerUuid: providerUuid
+                    patientUuid: patientUuid
                 },
                 suppressError: true
             }).then(function (response) {

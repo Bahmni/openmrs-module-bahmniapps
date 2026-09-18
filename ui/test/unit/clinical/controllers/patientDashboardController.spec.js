@@ -267,7 +267,7 @@ describe("patient dashboard controller", function () {
 
             createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
 
-            expect(_formDraftService.getDraft).toHaveBeenCalledWith('patient-uuid', 'provider-uuid');
+            expect(_formDraftService.getDraft).toHaveBeenCalledWith('patient-uuid');
             expect(scope.formDraft.hasDrafts).toBe(true);
             expect(_rootScope.draftData.uuid).toBe('draft-uuid');
         });
@@ -350,22 +350,7 @@ describe("patient dashboard controller", function () {
             expect(_rootScope.draftData).toBeNull();
         });
 
-        it("should not fetch existing draft when patient or provider are missing", function () {
-            _formDraftService.getDraft.and.returnValue({
-                then: function () {
-                    return this;
-                },
-                catch: function () {
-                    return this;
-                }
-            });
-
-            createControllerForDraft({uuid: 'patient-uuid'}, null);
-
-            expect(_formDraftService.getDraft).not.toHaveBeenCalled();
-        });
-
-        it("should not fetch existing draft when patient context is null", function () {
+        it("should not fetch existing draft when patient is missing", function () {
             _formDraftService.getDraft.and.returnValue({
                 then: function () {
                     return this;
@@ -555,7 +540,7 @@ describe("patient dashboard controller", function () {
                 var dialogScope = _ngDialog.open.calls.mostRecent().args[0].scope;
                 dialogScope.discardDraft();
 
-                expect(_formDraftService.discardDraft).toHaveBeenCalledWith('patient-uuid', 'provider-uuid');
+                expect(_formDraftService.discardDraft).toHaveBeenCalledWith('patient-uuid');
                 expect(_ngDialog.close).toHaveBeenCalledWith(fakeDialog.id);
                 expect(_state.reload).toHaveBeenCalled();
             });
@@ -623,7 +608,7 @@ describe("patient dashboard controller", function () {
 
                 createControllerForDraft({uuid: 'patient-uuid'}, {uuid: 'provider-uuid'});
 
-                expect(_formDraftService.discardDraft).toHaveBeenCalledWith('patient-uuid', 'provider-uuid');
+                expect(_formDraftService.discardDraft).toHaveBeenCalledWith('patient-uuid');
                 expect(scope.formDraft.hasDrafts).toBe(false);
                 expect(_rootScope.draftData).toBeNull();
             });

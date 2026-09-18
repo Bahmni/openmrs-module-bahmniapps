@@ -161,8 +161,7 @@ angular.module('bahmni.adt')
                 if ($scope.visitSummary) {
                     visitService.endVisit($scope.visitSummary.uuid).then(function () {
                         var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                        var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                        formDraftService.discardDraft(patientUuid, providerUuid);
+                        formDraftService.discardDraft(patientUuid);
                         $scope.admit(visitTypeUuid);
                     });
                 } else {
@@ -272,8 +271,7 @@ angular.module('bahmni.adt')
                 if (defaultVisitTypeUuid !== null) {
                     var encounter = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
                     visitService.endVisitAndCreateEncounter($scope.visitSummary.uuid, encounterService.buildEncounter(encounter)).success(function (response) {
-                        var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                        formDraftService.discardDraft(encounter.patientUuid, providerUuid);
+                        formDraftService.discardDraft(encounter.patientUuid);
                         logVisit(encounter.patientUuid, "CLOSE_VISIT").then(function () {
                             return visitService.getVisitSummary(response.visitUuid).then(function (response) {
                                 $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);

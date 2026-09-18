@@ -114,11 +114,11 @@ describe('ConceptSetPageController', function () {
         // "is there a resumable draft" decision made once so concurrent callers
         // cannot disagree. Tests stub getDraft and get both behaviours for free.
         var resumableDraftCache = {};
-        formDraftService.getResumableDraft.and.callFake(function (patientUuid, providerUuid) {
-            var key = patientUuid + ':' + providerUuid;
+        formDraftService.getResumableDraft.and.callFake(function (patientUuid) {
+            var key = patientUuid;
             if (!(key in resumableDraftCache)) {
                 var resolved = null;
-                formDraftService.getDraft(patientUuid, providerUuid).then(function (response) {
+                formDraftService.getDraft(patientUuid).then(function (response) {
                     var draft = response && response.data;
                     resolved = (draft && draft.uuid && !draft.markedAsSaved) ? draft : null;
                 }, function () {
@@ -1123,7 +1123,6 @@ describe('ConceptSetPageController', function () {
             expect(formDraftService.saveDraft).toHaveBeenCalled();
             var callArgs = formDraftService.saveDraft.calls.mostRecent().args;
             expect(callArgs[0]).toBe('test-patient-uuid');
-            expect(callArgs[1]).toBe('test-provider-uuid');
         });
 
         it('should set showSpinner to true when saveAsDraft is called', function () {
@@ -1449,7 +1448,7 @@ describe('ConceptSetPageController', function () {
             expect(scope.formDraft.statusError).toBe(false);
         });
 
-        it('should clear draft status when event:save-started is broadcast', function () {
+        it('should stop the draft spinner but preserve draft banner when event:save-started is broadcast', function () {
             var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
             mockConceptSetService(conceptResponseData);
             mockformService({});
@@ -1467,12 +1466,51 @@ describe('ConceptSetPageController', function () {
             rootScope.$broadcast('event:save-started');
 
             expect(scope.formDraft.showSpinner).toBe(false);
-            expect(scope.formDraft.hasDrafts).toBe(false);
-            expect(scope.formDraft.draftDate).toBeNull();
-            expect(scope.formDraft.draftTime).toBeNull();
-            expect(scope.formDraft.statusMessage).toBeNull();
-            expect(scope.formDraft.statusParams).toEqual({});
-            expect(scope.formDraft.statusError).toBe(false);
+            // Draft banner must NOT be cleared on save-started — if save fails,
+            // the draft still exists and the banner should remain visible.
+            expect(scope.formDraft.hasDrafts).toBe(true);
+            expect(scope.formDraft.draftDate).toBe('08 Apr 2026');
+            expect(scope.formDraft.draftTime).toBe('10:30 AM');
+            expect(scope.formDraft.statusMessage).toBe('SAVED_AS_DRAFT_KEY');
+            expect(scope.formDraft.statusParams).toEqual({draftDate: '08 Apr 2026', draftTime: '10:30 AM'});
+            expect(scope.formDraft.statusError).toBe(true);
+        });
+
+        it('should restore draft banner when event:save-failed is broadcast and a draft exists', function () {
+            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+            mockConceptSetService(conceptResponseData);
+            mockformService({});
+
+            scope.patient = {uuid: 'test-patient-uuid'};
+            rootScope.currentProvider = {uuid: 'test-provider-uuid'};
+            sessionStorage.removeItem('formSaveCompleted');
+
+            var draftTimestamp = new Date('2026-04-08T10:30:00').getTime();
+            formDraftService.getResumableDraft.and.callFake(function () {
+                var draft = {uuid: 'draft-uuid', markedAsSaved: false, timestamp: draftTimestamp, formData: '[]'};
+                return {
+                    then: function (callback) {
+                        if (callback) { callback(draft); }
+                        return this;
+                    },
+                    catch: function () { return this; }
+                };
+            });
+
+            createController();
+            scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
+
+            // Simulate save-started clearing the banner
+            scope.formDraft.hasDrafts = false;
+            scope.formDraft.draftDate = null;
+            scope.formDraft.draftTime = null;
+            scope.formDraft.statusMessage = null;
+
+            rootScope.$broadcast('event:save-failed');
+
+            expect(scope.formDraft.hasDrafts).toBe(true);
+            expect(rootScope.draftData).not.toBeNull();
+            expect(rootScope.draftData.uuid).toBe('draft-uuid');
         });
 
         it('should clear draft status and disable Save as Draft when consultation save succeeds', function () {
@@ -1573,7 +1611,7 @@ describe('ConceptSetPageController', function () {
             });
             createControllerWithTimeoutAndFilter(timeoutMock, filterMock);
 
-            expect(formDraftService.getDraft).toHaveBeenCalledWith('test-patient-uuid', 'test-provider-uuid');
+            expect(formDraftService.getDraft).toHaveBeenCalledWith('test-patient-uuid');
             expect(scope.formDraft.hasDrafts).toBe(true);
             expect(scope.formDraft.statusMessage).toBe('SAVED_AS_DRAFT_KEY');
             expect(scope.formDraft.statusParams.draftDate).toBe('08 Apr 2026');
@@ -1621,27 +1659,6 @@ describe('ConceptSetPageController', function () {
 
             scope.patient = null;
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};
-
-            var timeoutMock = function (callback, delay) {
-                if (delay === 0 || delay === 500) {
-                    callback();
-                }
-                return {$$timeoutId: delay};
-            };
-            timeoutMock.cancel = jasmine.createSpy('cancel');
-
-            createControllerWithTimeoutAndFilter(timeoutMock);
-
-            expect(formDraftService.getDraft).not.toHaveBeenCalled();
-        });
-
-        it('should not call getDraft while checking drafts when provider uuid is missing', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            scope.patient = {uuid: 'test-patient-uuid'};
-            rootScope.currentProvider = null;
 
             var timeoutMock = function (callback, delay) {
                 if (delay === 0 || delay === 500) {
@@ -1853,7 +1870,7 @@ describe('ConceptSetPageController', function () {
                 rootScope.currentProvider = {uuid: 'late-provider-uuid'};
                 scope.$digest();
 
-                expect(formDraftService.getDraft).toHaveBeenCalledWith('late-patient-uuid', 'late-provider-uuid');
+                expect(formDraftService.getDraft).toHaveBeenCalledWith('late-patient-uuid');
                 expect(scope.formDraft.hasDrafts).toBe(true);
             });
         });
@@ -2003,7 +2020,7 @@ describe('ConceptSetPageController', function () {
 
                 createControllerWithTimeoutAndFilter(timeoutMock);
 
-                expect(formDraftService.getDraft).toHaveBeenCalledWith('test-patient-uuid', 'test-provider-uuid');
+                expect(formDraftService.getDraft).toHaveBeenCalledWith('test-patient-uuid');
             });
 
             it('should auto-populate concept-set forms when unsaved draft is found on direct navigation', function () {
@@ -2127,21 +2144,6 @@ describe('ConceptSetPageController', function () {
                 expect(formDraftService.getDraft).not.toHaveBeenCalled();
             });
 
-            it('should not call getDraft when provider uuid is missing', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 'concept-uuid-1'}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
-                enableDraftFeature();
-
-                scope.patient = {uuid: 'test-patient-uuid'};
-                rootScope.currentProvider = null;
-                rootScope.resumeDraftOnLoad = false;
-
-                createControllerWithTimeoutAndFilter(timeoutMock);
-
-                expect(formDraftService.getDraft).not.toHaveBeenCalled();
-            });
-
             it('should not populate forms when draft is marked as saved', function () {
                 var conceptUuid = 'concept-uuid-123';
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'Orthopaedic Plan'}, uuid: conceptUuid}]}]};
@@ -2244,7 +2246,7 @@ describe('ConceptSetPageController', function () {
                 });
                 createControllerWithTimeoutAndFilter(timeoutMock);
 
-                expect(formDraftService.getDraft).toHaveBeenCalledWith('test-patient-uuid', 'test-provider-uuid');
+                expect(formDraftService.getDraft).toHaveBeenCalledWith('test-patient-uuid');
             });
 
             it('should handle null groupMember inside stripObservationFlags without throwing', function () {
@@ -3169,7 +3171,7 @@ describe('ConceptSetPageController', function () {
 
                 var filterMock = function () { return function () { return 'mocked-time'; }; };
                 var capturedFormData;
-                formDraftService.saveDraft.and.callFake(function (patientUuid, providerUuid, formData) {
+                formDraftService.saveDraft.and.callFake(function (patientUuid, formData) {
                     capturedFormData = formData;
                     return {
                         then: function (success) {
@@ -3269,7 +3271,7 @@ describe('ConceptSetPageController', function () {
 
             createController();
 
-            expect(formDraftService.discardDraft).toHaveBeenCalledWith('test-patient-uuid', 'test-provider-uuid');
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith('test-patient-uuid');
             expect(state.reload).toHaveBeenCalled();
         });
 

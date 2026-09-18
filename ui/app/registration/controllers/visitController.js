@@ -162,9 +162,7 @@ angular.module('bahmni.registration')
 
             var handleVisitCloseSuccess = function (visitType) {
                 visitService.endVisit(vm.visitUuid).then(function () {
-                    var currentProvider = $rootScope.currentProvider || selectedProvider;
-                    var providerUuid = currentProvider ? currentProvider.uuid : null;
-                    formDraftService.discardDraft(patientUuid, providerUuid);
+                    formDraftService.discardDraft(patientUuid);
                     $location.url(Bahmni.Registration.Constants.patientSearchURL);
                     var messageParams = {visitUuid: vm.visitUuid, visitType: visitType};
                     auditLogService.log(patientUuid, 'CLOSE_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
@@ -209,8 +207,6 @@ angular.module('bahmni.registration')
                     closeVisit(visitType);
                     return;
                 }
-                var currentProvider = $rootScope.currentProvider || selectedProvider;
-                var providerUuid = currentProvider ? currentProvider.uuid : null;
                 var config = {
                     titleKey: 'CLOSE_VISIT_DRAFTS_WARNING_TITLE_KEY',
                     messageKey: 'CLOSE_VISIT_DRAFTS_WARNING_MESSAGE_KEY',
@@ -218,7 +214,7 @@ angular.module('bahmni.registration')
                     confirmBtnKey: 'CLOSE_VISIT_DRAFTS_WARNING_LOGOUT_KEY'
                 };
 
-                formDraftService.getProviderDrafts(providerUuid).then(function (providerDrafts) {
+                formDraftService.getProviderDrafts().then(function (providerDrafts) {
                     const hasDraftsOfCurrentPatient = providerDrafts.find(function (draft) {
                         return draft.patientUuid == patientUuid;
                     });

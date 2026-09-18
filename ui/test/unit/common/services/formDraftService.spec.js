@@ -29,18 +29,16 @@ describe('FormDraftService', function () {
 
     it('should POST to formdraft endpoint with correct payload on saveDraft', function () {
         var patientUuid = 'patient-uuid-123';
-        var providerUuid = 'provider-uuid-456';
         var formData = '{"observations":[]}';
         var mockResponse = {data: {uuid: 'draft-uuid', timestamp: 1234567890000, markedAsSaved: true}};
         mockHttp.post.and.returnValue(specUtil.respondWith(mockResponse));
 
-        formDraftService.saveDraft(patientUuid, providerUuid, formData);
+        formDraftService.saveDraft(patientUuid, formData);
 
         expect(mockHttp.post).toHaveBeenCalledWith(
             '/openmrs/ws/rest/v1/bahmnicore/formdraft',
             {
                 patientUuid: patientUuid,
-                providerUuid: providerUuid,
                 formData: formData
             }
         );
@@ -48,18 +46,16 @@ describe('FormDraftService', function () {
 
     it('should GET from formdraft endpoint with correct params on getDraft', function () {
         var patientUuid = 'patient-uuid-123';
-        var providerUuid = 'provider-uuid-456';
         var mockResponse = {data: {uuid: 'draft-uuid', timestamp: 1234567890000}};
         mockHttp.get.and.returnValue(specUtil.respondWith(mockResponse));
 
-        formDraftService.getDraft(patientUuid, providerUuid);
+        formDraftService.getDraft(patientUuid);
 
         expect(mockHttp.get).toHaveBeenCalledWith(
             '/openmrs/ws/rest/v1/bahmnicore/formdraft',
             {
                 params: {
-                    patientUuid: patientUuid,
-                    providerUuid: providerUuid
+                    patientUuid: patientUuid
                 },
                 suppressError: true
             }
@@ -68,19 +64,17 @@ describe('FormDraftService', function () {
 
     it('should PATCH to formdraft endpoint with correct params on markDraftAsSaved', function () {
         var patientUuid = 'patient-uuid-123';
-        var providerUuid = 'provider-uuid-456';
         var mockResponse = {data: {uuid: 'draft-uuid', timestamp: 1234567890000, markedAsSaved: true}};
         mockHttp.patch.and.returnValue(specUtil.respondWith(mockResponse));
 
-        formDraftService.markDraftAsSaved(patientUuid, providerUuid);
+        formDraftService.markDraftAsSaved(patientUuid);
 
         expect(mockHttp.patch).toHaveBeenCalledWith(
             '/openmrs/ws/rest/v1/bahmnicore/formdraft',
             {},
             {
                 params: {
-                    patientUuid: patientUuid,
-                    providerUuid: providerUuid
+                    patientUuid: patientUuid
                 },
                 suppressError: true
             }
@@ -89,18 +83,16 @@ describe('FormDraftService', function () {
 
     it('should DELETE formdraft endpoint with correct params on discardDraft', function () {
         var patientUuid = 'patient-uuid-123';
-        var providerUuid = 'provider-uuid-456';
         var mockResponse = {data: {success: true}};
         mockHttp.delete.and.returnValue(specUtil.respondWith(mockResponse));
 
-        formDraftService.discardDraft(patientUuid, providerUuid);
+        formDraftService.discardDraft(patientUuid);
 
         expect(mockHttp.delete).toHaveBeenCalledWith(
             '/openmrs/ws/rest/v1/bahmnicore/formdraft',
             {
                 params: {
-                    patientUuid: patientUuid,
-                    providerUuid: providerUuid
+                    patientUuid: patientUuid
                 },
                 suppressError: true
             }
@@ -108,17 +100,7 @@ describe('FormDraftService', function () {
     });
 
     it('should not make DELETE request when patientUuid is null', function () {
-        formDraftService.discardDraft(null, 'provider-uuid-456');
-        expect(mockHttp.delete).not.toHaveBeenCalled();
-    });
-
-    it('should not make DELETE request when providerUuid is null', function () {
-        formDraftService.discardDraft('patient-uuid-123', null);
-        expect(mockHttp.delete).not.toHaveBeenCalled();
-    });
-
-    it('should not make DELETE request when both uuids are null', function () {
-        formDraftService.discardDraft(null, null);
+        formDraftService.discardDraft(null);
         expect(mockHttp.delete).not.toHaveBeenCalled();
     });
 
@@ -126,7 +108,7 @@ describe('FormDraftService', function () {
         var mockResponse = {data: {uuid: 'draft-uuid'}};
         mockHttp.post.and.returnValue(specUtil.respondWith(mockResponse));
 
-        formDraftService.saveDraft('patient-uuid-123', 'provider-uuid-456', '{}').then(function () {
+        formDraftService.saveDraft('patient-uuid-123', '{}').then(function () {
             expect(mockWindow.BroadcastChannel).toHaveBeenCalledWith('bahmni-draft-indicator-update');
             expect(mockChannel.postMessage).toHaveBeenCalledWith({type: 'drafts-changed'});
             expect(mockChannel.close).toHaveBeenCalled();
@@ -138,7 +120,7 @@ describe('FormDraftService', function () {
         var mockResponse = {data: {success: true}};
         mockHttp.delete.and.returnValue(specUtil.respondWith(mockResponse));
 
-        formDraftService.discardDraft('patient-uuid-123', 'provider-uuid-456').then(function () {
+        formDraftService.discardDraft('patient-uuid-123').then(function () {
             expect(mockWindow.BroadcastChannel).toHaveBeenCalledWith('bahmni-draft-indicator-update');
             expect(mockChannel.postMessage).toHaveBeenCalledWith({type: 'drafts-changed'});
             expect(mockChannel.close).toHaveBeenCalled();
@@ -150,7 +132,7 @@ describe('FormDraftService', function () {
         var mockResponse = {data: {uuid: 'draft-uuid', markedAsSaved: true}};
         mockHttp.patch.and.returnValue(specUtil.respondWith(mockResponse));
 
-        formDraftService.markDraftAsSaved('patient-uuid-123', 'provider-uuid-456').then(function () {
+        formDraftService.markDraftAsSaved('patient-uuid-123').then(function () {
             expect(mockWindow.BroadcastChannel).toHaveBeenCalledWith('bahmni-draft-indicator-update');
             expect(mockChannel.postMessage).toHaveBeenCalledWith({type: 'drafts-changed'});
             expect(mockChannel.close).toHaveBeenCalled();
@@ -159,18 +141,14 @@ describe('FormDraftService', function () {
     });
 
     describe('hasDraftsForProvider', function () {
-        it('should GET the formdraft list endpoint with providerUuid and resolve true when drafts exist', function (done) {
-            var providerUuid = 'provider-uuid-456';
+        it('should GET the formdraft list endpoint and resolve true when drafts exist', function (done) {
             var mockResponse = {data: [{uuid: 'draft-uuid'}]};
             mockHttp.get.and.returnValue(specUtil.respondWith(mockResponse));
 
-            formDraftService.hasDraftsForProvider(providerUuid).then(function (hasDrafts) {
+            formDraftService.hasDraftsForProvider().then(function (hasDrafts) {
                 expect(mockHttp.get).toHaveBeenCalledWith(
                     '/openmrs/ws/rest/v1/bahmnicore/formdraft/list',
                     {
-                        params: {
-                            providerUuid: providerUuid
-                        },
                         suppressError: true
                     }
                 );
@@ -179,23 +157,14 @@ describe('FormDraftService', function () {
             });
         });
 
-        it('should resolve false when no drafts exist for the provider', function (done) {
+        it('should resolve false when no drafts exist', function (done) {
             var mockResponse = {data: []};
             mockHttp.get.and.returnValue(specUtil.respondWith(mockResponse));
 
-            formDraftService.hasDraftsForProvider('provider-uuid-456').then(function (hasDrafts) {
+            formDraftService.hasDraftsForProvider().then(function (hasDrafts) {
                 expect(hasDrafts).toBe(false);
                 done();
             });
-        });
-
-        it('should resolve false without making a request when providerUuid is not provided', function (done) {
-            formDraftService.hasDraftsForProvider(null).then(function (hasDrafts) {
-                expect(hasDrafts).toBe(false);
-                expect(mockHttp.get).not.toHaveBeenCalled();
-                done();
-            });
-            $rootScope.$digest();
         });
     });
 
@@ -250,8 +219,8 @@ describe('FormDraftService', function () {
         it('should issue one GET when two callers ask for the same draft concurrently', function () {
             mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, {data: {uuid: 'draft-uuid'}}));
 
-            var first = formDraftService.getDraft('patient-1', 'provider-1');
-            var second = formDraftService.getDraft('patient-1', 'provider-1');
+            var first = formDraftService.getDraft('patient-1');
+            var second = formDraftService.getDraft('patient-1');
 
             expect(mockHttp.get.calls.count()).toBe(1);
             expect(first).toBe(second);
@@ -260,8 +229,8 @@ describe('FormDraftService', function () {
         it('should issue a separate GET for a different patient', function () {
             mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, {data: {uuid: 'draft-uuid'}}));
 
-            formDraftService.getDraft('patient-1', 'provider-1');
-            formDraftService.getDraft('patient-2', 'provider-1');
+            formDraftService.getDraft('patient-1');
+            formDraftService.getDraft('patient-2');
 
             expect(mockHttp.get.calls.count()).toBe(2);
         });
@@ -269,9 +238,9 @@ describe('FormDraftService', function () {
         it('should issue a fresh GET once the previous request has settled', function () {
             mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, {data: {uuid: 'draft-uuid'}}));
 
-            formDraftService.getDraft('patient-1', 'provider-1');
+            formDraftService.getDraft('patient-1');
             $rootScope.$digest();
-            formDraftService.getDraft('patient-1', 'provider-1');
+            formDraftService.getDraft('patient-1');
 
             expect(mockHttp.get.calls.count()).toBe(2);
         });
@@ -281,7 +250,7 @@ describe('FormDraftService', function () {
         var resolvedWith = function (response) {
             mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, response));
             var result;
-            formDraftService.getResumableDraft('patient-1', 'provider-1').then(function (draft) {
+            formDraftService.getResumableDraft('patient-1').then(function (draft) {
                 result = draft;
             });
             $rootScope.$digest();
@@ -306,7 +275,7 @@ describe('FormDraftService', function () {
             mockHttp.get.and.returnValue(deferred.promise);
             var result = 'untouched';
             var rejected = false;
-            formDraftService.getResumableDraft('patient-1', 'provider-1').then(function (draft) {
+            formDraftService.getResumableDraft('patient-1').then(function (draft) {
                 result = draft;
             }, function () {
                 rejected = true;
@@ -321,8 +290,8 @@ describe('FormDraftService', function () {
         it('should give concurrent callers the same answer from one request', function () {
             mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, {data: {uuid: 'draft-uuid', markedAsSaved: false}}));
             var answers = [];
-            formDraftService.getResumableDraft('patient-1', 'provider-1').then(function (d) { answers.push(d); });
-            formDraftService.getResumableDraft('patient-1', 'provider-1').then(function (d) { answers.push(d); });
+            formDraftService.getResumableDraft('patient-1').then(function (d) { answers.push(d); });
+            formDraftService.getResumableDraft('patient-1').then(function (d) { answers.push(d); });
             $rootScope.$digest();
 
             expect(mockHttp.get.calls.count()).toBe(1);

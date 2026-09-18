@@ -359,7 +359,7 @@ describe('VisitController', function () {
 
             scope.closeVisitIfDischarged();
 
-            expect(formDraftService.discardDraft).toHaveBeenCalledWith(stateParams.patientUuid, 'provider-uuid');
+            expect(formDraftService.discardDraft).toHaveBeenCalledWith(stateParams.patientUuid);
         });
 
         it("should show a draft warning dialog before closing when the patient has a draft", function () {
@@ -373,7 +373,7 @@ describe('VisitController', function () {
 
             scope.closeVisitIfDischarged();
 
-            expect(formDraftService.getProviderDrafts).toHaveBeenCalledWith('provider-uuid');
+            expect(formDraftService.getProviderDrafts).toHaveBeenCalledWith();
             expect(ngDialog.open).toHaveBeenCalled();
             expect(window.confirm).not.toHaveBeenCalled();
             expect(visitService.endVisit).not.toHaveBeenCalled();

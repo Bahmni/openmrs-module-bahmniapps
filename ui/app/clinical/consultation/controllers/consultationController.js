@@ -582,7 +582,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
-                sessionStorage.setItem('formSaveCompleted', 'true');
                 $rootScope.$broadcast('event:save-started');
                 try {
                     var alerts = angular.copy($rootScope.cdssAlerts) || [];
@@ -640,17 +639,17 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                         }).then(function () {
                                             copyConsultationToScope(consultationWithDiagnosis);
                                             var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                                            var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                                            if (patientUuid && providerUuid) {
+                                            if (patientUuid) {
                                                 if (discardDraftOnSave) {
-                                                    formDraftService.discardDraft(patientUuid, providerUuid).catch(function () {
+                                                    formDraftService.discardDraft(patientUuid).catch(function () {
                                                     });
                                                 } else {
-                                                    formDraftService.markDraftAsSaved(patientUuid, providerUuid).catch(function () {
+                                                    formDraftService.markDraftAsSaved(patientUuid).catch(function () {
                                                     });
                                                 }
                                                 $rootScope.draftData = null;
                                             }
+                                            sessionStorage.setItem('formSaveCompleted', 'true');
                                             $rootScope.$broadcast('event:save-successful');
                                             if ($scope.targetUrl) {
                                                 return $window.open($scope.targetUrl, "_self");

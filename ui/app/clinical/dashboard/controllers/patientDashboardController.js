@@ -67,8 +67,7 @@ angular.module('bahmni.clinical')
                     return;
                 }
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                formDraftService.getResumableDraft(patientUuid, providerUuid).then(function (draft) {
+                formDraftService.getResumableDraft(patientUuid).then(function (draft) {
                     if (!draft) {
                         $state.reload();
                     } else {
@@ -95,8 +94,7 @@ angular.module('bahmni.clinical')
                 };
                 dialogScope.discardDraft = function () {
                     var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                    var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
-                    formDraftService.discardDraft(patientUuid, providerUuid).then(function () {
+                    formDraftService.discardDraft(patientUuid).then(function () {
                         ngDialog.close(dialog.id);
                         $state.reload();
                     }, function () {
@@ -110,14 +108,13 @@ angular.module('bahmni.clinical')
                     return;
                 }
                 var patientUuid = $scope.patient ? $scope.patient.uuid : null;
-                var providerUuid = $rootScope.currentProvider ? $rootScope.currentProvider.uuid : null;
 
-                if (patientUuid && providerUuid) {
-                    formDraftService.getDraft(patientUuid, providerUuid).then(
+                if (patientUuid) {
+                    formDraftService.getDraft(patientUuid).then(
                         function (response) {
                             if (response.data && response.data.uuid && !response.data.markedAsSaved) {
                                 if (!$scope.activeVisit) {
-                                    formDraftService.discardDraft(patientUuid, providerUuid).then(function () {
+                                    formDraftService.discardDraft(patientUuid).then(function () {
                                         $scope.formDraft.hasDrafts = false;
                                         $scope.formDraft.draftDate = null;
                                         $scope.formDraft.draftTime = null;
@@ -181,9 +178,6 @@ angular.module('bahmni.clinical')
             });
 
             var cleanUpListenerSaveStarted = $scope.$on("event:save-started", function () {
-                $scope.formDraft.hasDrafts = false;
-                $scope.formDraft.draftDate = null;
-                $scope.formDraft.draftTime = null;
             });
 
             var cleanUpListenerPrintDashboard = $scope.$on("event:printDashboard", function (event, tab) {

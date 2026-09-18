@@ -1151,7 +1151,7 @@ describe("ConsultationController", function () {
             diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
 
             scope.save({toState: {}}).then(function () {
-                expect(formDraftService.markDraftAsSaved).toHaveBeenCalledWith('patient-uuid-123', 'provider-uuid-123');
+                expect(formDraftService.markDraftAsSaved).toHaveBeenCalledWith('patient-uuid-123');
                 done();
             });
         });
@@ -1162,20 +1162,6 @@ describe("ConsultationController", function () {
             rootScope.currentProvider = {uuid: 'provider-uuid-123'};
             scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
             scope.patient = {uuid: null};
-            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
-
-            scope.save({toState: {}}).then(function () {
-                expect(formDraftService.markDraftAsSaved).not.toHaveBeenCalled();
-                done();
-            });
-        });
-    });
-
-    it("should not call markDraftAsSaved when save is successful but provider UUID is null", function (done) {
-        inject(function(formDraftService) {
-            rootScope.currentProvider = null;
-            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
-            scope.patient = {uuid: 'patient-uuid-123'};
             diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
 
             scope.save({toState: {}}).then(function () {
