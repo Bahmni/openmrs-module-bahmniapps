@@ -107,7 +107,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                             } else {
                                 $scope.initialization = observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                                     $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
-                                    $scope.config.obsIgnoreList, null).then(function (response) {
+                                    $scope.config.obsIgnoreList, $scope.config.filterObsWithOrders).then(function (response) {
                                         mapObservation(response.data, $scope.config);
                                     });
                             }
