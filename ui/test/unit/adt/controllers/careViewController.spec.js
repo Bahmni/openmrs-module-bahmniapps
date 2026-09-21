@@ -10,7 +10,7 @@
 'use strict';
 
 describe("CareViewController", function () {
-    var scope, controller, auditLogService, logoutService, $window;
+    var scope, controller, auditLogService, logoutService, logoutAttemptSpy, $window;
     var state = jasmine.createSpyObj('$state', ['go']);
     beforeEach(module('bahmni.adt'));
     beforeEach(inject(function ($controller, $rootScope,_$window_) {
@@ -19,7 +19,8 @@ describe("CareViewController", function () {
         $window = _$window_;
     }));
     auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
-    logoutService = jasmine.createSpyObj('logoutService', ['attemptLogout']);
+    logoutAttemptSpy = jasmine.createSpy('attemptLogout');
+    logoutService = { attemptLogout: logoutAttemptSpy };
     auditLogService.log.and.returnValue({
         then: function(callback) { return callback(); }
     });
@@ -52,7 +53,7 @@ describe("CareViewController", function () {
     it('should delegate to logoutService.attemptLogout on logout', function (){
         createController();
         scope.hostApi.onLogOut();
-        expect(logoutService.attemptLogout).toHaveBeenCalledWith(scope);
+        expect(logoutAttemptSpy).toHaveBeenCalledWith(scope);
     });
     it('should call handleLogoutShortcut on keydown event', function (){
         createController();
