@@ -141,9 +141,8 @@ describe('ConceptSetPageController', function () {
 
     beforeEach(initController);
 
-    var createController = function () {
-        clinicalAppConfigService.getAllConceptSetExtensions.and.returnValue(extension);
-        return controller("ConceptSetPageController", {
+    var getBaseControllerParams = function () {
+        return {
             $scope: scope,
             $rootScope: rootScope,
             $stateParams: stateParams,
@@ -157,9 +156,15 @@ describe('ConceptSetPageController', function () {
             $translate: translate,
             appService: appService,
             formDraftService: formDraftService,
-            autoSaveService: autoSaveService,
             visitService: visitService
-        });
+        };
+    };
+
+    var createController = function () {
+        clinicalAppConfigService.getAllConceptSetExtensions.and.returnValue(extension);
+        return controller("ConceptSetPageController", angular.extend(getBaseControllerParams(), {
+            autoSaveService: autoSaveService
+        }));
     };
 
     var mockConceptSetService = function (conceptResponseData, entityMappingResponseData) {
@@ -946,6 +951,8 @@ describe('ConceptSetPageController', function () {
 
     describe('Save As Draft', function () {
         var createControllerWithTimeoutAndFilter;
+        var createStandardTimeoutMock;
+        var setupDraftBannerForTest;
 
         beforeEach(inject(function ($timeout) {
             rootScope.formDraftFeatureEnabled = true;
@@ -956,24 +963,35 @@ describe('ConceptSetPageController', function () {
                     };
                 };
                 clinicalAppConfigService.getAllConceptSetExtensions.and.returnValue(extension);
-                return controller("ConceptSetPageController", {
-                    $scope: scope,
-                    $rootScope: rootScope,
-                    $stateParams: stateParams,
-                    conceptSetService: conceptSetService,
-                    formService: formService,
-                    clinicalAppConfigService: clinicalAppConfigService,
-                    messagingService: messagingService,
-                    configurations: configurations,
-                    $state: state,
-                    spinner: spinner,
-                    $translate: translate,
-                    appService: appService,
+                return controller("ConceptSetPageController", angular.extend(getBaseControllerParams(), {
                     $timeout: timeoutMock || $timeout,
                     $filter: filterMock || defaultFilterMock,
-                    formDraftService: formDraftServiceMock || formDraftService,
-                    visitService: visitService
-                });
+                    formDraftService: formDraftServiceMock || formDraftService
+                }));
+            };
+            createStandardTimeoutMock = function () {
+                var timeoutMock = function (callback, delay) {
+                    if (delay === 0 || delay === 500) {
+                        callback();
+                    }
+                    return {$$timeoutId: delay};
+                };
+                timeoutMock.cancel = jasmine.createSpy('cancel');
+                return timeoutMock;
+            };
+            setupDraftBannerForTest = function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+                createController();
+                scope.formDraft.isDirty = true;
+                scope.formDraft.hasDrafts = true;
+                scope.formDraft.draftDate = '08 Apr 2026';
+                scope.formDraft.draftTime = '10:30 AM';
+                scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
+                scope.formDraft.statusParams = {draftDate: '08 Apr 2026', draftTime: '10:30 AM'};
+                scope.formDraft.statusError = true;
+                scope.formDraft.showSpinner = true;
             };
             scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
         }));
@@ -1449,19 +1467,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should stop the draft spinner but preserve draft banner when event:save-started is broadcast', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-            createController();
-
-            scope.formDraft.isDirty = true;
-            scope.formDraft.hasDrafts = true;
-            scope.formDraft.draftDate = '08 Apr 2026';
-            scope.formDraft.draftTime = '10:30 AM';
-            scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
-            scope.formDraft.statusParams = {draftDate: '08 Apr 2026', draftTime: '10:30 AM'};
-            scope.formDraft.statusError = true;
-            scope.formDraft.showSpinner = true;
+            setupDraftBannerForTest();
 
             rootScope.$broadcast('event:save-started');
 
@@ -1514,19 +1520,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should clear draft status and disable Save as Draft when consultation save succeeds', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-            createController();
-
-            scope.formDraft.isDirty = true;
-            scope.formDraft.hasDrafts = true;
-            scope.formDraft.draftDate = '08 Apr 2026';
-            scope.formDraft.draftTime = '10:30 AM';
-            scope.formDraft.statusMessage = 'SAVED_AS_DRAFT_KEY';
-            scope.formDraft.statusParams = {draftDate: '08 Apr 2026', draftTime: '10:30 AM'};
-            scope.formDraft.statusError = true;
-            scope.formDraft.showSpinner = true;
+            setupDraftBannerForTest();
 
             rootScope.draftData = {uuid: 'draft-uuid', markedAsSaved: false, formData: '[]'};
             rootScope.$broadcast('event:save-successful');
@@ -1550,13 +1544,7 @@ describe('ConceptSetPageController', function () {
             scope.patient = {uuid: 'test-patient-uuid'};
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};
 
-            var timeoutMock = function (callback, delay) {
-                if (delay === 0 || delay === 500) {
-                    callback();
-                }
-                return {$$timeoutId: delay};
-            };
-            timeoutMock.cancel = jasmine.createSpy('cancel');
+            var timeoutMock = createStandardTimeoutMock();
 
             formDraftService.getDraft.and.returnValue({
                 then: function (success) {
@@ -1584,13 +1572,7 @@ describe('ConceptSetPageController', function () {
             scope.patient = {uuid: 'test-patient-uuid'};
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};
 
-            var timeoutMock = function (callback, delay) {
-                if (delay === 0 || delay === 500) {
-                    callback();
-                }
-                return {$$timeoutId: delay};
-            };
-            timeoutMock.cancel = jasmine.createSpy('cancel');
+            var timeoutMock = createStandardTimeoutMock();
 
             var filterMock = function () {
                 return function (date, format) {
@@ -1627,13 +1609,7 @@ describe('ConceptSetPageController', function () {
             scope.patient = {uuid: 'test-patient-uuid'};
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};
 
-            var timeoutMock = function (callback, delay) {
-                if (delay === 0 || delay === 500) {
-                    callback();
-                }
-                return {$$timeoutId: delay};
-            };
-            timeoutMock.cancel = jasmine.createSpy('cancel');
+            var timeoutMock = createStandardTimeoutMock();
 
             formDraftService.getDraft.and.returnValue({
                 then: function (success) {
@@ -1660,13 +1636,7 @@ describe('ConceptSetPageController', function () {
             scope.patient = null;
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};
 
-            var timeoutMock = function (callback, delay) {
-                if (delay === 0 || delay === 500) {
-                    callback();
-                }
-                return {$$timeoutId: delay};
-            };
-            timeoutMock.cancel = jasmine.createSpy('cancel');
+            var timeoutMock = createStandardTimeoutMock();
 
             createControllerWithTimeoutAndFilter(timeoutMock);
 
@@ -1677,11 +1647,7 @@ describe('ConceptSetPageController', function () {
             var timeoutMock;
 
             beforeEach(function () {
-                timeoutMock = function (callback, delay) {
-                    if (delay === 0 || delay === 500) { callback(); }
-                    return {$$timeoutId: delay};
-                };
-                timeoutMock.cancel = jasmine.createSpy('cancel');
+                timeoutMock = createStandardTimeoutMock();
             });
 
             it('should not clobber draftData when resumeDraftOnLoad is set and getDraft returns no valid draft', function () {
@@ -2660,25 +2626,12 @@ describe('ConceptSetPageController', function () {
                 };
                 defaultTimeoutMock.cancel = jasmine.createSpy('cancel');
                 clinicalAppConfigService.getAllConceptSetExtensions.and.returnValue(extension);
-                return controller("ConceptSetPageController", {
-                    $scope: scope,
-                    $rootScope: rootScope,
-                    $stateParams: stateParams,
-                    conceptSetService: conceptSetService,
-                    formService: formService,
-                    clinicalAppConfigService: clinicalAppConfigService,
-                    messagingService: messagingService,
-                    configurations: configurations,
-                    $state: state,
-                    spinner: spinner,
-                    $translate: translate,
-                    appService: appService,
+                return controller("ConceptSetPageController", angular.extend(getBaseControllerParams(), {
                     $timeout: timeoutMock || defaultTimeoutMock,
                     $filter: function () { return function () { return 'mocked-time'; }; },
                     formDraftService: formDraftServiceMock || formDraftService,
-                    autoSaveService: autoSaveService,
-                    visitService: visitService
-                });
+                    autoSaveService: autoSaveService
+                }));
             };
 
             var enableDraftFeature = function () {
@@ -2860,8 +2813,9 @@ describe('ConceptSetPageController', function () {
 
         describe('Form2 Dirty Tracking', function () {
             var timeoutMock;
+            var createForm2TrackingController;
 
-            beforeEach(inject(function ($timeout) {
+            beforeEach(inject(function () {
                 timeoutMock = function (callback, delay) {
                     if (delay === 0) {
                         callback();
@@ -2869,6 +2823,13 @@ describe('ConceptSetPageController', function () {
                     return {$$timeoutId: delay};
                 };
                 timeoutMock.cancel = jasmine.createSpy('cancel');
+                createForm2TrackingController = function () {
+                    clinicalAppConfigService.getAllConceptSetExtensions.and.returnValue(extension);
+                    return controller("ConceptSetPageController", angular.extend(getBaseControllerParams(), {
+                        $timeout: timeoutMock,
+                        $filter: function () { return function () { return 'mocked-time'; }; }
+                    }));
+                };
             }));
 
             it('should register DOM listeners for form2 sync when dirty tracking starts', function () {
@@ -2888,24 +2849,7 @@ describe('ConceptSetPageController', function () {
 
                 var addEventListenerSpy = spyOn(document, 'addEventListener').and.callThrough();
 
-                var ctlr = controller("ConceptSetPageController", {
-                    $scope: scope,
-                    $rootScope: rootScope,
-                    $stateParams: stateParams,
-                    conceptSetService: conceptSetService,
-                    formService: formService,
-                    clinicalAppConfigService: clinicalAppConfigService,
-                    messagingService: messagingService,
-                    configurations: configurations,
-                    $state: state,
-                    spinner: spinner,
-                    $translate: translate,
-                    appService: appService,
-                    $timeout: timeoutMock,
-                    $filter: function () { return function () { return 'mocked-time'; }; },
-                    formDraftService: formDraftService,
-                    visitService: visitService
-                });
+                createForm2TrackingController();
                 scope.$digest();
                 expect(addEventListenerSpy).toHaveBeenCalledWith('input', jasmine.any(Function), true);
                 expect(addEventListenerSpy).toHaveBeenCalledWith('change', jasmine.any(Function), true);
@@ -2920,24 +2864,7 @@ describe('ConceptSetPageController', function () {
 
                 var addEventListenerSpy = spyOn(document, 'addEventListener').and.callThrough();
 
-                var ctlr = controller("ConceptSetPageController", {
-                    $scope: scope,
-                    $rootScope: rootScope,
-                    $stateParams: stateParams,
-                    conceptSetService: conceptSetService,
-                    formService: formService,
-                    clinicalAppConfigService: clinicalAppConfigService,
-                    messagingService: messagingService,
-                    configurations: configurations,
-                    $state: state,
-                    spinner: spinner,
-                    $translate: translate,
-                    appService: appService,
-                    $timeout: timeoutMock,
-                    $filter: function () { return function () { return 'mocked-time'; }; },
-                    formDraftService: formDraftService,
-                    visitService: visitService
-                });
+                createForm2TrackingController();
                 scope.$digest();
                 expect(addEventListenerSpy).toHaveBeenCalledWith('input', jasmine.any(Function), true);
                 expect(addEventListenerSpy).toHaveBeenCalledWith('change', jasmine.any(Function), true);
@@ -2962,24 +2889,7 @@ describe('ConceptSetPageController', function () {
 
                 var removeEventListenerSpy = spyOn(document, 'removeEventListener').and.callThrough();
 
-                var ctlr = controller("ConceptSetPageController", {
-                    $scope: scope,
-                    $rootScope: rootScope,
-                    $stateParams: stateParams,
-                    conceptSetService: conceptSetService,
-                    formService: formService,
-                    clinicalAppConfigService: clinicalAppConfigService,
-                    messagingService: messagingService,
-                    configurations: configurations,
-                    $state: state,
-                    spinner: spinner,
-                    $translate: translate,
-                    appService: appService,
-                    $timeout: timeoutMock,
-                    $filter: function () { return function () { return 'mocked-time'; }; },
-                    formDraftService: formDraftService,
-                    visitService: visitService
-                });
+                createForm2TrackingController();
                 scope.$digest();
 
                 scope.$destroy();
