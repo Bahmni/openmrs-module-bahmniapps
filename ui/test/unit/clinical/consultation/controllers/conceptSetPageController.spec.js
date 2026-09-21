@@ -58,10 +58,7 @@ describe('ConceptSetPageController', function () {
                     handlers[key] = handler;
                 },
                 fire: fire
-            },
-            selectedObsTemplate: [],
-            observationForms: [],
-            observations: []
+            }
         };
 
         state = {
@@ -795,10 +792,14 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[1].isOpen).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[1].isLoaded).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[1].klass).toBe("active");
-        })
-    })
+        });
+    });
 
     describe('Form Navigation with formUuid', function () {
+        afterEach(function () {
+            delete stateParams.formUuid;
+        });
+
         it('should add form to selectedObsTemplate when formUuid is provided in stateParams', function () {
             inject(function ($timeout) {
                 var mockObsConcept = {
@@ -887,10 +888,6 @@ describe('ConceptSetPageController', function () {
 
                 expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Form not found. Please contact your administrator.');
             });
-        });
-    });
-});
-
         });
     });
 
