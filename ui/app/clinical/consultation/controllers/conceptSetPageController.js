@@ -177,6 +177,52 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            var addFormToTemplateAndBroadcast = function (form) {
+                if (!_.some($scope.consultation.selectedObsTemplate, function (t) { return t === form; })) {
+                    form.isAdded = true;
+                    $scope.consultation.selectedObsTemplate.push(form);
+                }
+                $timeout(function () {
+                    $rootScope.$broadcast('event:openFormByUuid', { form: form });
+                }, 0);
+            };
+
+            var handleFormUuidNavigation = function () {
+                var formUuidParam = $stateParams.formUuid;
+                if (!formUuidParam) {
+                    return;
+                }
+
+                var targetForm = _.find($scope.allTemplates, function (t) {
+                    return t.formUuid === formUuidParam;
+                });
+
+                if (!targetForm) {
+                    messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
+                    return;
+                }
+
+                addFormToTemplateAndBroadcast(targetForm);
+            };
+
+            var initializeTemplatesIfEmpty = function () {
+                if ($scope.consultation.selectedObsTemplate.length > 0) {
+                    return;
+                }
+
+                initializeDefaultTemplates();
+                if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
+                    addTemplatesInSavedOrder();
+                }
+
+                var templateToBeOpened = getLastVisitedTemplate() ||
+                    _.first($scope.consultation.selectedObsTemplate);
+
+                if (templateToBeOpened && !$stateParams.formUuid) {
+                    openTemplate(templateToBeOpened);
+                }
+            };
+
             var concatObservationForms = function () {
                 var templateAlreadySelected = function (template) {
                     return _.find($scope.consultation.selectedObsTemplate, function (t) {
@@ -207,157 +253,19 @@ angular.module('bahmni.clinical')
 
                 $scope.allTemplates = _.uniqBy($scope.allTemplates, getFormId);
                 $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
-                var currentPatientUuid = $scope.patient ? $scope.patient.uuid : null;
-                var isDraftResumeValid = $rootScope.resumeDraftOnLoad &&
-                    $rootScope.draftData &&
-                    (!$rootScope.resumeDraftPatientUuid || $rootScope.resumeDraftPatientUuid === currentPatientUuid);
-
-                // Guard: only clear stale obs when there is no active visit.
-                // Bug fix: previously this ran on every concatObservationForms call when isDraftResumeValid
-                // was false (including during active-visit cross-module navigation), wiping unsaved forms.
-                if (!isDraftResumeValid && $scope.visitHistory && !$scope.visitHistory.activeVisit) {
-                    clearStaleObsFromTemplates();
-                }
-
-                if (deletedFormIds.length > 0) {
-                    if ($scope.consultation.observations) {
-                        $scope.consultation.observations = _.filter($scope.consultation.observations, function (obs) {
-                            return !isObservationFromDeletedForm(obs, deletedFormIds);
-                        });
-                    }
-                    if ($scope.allTemplates) {
-                        _.each($scope.allTemplates, function (template) {
-                            var templateId = getFormId(template);
-                            if (templateId && _.includes(deletedFormIds, templateId)) {
-                                template.observations = [];
-                            }
-                        });
-                    }
-                }
-
-                if ($scope.consultation.observationForms && $scope.consultation.observationForms.length > 0) {
-                    formDirtyStateService.syncForm2Observations($scope.consultation.observationForms);
-                }
-
-                var draftFormData = isDraftResumeValid && $rootScope.draftData.formData ? $rootScope.draftData.formData : null;
-                var parsedDraftObs = isDraftResumeValid ? formDraftService.parseDraftObs($rootScope.draftData) : [];
-                parsedDraftObs = parsedDraftObs.length > 0 ? parsedDraftObs : null;
-
-                if (parsedDraftObs && parsedDraftObs.length > 0) {
-                    var stripObservationFlags = function (obs) {
-                        if (!obs) { return obs; }
-                        var copy = angular.copy(obs);
-                        delete copy.isObservation;
-                        delete copy.isObservationNode;
-                        if (copy.groupMembers && copy.groupMembers.length > 0) {
-                            copy.groupMembers = _.map(copy.groupMembers, stripObservationFlags);
-                        }
-                        return copy;
-                    };
-                    _.each(parsedDraftObs, function (draftObservation) {
-                        if (!draftObservation.concept) { return; }
-                        var matchingTemplate = _.find($scope.allTemplates, function (t) {
-                            return t.uuid === draftObservation.concept.uuid;
-                        });
-                        if (matchingTemplate) {
-                            matchingTemplate.observations = [stripObservationFlags(draftObservation)];
-                            matchingTemplate.hasUnsavedFormObservations = true;
-                        }
-                    });
-                    var form2DraftObservations = _.filter(parsedDraftObs, function (draftObservation) {
-                        return draftObservation.formNamespace === 'Bahmni' && draftObservation.formFieldPath;
-                    });
-                    if (form2DraftObservations.length > 0) {
-                        deletedFormIds = getDeletedFormIds();
-                        _.each($scope.consultation.observationForms, function (observationForm) {
-                            var observationFormId = getFormId(observationForm);
-                            if (observationFormId && _.includes(deletedFormIds, observationFormId)) {
-                                return;
-                            }
-                            var matchingFormObservations = _.filter(form2DraftObservations, function (draftObservation) {
-                                return draftObservation.formFieldPath.split('.')[0] === observationForm.formName;
-                            });
-                            if (matchingFormObservations.length > 0) {
-                                observationForm.observations = matchingFormObservations;
-                                observationForm._needsReRender = true;
-                                observationForm.isOpen = true;
-                                observationForm.hasUnsavedFormObservations = true;
-                            }
-                        });
-                    }
-                }
-
+                $scope.allTemplates = $scope.allTemplates.concat($scope.consultation.observationForms);
+                initializeTemplatesIfEmpty();
+                handleFormUuidNavigation();
                 if ($scope.consultation.selectedObsTemplate.length == 0) {
                     initializeDefaultTemplates();
                     if ($scope.consultation.observations && $scope.consultation.observations.length > 0) {
                         addTemplatesInSavedOrder();
-                    }
-                    if (draftFormData) {
-                        _.each($scope.allTemplates, function (template) {
-                            if (template.observations && template.observations.length > 0 &&
-                                !templateAlreadySelected(template)) {
-                                insertTemplate(template);
-                            }
-                        });
                     }
                     var templateToBeOpened = getLastVisitedTemplate() ||
                         _.first($scope.consultation.selectedObsTemplate);
 
                     if (templateToBeOpened) {
                         openTemplate(templateToBeOpened);
-                    }
-                } else if (draftFormData) {
-                    _.each($scope.allTemplates, function (template) {
-                        if (template.hasUnsavedFormObservations &&
-                            !templateAlreadySelected(template)) {
-                            insertTemplate(template);
-                        }
-                    });
-                }
-
-                if ($rootScope.resumeDraftOnLoad) {
-                    $rootScope.resumeDraftOnLoad = false;
-                    $rootScope.resumeDraftPatientUuid = null;
-                }
-
-                var trackedObsUuids = new Set();
-                _.each($scope.consultation.selectedObsTemplate, function (template) {
-                    if (template.observations && template.observations.length > 0) {
-                        _.each(template.observations, function (obs) {
-                            if (obs.uuid) { trackedObsUuids.add(obs.uuid); }
-                        });
-                    }
-                });
-                if ($scope.consultation.observations) {
-                    deletedFormIds = getDeletedFormIds();
-                    dirtyTrackingState.extraObservations = _.filter($scope.consultation.observations, function (obs) {
-                        if (!obs.uuid || trackedObsUuids.has(obs.uuid)) {
-                            return false;
-                        }
-                        return !isObservationFromDeletedForm(obs, deletedFormIds);
-                    });
-                }
-
-                var formUuidParam = $stateParams.formUuid;
-                var FORM_PRELOAD_DIRTY_TRACKING_DELAY_MS = 1000;
-
-                $timeout(setupDirtyTracking, formUuidParam ? FORM_PRELOAD_DIRTY_TRACKING_DELAY_MS : 0);
-
-                if (formUuidParam) {
-                    var targetForm = _.find($scope.allTemplates, function (t) {
-                        return getFormId(t) === formUuidParam;
-                    });
-                    if (targetForm) {
-                        deletedFormIds = getDeletedFormIds();
-                        if (!_.includes(deletedFormIds, formUuidParam) && !_.find($scope.consultation.selectedObsTemplate, function (t) { return t === targetForm; })) {
-                            targetForm.isAdded = true;
-                            $scope.consultation.selectedObsTemplate.push(targetForm);
-                            $timeout(function () {
-                                $rootScope.$broadcast('event:openFormByUuid', { form: targetForm });
-                            }, 0);
-                        }
-                    } else {
-                        messagingService.showMessage('error', 'Form not found. Please contact your administrator.');
                     }
                 }
             };

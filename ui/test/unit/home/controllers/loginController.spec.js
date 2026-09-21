@@ -147,16 +147,28 @@ describe('loginController', function () {
         });
     });
 
-    it('should map only allowed locales ', function () {
-        localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: "en"}));
-        loginController();
-        expect(scopeMock.locales).toEqual([{code: 'en', nativeName: 'English'}]);
+    [
+        {data: "en", expected: [{code: 'en', nativeName: 'English'}], desc: 'should map only allowed locales'},
+        {data: "it", expected: [{code: 'it', nativeName: 'it'}], desc: 'should assign code when nativeName not found'},
+        {data: "", expected: [{code: 'en', nativeName: 'English'}], desc: 'should default to English when allowed locales list is empty'}
+    ].forEach(function (tc) {
+        it(tc.desc, function () {
+            localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: tc.data}));
+            loginController();
+            expect(scopeMock.locales).toEqual(tc.expected);
+        });
     });
 
-    it('should assign code when nativeName not found ', function () {
-        localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: "it"}));
+    it('should still populate locales from the allowed list when getLocalesLangs fails', function () {
+        var failedLangsPromise = {
+            then: function () { return this; },
+            finally: function (callback) { callback(); return this; }
+        };
+        localeService.getLocalesLangs.and.returnValue(failedLangsPromise);
+        localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: "en"}));
         loginController();
-        expect(scopeMock.locales).toEqual([{code: 'it', nativeName: 'it'}]);
+        expect(scopeMock.locales[0].code).toBe('en');
+        expect(scopeMock.locales[0].nativeName).toBe('en');
     });
 
     it ("should fetch bahmniCore data and assign it to windows object ",function() {

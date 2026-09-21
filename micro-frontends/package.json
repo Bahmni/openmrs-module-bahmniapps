@@ -1,6 +1,6 @@
 {
   "name": "openmrs-mfe-host",
-  "version": "1.1.0",
+  "version": "2.1.0",
   "description": "Hosting microfrontends for openmrs",
   "main": "dist/index.js",
   "author": "bahmni@thoughtworks.com",
@@ -14,7 +14,7 @@
     "axios": "1.4.0",
     "babel-jest": "^29.5.0",
     "babel-loader": "^9.1.2",
-    "bahmni-form-controls": "^1.0.3",
+    "bahmni-form-controls": "^1.0.4",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "5.2.6",
     "eslint": "^8.42.0",

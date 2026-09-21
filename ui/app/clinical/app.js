@@ -173,7 +173,8 @@ angular.module('consultation')
                 url: '/concept-set-group/:conceptSetGroupName',
                 params: {
                     cachebuster: null,
-                    lastOpenedTemplate: null
+                    lastOpenedTemplate: null,
+                    formUuid: null
                 },
                 views: {
                     'consultation-content': {
@@ -181,6 +182,9 @@ angular.module('consultation')
                         controller: 'ConceptSetPageController'
                     }
                 }
+            })
+            .state('patient.dashboard.show.observations.form', {
+                url: '/form/:formUuid'
             })
             .state('patient.dashboard.show.diagnosis', {
                 url: '/diagnosis',
