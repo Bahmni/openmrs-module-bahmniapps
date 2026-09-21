@@ -62,11 +62,18 @@ angular.module('bahmni.home')
                 $rootScope.cookieExpirationTime = response.data.loggedInUrlCookieExpirationTimeInMinutes;
             });
 
+            var fallbackToLocaleLanguages = function () {
+                $scope.locales = localeLanguages.length ? localeLanguages : [{code: "en", nativeName: "English"}];
+                $scope.selectedLocale = $translate.use() || $scope.locales[0].code;
+            };
+
             var setLocalesFromAllowedList = function () {
                 promise.then(function (response) {
                     var raw = response.data;
-                    var localeList = (angular.isString(raw) ? raw : '')
-                        .replace(/\s+/g, '').split(',').filter(Boolean);
+                    if (!angular.isString(raw) || raw.indexOf('<') >= 0) {
+                        return fallbackToLocaleLanguages();
+                    }
+                    var localeList = raw.replace(/\s+/g, '').split(',').filter(Boolean);
                     $scope.locales = _.map(localeList, function (locale) {
                         return findLanguageByLocale(locale) || {"code": locale, "nativeName": locale};
                     });
@@ -76,10 +83,7 @@ angular.module('bahmni.home')
                         $scope.locales = [findLanguageByLocale(savedLocale) || {"code": savedLocale, "nativeName": savedLocale}];
                     }
                     $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
-                }, function () {
-                    $scope.locales = localeLanguages;
-                    $scope.selectedLocale = $translate.use() || $scope.locales[0].code;
-                });
+                }, fallbackToLocaleLanguages);
             };
 
             localeService.getLocalesLangs().then(function (response) {
