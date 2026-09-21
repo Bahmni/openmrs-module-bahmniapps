@@ -557,89 +557,49 @@ describe("Forms Table display control", function () {
             }
         };
 
-        it("should return false when there is no draft", function () {
+        var buildFormsTableScope = function () {
             mockConceptSetService(allObsTemplateData);
             mockVisitFormService(formDataObj);
-
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var element = $compile(simpleHtml)(scope);
+            var el = $compile(simpleHtml)(scope);
             scope.$digest();
-            var compiledElementScope = element.isolateScope();
+            var compiledElementScope = el.isolateScope();
             scope.$digest();
+            return compiledElementScope;
+        };
 
+        it("should return false when there is no draft", function () {
+            var compiledElementScope = buildFormsTableScope();
             expect(compiledElementScope.hasFormDraft(observation)).toBe(false);
         });
 
         it("should return false when data has no concept", function () {
-            mockConceptSetService(allObsTemplateData);
-            mockVisitFormService(formDataObj);
-
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
-
+            var compiledElementScope = buildFormsTableScope();
             expect(compiledElementScope.hasFormDraft({uuid: "obs-without-concept"})).toBe(false);
         });
 
         it("should return true when draft exists for the same form concept", function () {
             var draftFormData = angular.toJson([{concept: {uuid: "form-concept-uuid-1"}}]);
             rootScope.draftData = {uuid: "draft-uuid", markedAsSaved: false, formData: draftFormData};
-
-            mockConceptSetService(allObsTemplateData);
-            mockVisitFormService(formDataObj);
-
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
-
+            var compiledElementScope = buildFormsTableScope();
             expect(compiledElementScope.hasFormDraft(observation)).toBe(true);
         });
 
         it("should return false when draft exists for a different form concept", function () {
             rootScope.draftData = {uuid: "draft-uuid", markedAsSaved: false, formData: angular.toJson([{concept: {uuid: "different-concept-uuid"}}])};
-
-            mockConceptSetService(allObsTemplateData);
-            mockVisitFormService(formDataObj);
-
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
-
+            var compiledElementScope = buildFormsTableScope();
             expect(compiledElementScope.hasFormDraft(observation)).toBe(false);
         });
 
         it("should return false when draft is marked as saved", function () {
             rootScope.draftData = {uuid: "draft-uuid", markedAsSaved: true, formData: angular.toJson([{concept: {uuid: "form-concept-uuid-1"}}])};
-
-            mockConceptSetService(allObsTemplateData);
-            mockVisitFormService(formDataObj);
-
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
-
+            var compiledElementScope = buildFormsTableScope();
             expect(compiledElementScope.hasFormDraft(observation)).toBe(false);
         });
 
         it("should re-enable edit when draft is marked as saved (consultation submitted)", function () {
             rootScope.draftData = {uuid: "draft-uuid", markedAsSaved: false, formData: angular.toJson([{concept: {uuid: "form-concept-uuid-1"}}])};
-
-            mockConceptSetService(allObsTemplateData);
-            mockVisitFormService(formDataObj);
-
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
+            var compiledElementScope = buildFormsTableScope();
 
             expect(compiledElementScope.hasFormDraft(observation)).toBe(true);
 
@@ -651,15 +611,7 @@ describe("Forms Table display control", function () {
 
         it("should re-enable edit when draft is discarded", function () {
             rootScope.draftData = {uuid: "draft-uuid", markedAsSaved: false, formData: angular.toJson([{concept: {uuid: "form-concept-uuid-1"}}])};
-
-            mockConceptSetService(allObsTemplateData);
-            mockVisitFormService(formDataObj);
-
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
+            var compiledElementScope = buildFormsTableScope();
 
             expect(compiledElementScope.hasFormDraft(observation)).toBe(true);
 

@@ -49,7 +49,7 @@ describe("CareViewController", function () {
         expect(state.go).toHaveBeenCalledWith('home');
     });
 
-    it('should delegate to logoutService.attemptLogout on logout', function () {
+    it('should delegate to logoutService.attemptLogout on logout from bedmanagement', function () {
         createController();
         scope.hostApi.onLogOut();
         expect(logoutService.attemptLogout).toHaveBeenCalledWith(scope);

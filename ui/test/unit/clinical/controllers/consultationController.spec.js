@@ -13,7 +13,7 @@ describe("ConsultationController", function () {
     var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService,
         stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_, clinicalDashboardConfig,
         sessionService, conditionsService, encounterService, configurations, diagnosisService, messagingService, spinnerMock,
-        auditLogService,  confirmBox, virtualConsultService, adhocTeleconsultationService;
+        auditLogService, confirmBox, virtualConsultService, adhocTeleconsultationService, formDraftService;
 
     var encounterData = {
         "bahmniDiagnoses": [],
@@ -278,11 +278,12 @@ describe("ConsultationController", function () {
         $provide.value('autoSaveService', jasmine.createSpyObj('autoSaveService', ['start', 'stop', 'getIntervalMs']));
     }));
     beforeEach(function () {
-        inject(function ($controller, $rootScope, _$window_, $q, formDraftService) {
+        inject(function ($controller, $rootScope, _$window_, $q, _formDraftService_) {
             _window_ = _$window_;
             scope = $rootScope.$new();
             rootScope = $rootScope;
             controller = $controller;
+            formDraftService = _formDraftService_;
             formDraftService.markDraftAsSaved.and.returnValue($q.when({}));
             formDraftService.getDiscardOnSaveConfig.and.returnValue($q.when(false));
         });
@@ -1143,46 +1144,37 @@ describe("ConsultationController", function () {
         expect(scope.adtNavigationConfig.forwardUrl).toBe("../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/");
     });
 
-    it("should call markDraftAsSaved when save is successful with both patient and provider UUIDs", function (done) {
-        inject(function(formDraftService) {
-            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
-            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
-            scope.patient = {uuid: 'patient-uuid-123'};
-            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+    var makeDraftSaveConsultation = function () {
+        rootScope.currentProvider = {uuid: 'provider-uuid-123'};
+        scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
+        diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+    };
 
-            scope.save({toState: {}}).then(function () {
-                expect(formDraftService.markDraftAsSaved).toHaveBeenCalledWith('patient-uuid-123');
-                done();
-            });
+    it("should call markDraftAsSaved when save is successful with both patient and provider UUIDs", function (done) {
+        makeDraftSaveConsultation();
+        scope.patient = {uuid: 'patient-uuid-123'};
+        scope.save({toState: {}}).then(function () {
+            expect(formDraftService.markDraftAsSaved).toHaveBeenCalledWith('patient-uuid-123');
+            done();
         });
     });
 
     it("should not call markDraftAsSaved when save is successful but patient UUID is null", function (done) {
-        inject(function(formDraftService) {
-            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
-            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
-            scope.patient = {uuid: null};
-            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
-
-            scope.save({toState: {}}).then(function () {
-                expect(formDraftService.markDraftAsSaved).not.toHaveBeenCalled();
-                done();
-            });
+        makeDraftSaveConsultation();
+        scope.patient = {uuid: null};
+        scope.save({toState: {}}).then(function () {
+            expect(formDraftService.markDraftAsSaved).not.toHaveBeenCalled();
+            done();
         });
     });
 
     it("should clear draftData from rootScope after successful save when provider and patient exist", function (done) {
-        inject(function(formDraftService) {
-            rootScope.currentProvider = {uuid: 'provider-uuid-123'};
-            rootScope.draftData = {uuid: 'draft-uuid', formData: '{}'};
-            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
-            scope.patient = {uuid: 'patient-uuid-123'};
-            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
-
-            scope.save({toState: {}}).then(function () {
-                expect(rootScope.draftData).toBeNull();
-                done();
-            });
+        makeDraftSaveConsultation();
+        rootScope.draftData = {uuid: 'draft-uuid', formData: '{}'};
+        scope.patient = {uuid: 'patient-uuid-123'};
+        scope.save({toState: {}}).then(function () {
+            expect(rootScope.draftData).toBeNull();
+            done();
         });
     });
 
