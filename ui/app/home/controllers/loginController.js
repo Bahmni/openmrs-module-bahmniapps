@@ -76,6 +76,9 @@ angular.module('bahmni.home')
                         $scope.locales = [findLanguageByLocale(savedLocale) || {"code": savedLocale, "nativeName": savedLocale}];
                     }
                     $scope.selectedLocale = $translate.use() ? $translate.use() : $scope.locales[0].code;
+                }, function () {
+                    $scope.locales = localeLanguages;
+                    $scope.selectedLocale = $translate.use() || $scope.locales[0].code;
                 });
             };
 
