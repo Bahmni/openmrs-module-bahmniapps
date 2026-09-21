@@ -953,6 +953,7 @@ describe('ConceptSetPageController', function () {
         var createControllerWithTimeoutAndFilter;
         var createStandardTimeoutMock;
         var setupDraftBannerForTest;
+        var setupSaveDraftTest;
 
         beforeEach(inject(function ($timeout) {
             rootScope.formDraftFeatureEnabled = true;
@@ -978,6 +979,14 @@ describe('ConceptSetPageController', function () {
                 };
                 timeoutMock.cancel = jasmine.createSpy('cancel');
                 return timeoutMock;
+            };
+            setupSaveDraftTest = function () {
+                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+                mockConceptSetService(conceptResponseData);
+                mockformService({});
+                var saveDraftPromise = specUtil.createServicePromise('saveDraft');
+                formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+                return saveDraftPromise;
             };
             setupDraftBannerForTest = function () {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
@@ -1125,12 +1134,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should call formDraftService.saveDraft with patient uuid and provider uuid on saveAsDraft', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             scope.patient = {uuid: 'test-patient-uuid'};
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};
@@ -1144,12 +1148,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should set showSpinner to true when saveAsDraft is called', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             createControllerWithTimeoutAndFilter();
             scope.saveAsDraft();
@@ -1158,13 +1157,8 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should update status message with server timestamp on successful save', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
             var serverTimestamp = new Date(2026, 3, 8, 10, 30, 0).getTime();
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             var filterCallCount = 0;
             var filterMock = function () {
@@ -1189,12 +1183,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should set showSpinner to false after successful save', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             createControllerWithTimeoutAndFilter();
             scope.saveAsDraft();
@@ -1207,12 +1196,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should display error message and set statusError on failed save', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             createControllerWithTimeoutAndFilter();
             scope.saveAsDraft();
@@ -1225,12 +1209,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should set showSpinner to false after failed save', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             createControllerWithTimeoutAndFilter();
             scope.saveAsDraft();
@@ -1268,12 +1247,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should broadcast draft:saved event with date and time on successful save', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             var filterMock = function () {
                 return function (date, format) {
@@ -1293,12 +1267,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should update $rootScope.draftData after successful save so formsTable watch fires', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             createControllerWithTimeoutAndFilter();
             scope.saveAsDraft();
@@ -1358,16 +1327,11 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should call saveDraft via $state.saveFormDraftIfDirty when enableFormDraftFeature is true and isDirty', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
-
             var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appDescriptor.getConfigValue.and.returnValue(true);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
 
-            var saveDraftPromise = specUtil.createServicePromise('saveDraft');
-            formDraftService.saveDraft.and.returnValue(saveDraftPromise);
+            var saveDraftPromise = setupSaveDraftTest();
 
             createControllerWithTimeoutAndFilter();
             scope.formDraft.isDirty = true;

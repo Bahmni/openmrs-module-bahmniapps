@@ -105,51 +105,34 @@ describe("directive: stepper", function () {
         expect(scope.obs.value).toBe(90);
     });
 
-    it("should call onChange callback on increment", function () {
+    var setupOnChangeTest = function () {
         var onChangeSpy = jasmine.createSpy('onChange');
         html = '<stepper id="123" ng-model="observation.value" obs="observation" on-change="onChange()" />';
         observation = new Bahmni.ConceptSet.Observation({
             concept: {name: "someConcept", dataType: "Numeric", value: 95}
         }, null, {});
         observation.value = 95;
-
         scope = $rootScope.$new();
         scope.obs = observation;
         scope.observation = observation;
         scope.onChange = onChangeSpy;
-
         element = angular.element(html);
         $compile(element)(scope);
         scope.$apply();
+        return {isolateScope: element.isolateScope(), onChangeSpy: onChangeSpy};
+    };
 
-        var isolateScope = element.isolateScope();
-        isolateScope.increment();
+    it("should call onChange callback on increment", function () {
+        var ctx = setupOnChangeTest();
+        ctx.isolateScope.increment();
         scope.$apply();
-
-        expect(onChangeSpy).toHaveBeenCalled();
+        expect(ctx.onChangeSpy).toHaveBeenCalled();
     });
 
     it("should call onChange callback on decrement", function () {
-        var onChangeSpy = jasmine.createSpy('onChange');
-        html = '<stepper id="123" ng-model="observation.value" obs="observation" on-change="onChange()" />';
-        observation = new Bahmni.ConceptSet.Observation({
-            concept: {name: "someConcept", dataType: "Numeric", value: 95}
-        }, null, {});
-        observation.value = 95;
-
-        scope = $rootScope.$new();
-        scope.obs = observation;
-        scope.observation = observation;
-        scope.onChange = onChangeSpy;
-
-        element = angular.element(html);
-        $compile(element)(scope);
+        var ctx = setupOnChangeTest();
+        ctx.isolateScope.decrement();
         scope.$apply();
-
-        var isolateScope = element.isolateScope();
-        isolateScope.decrement();
-        scope.$apply();
-
-        expect(onChangeSpy).toHaveBeenCalled();
+        expect(ctx.onChangeSpy).toHaveBeenCalled();
     });
 });
