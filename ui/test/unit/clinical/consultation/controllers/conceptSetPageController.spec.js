@@ -2581,28 +2581,24 @@ describe('ConceptSetPageController', function () {
                 scope.$digest();
             };
 
-            it('should NOT start auto-save interval when dirty tracking is set up but form is clean', function () {
+            var setupAutoSaveTest = function () {
                 var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
                 mockConceptSetService(conceptResponseData);
                 mockformService({});
                 enableDraftFeature();
-
                 scope.patient = {uuid: 'patient-uuid'};
                 rootScope.currentProvider = {uuid: 'provider-uuid'};
+            };
 
+            it('should NOT start auto-save interval when dirty tracking is set up but form is clean', function () {
+                setupAutoSaveTest();
                 createControllerWithAutoSave();
 
                 expect(autoSaveService.start).not.toHaveBeenCalled();
             });
 
             it('should start auto-save interval only once the form becomes dirty', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
-                enableDraftFeature();
-
-                scope.patient = {uuid: 'patient-uuid'};
-                rootScope.currentProvider = {uuid: 'provider-uuid'};
+                setupAutoSaveTest();
 
                 createControllerWithAutoSave();
                 expect(autoSaveService.start).not.toHaveBeenCalled();
@@ -2617,13 +2613,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should pass a shouldSaveFn that returns true when isDirty is true and feature is enabled and active visit exists', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
-                enableDraftFeature();
-
-                scope.patient = {uuid: 'patient-uuid'};
-                rootScope.currentProvider = {uuid: 'provider-uuid'};
+                setupAutoSaveTest();
                 scope.visitHistory = {activeVisit: {uuid: 'active-visit-uuid'}};
 
                 createControllerWithAutoSave();
@@ -2639,13 +2629,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should pass a shouldSaveFn that returns false when isDirty is false', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
-                enableDraftFeature();
-
-                scope.patient = {uuid: 'patient-uuid'};
-                rootScope.currentProvider = {uuid: 'provider-uuid'};
+                setupAutoSaveTest();
 
                 createControllerWithAutoSave();
 
@@ -2738,6 +2722,7 @@ describe('ConceptSetPageController', function () {
         describe('Form2 Dirty Tracking', function () {
             var timeoutMock;
             var createForm2TrackingController;
+            var expectDomListenersRegistered;
 
             beforeEach(inject(function () {
                 timeoutMock = function (callback, delay) {
@@ -2753,6 +2738,12 @@ describe('ConceptSetPageController', function () {
                         $timeout: timeoutMock,
                         $filter: function () { return function () { return 'mocked-time'; }; }
                     }));
+                };
+                expectDomListenersRegistered = function (spy) {
+                    expect(spy).toHaveBeenCalledWith('input', jasmine.any(Function), true);
+                    expect(spy).toHaveBeenCalledWith('change', jasmine.any(Function), true);
+                    expect(spy).toHaveBeenCalledWith('keyup', jasmine.any(Function), true);
+                    expect(spy).toHaveBeenCalledWith('click', jasmine.any(Function), true);
                 };
             }));
 
@@ -2771,14 +2762,10 @@ describe('ConceptSetPageController', function () {
                 }];
                 mockformService(form2Data);
 
-                var addEventListenerSpy = spyOn(document, 'addEventListener').and.callThrough();
-
+                var spy = spyOn(document, 'addEventListener').and.callThrough();
                 createForm2TrackingController();
                 scope.$digest();
-                expect(addEventListenerSpy).toHaveBeenCalledWith('input', jasmine.any(Function), true);
-                expect(addEventListenerSpy).toHaveBeenCalledWith('change', jasmine.any(Function), true);
-                expect(addEventListenerSpy).toHaveBeenCalledWith('keyup', jasmine.any(Function), true);
-                expect(addEventListenerSpy).toHaveBeenCalledWith('click', jasmine.any(Function), true);
+                expectDomListenersRegistered(spy);
             });
 
             it('should still register sync listeners when no form2 components exist', function () {
@@ -2786,14 +2773,10 @@ describe('ConceptSetPageController', function () {
                 mockConceptSetService(conceptResponseData);
                 mockformService([]);
 
-                var addEventListenerSpy = spyOn(document, 'addEventListener').and.callThrough();
-
+                var spy = spyOn(document, 'addEventListener').and.callThrough();
                 createForm2TrackingController();
                 scope.$digest();
-                expect(addEventListenerSpy).toHaveBeenCalledWith('input', jasmine.any(Function), true);
-                expect(addEventListenerSpy).toHaveBeenCalledWith('change', jasmine.any(Function), true);
-                expect(addEventListenerSpy).toHaveBeenCalledWith('keyup', jasmine.any(Function), true);
-                expect(addEventListenerSpy).toHaveBeenCalledWith('click', jasmine.any(Function), true);
+                expectDomListenersRegistered(spy);
             });
 
             it('should unregister form2 sync listeners on controller destroy', function () {

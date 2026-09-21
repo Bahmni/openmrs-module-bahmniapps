@@ -10,7 +10,7 @@
 'use strict';
 
 describe("CareViewController", function () {
-    var scope, controller, auditLogService, logoutService, $window;
+    var scope, controller, auditLogService, logoutService, attemptLogoutSpy, $window;
     var state = jasmine.createSpyObj('$state', ['go']);
     beforeEach(module('bahmni.ipd'));
     beforeEach(inject(function ($controller, $rootScope,_$window_) {
@@ -19,7 +19,8 @@ describe("CareViewController", function () {
         $window = _$window_;
     }));
     auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
-    logoutService = jasmine.createSpyObj('logoutService', ['attemptLogout']);
+    attemptLogoutSpy = jasmine.createSpy('attemptLogout');
+    logoutService = { attemptLogout: attemptLogoutSpy };
     auditLogService.log.and.returnValue({
         then: function(callback) { return callback(); }
     });
@@ -49,10 +50,11 @@ describe("CareViewController", function () {
         expect(state.go).toHaveBeenCalledWith('home');
     });
 
-    it('should delegate to logoutService.attemptLogout on logout from bedmanagement', function () {
+    it('should invoke logoutService when user logs out', function () {
         createController();
         scope.hostApi.onLogOut();
-        expect(logoutService.attemptLogout).toHaveBeenCalledWith(scope);
+        expect(attemptLogoutSpy.calls.count()).toBe(1);
+        expect(attemptLogoutSpy.calls.mostRecent().args[0]).toBe(scope);
     });
 
     it('should call auditLogService.log while handleAuditEvent is triggered', function (){

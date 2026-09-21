@@ -1030,35 +1030,22 @@ describe("ConsultationController", function () {
             });
         });
 
-        it("should allow save when form has no component and hasUnsavedFormObservations=false", function (done) {
-            var form = {
-                hasUnsavedFormObservations: false,
-                component: undefined
-            };
+        var expectSaveAllowed = function (form, done) {
             scope.consultation = makeConsultation([form]);
             scope.patient = {uuid: 'patient-uuid'};
             diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
-
             scope.save({toState: {}}).then(function () {
                 expect(encounterService.create).toHaveBeenCalled();
                 done();
             });
+        };
+
+        it("should allow save when form has no component and hasUnsavedFormObservations=false", function (done) {
+            expectSaveAllowed({hasUnsavedFormObservations: false, component: undefined}, done);
         });
 
         it("should allow save when form has no component, hasUnsavedFormObservations=true, but draftValidationPassed=true (previously validated clean)", function (done) {
-            var form = {
-                hasUnsavedFormObservations: true,
-                component: undefined,
-                draftValidationPassed: true
-            };
-            scope.consultation = makeConsultation([form]);
-            scope.patient = {uuid: 'patient-uuid'};
-            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
-
-            scope.save({toState: {}}).then(function () {
-                expect(encounterService.create).toHaveBeenCalled();
-                done();
-            });
+            expectSaveAllowed({hasUnsavedFormObservations: true, component: undefined, draftValidationPassed: true}, done);
         });
     });
 
