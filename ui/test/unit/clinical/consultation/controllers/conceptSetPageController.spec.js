@@ -141,6 +141,12 @@ describe('ConceptSetPageController', function () {
 
     beforeEach(initController);
 
+    var mockAbcdTemplate = function () {
+        var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
+        mockConceptSetService(conceptResponseData);
+        mockformService({});
+    };
+
     var getBaseControllerParams = function () {
         return {
             $scope: scope,
@@ -790,69 +796,26 @@ describe('ConceptSetPageController', function () {
     });
 
     describe('Feature Toggle - enableFormDraftFeature', function () {
+        beforeEach(function () {
+            mockAbcdTemplate();
+            rootScope.currentUser = {isFavouriteObsTemplate: function () { return false; }};
+        });
+
         it("should set enableFormDraftFeature to true when config value is true", function () {
-            var conceptResponseData = {
-                results: [
-                    {
-                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
-                    }
-                ]
-            };
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
             rootScope.formDraftFeatureEnabled = true;
-            rootScope.currentUser = {
-                isFavouriteObsTemplate: function () {
-                    return false;
-                }
-            };
-
             createController();
-
             expect(scope.enableFormDraftFeature).toBe(true);
         });
 
         it("should set enableFormDraftFeature to false when config value is false", function () {
-            var conceptResponseData = {
-                results: [
-                    {
-                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
-                    }
-                ]
-            };
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
             rootScope.formDraftFeatureEnabled = false;
-            rootScope.currentUser = {
-                isFavouriteObsTemplate: function () {
-                    return false;
-                }
-            };
-
             createController();
-
             expect(scope.enableFormDraftFeature).toBe(false);
         });
 
         it("should read enableFormDraftFeature from rootScope", function () {
-            var conceptResponseData = {
-                results: [
-                    {
-                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
-                    }
-                ]
-            };
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
             rootScope.formDraftFeatureEnabled = true;
-            rootScope.currentUser = {
-                isFavouriteObsTemplate: function () {
-                    return false;
-                }
-            };
-
             createController();
-
             expect(scope.enableFormDraftFeature).toBe(true);
         });
 
@@ -982,24 +945,18 @@ describe('ConceptSetPageController', function () {
                 return timeoutMock;
             };
             setupPatientProviderTest = function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
                 scope.patient = {uuid: 'test-patient-uuid'};
                 rootScope.currentProvider = {uuid: 'test-provider-uuid'};
             };
             setupSaveDraftTest = function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
                 var saveDraftPromise = specUtil.createServicePromise('saveDraft');
                 formDraftService.saveDraft.and.returnValue(saveDraftPromise);
                 return saveDraftPromise;
             };
             setupDraftBannerForTest = function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
                 createController();
                 scope.formDraft.isDirty = true;
                 scope.formDraft.hasDrafts = true;
@@ -1287,9 +1244,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should not save draft when there is no active visit', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
 
             scope.visitHistory = {activeVisit: null};
             createControllerWithTimeoutAndFilter();
@@ -1299,9 +1254,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should not save draft when visitHistory is absent', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
 
             scope.visitHistory = null;
             createControllerWithTimeoutAndFilter();
@@ -1311,9 +1264,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should register $state.saveFormDraftIfDirty when controller initializes', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
 
             createControllerWithTimeoutAndFilter();
 
@@ -1322,9 +1273,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should clear $state.saveFormDraftIfDirty when scope is destroyed', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
 
             createControllerWithTimeoutAndFilter();
             expect(state.saveFormDraftIfDirty).toBeDefined();
@@ -1350,9 +1299,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should not call saveDraft via $state.saveFormDraftIfDirty when isDirty is false', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
 
             var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appDescriptor.getConfigValue.and.returnValue(true);
@@ -1367,9 +1314,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should not call saveDraft via $state.saveFormDraftIfDirty when enableFormDraftFeature is false', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
             rootScope.formDraftFeatureEnabled = false;
 
             createControllerWithTimeoutAndFilter();
@@ -1381,9 +1326,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should not call saveDraft via $state.saveFormDraftIfDirty when there is no active visit', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
 
             var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appDescriptor.getConfigValue.and.returnValue(true);
@@ -1399,9 +1342,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should disable Save as Draft button (isDirty = false) when post-save handler is executed', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
             createController();
 
             scope.formDraft.isDirty = true;
@@ -1414,9 +1355,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should clear draft message immediately when post-save handler is executed', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
             createController();
 
             scope.formDraft.isDirty = true;
@@ -1581,9 +1520,7 @@ describe('ConceptSetPageController', function () {
         });
 
         it('should not call getDraft while checking drafts when patient uuid is missing', function () {
-            var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-            mockConceptSetService(conceptResponseData);
-            mockformService({});
+            mockAbcdTemplate();
 
             scope.patient = null;
             rootScope.currentProvider = {uuid: 'test-provider-uuid'};
@@ -1671,9 +1608,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should reset allTemplates, selectedObsTemplate and observationForms when draftDiscarded flag is set', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 scope.patient = {uuid: 'test-patient-uuid'};
                 rootScope.currentProvider = {uuid: 'test-provider-uuid'};
@@ -1768,9 +1703,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should call checkForExistingDrafts when patient and provider become available after controller init', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 formDraftService.getDraft.and.returnValue({
                     then: function (success) {
@@ -1821,9 +1754,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should not attempt population when resumeDraftOnLoad flag is not set', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 var timeoutMock = function (callback, delay) {
                     if (delay === 0) { callback(); }
@@ -2582,9 +2513,7 @@ describe('ConceptSetPageController', function () {
             };
 
             var setupAutoSaveTest = function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
                 enableDraftFeature();
                 scope.patient = {uuid: 'patient-uuid'};
                 rootScope.currentProvider = {uuid: 'provider-uuid'};
@@ -2644,9 +2573,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should pass a shouldSaveFn that returns false when enableFormDraftFeature is false', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
                 rootScope.formDraftFeatureEnabled = false;
 
                 scope.patient = {uuid: 'patient-uuid'};
@@ -2665,9 +2592,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should NOT stop auto-save interval when observations tab is destroyed (supports tab switching)', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 createControllerWithAutoSave();
                 autoSaveService.stop.calls.reset();
@@ -2678,9 +2603,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should NOT stop auto-save interval when event:save-successful is broadcast (continues to auto-save)', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 createControllerWithAutoSave();
                 autoSaveService.stop.calls.reset();
@@ -2691,9 +2614,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should NOT stop auto-save interval when event:save-started is broadcast (continues to auto-save)', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 createControllerWithAutoSave();
                 autoSaveService.stop.calls.reset();
@@ -2705,9 +2626,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should NOT stop auto-save interval when resetDirtyTracking is called via post-save handler', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 createControllerWithAutoSave();
                 autoSaveService.stop.calls.reset();
@@ -3245,9 +3164,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should set persistent baseline after successful draft save', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 var saveDraftPromise = specUtil.createServicePromise('saveDraft');
                 formDraftService.saveDraft.and.returnValue(saveDraftPromise);
@@ -3267,9 +3184,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should clear persistent baseline when event:save-successful is fired', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 createControllerWithTimeoutAndFilter();
                 scope.patient = {uuid: 'patient-uuid-456'};
@@ -3284,9 +3199,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should clear persistent baseline when draft is discarded', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 var discardPromise = specUtil.createServicePromise('discardDraft');
                 formDraftService.discardDraft.and.returnValue(discardPromise);
@@ -3304,9 +3217,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should prevent data loss: edits after save not overwritten by stale draft on re-entry', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 var saveDraftPromise = specUtil.createServicePromise('saveDraft');
                 formDraftService.saveDraft.and.returnValue(saveDraftPromise);
@@ -3329,9 +3240,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should keep isDirty true when user edits during post-save stabilization window', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 var timeoutMock = function (callback, delay) {
                     return {$$timeoutId: delay};
@@ -3356,9 +3265,7 @@ describe('ConceptSetPageController', function () {
             });
 
             it('should disable save button after draft save with no further edits', function () {
-                var conceptResponseData = {results: [{setMembers: [{name: {name: 'abcd'}, uuid: 123}]}]};
-                mockConceptSetService(conceptResponseData);
-                mockformService({});
+                mockAbcdTemplate();
 
                 var timeoutCallbacks = [];
                 var timeoutMock = function (callback, delay) {
