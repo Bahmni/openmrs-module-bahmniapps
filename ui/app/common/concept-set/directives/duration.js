@@ -11,12 +11,15 @@
 angular.module('bahmni.common.conceptSet')
     .directive('duration', ['contextChangeHandler', function (contextChangeHandler) {
         var link = function ($scope, element, attrs, ngModelController) {
-            var setValue = function () {
+            var setValue = function (newVal, oldVal) {
                 if ($scope.unitValue && $scope.measureValue) {
                     var value = $scope.unitValue * $scope.measureValue;
                     ngModelController.$setViewValue(value);
                 } else {
                     ngModelController.$setViewValue(undefined);
+                }
+                if (newVal !== oldVal) {
+                    $scope.onChange();
                 }
             };
 
@@ -63,7 +66,8 @@ angular.module('bahmni.common.conceptSet')
             scope: {
                 hours: "=ngModel",
                 illegalValue: "=",
-                disabled: "="
+                disabled: "=",
+                onChange: '&'
             },
             link: link,
             template: '<span><input tabindex="1" style="float: left;" type="number" min="0" class="duration-value" ng-class="{\'illegalValue\': illegalValue}" ng-model=\'measureValue\' ng-disabled="disabled"/></span>' +

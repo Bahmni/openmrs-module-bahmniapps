@@ -21,9 +21,17 @@ angular.module('bahmni.common.i18n')
 
             var mergeLocaleFile = function (options) {
                 var fileURL = options.app + "/locale_" + options.key + ".json";
+                var commonFileURL = "common/locale_" + options.key + ".json";
 
                 var loadBahmniTranslations = function () {
                     return loadFile(baseLocaleUrl + fileURL).then(function (result) {
+                        return result;
+                    }, function () {
+                        return;
+                    });
+                };
+                var loadCommonTranslations = function () {
+                    return loadFile(baseLocaleUrl + commonFileURL).then(function (result) {
                         return result;
                     }, function () {
                         return;
@@ -38,15 +46,17 @@ angular.module('bahmni.common.i18n')
                 };
 
                 var mergeTranslations = function (result) {
-                    var baseFileData = result[0] ? result[0].data : undefined;
-                    var customFileData = result[1] ? result[1].data : undefined;
+                    var commonFileData = result[0] ? result[0].data : undefined;
+                    var appFileData = result[1] ? result[1].data : undefined;
+                    var customFileData = result[2] ? result[2].data : undefined;
+                    var baseFileData = mergeService.merge(commonFileData, appFileData);
                     if (options.shouldMerge || options.shouldMerge === undefined) {
                         return mergeService.merge(baseFileData, customFileData);
                     }
                     return [baseFileData, customFileData];
                 };
 
-                return $q.all([loadBahmniTranslations(), loadCustomTranslations()])
+                return $q.all([loadCommonTranslations(), loadBahmniTranslations(), loadCustomTranslations()])
                     .then(mergeTranslations);
             };
             return mergeLocaleFile(options);

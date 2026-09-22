@@ -12,5 +12,5 @@
 var Bahmni = Bahmni || {};
 Bahmni.ADT = Bahmni.ADT || {};
 
-angular.module('bahmni.adt', ['bahmni.common.conceptSet', 'bahmni.common.logging', 'bahmni.mfe.ipd']);
+angular.module('bahmni.adt', ['bahmni.common.conceptSet', 'bahmni.common.logging', 'bahmni.mfe.ipd', 'bahmni.common.services']);
 
