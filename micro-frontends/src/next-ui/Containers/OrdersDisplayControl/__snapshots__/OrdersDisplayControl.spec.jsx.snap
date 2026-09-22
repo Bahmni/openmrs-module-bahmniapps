@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrdersDisplayControl should render the component 1`] = `
+<div>
+  <div>
+    <h2
+      class="section-title-next-ui"
+    >
+      <span>
+        TEST_ORDERS
+      </span>
+    </h2>
+    <div>
+      <div
+        data-testid="view-orders"
+      >
+        <div
+          data-testid="order-0"
+        >
+          Lab Order 1
+        </div>
+        <div
+          data-testid="order-1"
+        >
+          Lab Order 2
+        </div>
+        <div
+          data-testid="order-2"
+        >
+          Lab Order 3
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
