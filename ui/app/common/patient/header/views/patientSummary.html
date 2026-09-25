@@ -1,6 +1,6 @@
 <div class="patient-details">
     <i class="fa fa-user"></i>
-    <span>{{patient.name}}</span>
+    <span>{{patient.name}}</span><span ng-if="patient.isDead || patientContext.isDead" style="color:red; font-weight:bold; margin-left: 5px;">(Deceased)</span>
     <span>({{patient.identifier}},</span>
     <span>{{patient.gender | gender }},</span>
     <span>{{patient.age}} {{ 'YEARS_LABEL'|translate }})</span>
