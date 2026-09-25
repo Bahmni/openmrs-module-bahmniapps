@@ -183,7 +183,7 @@
                       <a ng-if="::section.translationKey" href accesskey="{{::section.shortcutKey | translate}}"
                          ng-bind-html="::section.translationKey | translate">
                       </a>
-                      <a ng-if="::(section.title && !section.translationKey)" href>{{::'REGISTRATION_TITLE_ADDITIONAL_PATIENT' | translate}}</a>
+                    <a ng-if="::(section.title && !section.translationKey)" href>{{section.title | translate}}</a>
                   </strong>
               </span>
                 </legend>
