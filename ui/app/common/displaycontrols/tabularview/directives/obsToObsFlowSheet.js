@@ -57,6 +57,9 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                         if ($scope.config.hideEmptyRecords) {
                             obsInFlowSheet = removeEmptyRecords(obsInFlowSheet);
                         }
+                        if ($scope.config.sortLatestFirst && obsInFlowSheet.rows && obsInFlowSheet.rows.length > 0) {
+                            obsInFlowSheet.rows = obsInFlowSheet.rows.slice().reverse();
+                        }
                         $scope.obsTable = obsInFlowSheet;
                         if (_.isEmpty($scope.obsTable.rows)) {
                             $scope.$emit("no-data-present-event");
