@@ -46,9 +46,14 @@
                     $scope.isProviderRelationship = function (relationship) {
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
                     };
+                    $scope.configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
+                    $scope.patientRegistrationPageLink = appService.getAppDescriptor().getConfigValue('patientRegistrationPageLink');
+                    $scope.getNavigationURL = function () {
+                        return appService.getAppDescriptor().formatUrl($scope.patientRegistrationPageLink, { 'patientUuid': $scope.patientUuid });
+                    };
+
                     $scope.openPatientDashboard = function (patientUuid) {
-                        var configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
-                        $window.open("../clinical/#/" + configName + "/patient/" + patientUuid + "/dashboard");
+                        $window.open("../clinical/#/" + $scope.configName + "/patient/" + patientUuid + "/dashboard");
                     };
                     $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
                     var assignPatientDetails = function () {
