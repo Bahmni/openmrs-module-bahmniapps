@@ -422,6 +422,8 @@ angular.module('bahmni.clinical')
                         return;
                     }
                 }
+                existingCondition._previousUuid = existingCondition.uuid;
+                existingCondition.uuid = undefined;
                 if (existingCondition.status != condition.status) {
                     existingCondition.onSetDate = condition.onSetDate || DateUtil.today();
                     existingCondition.status = condition.status;
@@ -444,6 +446,8 @@ angular.module('bahmni.clinical')
                 getConditionsAlerts();
             };
             $scope.markAs = function (condition, status) {
+                condition._previousUuid = condition.uuid;
+                condition.uuid = undefined;
                 condition.status = status;
                 condition.onSetDate = DateUtil.today();
                 expandInactiveOnNewInactive(condition);

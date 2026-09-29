@@ -19,6 +19,8 @@ angular.module('bahmni.common.domain')
             var promises = [];
 
             _.forEach(conditionsToBeSaved, function (conditionToSave) {
+                if (conditionToSave.uuid) return;
+
                 var body = {
                     patient: patientUuid,
                     clinicalStatus: conditionToSave.status,
@@ -34,10 +36,22 @@ angular.module('bahmni.common.domain')
                     body.condition = { coded: conditionToSave.concept.uuid };
                 }
 
-                promises.push($http.post(Bahmni.Common.Constants.conditionUrl, body, {
-                    withCredentials: true,
-                    headers: { "Accept": "application/json", "Content-Type": "application/json" }
-                }));
+                var postNew = function () {
+                    return $http.post(Bahmni.Common.Constants.conditionUrl, body, {
+                        withCredentials: true,
+                        headers: { "Accept": "application/json", "Content-Type": "application/json" }
+                    });
+                };
+
+                if (conditionToSave._previousUuid) {
+                    promises.push(
+                        $http.delete(Bahmni.Common.Constants.conditionUrl + '/' + conditionToSave._previousUuid, {
+                            withCredentials: true
+                        }).then(postNew)
+                    );
+                } else {
+                    promises.push(postNew());
+                }
             });
 
             return promises.length > 0 ? Promise.all(promises) : Promise.resolve({});
