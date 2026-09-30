@@ -18,7 +18,8 @@ import { FormattedMessage } from "react-intl";
 import {
   fetchAllergensOrReactions,
   fetchAllergiesAndReactionsForPatient,
-  getNoKnownAllergyUuid
+  getNoKnownAllergyUuid,
+  getOtherNonCodedAllergenUuid
 } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
 import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
@@ -60,8 +61,7 @@ export function PatientAlergiesControl(props) {
 
   const extractAllergenData = (allergenData, allergenKind) =>
     allergenData?.setMembers
-      ?.filter((allergen) => allergen.display !== "Other non-coded")
-      .map((allergen) => {
+      ?.map((allergen) => {
         return {
           name: allergen.display,
           kind: allergenKind,
@@ -129,7 +129,11 @@ export function PatientAlergiesControl(props) {
     const allergies = allergiesAndReactions.entry;
     const allergiesData = allergies?.map((allergy) => {
       const { resource } = allergy;
-      const allergen = resource.code?.coding?.[0]?.display;
+      // fhir2 sets code.text to the free-text allergen name for a non-coded
+      // ("Other, Non-Coded") allergy; coding[0].display would only show the
+      // generic concept name ("Other") for those. For a regular coded
+      // allergy, code.text mirrors the coding display, so this is safe for both.
+      const allergen = resource.code?.text || resource.code?.coding?.[0]?.display;
       const allergenCode = resource.code?.coding?.[0]?.code;
       const severity = resource.reaction[0]?.severity;
       const severityRank =  SEVERITY_RANK[severity] ?? DEFAULT_SEVERITY_RANK;
@@ -157,6 +161,7 @@ export function PatientAlergiesControl(props) {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [error, setError] = useState('');
   const [noKnownAllergyUuid, setNoKnownAllergyUuid] = useState('');
+  const [otherNonCodedAllergenUuid, setOtherNonCodedAllergenUuid] = useState('');
 
   const noAllergiesText = (
     <FormattedMessage
@@ -229,6 +234,12 @@ export function PatientAlergiesControl(props) {
     });
   }, []);
 
+  useEffect(() => {
+    getOtherNonCodedAllergenUuid().then((code) => {
+      setOtherNonCodedAllergenUuid(code);
+    });
+  }, []);
+
   return (
     <>
       <I18nProvider>
@@ -276,6 +287,7 @@ export function PatientAlergiesControl(props) {
               }}
               noKnownAllergyUuid={noKnownAllergyUuid}
               enableNoKnownAllergy={enableNoKnownAllergy}
+              nonCodedAllergenUuid={otherNonCodedAllergenUuid}
             />
           )}
           <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy information saved successfully"/>} hideCloseButton={true}/>

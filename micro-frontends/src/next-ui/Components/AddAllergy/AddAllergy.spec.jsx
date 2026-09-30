@@ -516,4 +516,101 @@ describe("AddAllergy", () => {
     expect(getByTestId("search-allergen")).not.toBeNull();
     expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
   });
+
+  describe("Other, Non-Coded allergen (Specify Allergen)", () => {
+    const nonCodedAllergenUuid = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    const allergensWithOther = [
+      ...mockAllergensData,
+      { name: "Other", kind: "Food", uuid: nonCodedAllergenUuid },
+    ];
+
+    const renderWithOther = () =>
+      render(
+        <IntlProvider locale="en">
+          <AddAllergy
+              onClose={onClose}
+              onSave={onSave}
+              patient={patient}
+              provider={provider}
+              severityOptions={mockSeverityData}
+              allergens={allergensWithOther}
+              reaction={mockReactionsData}
+              existingAllergies={[mockExistingAllergies]}
+              noKnownAllergyUuid={"000000AAAAAA"}
+              nonCodedAllergenUuid={nonCodedAllergenUuid}
+          />
+        </IntlProvider>
+      );
+
+    const selectOtherAllergen = () => {
+      const searchInput = screen.getByRole("searchbox");
+      fireEvent.change(searchInput, { target: { value: "Other" } });
+      fireEvent.click(screen.getByText("Other"));
+    };
+
+    it("shows the Specify allergen field when the Other, Non-Coded concept is selected", () => {
+      renderWithOther();
+      selectOtherAllergen();
+      expect(screen.getByTestId("specify-allergen")).not.toBeNull();
+    });
+
+    it("does not show the Specify allergen field for a regular coded allergen", () => {
+      renderWithOther();
+      searchAllergen();
+      selectAllergen();
+      expect(() => screen.getByTestId("specify-allergen")).toThrow();
+    });
+
+    it("keeps Save disabled until the free-text allergen name is entered", () => {
+      const { container } = renderWithOther();
+      selectOtherAllergen();
+      selectReaction(container);
+      selectSeverity(container);
+      expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
+
+      fireEvent.change(screen.getByTestId("specify-allergen"), {
+        target: { value: "Custom pollen" },
+      });
+      expect(screen.getByText("Save").getAttribute("disabled")).toBeNull();
+    });
+
+    it("keeps Save disabled when the free-text allergen name is only whitespace", () => {
+      const { container } = renderWithOther();
+      selectOtherAllergen();
+      selectReaction(container);
+      selectSeverity(container);
+
+      fireEvent.change(screen.getByTestId("specify-allergen"), {
+        target: { value: "   " },
+      });
+      expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
+    });
+
+    it("includes the trimmed nonCodedAllergen in the save payload", async () => {
+      const { container } = renderWithOther();
+      selectOtherAllergen();
+      selectReaction(container);
+      selectSeverity(container);
+      fireEvent.change(screen.getByTestId("specify-allergen"), {
+        target: { value: "  Custom pollen  " },
+      });
+
+      saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
+      fireEvent.click(screen.getByText("Save"));
+
+      expect(saveAllergiesAPICall).toHaveBeenCalledWith(
+        {
+          allergen: {
+            allergenType: "FOOD",
+            codedAllergen: { uuid: nonCodedAllergenUuid },
+            nonCodedAllergen: "Custom pollen",
+          },
+          reactions: [{ reaction: { uuid: "101AA" } }],
+          severity: { uuid: "162301AAAAAA" },
+          comment: "",
+        },
+        "patient#1"
+      );
+    });
+  });
 });

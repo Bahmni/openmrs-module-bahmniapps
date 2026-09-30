@@ -105,7 +105,8 @@ const mockFetchAllergiesAndReactionsForPatient = jest.fn().mockResolvedValue(moc
 jest.mock("../../utils/PatientAllergiesControl/AllergyControlUtils", () => ({
   fetchAllergensOrReactions: () => mockFetchAllergensOrReactions(),
   fetchAllergiesAndReactionsForPatient: () => mockFetchAllergiesAndReactionsForPatient(),
-  getNoKnownAllergyUuid: jest.fn().mockResolvedValue("no_known_allergy_code_uuid")
+  getNoKnownAllergyUuid: jest.fn().mockResolvedValue("no_known_allergy_code_uuid"),
+  getOtherNonCodedAllergenUuid: jest.fn().mockResolvedValue("other_non_coded_allergen_uuid")
 }));
 
 jest.mock("../../Components/i18n/I18nProvider", () => ({
@@ -247,6 +248,82 @@ describe("PatientAlergiesControl", () => {
     );
     await waitFor(() => {
       expect(getNoKnownAllergyUuid).toHaveBeenCalled();
+    });
+  });
+
+  describe("Other, Non-Coded allergen display", () => {
+    // fhir2 always returns "Other" as coding[0].display for this concept -
+    // the free-text name only appears in code.text. Every saved "Other"
+    // allergy shares the same coding, so relying on coding[0].display alone
+    // shows "Other" for all of them instead of each one's specified name.
+    const otherNonCodedAllergyEntry = (id, freeTextName) => ({
+      resource: {
+        resourceType: "AllergyIntolerance",
+        id,
+        type: "allergy",
+        category: ["medication"],
+        criticality: "unable-to-assess",
+        code: {
+          coding: [
+            {
+              code: "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              display: "Other"
+            }
+          ],
+          text: freeTextName
+        },
+        recordedDate: "2023-10-04T23:27:44+05:30",
+        reaction: [
+          {
+            manifestation: [
+              {
+                coding: [
+                  { code: "108AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", display: "Bronchospasm" }
+                ]
+              }
+            ],
+            severity: "mild"
+          }
+        ]
+      }
+    });
+
+    it("shows each Other allergy's own specified name, not the generic 'Other' coding display", async () => {
+      mockFetchAllergiesAndReactionsForPatient.mockResolvedValueOnce({
+        resourceType: "Bundle",
+        entry: [
+          otherNonCodedAllergyEntry("allergy-1", "ABC"),
+          otherNonCodedAllergyEntry("allergy-2", "BCG"),
+          otherNonCodedAllergyEntry("allergy-3", "XYZ"),
+        ],
+      });
+
+      render(
+        <IntlProvider locale="en">
+          <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+        </IntlProvider>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("ABC")).not.toBeNull();
+      });
+      expect(screen.getByText("BCG")).not.toBeNull();
+      expect(screen.getByText("XYZ")).not.toBeNull();
+      expect(() => screen.getByText("Other")).toThrow();
+    });
+
+    it("still shows the coded display name for a regular coded allergy without code.text", async () => {
+      mockFetchAllergiesAndReactionsForPatient.mockResolvedValueOnce(mockAllergies);
+
+      render(
+        <IntlProvider locale="en">
+          <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+        </IntlProvider>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Eggs")).not.toBeNull();
+      });
     });
   });
 });

@@ -91,3 +91,25 @@ export const getNoKnownAllergyUuid = async () => {
     throw error;
   }
 };
+
+// The "Other, Non-Coded" allergen concept: OpenMRS requires a free-text
+// allergen name whenever it's selected, so it has to be identified here to
+// show that input. Read from the global property rather than hardcoded,
+// since it's configurable per install.
+export const getOtherNonCodedAllergenUuid = async () => {
+  try {
+    const response = await axios.get(GLOBAL_PROPERTY_URL, {
+      params: {
+        property: "allergy.concept.otherNonCoded",
+      },
+      withCredentials: true,
+      headers: {
+        Accept: "text/plain",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching other non-coded allergen uuid:", error);
+    throw error;
+  }
+};
