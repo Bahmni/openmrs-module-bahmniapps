@@ -11,7 +11,7 @@ import React from "react";
 import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { PatientAlergiesControl } from "./PatientAlergiesControl";
 import { IntlProvider } from "react-intl";
-import { getNoKnownAllergyUuid } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
+import { getNoKnownAllergyUuid, getOtherNonCodedAllergenUuid } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
 
 const mockMedicationResponseData = {
   uuid: "100340AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -103,7 +103,7 @@ const mockFetchAllergensOrReactions = jest
 const mockFetchAllergiesAndReactionsForPatient = jest.fn().mockResolvedValue(mockAllergies);
 
 jest.mock("../../utils/PatientAllergiesControl/AllergyControlUtils", () => ({
-  fetchAllergensOrReactions: () => mockFetchAllergensOrReactions(),
+  fetchAllergensOrReactions: (conceptId) => mockFetchAllergensOrReactions(conceptId),
   fetchAllergiesAndReactionsForPatient: () => mockFetchAllergiesAndReactionsForPatient(),
   getNoKnownAllergyUuid: jest.fn().mockResolvedValue("no_known_allergy_code_uuid"),
   getOtherNonCodedAllergenUuid: jest.fn().mockResolvedValue("other_non_coded_allergen_uuid")
@@ -266,7 +266,7 @@ describe("PatientAlergiesControl", () => {
         code: {
           coding: [
             {
-              code: "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              code: "other_non_coded_allergen_uuid",
               display: "Other"
             }
           ],
@@ -324,6 +324,152 @@ describe("PatientAlergiesControl", () => {
       await waitFor(() => {
         expect(screen.getByText("Eggs")).not.toBeNull();
       });
+    });
+
+    it("shows coding[0].display, not code.text, for a regular allergy whose code.text differs from it", async () => {
+      // A regular coded allergy is never expected to have a code.text that
+      // diverges from its coding display, but this proves the display logic
+      // doesn't just trust code.text whenever it's present — only for the
+      // concept the backend confirmed is Other, Non-Coded (matched by uuid).
+      mockFetchAllergiesAndReactionsForPatient.mockResolvedValueOnce({
+        resourceType: "Bundle",
+        entry: [
+          {
+            resource: {
+              ...mockAllergies.entry[0].resource,
+              code: {
+                coding: mockAllergies.entry[0].resource.code.coding,
+                text: "Some unrelated free text",
+              },
+            },
+          },
+        ],
+      });
+
+      render(
+        <IntlProvider locale="en">
+          <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+        </IntlProvider>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Eggs")).not.toBeNull();
+      });
+      expect(() => screen.getByText("Some unrelated free text")).toThrow();
+    });
+  });
+
+  describe("Other, Non-Coded allergen selectability (global property resolution)", () => {
+    it("keeps the Add button disabled while allergy.concept.otherNonCoded hasn't resolved yet", async () => {
+      let resolveOtherNonCoded;
+      getOtherNonCodedAllergenUuid.mockImplementationOnce(
+        () => new Promise((resolve) => { resolveOtherNonCoded = resolve; }),
+      );
+
+      const { container } = render(
+        <IntlProvider locale="en">
+          <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+        </IntlProvider>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Allergies")).not.toBeNull();
+      });
+      // Still unresolved: the button must not be rendered yet, or this
+      // install could let a user select "Other, Non-Coded" with no way to
+      // tell it apart from a regular allergen — reproducing the 500.
+      expect(container.querySelector(".add-button")).toBeNull();
+
+      resolveOtherNonCoded("other_non_coded_allergen_uuid");
+      await waitFor(() => {
+        expect(container.querySelector(".add-button")).not.toBeNull();
+      });
+    });
+
+    it("keeps the Add button disabled when allergy.concept.otherNonCoded fails to resolve, and logs the failure", async () => {
+      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      getOtherNonCodedAllergenUuid.mockRejectedValueOnce(new Error("global property not found"));
+
+      const { container } = render(
+        <IntlProvider locale="en">
+          <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+        </IntlProvider>
+      );
+
+      await waitFor(() => {
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+          expect.stringContaining("allergy.concept.otherNonCoded"),
+          expect.any(Error),
+        );
+      });
+      expect(container.querySelector(".add-button")).toBeNull();
+
+      consoleErrorSpy.mockRestore();
+    });
+  });
+
+  describe("Other, Non-Coded allergen extraction across categories (real pipeline)", () => {
+    // 5622AAAA ("Other, Non-Coded") is a genuine member of the CIEL drug,
+    // food and environment allergen answer sets in a standard Bahmni
+    // dictionary — so it's expected to appear once per category it actually
+    // belongs to, tagged with that category's kind, not merged into one and
+    // not leaking into a category it isn't a member of (environment, here).
+    const conceptSet = (uuid, members) => ({ uuid, setMembers: members });
+    const OTHER_NON_CODED = {
+      uuid: "other_non_coded_allergen_uuid",
+      display: "Other",
+    };
+
+    it("appears under every category it is a real setMember of, with that category's kind, and not under others", async () => {
+      mockFetchAllergensOrReactions.mockImplementation((conceptId) => {
+        switch (conceptId) {
+          case "drug_allergen_Uuid":
+            return Promise.resolve(conceptSet("drug_allergen_Uuid", [OTHER_NON_CODED]));
+          case "food_allergen_Uuid":
+            return Promise.resolve(conceptSet("food_allergen_Uuid", [OTHER_NON_CODED]));
+          case "environmental_allergen_Uuid":
+            // Deliberately does NOT include OTHER_NON_CODED.
+            return Promise.resolve(conceptSet("environmental_allergen_Uuid", []));
+          case "allergy_reaction_Uuid":
+            return Promise.resolve({
+              setMembers: [{ uuid: "reaction-1", name: { display: "Hives" } }],
+            });
+          case "allergy_severity_Uuid":
+            return Promise.resolve({
+              setMembers: [{ uuid: "severity-1", display: "Mild" }],
+              answers: [],
+            });
+          default:
+            return Promise.resolve({ setMembers: [] });
+        }
+      });
+
+      const { container } = render(
+        <IntlProvider locale="en">
+          <PatientAlergiesControl hostData={testHostData} appService={mockAppService}/>
+        </IntlProvider>
+      );
+
+      await waitFor(() => {
+        expect(container.querySelector(".add-button")).not.toBeNull();
+      });
+      fireEvent.click(container.querySelector(".add-button"));
+
+      const searchInput = screen.getByRole("searchbox");
+      fireEvent.change(searchInput, { target: { value: "Other" } });
+
+      const drugTag = screen.getAllByText("Drug");
+      const foodTag = screen.getAllByText("Food");
+      expect(drugTag.length).toBeGreaterThan(0);
+      expect(foodTag.length).toBeGreaterThan(0);
+      expect(screen.queryAllByText("Environment")).toHaveLength(0);
+      // Exactly one "Other" entry per category it's actually a member of —
+      // not deduplicated into a single result, not tripled into all three.
+      expect(screen.getAllByText("Other")).toHaveLength(2);
+
+      // Restore the module-level default so later tests in this file (if
+      // any are ever added after this one) aren't affected by this override.
+      mockFetchAllergensOrReactions.mockResolvedValue(mockMedicationResponseData);
     });
   });
 });

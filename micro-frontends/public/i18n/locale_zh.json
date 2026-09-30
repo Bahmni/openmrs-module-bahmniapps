@@ -11,6 +11,8 @@
   "CANCEL": "Cancel",
   "NO_ALLERGENS_FOUND": "No Allergen found",
   "SEARCH_ALLERGEN": "Search Allergen",
+  "SPECIFY_ALLERGEN": "指定过敏原",
+  "SPECIFY_ALLERGEN_PLACEHOLDER": "输入过敏原名称",
   "REACTIONS": "Reaction(s)",
   "SEARCH_REACTION": "Search Reaction",
   "COMMON_REACTIONS": "Common Reactions",

@@ -11,6 +11,8 @@
   "CANCEL": "Annulla",
   "NO_ALLERGENS_FOUND": "Nessun allergene trovato",
   "SEARCH_ALLERGEN": "Cerca allergene",
+  "SPECIFY_ALLERGEN": "Specificare l'allergene",
+  "SPECIFY_ALLERGEN_PLACEHOLDER": "Inserire il nome dell'allergene",
   "REACTIONS": "Reazione(i)",
   "SEARCH_REACTION": "Cerca reazione",
   "COMMON_REACTIONS": "Reazioni comuni",

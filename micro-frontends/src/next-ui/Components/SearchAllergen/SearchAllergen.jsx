@@ -87,7 +87,11 @@ export function SearchAllergen(props) {
           return (
             <div
               onClick={() => onChange(allergen)}
-              key={allergen.uuid}
+              // A concept can be a genuine setMember of more than one
+              // allergen category (e.g. Other, Non-Coded is a member of the
+              // drug, food and environment sets), so uuid alone can repeat
+              // across categories — kind makes each row's key unique.
+              key={`${allergen.uuid}-${allergen.kind}`}
               className={"allergen"}
             >
               <span className={"allergen"}>

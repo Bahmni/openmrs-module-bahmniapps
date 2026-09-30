@@ -11,6 +11,8 @@
   "CANCEL": "Cancel",
   "NO_ALLERGENS_FOUND": "No Allergen found",
   "SEARCH_ALLERGEN": "Search Allergen",
+  "SPECIFY_ALLERGEN": "एलर्जेन बताएं",
+  "SPECIFY_ALLERGEN_PLACEHOLDER": "एलर्जेन का नाम दर्ज करें",
   "REACTIONS": "Reaction(s)",
   "SEARCH_REACTION": "Search Reaction",
   "COMMON_REACTIONS": "Common Reactions",
