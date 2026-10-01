@@ -1,344 +1,790 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-	#contributors
-	{
-		position: absolute;
-		width: 18em;
-		height: 50em;
-		bottom: 0;
-		left: 50%;
-		margin-left: -9em;
-		font-size: 350%;
-		font-weight: bold;
-		text-align: justify;
-		overflow: hidden;
-		transform-origin: 50% 100%;
-		transform: perspective(300px) rotateX(25deg);
-	}
-	
-	#contributors:after
-	{
-		position: absolute;
-		content: ' ';
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 60%;
-		background-image: linear-gradient(top, rgba(0,0,0,1) 0%, transparent 100%);
-		pointer-events: none;
-	}
-	
-	#contributorList
-	{
-		position: absolute;
-		text-align: justify;
-		top: 100%;
-		animation: scroll 150s linear 1s infinite;
-	}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bahmni Resistance - Galactic Honor Roll</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Inter, Orbitron, Cinzel, Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;600;700;800&family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-	@keyframes scroll {
-		0% { top: 100%; }
-		100% { top: -250%; }
-	}
-</style>
+  <style>
+    :root {
+      --sw-gold: #FFE81F;
+      --sw-gold-bright: #FFF380;
+      --sw-cyan: #00f0ff;
+      --sw-cyan-glow: rgba(0, 240, 255, 0.4);
+      --sw-bg: #02050d;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--sw-bg);
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      user-select: none;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* 3D Perspective Crawl Viewport */
+    .viewport-3d {
+      position: absolute;
+      inset: 0;
+      perspective: 420px;
+      perspective-origin: 50% 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    /* 3D Crawl Inner Container */
+    #crawl-content-wrapper {
+      position: absolute;
+      width: 92%;
+      max-width: 1200px;
+      top: 100%;
+      left: 50%;
+      transform-origin: 50% 100%;
+      transform: translateX(-50%) rotateX(5deg);
+      will-change: transform;
+      pointer-events: auto;
+      padding-bottom: 300px;
+    }
+
+    /* Horizon Fade Gradient for 3D View */
+    .fade-top-horizon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 25%;
+      background: linear-gradient(to bottom, 
+        rgba(2, 5, 13, 1) 0%, 
+        rgba(2, 5, 13, 0.9) 40%, 
+        rgba(2, 5, 13, 0) 100%);
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    /* Modern Glassmorphism Panels */
+    .glass-hud {
+      background: rgba(8, 14, 28, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.85), 0 0 20px rgba(0, 240, 255, 0.08);
+    }
+
+    /* Cyber Corner Accents */
+    .cyber-corner {
+      position: relative;
+    }
+    .cyber-corner::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px;
+      width: 8px; height: 8px;
+      border-top: 2px solid var(--sw-cyan);
+      border-left: 2px solid var(--sw-cyan);
+    }
+    .cyber-corner::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 8px; height: 8px;
+      border-bottom: 2px solid var(--sw-cyan);
+      border-right: 2px solid var(--sw-cyan);
+    }
+
+    /* Typography Classes */
+    .orbitron-font { font-family: 'Orbitron', sans-serif; }
+    .cinzel-font { font-family: 'Cinzel', serif; }
+    .space-font { font-family: 'Space Grotesk', sans-serif; }
+
+    .gold-gradient-text {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFE81F 55%, #E5A800 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(255, 232, 31, 0.7));
+    }
+
+    .cyan-glow-text {
+      color: var(--sw-cyan);
+      text-shadow: 0 0 14px var(--sw-cyan-glow);
+    }
+
+    /* Hero Card Grid Item */
+    .hero-card {
+      background: rgba(13, 22, 44, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-card:hover {
+      border-color: var(--sw-gold);
+      background: rgba(255, 232, 31, 0.15);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 0 15px rgba(255, 232, 31, 0.4);
+    }
+
+    .hero-card.search-match {
+      background: rgba(0, 240, 255, 0.35) !important;
+      border-color: #00f0ff !important;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.9) !important;
+      transform: scale(1.05) !important;
+      z-index: 20;
+    }
+
+    /* Grid View Container */
+    #flat-grid-view {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 12;
+      overflow-y: auto;
+      padding: 90px 20px 140px 20px;
+    }
+
+    input[type=range] {
+      accent-color: var(--sw-cyan);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(3, 5, 13, 0.9); }
+    ::-webkit-scrollbar-thumb { background: var(--sw-cyan); border-radius: 4px; }
+  </style>
 </head>
-<body>
+<body class="relative min-h-screen w-full bg-black overflow-hidden select-none">
 
+  <!-- Interactive Space Canvas -->
+  <canvas id="space-canvas" class="absolute inset-0 z-0 w-full h-full cursor-crosshair"></canvas>
+  <div id="horizon-fade" class="fade-top-horizon"></div>
 
-<div id="contributors">
-	<div id="contributorList">
-		<p align="justify">
-		Sushruta and Rudolf Virchow have vanished.  In their absence, the EMPIRE has taken control and have vowed to destroy the JEDIS.
-		Bahmni leads a brave new RESISTANCE. She continues to find alliances and volunteers to strengthen the resistance
-		for restoring equitable digital HEALTH in the World.
-		</p>
-		<p>
-Vinkesh Banka,
-Gurpreet Luthra,
-Kartik Narayanan,
-Sushma V,
-Vivek Singh,
-Pradipta Kundu,
-Vinay Venu,
-Shruthi Dipali,
-Sruti Sridhar,
-Shruthi Pitta,
-Darius Jazayeri,
-Mujiruddin Shaikh,
-Krishna kumar,
-Angshuman Sarkar,
-Senthil Raja,
-Ranjan Sakalley,
-Praveen Chandrashekharan,
-David Walton,
-Dharmender Srivastav,
-Pushpalatha Dumpala,
-Ravindra Reddy,
-Hanisha,
-Shashikanth Gadgay,
-Prabhu Awasthi,
-Deepti Chandramouli,
-Deepak Sharma,
-Akhil Malhotra,
-Prithviraj Thakor,
-Priyanka Saxena,
-Preethi S,
-Sravanthi N. S. CH,
-Karrtik Iyer,
-Arvind Sethia,
-Shanmugam Radhakrishnan,
-Ranganathan Balashanmugamm,
-Bijayini Parhi,
-Nalaband Salauddin,
-Chethan A,
-Koushik Shetty,
-Shireesha Bongarala,
-Alageshan,
-Lipika Dugar,
-Nivetha Padmanaban,
-Jaya Suganthi,
-Maharjun Meesala,
-Bharat Akkinepalli,
-Siddhartha Mohapatra,
-Sidharthan A N,
-Venkata Padmavati,
-Sudhir Tiwari,
-Amitendra Chauhan,
-Siva Reddy,
-Anusha Sharma,
-Sanjit Das,
-Sanjana Bayya,
-Lavanya Mohan,
-Vikash Gupta,
-Suman Maity,
-Arjun Khandelwal,
-Mihir Khatwani,
-Wolf Schlegel,
-Nehashri Lokesh,
-Pankaj Ladhar,
-Deepak N,
-Arathy Janardhanan,
-Sushmitha Rao,
-Indraneel Rao,
-Abhinav Peddada,
-Hemanth SR,
-Pankaj Kanchankar,
-Rohan Poddar,
-Ravinder Deolal,
-Bharti Nagpal,
-Shitij Gupta,
-Navaneethakrishna Ramanathan,
-Mário Areias,
-Sriram Krishnaswamy,
-Hareeshwar G,
-Ramya Kancharla,
-Shantan Reddy, 
-Jonathan Teich,
-Vinod Sankarnarayanan,
-Vinay Venkatachalam, 
-Punith Prasad,
-Teresa Gracias,
-Venkata Jaswanth,
-Amira Anne Pettus,
-Alexandre Klaser,
-Gayathri Rao,
-Lvzhou Li,
-He Sicong,
-Yang Zeng,
-Yae Li,
-Xueying Li,
-Ting Li,
-Xing Zhou,
-Xin Zhang,
-Dai Zhang,
-Jie Xiong,
-Mike Seaton,
-Gaurav Deshkar,
-Swathi Varkala,
-Ramakanta Behera,
-Himabindu Thungathurty,
-Mritunjay Dubey,
-Chase Yarbrough,
-Jan Mewes,
-Charlie Brooking,
-Geetha Santosh,
-Mark Goodrich,
-Dimitri Renault,
-Romain Buisson,
-Santhosh Bairam,
-Sourav Agarwal,
-Dr. Yogesh Jain,
-Dr. Raman Kataria,
-Dr. Sushil Patil,
-Dr. Yogesh Kalkonde,
-Dr. Gajanan Phutke,
-Pramida Tumma, 
-Madhubala Mukthinultalapa,
-Geeta Bose,
-Kaustav Chakraborty,
-Jaseena Mohammed,
-Mahesh Kumar Vadla,
-Yugesh Vohra,
-Rahul De,
-Emerson Hernandez,
-Nishitha Ningegowda,
-Arusarka Haldar,
-Anun Paul,
-Sandeep E,
-Mahitha Arveti,
-Saikumar Vantaku,
-Shilpa Parab,
-Krishnan Menon,
-Sanish Maharjan,
-Sudhamsh Kandukuri,
-Tanmay Deshpande,
-Rajashri Khobragade,
-Sravya Kanagarla,
-Anand Patel,
-Sneha Bagri,
-Swetha Bachugudem,
-Vinisha Donthula,
-Krupa Desai,
-Buvaneswari Arun,
-Praveena Dayanand,
-Shilpa Goley,
-Rabbia Hassan,
-Larry Ivange,
-Pedro Sousa,
-Alekhya Yalla,
-Sowmika Tammanah,
-David Mukungi,
-Neha Jain,
-Som Bhattacharya,
-Swati Gogia,
-Shridhar Kalangi,
-Pallavi Deshmukh,
-Rajashri Khobragade,
-Rakesh Kumar,
-Rurangirwa Bailly,
-Sushant Patil,
-Zoheir Chine,
-Rupam Joshi,
-Anusha KP,
-Usha Sai,
-Tarun Shettygari,
-Supriya Muppuri,
-Pritam Das,
-Akshay Birajdar,
-Soorya Kumaran C,
-Abhinab Bharali,
-Gokul Kuppan,
-Priyanshu Singh,
-Siva Reddy Pathuri,
-Priyanka Ajmera,
-Abinaya Uthamaputhiran,
-Sanofer Sameera S,
-Rohit Yawalkar,
-Mradul Jain,
-Mohankumar Thangavel,
-Deepthi Mantena,
-Ramkumar G,
-M Maharaja,
-Arjun G,
-Kavitha S,
-Umair Fayaz,
-Manimaaran,
-Krishna Kiran,
-Nouman Memon,
-Hemant Vats,
-Divij Goyal,
-Aman Kumar Ayush,
-Keerthana Yenugu,
-Nikhitha,
-Sindhura Kaparthi,
-Anjali Arakka,
-Soumya Swaroop, 
-Aditya Ramakant Karle,
-Samar Ranjan,
-Nazeer Shaik,
-Abhishek Rajbhoj,
-Rahul Ramesh,
-Parvathy Babu,
-Kiranmai Ravipati,
-Anubhav Bansal,
-Kala Singh,
-Benazer Sharieff,
-Kushboo Jain Rakesh Kumar,
-Satish Viswanathan,
-Venu Vardhan Reddy Tekula,
-Vijay Anand Shanmughadass,
-Ketan Goenka,
-Barath Kumar N,
-Mayo Brahim,
-Patrick Nyatindo,
-Riya Kumari,
-Ravinder Kabli,
-Narmadha R,
-Pratiti Shah,
-Rohit V,
-Varun Prasad,
-Aishwarya Sontakke,
-Padma Sahu,
-Hamsavarthini R,
-Lingeswaran Subramaniyam,
-Suma Karanth,
-Vishal Karmalkar,
-Arshiya,
-Srijan Ram,
-Samridhi Agrawal,
-Soumajit Chatterjee,
-Jameela Shaik, 
-Kousalya P T, 
-Subhash Yadav,
-Avani Mahadik, 
-Pranjal Ranka, 
-Praveen Elengo,
-Praveen Appuswamy,
-Uma Maheswari,
-Kaviya Sri Batrachalam,
-Karthik Kumar,
-Prakash Subramaniam,
-Vedant,
-Sasi,
-Dev Singh, 
-Preethi, 
-Subha,
-MadhanKumar Indla,
-Kavya Shailesh Shah,
-Krishna Kiran,
-Pavan Valluri,
-Avni Tanwar,
-Banti Rathod,
-Pooja Sastry,
-Roopini Jonnavittula,
-Sasikiran Jakkula,
-Vivek Pandey,
-Kevin de Smidt,
-Rhoda Obonyo,
-Nidhilesh PS,
-Vikramdas Vaishnav,
-Ramya Acharya,
-Swapna Mallikarjun Sogi,
-Pradeeba P,
-Sanjay Karukamanna,
-Kanchi Oswal,
-Chetna Mahajan,
-Anusuya Rajendran,
-Sivavithyaa Shree Mogankumar,
-Komal Sharma,
-Supriya Karindi,
-Pragalapavithra,
-Keerthi Rangu,
-Kabita Mondal,
-Sravya Rongala,
-Sneha Venkatakrishnan,
-Vivek Majumdar
-		</p>
-	</div>
-</div>
+  <!-- Intro Screen Overlay -->
+  <div id="intro-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/95 transition-opacity duration-300 p-6 text-center">
+    <button id="start-btn" class="px-8 py-4 text-base sm:text-lg font-extrabold tracking-widest text-black bg-[#FFE81F] hover:bg-yellow-300 rounded-full shadow-[0_0_35px_rgba(255,232,31,0.85)] transition-all transform hover:scale-110 active:scale-95 flex items-center space-x-3 cursor-pointer">
+      <i class="fa-solid fa-play"></i>
+      <span>LAUNCH EXPERIENCE</span>
+    </button>
+  </div>
 
+  <!-- Flying Title Card ("BAHMNI") -->
+  <div id="title-card-container" class="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none opacity-0">
+    <div class="gold-gradient-text cinzel-font text-6xl sm:text-8xl md:text-9xl text-center uppercase tracking-widest mb-2 font-black">
+      BAHMNI
+    </div>
+    <div class="orbitron-font cyan-glow-text font-bold text-lg sm:text-2xl tracking-widest uppercase text-center">
+      EPISODE: EQUITABLE DIGITAL HEALTH
+    </div>
+  </div>
 
+  <!-- 3D Perspective Viewport -->
+  <div class="viewport-3d" id="viewport-3d">
+    <div id="crawl-content-wrapper">
+      
+      <!-- Intro Narrative Header -->
+      <div class="glass-hud p-8 rounded-2xl border border-yellow-500/40 cyber-corner mb-12 shadow-2xl">
+        <h1 class="orbitron-font text-2xl sm:text-3xl font-black text-cyan-400 mb-4 tracking-wider flex items-center space-x-3">
+          <i class="fa-solid fa-shield-halved text-yellow-400"></i>
+          <span>THE RESISTANCE AWAKENS</span>
+        </h1>
+        <p class="text-xl sm:text-2xl font-bold leading-relaxed text-yellow-200 tracking-wide text-justify">
+          Sushruta and Rudolf Virchow have vanished. In their absence, the EMPIRE has taken control and have vowed to destroy the JEDIS. Bahmni leads a brave new RESISTANCE. She continues to find alliances and volunteers to strengthen the resistance for restoring equitable digital HEALTH in the World.
+        </p>
+      </div>
+
+      <!-- 4-Column Card Grid -->
+      <div class="glass-hud p-8 rounded-2xl border border-cyan-500/40 cyber-corner">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-cyan-500/30">
+          <h2 class="orbitron-font text-xl sm:text-2xl font-bold text-cyan-300 tracking-widest flex items-center space-x-3">
+            <i class="fa-solid fa-users text-yellow-400"></i>
+            <span>HONOR ROLL OF CONTRIBUTORS</span>
+          </h2>
+          <span class="font-mono text-xs text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/30">
+            TOTAL: <span id="roster-count">0</span> HEROES
+          </span>
+        </div>
+
+        <div id="contributor-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Crawl End Banner -->
+      <div class="text-center py-20 mt-12 border-t border-cyan-500/30">
+        <div class="text-2xl sm:text-4xl cyan-glow-text orbitron-font font-black tracking-widest uppercase">
+          May The Code Be With You
+        </div>
+        <div class="text-xs text-yellow-400 font-mono mt-3 uppercase tracking-widest">
+          BAHMNI RESISTANCE • EQUITABLE DIGITAL HEALTH FOR ALL
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Teleprompter Grid View -->
+  <div id="flat-grid-view">
+    <div class="max-w-6xl mx-auto space-y-8">
+      <div class="glass-hud p-6 sm:p-8 rounded-2xl border border-yellow-500/40 cyber-corner">
+        <h2 class="text-2xl sm:text-3xl font-bold cyan-glow-text orbitron-font mb-4 flex items-center space-x-3">
+          <i class="fa-solid fa-scroll text-yellow-400"></i>
+          <span>THE BAHMNI RESISTANCE</span>
+        </h2>
+        <p class="text-lg sm:text-xl text-yellow-200 leading-relaxed font-semibold">
+          Sushruta and Rudolf Virchow have vanished. In their absence, the EMPIRE has taken control and have vowed to destroy the JEDIS. Bahmni leads a brave new RESISTANCE. She continues to find alliances and volunteers to strengthen the resistance for restoring equitable digital HEALTH in the World.
+        </p>
+      </div>
+
+      <div>
+        <div id="flat-cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Action Controls -->
+  <div class="absolute top-4 right-4 z-40 flex items-center space-x-3">
+    <button id="view-mode-btn" class="glass-hud text-yellow-300 hover:text-white px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold flex items-center space-x-2 transition-all cursor-pointer hover:border-cyan-400">
+      <i class="fa-solid fa-table-cells text-cyan-400"></i>
+      <span id="view-mode-label">TELEPROMPTER GRID</span>
+    </button>
+
+    <button id="toggle-search-btn" class="glass-hud text-yellow-300 hover:text-white p-2.5 rounded-xl transition-all cursor-pointer hover:border-cyan-400" title="Find Contributor">
+      <i class="fa-solid fa-magnifying-glass text-cyan-400"></i>
+    </button>
+
+    <button id="toggle-audio-btn" class="glass-hud text-yellow-300 hover:text-white p-2.5 rounded-xl transition-all cursor-pointer hover:border-cyan-400" title="Toggle Audio Theme">
+      <i id="audio-icon" class="fa-solid fa-volume-xmark text-lg"></i>
+    </button>
+  </div>
+
+  <!-- Search Overlay -->
+  <div id="search-hud" class="absolute top-16 right-4 z-40 glass-hud p-4 rounded-xl w-72 sm:w-80 transition-all duration-300 transform scale-95 opacity-0 pointer-events-none cyber-corner">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">Search Contributor</span>
+      <button id="close-search" class="text-gray-400 hover:text-yellow-400"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="relative">
+      <input type="text" id="search-input" placeholder="Type a hero's name..." class="w-full bg-black/80 border border-cyan-500/40 rounded-lg px-3 py-2 text-sm text-cyan-200 focus:outline-none focus:border-cyan-400 placeholder-cyan-800 font-medium">
+      <i class="fa-solid fa-search absolute right-3 top-2.5 text-cyan-600 text-xs"></i>
+    </div>
+    <div id="search-stats" class="text-xs text-yellow-300 font-mono mt-2 min-h-[1rem]"></div>
+  </div>
+
+  <!-- Floating Controls Dock -->
+  <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-40 w-11/12 max-w-2xl">
+    <div class="glass-hud rounded-2xl p-3 sm:p-4 cyber-corner flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+      
+      <div class="flex items-center space-x-2">
+        <button id="play-pause-btn" class="w-10 h-10 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 flex items-center justify-center border border-cyan-400/50 transition-all cursor-pointer">
+          <i id="play-icon" class="fa-solid fa-pause"></i>
+        </button>
+        <button id="restart-btn" class="w-10 h-10 rounded-xl bg-yellow-400/10 hover:bg-yellow-400/30 text-yellow-300 flex items-center justify-center border border-yellow-400/30 transition-all cursor-pointer" title="Restart Crawl">
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+      </div>
+
+      <div class="flex items-center space-x-2 flex-1 min-w-[130px]">
+        <i class="fa-solid fa-gauge-high text-cyan-400"></i>
+        <div class="flex flex-col flex-1">
+          <div class="flex justify-between text-[10px] text-yellow-300 font-mono">
+            <span>SPEED</span>
+            <span id="speed-display">1.0x</span>
+          </div>
+          <input type="range" id="speed-slider" min="0.25" max="3" step="0.25" value="1" class="w-full h-1 bg-cyan-950 rounded appearance-none cursor-pointer">
+        </div>
+      </div>
+
+      <div id="tilt-control" class="flex items-center space-x-2 flex-1 min-w-[120px]">
+        <i class="fa-solid fa-cube text-cyan-400"></i>
+        <div class="flex flex-col flex-1">
+          <div class="flex justify-between text-[10px] text-yellow-300 font-mono">
+            <span>TILT</span>
+            <span id="tilt-display">5°</span>
+          </div>
+          <input type="range" id="tilt-slider" min="0" max="35" step="1" value="5" class="w-full h-1 bg-cyan-950 rounded appearance-none cursor-pointer">
+        </div>
+      </div>
+
+      <button id="warp-btn" class="px-3 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 border border-cyan-400/40 font-mono text-xs flex items-center space-x-1.5 transition-all cursor-pointer">
+        <i class="fa-solid fa-bolt"></i>
+        <span>WARP</span>
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+    const RAW_CONTRIBUTORS = [
+      "Vinkesh Banka", "Gurpreet Luthra", "Kartik Narayanan", "Sushma V", "Vivek Singh", 
+      "Pradipta Kundu", "Vinay Venu", "Shruthi Dipali", "Sruti Sridhar", "Shruthi Pitta", 
+      "Darius Jazayeri", "Mujiruddin Shaikh", "Krishna kumar", "Angshuman Sarkar", "Senthil Raja", 
+      "Ranjan Sakalley", "Praveen Chandrashekharan", "David Walton", "Dharmender Srivastav", "Pushpalatha Dumpala", 
+      "Ravindra Reddy", "Hanisha", "Shashikanth Gadgay", "Prabhu Awasthi", "Deepti Chandramouli", 
+      "Deepak Sharma", "Akhil Malhotra", "Prithviraj Thakor", "Priyanka Saxena", "Preethi S", 
+      "Sravanthi N. S. CH", "Karrtik Iyer", "Arvind Sethia", "Shanmugam Radhakrishnan", "Ranganathan Balashanmugamm", 
+      "Bijayini Parhi", "Nalaband Salauddin", "Chethan A", "Koushik Shetty", "Shireesha Bongarala", 
+      "Alageshan", "Lipika Dugar", "Nivetha Padmanaban", "Jaya Suganthi", "Maharjun Meesala", 
+      "Bharat Akkinepalli", "Siddhartha Mohapatra", "Sidharthan A N", "Venkata Padmavati", "Sudhir Tiwari", 
+      "Amitendra Chauhan", "Siva Reddy", "Anusha Sharma", "Sanjit Das", "Sanjana Bayya", 
+      "Lavanya Mohan", "Vikash Gupta", "Suman Maity", "Arjun Khandelwal", "Mihir Khatwani", 
+      "Wolf Schlegel", "Nehashri Lokesh", "Pankaj Ladhar", "Deepak N", "Arathy Janardhanan", 
+      "Sushmitha Rao", "Indraneel Rao", "Abhinav Peddada", "Hemanth SR", "Pankaj Kanchankar", 
+      "Rohan Poddar", "Ravinder Deolal", "Bharti Nagpal", "Shitij Gupta", "Navaneethakrishna Ramanathan", 
+      "Mário Areias", "Sriram Krishnaswamy", "Hareeshwar G", "Ramya Kancharla", "Shantan Reddy", 
+      "Jonathan Teich", "Vinod Sankarnarayanan", "Vinay Venkatachalam", "Punith Prasad", "Teresa Gracias", 
+      "Venkata Jaswanth", "Amira Anne Pettus", "Alexandre Klaser", "Gayathri Rao", "Lvzhou Li", 
+      "He Sicong", "Yang Zeng", "Yae Li", "Xueying Li", "Ting Li", 
+      "Xing Zhou", "Xin Zhang", "Dai Zhang", "Jie Xiong", "Mike Seaton", 
+      "Gaurav Deshkar", "Swathi Varkala", "Ramakanta Behera", "Himabindu Thungathurty", "Mritunjay Dubey", 
+      "Chase Yarbrough", "Jan Mewes", "Charlie Brooking", "Geetha Santosh", "Mark Goodrich", 
+      "Dimitri Renault", "Romain Buisson", "Santhosh Bairam", "Sourav Agarwal", "Dr. Yogesh Jain", 
+      "Dr. Raman Kataria", "Dr. Sushil Patil", "Dr. Yogesh Kalkonde", "Dr. Gajanan Phutke", "Pramida Tumma", 
+      "Madhubala Mukthinultalapa", "Geeta Bose", "Kaustav Chakraborty", "Jaseena Mohammed", "Mahesh Kumar Vadla", 
+      "Yugesh Vohra", "Rahul De", "Emerson Hernandez", "Nishitha Ningegowda", "Arusarka Haldar", 
+      "Anun Paul", "Sandeep E", "Mahitha Arveti", "Saikumar Vantaku", "Shilpa Parab", 
+      "Krishnan Menon", "Sanish Maharjan", "Sudhamsh Kandukuri", "Tanmay Deshpande", "Rajashri Khobragade", 
+      "Sravya Kanagarla", "Anand Patel", "Sneha Bagri", "Swetha Bachugudem", "Vinisha Donthula", 
+      "Krupa Desai", "Buvaneswari Arun", "Praveena Dayanand", "Shilpa Goley", "Rabbia Hassan", 
+      "Larry Ivange", "Pedro Sousa", "Alekhya Yalla", "Sowmika Tammanah", "David Mukungi", 
+      "Neha Jain", "Som Bhattacharya", "Swati Gogia", "Shridhar Kalangi", "Pallavi Deshmukh", 
+      "Rajashri Khobragade", "Rakesh Kumar", "Rurangirwa Bailly", "Sushant Patil", "Zoheir Chine", 
+      "Rupam Joshi", "Anusha KP", "Usha Sai", "Tarun Shettygari", "Supriya Muppuri", 
+      "Pritam Das", "Akshay Birajdar", "Soorya Kumaran C", "Abhinab Bharali", "Gokul Kuppan", 
+      "Priyanshu Singh", "Siva Reddy Pathuri", "Priyanka Ajmera", "Abinaya Uthamaputhiran", "Sanofer Sameera S", 
+      "Rohit Yawalkar", "Mradul Jain", "Mohankumar Thangavel", "Deepthi Mantena", "Ramkumar G", 
+      "M Maharaja", "Arjun G", "Kavitha S", "Umair Fayaz", "Manimaaran", 
+      "Krishna Kiran", "Nouman Memon", "Hemant Vats", "Divij Goyal", "Aman Kumar Ayush", 
+      "Keerthana Yenugu", "Nikhitha", "Sindhura Kaparthi", "Anjali Arakka", "Soumya Swaroop", 
+      "Aditya Ramakant Karle", "Samar Ranjan", "Nazeer Shaik", "Abhishek Rajbhoj", "Rahul Ramesh", 
+      "Parvathy Babu", "Kiranmai Ravipati", "Anubhav Bansal", "Kala Singh", "Benazer Sharieff", 
+      "Kushboo Jain Rakesh Kumar", "Satish Viswanathan", "Venu Vardhan Reddy Tekula", "Vijay Anand Shanmughadass", "Ketan Goenka", 
+      "Barath Kumar N", "Mayo Brahim", "Patrick Nyatindo", "Riya Kumari", "Ravinder Kabli", 
+      "Narmadha R", "Pratiti Shah", "Rohit V", "Varun Prasad", "Aishwarya Sontakke", 
+      "Padma Sahu", "Hamsavarthini R", "Lingeswaran Subramaniyam", "Suma Karanth", "Vishal Karmalkar", 
+      "Arshiya", "Srijan Ram", "Samridhi Agrawal", "Soumajit Chatterjee", "Jameela Shaik", 
+      "Kousalya P T", "Subhash Yadav", "Avani Mahadik", "Pranjal Ranka", "Praveen Elengo", 
+      "Praveen Appuswamy", "Uma Maheswari", "Kaviya Sri Batrachalam", "Karthik Kumar", "Prakash Subramaniam", 
+      "Vedant", "Sasi", "Dev Singh", "Preethi", "Subha", 
+      "MadhanKumar Indla", "Kavya Shailesh Shah", "Krishna Kiran", "Pavan Valluri", "Avni Tanwar", 
+      "Banti Rathod", "Pooja Sastry", "Roopini Jonnavittula", "Sasikiran Jakkula", "Vivek Pandey", 
+      "Kevin de Smidt", "Rhoda Obonyo", "Nidhilesh PS", "Vikramdas Vaishnav", "Ramya Acharya", 
+      "Swapna Mallikarjun Sogi", "Pradeeba P", "Sanjay Karukamanna", "Kanchi Oswal", "Chetna Mahajan", 
+      "Anusuya Rajendran", "Sivavithyaa Shree Mogankumar", "Komal Sharma", "Supriya Karindi", "Pragalapavithra", 
+      "Keerthi Rangu", "Kabita Mondal", "Sravya Rongala", "Sneha Venkatakrishnan", "Vivek Majumdar"
+    ];
+
+    document.getElementById('roster-count').textContent = RAW_CONTRIBUTORS.length;
+
+    const gridContainer = document.getElementById('contributor-grid-container');
+    const flatContainer = document.getElementById('flat-cards-container');
+
+    let gridHtml = '';
+    let cardsHtml = '';
+
+    RAW_CONTRIBUTORS.forEach((name, idx) => {
+      const heroNum = (idx + 1).toString().padStart(3, '0');
+      gridHtml += `
+        <div class="hero-card" data-name="${name.toLowerCase()}">
+          <div class="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-950 px-2 py-1 rounded border border-cyan-800 flex-shrink-0">
+            #${heroNum}
+          </div>
+          <div class="text-sm font-bold text-[#FFF380] truncate">${name}</div>
+        </div>
+      `;
+
+      cardsHtml += `
+        <div class="glass-hud p-3.5 rounded-xl border border-cyan-500/20 hover:border-cyan-400 transition-all cursor-pointer flat-card" data-name="${name.toLowerCase()}">
+          <div class="text-[10px] text-cyan-400 font-mono mb-0.5">HERO #${heroNum}</div>
+          <div class="text-sm font-bold text-yellow-200">${name}</div>
+        </div>
+      `;
+    });
+
+    gridContainer.innerHTML = gridHtml;
+    flatContainer.innerHTML = cardsHtml;
+
+    /* Space Canvas */
+    const canvas = document.getElementById('space-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+
+    function resizeCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const stars = [];
+    let isWarping = false;
+
+    for (let i = 0; i < 450; i++) {
+      stars.push({
+        x: (Math.random() - 0.5) * w * 2,
+        y: (Math.random() - 0.5) * h * 2,
+        z: Math.random() * w,
+        size: Math.random() * 1.5 + 0.5,
+        color: Math.random() > 0.8 ? '#00f0ff' : (Math.random() > 0.8 ? '#FFE81F' : '#ffffff')
+      });
+    }
+
+    function renderSpace() {
+      ctx.fillStyle = isWarping ? 'rgba(2, 5, 13, 0.25)' : 'rgba(2, 5, 13, 1)';
+      ctx.fillRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const cy = h / 2;
+      const mult = isWarping ? 22 : 0.8;
+
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        s.z -= mult;
+
+        if (s.z <= 0) {
+          s.z = w;
+          s.x = (Math.random() - 0.5) * w * 2;
+          s.y = (Math.random() - 0.5) * h * 2;
+        }
+
+        const k = 260 / s.z;
+        const px = s.x * k + cx;
+        const py = s.y * k + cy;
+
+        if (px >= 0 && px < w && py >= 0 && py < h) {
+          const sz = Math.max(0.1, (1 - s.z / w) * s.size * (isWarping ? 2.5 : 1.2));
+          ctx.beginPath();
+          ctx.fillStyle = s.color;
+          ctx.arc(px, py, sz, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (isWarping) {
+            const pk = 260 / (s.z + mult * 2);
+            ctx.beginPath();
+            ctx.strokeStyle = s.color;
+            ctx.lineWidth = sz;
+            ctx.moveTo(px, py);
+            ctx.lineTo(s.x * pk + cx, s.y * pk + cy);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(renderSpace);
+    }
+    renderSpace();
+
+    /* Web Audio Sound */
+    let audioCtx = null;
+    let audioPlaying = false;
+    let masterGain = null;
+    let musicTimer = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(0.22, audioCtx.currentTime);
+        masterGain.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    const anthemNotes = [
+      { f: 233.08, d: 0.4 }, { f: 233.08, d: 0.4 }, { f: 233.08, d: 0.4 },
+      { f: 349.23, d: 1.4 }, { f: 523.25, d: 1.4 },
+      { f: 466.16, d: 0.3 }, { f: 440.00, d: 0.3 }, { f: 392.00, d: 0.3 }, { f: 698.46, d: 1.4 },
+      { f: 523.25, d: 0.7 },
+      { f: 466.16, d: 0.3 }, { f: 440.00, d: 0.3 }, { f: 392.00, d: 0.3 }, { f: 698.46, d: 1.4 },
+      { f: 523.25, d: 0.7 },
+      { f: 466.16, d: 0.3 }, { f: 440.00, d: 0.3 }, { f: 466.16, d: 0.3 }, { f: 392.00, d: 1.6 }
+    ];
+    let noteIdx = 0;
+
+    function playNextNote() {
+      if (!audioPlaying || !audioCtx) return;
+
+      const note = anthemNotes[noteIdx];
+      const now = audioCtx.currentTime;
+
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const filter = audioCtx.createBiquadFilter();
+      const gain = audioCtx.createGain();
+
+      osc1.type = 'sawtooth';
+      osc2.type = 'triangle';
+
+      osc1.frequency.setValueAtTime(note.f, now);
+      osc2.frequency.setValueAtTime(note.f * 1.004, now);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1400, now);
+
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.28, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + note.d * 0.9);
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + note.d);
+      osc2.stop(now + note.d);
+
+      noteIdx = (noteIdx + 1) % anthemNotes.length;
+      musicTimer = setTimeout(playNextNote, note.d * 1000);
+    }
+
+    document.getElementById('toggle-audio-btn').addEventListener('click', () => {
+      initAudio();
+      audioPlaying = !audioPlaying;
+      const icon = document.getElementById('audio-icon');
+
+      if (audioPlaying) {
+        icon.className = 'fa-solid fa-volume-high text-cyan-400';
+        noteIdx = 0;
+        playNextNote();
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-lg';
+        if (musicTimer) clearTimeout(musicTimer);
+      }
+    });
+
+    /* Sequence Engine */
+    const crawlWrapper = document.getElementById('crawl-content-wrapper');
+    const startBtn = document.getElementById('start-btn');
+    const introScreen = document.getElementById('intro-screen');
+    const titleCardContainer = document.getElementById('title-card-container');
+
+    let isPaused = false;
+    let speedMult = 1.0;
+    let tiltAngle = 5;
+    let currentYPixels = 0; 
+    let totalCrawlHeight = 0;
+    let viewportHeight = window.innerHeight;
+
+    function calculateBounds() {
+      viewportHeight = window.innerHeight;
+      totalCrawlHeight = crawlWrapper.offsetHeight;
+    }
+    window.addEventListener('resize', calculateBounds);
+
+    function startSequence() {
+      initAudio();
+      
+      // Hide intro screen instantly on launch
+      introScreen.classList.add('opacity-0', 'pointer-events-none');
+
+      // Fast title flyby animation (1 second)
+      titleCardContainer.classList.remove('opacity-0');
+      titleCardContainer.animate([
+        { transform: 'scale(1.5) translateZ(0px)', opacity: 1 },
+        { transform: 'scale(0.1) translateZ(-600px)', opacity: 0 }
+      ], {
+        duration: 1000,
+        easing: 'ease-out',
+        fill: 'forwards'
+      });
+
+      // Start crawl text scrolling up from bottom in UNDER 1-2 SECONDS
+      setTimeout(() => {
+        resetCrawlPosition();
+        calculateBounds();
+        runScrollLoop();
+      }, 800);
+    }
+
+    startBtn.addEventListener('click', startSequence);
+
+    function resetCrawlPosition() {
+      calculateBounds();
+      // Starts right at the bottom edge so "THE RESISTANCE AWAKENS" comes up in ~1 sec
+      currentYPixels = viewportHeight * 0.25; 
+      applyTransform();
+    }
+
+    function applyTransform() {
+      crawlWrapper.style.transform = `translateX(-50%) translateY(${currentYPixels}px) rotateX(${tiltAngle}deg)`;
+    }
+
+    function runScrollLoop() {
+      if (!isPaused) {
+        currentYPixels -= 1.15 * speedMult;
+
+        if (currentYPixels < -(totalCrawlHeight + 100)) {
+          resetCrawlPosition();
+        } else {
+          applyTransform();
+        }
+      }
+      requestAnimationFrame(runScrollLoop);
+    }
+
+    // Controls
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const playIcon = document.getElementById('play-icon');
+
+    playPauseBtn.addEventListener('click', () => {
+      isPaused = !isPaused;
+      playIcon.className = isPaused ? 'fa-solid fa-play text-cyan-300' : 'fa-solid fa-pause text-cyan-300';
+    });
+
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      resetCrawlPosition();
+    });
+
+    const speedSlider = document.getElementById('speed-slider');
+    const speedDisplay = document.getElementById('speed-display');
+
+    speedSlider.addEventListener('input', (e) => {
+      speedMult = parseFloat(e.target.value);
+      speedDisplay.textContent = `${speedMult.toFixed(2)}x`;
+    });
+
+    const tiltSlider = document.getElementById('tilt-slider');
+    const tiltDisplay = document.getElementById('tilt-display');
+
+    tiltSlider.addEventListener('input', (e) => {
+      tiltAngle = parseInt(e.target.value);
+      tiltDisplay.textContent = `${tiltAngle}°`;
+      applyTransform();
+    });
+
+    const warpBtn = document.getElementById('warp-btn');
+    warpBtn.addEventListener('click', () => {
+      isWarping = !isWarping;
+      warpBtn.className = isWarping 
+        ? 'px-3 py-2 rounded-xl bg-cyan-400 text-black font-mono text-xs font-bold shadow-[0_0_20px_#00f0ff] flex items-center space-x-1.5 transition-all cursor-pointer' 
+        : 'px-3 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 border border-cyan-400/40 font-mono text-xs flex items-center space-x-1.5 transition-all cursor-pointer';
+    });
+
+    /* View Switcher */
+    const viewModeBtn = document.getElementById('view-mode-btn');
+    const viewModeLabel = document.getElementById('view-mode-label');
+    const viewport3D = document.getElementById('viewport-3d');
+    const flatGridView = document.getElementById('flat-grid-view');
+    const horizonFade = document.getElementById('horizon-fade');
+    const tiltControl = document.getElementById('tilt-control');
+
+    let currentView = '3d';
+
+    viewModeBtn.addEventListener('click', () => {
+      if (currentView === '3d') {
+        currentView = 'flat';
+        viewModeLabel.textContent = '3D CRAWL';
+        viewport3D.style.display = 'none';
+        horizonFade.style.display = 'none';
+        flatGridView.style.display = 'block';
+        tiltControl.style.opacity = '0.3';
+        tiltControl.style.pointerEvents = 'none';
+      } else {
+        currentView = '3d';
+        viewModeLabel.textContent = 'TELEPROMPTER GRID';
+        flatGridView.style.display = 'none';
+        viewport3D.style.display = 'flex';
+        horizonFade.style.display = 'block';
+        tiltControl.style.opacity = '1';
+        tiltControl.style.pointerEvents = 'auto';
+      }
+    });
+
+    /* Search Control */
+    const toggleSearchBtn = document.getElementById('toggle-search-btn');
+    const searchHud = document.getElementById('search-hud');
+    const closeSearch = document.getElementById('close-search');
+    const searchInput = document.getElementById('search-input');
+    const searchStats = document.getElementById('search-stats');
+
+    let searchActive = false;
+
+    toggleSearchBtn.addEventListener('click', () => {
+      searchActive = !searchActive;
+      if (searchActive) {
+        searchHud.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        searchHud.classList.add('opacity-100', 'pointer-events-auto', 'scale-100');
+        searchInput.focus();
+      } else {
+        closeSearchHud();
+      }
+    });
+
+    closeSearch.addEventListener('click', closeSearchHud);
+
+    function closeSearchHud() {
+      searchActive = false;
+      searchHud.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
+      searchHud.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+
+      document.querySelectorAll('.hero-card').forEach(card => card.classList.remove('search-match'));
+      document.querySelectorAll('.flat-card').forEach(card => card.classList.remove('border-cyan-400', 'bg-cyan-500/20'));
+
+      if (!q) {
+        searchStats.textContent = '';
+        return;
+      }
+
+      let count = 0;
+      let firstMatchedCard = null;
+
+      document.querySelectorAll('.hero-card').forEach(card => {
+        if (card.getAttribute('data-name').includes(q)) {
+          card.classList.add('search-match');
+          count++;
+          if (!firstMatchedCard) firstMatchedCard = card;
+        }
+      });
+
+      document.querySelectorAll('.flat-card').forEach(card => {
+        if (card.getAttribute('data-name').includes(q)) {
+          card.classList.add('border-cyan-400', 'bg-cyan-500/20');
+        }
+      });
+
+      if (count > 0) {
+        searchStats.textContent = `Found ${count} hero${count > 1 ? 'es' : ''}!`;
+
+        if (currentView === '3d' && firstMatchedCard) {
+          isPaused = true;
+          playIcon.className = 'fa-solid fa-play text-cyan-300';
+
+          const cardOffsetTop = firstMatchedCard.offsetTop;
+          currentYPixels = -(cardOffsetTop - viewportHeight * 0.45);
+          applyTransform();
+        }
+      } else {
+        searchStats.textContent = 'No matching hero found.';
+      }
+    });
+  </script>
 </body>
 </html>
