@@ -236,14 +236,18 @@ export function PatientAlergiesControl(props) {
   };
 
   useEffect(() => {
-    buildAllergenAndReactionsData();
-    allergiesAndReactionsForPatient();
+    void buildAllergenAndReactionsData();
+    void allergiesAndReactionsForPatient();
   }, []);
 
   useEffect(() => {
-    getNoKnownAllergyUuid().then((code) => {
-      setNoKnownAllergyUuid(code);
-    });
+    getNoKnownAllergyUuid()
+      .then((code) => {
+        setNoKnownAllergyUuid(code);
+      })
+      .catch((e) => {
+        console.error("Failed to fetch noKnownAllergyUuid:", e);
+      });
   }, []);
 
   useEffect(() => {
@@ -268,7 +272,7 @@ export function PatientAlergiesControl(props) {
   // Gated on otherNonCodedAllergenUuid too: until it resolves, AddAllergy
   // can't tell "Other, Non-Coded" apart from a regular allergen, so it would
   // let the user save one without the required free-text name.
-  const isAddButtonEnabled = activeVisit && activeVisit.uuid && !!otherNonCodedAllergenUuid;
+  const isAddButtonEnabled = activeVisit?.uuid && !!otherNonCodedAllergenUuid;
 
   const allergiesToDisplay = allergiesAndReactions.map((allergy) => ({
     ...allergy,
