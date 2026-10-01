@@ -18,7 +18,8 @@ import { FormattedMessage } from "react-intl";
 import {
   fetchAllergensOrReactions,
   fetchAllergiesAndReactionsForPatient,
-  getNoKnownAllergyUuid
+  getNoKnownAllergyUuid,
+  getOtherNonCodedAllergenUuid
 } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
 import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
@@ -55,13 +56,11 @@ export function PatientAlergiesControl(props) {
   const { hostData, appService } = props;
   const { patient, provider, activeVisit, allergyControlConceptIdMap } = hostData;
 
-  const isAddButtonEnabled = activeVisit && activeVisit.uuid;
   const enableNoKnownAllergy = appService?.getAppDescriptor()?.getConfigValue("enableNoKnownAllergy") || false;
 
   const extractAllergenData = (allergenData, allergenKind) =>
     allergenData?.setMembers
-      ?.filter((allergen) => allergen.display !== "Other non-coded")
-      .map((allergen) => {
+      ?.map((allergen) => {
         return {
           name: allergen.display,
           kind: allergenKind,
@@ -69,6 +68,18 @@ export function PatientAlergiesControl(props) {
         };
       });
 
+  // NOT actually intentional, and NOT equivalent to the allergen-side fix:
+  // this filter has the identical bug the allergen filter had — the REST API
+  // returns "Other, Non-Coded"'s short name ("Other"), never its fully
+  // specified name ("Other non-coded"), so this comparison never matches and
+  // "Other" stays selectable as a reaction. Confirmed via the dictionary that
+  // 5622AAAA (Other, Non-Coded) is also a setMember of the reaction concept
+  // set, not just the allergen sets. Left as-is because BAH-5006 is scoped to
+  // the allergen only: saveAllergies() has no reactionNonCoded handling at
+  // all (no "Specify Reaction" input, nothing added to the reactions payload
+  // below), so fixing the selectability here without also building that flow
+  // would just move the same class of bug from allergen to reaction. Worth a
+  // follow-up ticket mirroring this one for reactions.
   const extractReactionData = (reactionData) =>
     reactionData?.setMembers
       ?.filter((reaction) => reaction.display !== "Other non-coded")
@@ -129,8 +140,13 @@ export function PatientAlergiesControl(props) {
     const allergies = allergiesAndReactions.entry;
     const allergiesData = allergies?.map((allergy) => {
       const { resource } = allergy;
-      const allergen = resource.code?.coding?.[0]?.display;
       const allergenCode = resource.code?.coding?.[0]?.code;
+      // Keep both the coded display and the free text, unresolved: the
+      // otherNonCodedAllergenUuid lookup (below) is async and may not have
+      // resolved by the time this runs, so which one is correct can only be
+      // decided at render time — see the allergiesToDisplay derivation.
+      const codedDisplay = resource.code?.coding?.[0]?.display;
+      const nonCodedText = resource.code?.text;
       const severity = resource.reaction[0]?.severity;
       const severityRank =  SEVERITY_RANK[severity] ?? DEFAULT_SEVERITY_RANK;
       const note = resource.note && resource.note[0].text;
@@ -139,7 +155,7 @@ export function PatientAlergiesControl(props) {
       const reactions = resource.reaction[0]?.manifestation?.map((reaction) => {
         return reaction.coding[0].display;
       }) ?? [];
-      return {allergen, allergenCode, severity, severityRank, reactions, note, provider, date};
+      return {codedDisplay, nonCodedText, allergenCode, severity, severityRank, reactions, note, provider, date};
     });
 
     allergiesData
@@ -157,6 +173,7 @@ export function PatientAlergiesControl(props) {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [error, setError] = useState('');
   const [noKnownAllergyUuid, setNoKnownAllergyUuid] = useState('');
+  const [otherNonCodedAllergenUuid, setOtherNonCodedAllergenUuid] = useState('');
 
   const noAllergiesText = (
     <FormattedMessage
@@ -219,15 +236,51 @@ export function PatientAlergiesControl(props) {
   };
 
   useEffect(() => {
-    buildAllergenAndReactionsData();
-    allergiesAndReactionsForPatient();
+    void buildAllergenAndReactionsData();
+    void allergiesAndReactionsForPatient();
   }, []);
 
   useEffect(() => {
-    getNoKnownAllergyUuid().then((code) => {
-      setNoKnownAllergyUuid(code);
-    });
+    getNoKnownAllergyUuid()
+      .then((code) => {
+        setNoKnownAllergyUuid(code);
+      })
+      .catch((e) => {
+        console.error("Failed to fetch noKnownAllergyUuid:", e);
+      });
   }, []);
+
+  useEffect(() => {
+    getOtherNonCodedAllergenUuid()
+      .then((code) => {
+        setOtherNonCodedAllergenUuid(code);
+      })
+      .catch((e) => {
+        // Leave otherNonCodedAllergenUuid unresolved (falsy) on failure: the
+        // Add button stays disabled below rather than letting the user pick
+        // "Other, Non-Coded" without the Specify Allergen field ever
+        // rendering, which would reproduce this ticket's save-time 500.
+        console.error(
+          "Failed to fetch the allergy.concept.otherNonCoded global property " +
+          "— required for the Other, Non-Coded allergy flow to work. Allergy " +
+          "capture is disabled until this is configured on the server.",
+          e
+        );
+      });
+  }, []);
+
+  // Gated on otherNonCodedAllergenUuid too: until it resolves, AddAllergy
+  // can't tell "Other, Non-Coded" apart from a regular allergen, so it would
+  // let the user save one without the required free-text name.
+  const isAddButtonEnabled = activeVisit?.uuid && !!otherNonCodedAllergenUuid;
+
+  const allergiesToDisplay = allergiesAndReactions.map((allergy) => ({
+    ...allergy,
+    allergen:
+      allergy.allergenCode === otherNonCodedAllergenUuid && allergy.nonCodedText
+        ? allergy.nonCodedText
+        : allergy.codedDisplay,
+  }));
 
   return (
     <>
@@ -250,7 +303,7 @@ export function PatientAlergiesControl(props) {
             )}
           </h2>
             {allergiesAndReactions.length === 0 ?<div className={"placeholder-text"}>{noAllergiesText}</div>:
-                <ViewAllergiesAndReactions allergies={allergiesAndReactions} showTextAsAbnormal={appService.getAppDescriptor().getConfigValue("showTextAsAbnormal")} noKnownAllergyUuid={noKnownAllergyUuid}/>
+                <ViewAllergiesAndReactions allergies={allergiesToDisplay} showTextAsAbnormal={appService.getAppDescriptor().getConfigValue("showTextAsAbnormal")} noKnownAllergyUuid={noKnownAllergyUuid}/>
             }
           { showAddAllergyPanel && (
             <AddAllergy
@@ -276,6 +329,7 @@ export function PatientAlergiesControl(props) {
               }}
               noKnownAllergyUuid={noKnownAllergyUuid}
               enableNoKnownAllergy={enableNoKnownAllergy}
+              nonCodedAllergenUuid={otherNonCodedAllergenUuid}
             />
           )}
           <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={<FormattedMessage id={"ALLERGY_SAVED_SUCCESS"} defaultMessage="Allergy information saved successfully"/>} hideCloseButton={true}/>

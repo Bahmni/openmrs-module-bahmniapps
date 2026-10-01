@@ -27,6 +27,8 @@
   "OTHER": "Other",
   "ADDITIONAL_COMMENT_ALLERGY": "Additional comments such as onset date etc.",
   "ALLERGEN_SEARCH_PLACEHOLDER": "Type to search Allergen",
+  "SPECIFY_ALLERGEN": "Specify allergen",
+  "SPECIFY_ALLERGEN_PLACEHOLDER": "Enter the allergen name",
   "OK_KEY": "OK",
   "EMPTY_NOTES_ERROR": "Note cannot be empty",
   "OT_NOTES": "Notes",

@@ -15,6 +15,7 @@ import {
   RadioButton,
   RadioButtonGroup,
   TextArea,
+  TextInput,
 } from "carbon-components-react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ArrowLeft } from "@carbon/icons-react/next";
@@ -29,11 +30,12 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
 
 
   export function AddAllergy(props) {
-    const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies, noKnownAllergyUuid, enableNoKnownAllergy } = props;
+    const { patient, onClose, allergens, reaction, severityOptions, onSave, existingAllergies, noKnownAllergyUuid, enableNoKnownAllergy, nonCodedAllergenUuid } = props;
     const [allergen, setAllergen] = React.useState({});
     const [reactions, setReactions] = React.useState([]);
     const [severity, setSeverity] = React.useState("");
     const [notes, setNotes] = React.useState("");
+    const [nonCodedAllergenName, setNonCodedAllergenName] = React.useState("");
     const [patientHasAllergies, setPatientHasAllergies] = React.useState(null);
     const intl = useIntl();
     const backToAllergenText = (
@@ -45,6 +47,12 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     const additionalComments = (
       intl.formatMessage({ id: "ADDITIONAL_COMMENT_ALLERGY", defaultMessage: "Additional comments such as onset date etc."})
     );
+    const specifyAllergenLabel = (
+      <FormattedMessage id={"SPECIFY_ALLERGEN"} defaultMessage={"Specify allergen"} />
+    );
+    const specifyAllergenPlaceholder = (
+      intl.formatMessage({ id: "SPECIFY_ALLERGEN_PLACEHOLDER", defaultMessage: "Enter the allergen name" })
+    );
     const noKnownAllergyText = (<FormattedMessage id={"NO_KNOWN_ALLERGY"} defaultMessage={"No known allergy"} />);
     const knownAllergyQuestionText = (
         <FormattedMessage
@@ -55,17 +63,30 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     const yesText = (<FormattedMessage id="YES" defaultMessage="Yes" />);
     const noText = (<FormattedMessage id="NO" defaultMessage="No" />);
 
-    const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
     const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
     const [saveError, setSaveError] = React.useState(null);
+
+    const isNonCodedAllergen = !!nonCodedAllergenUuid && allergen?.uuid === nonCodedAllergenUuid;
 
     const clearForm = () => {
       setAllergen({});
       setReactions([]);
       setNotes("");
       setSeverity("");
+      setNonCodedAllergenName("");
     };
-    const saveAllergies = async (allergen, reactions, severity, notes) => {
+
+    // Derived on every render from the current form state (never a separately
+    // tracked boolean) so there is no handler that can leave it stale — e.g.
+    // clicking "Back to Allergies" after filling a coded allergy, then picking
+    // "Other, Non-Coded", used to leave Save enabled from before the free-text
+    // field even rendered.
+    const isSaveEnabled =
+      patientHasAllergies === false ||
+      !!(reactions.length > 0 && severity &&
+        (!isNonCodedAllergen || nonCodedAllergenName.trim()));
+
+    const saveAllergies = async (allergen, reactions, severity, notes, nonCodedName) => {
       const allergyReactions = reactions.map((reaction) => {
         return { reaction: { uuid: reaction } };
       });
@@ -75,6 +96,9 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
           codedAllergen: {
             uuid: allergen.uuid,
           },
+          // OpenMRS requires this free-text name whenever codedAllergen is the
+          // Other, Non-Coded concept; the save otherwise fails server-side.
+          ...(isNonCodedAllergen ? { nonCodedAllergen: nonCodedName.trim() } : {}),
         },
         reactions: allergyReactions,
         severity: severity ? { uuid: severity } : null,
@@ -102,10 +126,8 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
         setReactions([]);
         setSeverity(null);
         setNotes(null);
-        setIsSaveEnabled(true);
       } else {
         clearForm();
-        setIsSaveEnabled(false);
       }
     };
 
@@ -160,10 +182,27 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
                                 selectedAllergen={allergen}
                                 onChange={(reactions) => {
                                   setReactions(reactions);
-                                  setIsSaveEnabled(reactions && severity && reactions.length > 0);
                                 }}
                             />
                           </div>
+
+                          {isNonCodedAllergen && (
+                              <div className={"section-next-ui"}>
+                                <TextInput
+                                    id={"specify-allergen"}
+                                    data-testid={"specify-allergen"}
+                                    labelText={specifyAllergenLabel}
+                                    placeholder={specifyAllergenPlaceholder}
+                                    value={nonCodedAllergenName}
+                                    onChange={(e) => {
+                                      setNonCodedAllergenName(e.target.value);
+                                    }}
+                                    // Matches the backend `allergy.non_coded_allergen` column
+                                    // (VARCHAR(255) in OpenMRS core's schema).
+                                    maxLength={255}
+                                />
+                              </div>
+                          )}
 
                           <div className={"section-next-ui"}>
                             <div className={"font-large bold"}>
@@ -175,7 +214,6 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
                                 key={"Severity"}
                                 onChange={(e) => {
                                   setSeverity(e);
-                                  setIsSaveEnabled(reactions && reactions.length > 0 && e);
                                 }}
                                 className={"severity-options-group"}
                             >
@@ -206,7 +244,7 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
             <div>
               <SaveAndCloseButtons
                   onSave={async () => {
-                    await saveAllergies(allergen, reactions, severity, notes);
+                    await saveAllergies(allergen, reactions, severity, notes, nonCodedAllergenName);
                   }}
                   onClose={onClose}
                   isSaveDisabled={!isSaveEnabled}
@@ -226,5 +264,6 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     severityOptions: propTypes.array.isRequired,
     existingAllergies: propTypes.array.isRequired,
     noKnownAllergyUuid: propTypes.string.isRequired,
-    enableNoKnownAllergy: propTypes.bool.isRequired
+    enableNoKnownAllergy: propTypes.bool.isRequired,
+    nonCodedAllergenUuid: propTypes.string
   };

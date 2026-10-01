@@ -27,6 +27,8 @@
   "OTHER": "Autre",
   "ADDITIONAL_COMMENT_ALLERGY": "Commentaires supplémentaires tels que la date d'apparition, etc.",
   "ALLERGEN_SEARCH_PLACEHOLDER": "Saisissez pour rechercher un allergène",
+  "SPECIFY_ALLERGEN": "Précisez l'allergène",
+  "SPECIFY_ALLERGEN_PLACEHOLDER": "Saisissez le nom de l'allergène",
   "ADD_BUTTON_TEXT": "Ajouter +",
   "OK_KEY": "D'ACCORD",
   "NO_KNOWN_ALLERGY": "Aucune allergie connue",
