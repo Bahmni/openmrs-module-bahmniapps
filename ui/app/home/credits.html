@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
   
   <!-- Google Fonts: Inter, Orbitron, Cinzel, Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -285,6 +285,7 @@
       <button id="close-search" class="text-gray-400 hover:text-yellow-400"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="relative">
+      <label for="search-input" class="sr-only">Search contributor by name</label>
       <input type="text" id="search-input" placeholder="Type a hero's name..." class="w-full bg-black/80 border border-cyan-500/40 rounded-lg px-3 py-2 text-sm text-cyan-200 focus:outline-none focus:border-cyan-400 placeholder-cyan-800 font-medium">
       <i class="fa-solid fa-search absolute right-3 top-2.5 text-cyan-600 text-xs"></i>
     </div>
@@ -308,7 +309,7 @@
         <i class="fa-solid fa-gauge-high text-cyan-400"></i>
         <div class="flex flex-col flex-1">
           <div class="flex justify-between text-[10px] text-yellow-300 font-mono">
-            <span>SPEED</span>
+            <label for="speed-slider">SPEED</label>
             <span id="speed-display">1.0x</span>
           </div>
           <input type="range" id="speed-slider" min="0.25" max="3" step="0.25" value="1" class="w-full h-1 bg-cyan-950 rounded appearance-none cursor-pointer">
@@ -319,7 +320,7 @@
         <i class="fa-solid fa-cube text-cyan-400"></i>
         <div class="flex flex-col flex-1">
           <div class="flex justify-between text-[10px] text-yellow-300 font-mono">
-            <span>TILT</span>
+            <label for="tilt-slider">TILT</label>
             <span id="tilt-display">5°</span>
           </div>
           <input type="range" id="tilt-slider" min="0" max="35" step="1" value="5" class="w-full h-1 bg-cyan-950 rounded appearance-none cursor-pointer">
@@ -436,16 +437,30 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
+    function pickStarColor() {
+      if (Math.random() > 0.8) return '#00f0ff'; // NOSONAR - decorative star tint, not security-sensitive
+      if (Math.random() > 0.8) return '#FFE81F'; // NOSONAR - decorative star tint, not security-sensitive
+      return '#ffffff';
+    }
+
+    function randomStarPosition() {
+      return {
+        x: (Math.random() - 0.5) * w * 2, // NOSONAR - decorative star position, not security-sensitive
+        y: (Math.random() - 0.5) * h * 2 // NOSONAR - decorative star position, not security-sensitive
+      };
+    }
+
     const stars = [];
     let isWarping = false;
 
     for (let i = 0; i < 450; i++) {
+      const pos = randomStarPosition();
       stars.push({
-        x: (Math.random() - 0.5) * w * 2,
-        y: (Math.random() - 0.5) * h * 2,
-        z: Math.random() * w,
-        size: Math.random() * 1.5 + 0.5,
-        color: Math.random() > 0.8 ? '#00f0ff' : (Math.random() > 0.8 ? '#FFE81F' : '#ffffff')
+        x: pos.x,
+        y: pos.y,
+        z: Math.random() * w, // NOSONAR - decorative star depth, not security-sensitive
+        size: Math.random() * 1.5 + 0.5, // NOSONAR - decorative star size, not security-sensitive
+        color: pickStarColor()
       });
     }
 
@@ -457,14 +472,14 @@
       const cy = h / 2;
       const mult = isWarping ? 22 : 0.8;
 
-      for (let i = 0; i < stars.length; i++) {
-        const s = stars[i];
+      for (const s of stars) {
         s.z -= mult;
 
         if (s.z <= 0) {
           s.z = w;
-          s.x = (Math.random() - 0.5) * w * 2;
-          s.y = (Math.random() - 0.5) * h * 2;
+          const pos = randomStarPosition();
+          s.x = pos.x;
+          s.y = pos.y;
         }
 
         const k = 260 / s.z;
@@ -663,7 +678,7 @@
     const speedDisplay = document.getElementById('speed-display');
 
     speedSlider.addEventListener('input', (e) => {
-      speedMult = parseFloat(e.target.value);
+      speedMult = Number.parseFloat(e.target.value);
       speedDisplay.textContent = `${speedMult.toFixed(2)}x`;
     });
 
@@ -671,7 +686,7 @@
     const tiltDisplay = document.getElementById('tilt-display');
 
     tiltSlider.addEventListener('input', (e) => {
-      tiltAngle = parseInt(e.target.value);
+      tiltAngle = Number.parseInt(e.target.value, 10);
       tiltDisplay.textContent = `${tiltAngle}°`;
       applyTransform();
     });
@@ -757,7 +772,7 @@
       let firstMatchedCard = null;
 
       document.querySelectorAll('.hero-card').forEach(card => {
-        if (card.getAttribute('data-name').includes(q)) {
+        if (card.dataset.name.includes(q)) {
           card.classList.add('search-match');
           count++;
           if (!firstMatchedCard) firstMatchedCard = card;
@@ -765,7 +780,7 @@
       });
 
       document.querySelectorAll('.flat-card').forEach(card => {
-        if (card.getAttribute('data-name').includes(q)) {
+        if (card.dataset.name.includes(q)) {
           card.classList.add('border-cyan-400', 'bg-cyan-500/20');
         }
       });
