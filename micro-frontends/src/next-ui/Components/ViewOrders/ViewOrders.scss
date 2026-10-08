@@ -1,0 +1,50 @@
+.orders-view-container {
+  font-family: 'IBM Plex Sans', sans-serif;
+
+  .order-item {
+    background-color: #ddd;
+    border-top: 1px solid #fff;
+
+    .accordion-header {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 20px 1fr minmax(290px, 1fr);
+      width: 100%;
+      padding: 3px 0 3px 10px;
+      box-sizing: border-box;
+    }
+  }
+
+  .order-name {
+    color: #000;
+  }
+
+  .order-provider {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 130px;
+    box-sizing: border-box;
+    display: inline-block;
+    text-align: right;
+    padding-right: 10px;
+  }
+
+  .order-date {
+    display: inline-block;
+    text-align: left;
+  }
+
+  .order-header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .order-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+    font-size: 12px;
+  }
+}
