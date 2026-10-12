@@ -27,6 +27,7 @@ Bahmni.PatientContextMapper = function () {
             patientContext.birthdate = parseDate(patient.person.birthdate);
         }
 
+        patientContext.isDead = patient.person.dead || false;
         return patientContext;
     };
 
