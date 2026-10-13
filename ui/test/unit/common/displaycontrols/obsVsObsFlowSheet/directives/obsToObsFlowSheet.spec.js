@@ -98,6 +98,120 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
     });
 
+    describe('sortLatestFirst', function () {
+        it('should reverse the rows when sortLatestFirst is true', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "name": "obsToObsFlowSheet",
+                "dashboardConfig": {
+                    "templateName": "TemplateName",
+                    "conceptNames": ["Concept1"],
+                    "sortLatestFirst": true
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            var rowsFromServer = [
+                {columns: {"Concept1": [{value: "visit1"}]}},
+                {columns: {"Concept1": [{value: "visit2"}]}},
+                {columns: {"Concept1": [{value: "visit3"}]}}
+            ];
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Concept1&conceptSet=TemplateName&patientUuid=patientUuid')
+                .respond({headers: [{name: "Concept1"}], rows: rowsFromServer});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond({results: []});
+
+            var element = compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope.obsTable.rows[0].columns["Concept1"][0].value).toEqual("visit3");
+            expect(compiledElementScope.obsTable.rows[1].columns["Concept1"][0].value).toEqual("visit2");
+            expect(compiledElementScope.obsTable.rows[2].columns["Concept1"][0].value).toEqual("visit1");
+        });
+
+        it('should NOT reverse the rows when sortLatestFirst is false', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "name": "obsToObsFlowSheet",
+                "dashboardConfig": {
+                    "templateName": "TemplateName",
+                    "conceptNames": ["Concept1"],
+                    "sortLatestFirst": false
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            var rowsFromServer = [
+                {columns: {"Concept1": [{value: "visit1"}]}},
+                {columns: {"Concept1": [{value: "visit2"}]}}
+            ];
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Concept1&conceptSet=TemplateName&patientUuid=patientUuid')
+                .respond({headers: [{name: "Concept1"}], rows: rowsFromServer});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond({results: []});
+
+            var element = compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope.obsTable.rows[0].columns["Concept1"][0].value).toEqual("visit1");
+            expect(compiledElementScope.obsTable.rows[1].columns["Concept1"][0].value).toEqual("visit2");
+        });
+
+        it('should NOT reverse the rows when sortLatestFirst is not configured', function () {
+            var scope = rootScope.$new();
+
+            scope.isOnDashboard = true;
+            scope.section = {
+                "name": "obsToObsFlowSheet",
+                "dashboardConfig": {
+                    "templateName": "TemplateName",
+                    "conceptNames": ["Concept1"]
+                }
+            };
+
+            scope.patient = {
+                "uuid": "patientUuid"
+            };
+
+            var rowsFromServer = [
+                {columns: {"Concept1": [{value: "first"}]}},
+                {columns: {"Concept1": [{value: "second"}]}}
+            ];
+
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Concept1&conceptSet=TemplateName&patientUuid=patientUuid')
+                .respond({headers: [{name: "Concept1"}], rows: rowsFromServer});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond({results: []});
+
+            var element = compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope.obsTable.rows[0].columns["Concept1"][0].value).toEqual("first");
+            expect(compiledElementScope.obsTable.rows[1].columns["Concept1"][0].value).toEqual("second");
+        });
+    });
+
     describe('getHeaderName ', function () {
         it('should return the concept name when there is no abbreviation and there is no short name and units not specified', function () {
             var scope = rootScope.$new();
@@ -939,4 +1053,3 @@ describe('obsToObsFlowSheet DisplayControl', function () {
         });
     })
 });
-
