@@ -77,14 +77,11 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     };
 
     // Derived on every render from the current form state (never a separately
-    // tracked boolean) so there is no handler that can leave it stale — e.g.
-    // clicking "Back to Allergies" after filling a coded allergy, then picking
-    // "Other, Non-Coded", used to leave Save enabled from before the free-text
-    // field even rendered.
+    // tracked boolean) so there is no handler that can leave it stale. The
+    // free-text allergen name is optional and so does not gate Save.
     const isSaveEnabled =
       patientHasAllergies === false ||
-      !!(reactions.length > 0 && severity &&
-        (!isNonCodedAllergen || nonCodedAllergenName.trim()));
+      !!(reactions.length > 0 && severity);
 
     const saveAllergies = async (allergen, reactions, severity, notes, nonCodedName) => {
       const allergyReactions = reactions.map((reaction) => {
@@ -98,7 +95,11 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
           },
           // OpenMRS requires this free-text name whenever codedAllergen is the
           // Other, Non-Coded concept; the save otherwise fails server-side.
-          ...(isNonCodedAllergen ? { nonCodedAllergen: nonCodedName.trim() } : {}),
+          // The field is optional in the UI, so default to the selected
+          // allergen's own name (e.g. "Other") when nothing is entered.
+          ...(isNonCodedAllergen
+            ? { nonCodedAllergen: nonCodedName.trim() || allergen.name }
+            : {}),
         },
         reactions: allergyReactions,
         severity: severity ? { uuid: severity } : null,
