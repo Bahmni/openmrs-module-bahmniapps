@@ -73,7 +73,7 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "4.0.1",
     "eslint-plugin-standard": "4.0.0",
-    "grunt": "^1.0.3",
+    "grunt": "^1.5.3",
     "grunt-comment-toggler": "^0.2.2",
     "grunt-contrib-clean": "2.0.0",
     "grunt-contrib-compass": "1.1.1",
