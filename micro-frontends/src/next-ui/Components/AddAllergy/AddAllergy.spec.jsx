@@ -524,7 +524,7 @@ describe("AddAllergy", () => {
       { name: "Other", kind: "Food", uuid: nonCodedAllergenUuid },
     ];
 
-    const renderWithOther = () =>
+    const renderWithOther = (allergens = allergensWithOther) =>
       render(
         <IntlProvider locale="en">
           <AddAllergy
@@ -533,7 +533,7 @@ describe("AddAllergy", () => {
               patient={patient}
               provider={provider}
               severityOptions={mockSeverityData}
-              allergens={allergensWithOther}
+              allergens={allergens}
               reaction={mockReactionsData}
               existingAllergies={[mockExistingAllergies]}
               noKnownAllergyUuid={"000000AAAAAA"}
@@ -561,49 +561,111 @@ describe("AddAllergy", () => {
       expect(() => screen.getByTestId("specify-allergen")).toThrow();
     });
 
-    it("keeps Save disabled until the free-text allergen name is entered", () => {
+    it("enables Save without a free-text allergen name once reaction and severity are chosen", () => {
       const { container } = renderWithOther();
       selectOtherAllergen();
+      expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
       selectReaction(container);
       selectSeverity(container);
-      expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
-
-      fireEvent.change(screen.getByTestId("specify-allergen"), {
-        target: { value: "Custom pollen" },
-      });
+      expect(screen.getByTestId("specify-allergen").value).toBe("");
       expect(screen.getByText("Save").getAttribute("disabled")).toBeNull();
     });
 
-    it("keeps Save disabled when the free-text allergen name is only whitespace", () => {
+    it("keeps Save enabled when the free-text allergen name is only whitespace", () => {
       const { container } = renderWithOther();
       selectOtherAllergen();
       selectReaction(container);
       selectSeverity(container);
-
       fireEvent.change(screen.getByTestId("specify-allergen"), {
         target: { value: "   " },
       });
-      expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
+      expect(screen.getByText("Save").getAttribute("disabled")).toBeNull();
     });
 
-    it("re-disables Save when the free-text allergen name is cleared back to empty", () => {
+    it("defaults nonCodedAllergen to the allergen name when left empty", async () => {
       const { container } = renderWithOther();
       selectOtherAllergen();
       selectReaction(container);
       selectSeverity(container);
 
-      fireEvent.change(screen.getByTestId("specify-allergen"), {
-        target: { value: "Custom pollen" },
-      });
-      expect(screen.getByText("Save").getAttribute("disabled")).toBeNull();
+      saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
+      fireEvent.click(screen.getByText("Save"));
 
-      fireEvent.change(screen.getByTestId("specify-allergen"), {
-        target: { value: "" },
-      });
-      expect(screen.getByText("Save").getAttribute("disabled")).not.toBeNull();
+      expect(saveAllergiesAPICall).toHaveBeenCalledWith(
+        {
+          allergen: {
+            allergenType: "FOOD",
+            codedAllergen: { uuid: nonCodedAllergenUuid },
+            nonCodedAllergen: "Other",
+          },
+          reactions: [{ reaction: { uuid: "101AA" } }],
+          severity: { uuid: "162301AAAAAA" },
+          comment: "",
+        },
+        "patient#1"
+      );
     });
 
-    it("keeps Save disabled after filling a coded allergy, going Back, then picking Other", () => {
+    const expectedPayload = (nonCodedAllergen) => ({
+      allergen: {
+        allergenType: "FOOD",
+        codedAllergen: { uuid: nonCodedAllergenUuid },
+        nonCodedAllergen,
+      },
+      reactions: [{ reaction: { uuid: "101AA" } }],
+      severity: { uuid: "162301AAAAAA" },
+      comment: "",
+    });
+
+    it("shows a helper explaining the empty field defaults to the allergen name", () => {
+      renderWithOther();
+      selectOtherAllergen();
+      expect(
+        screen.getByText(/If left empty, the selected allergen's name will be saved/)
+      ).not.toBeNull();
+    });
+
+    it("saves the allergen name, not whitespace, when the field contains only spaces", async () => {
+      const { container } = renderWithOther();
+      selectOtherAllergen();
+      selectReaction(container);
+      selectSeverity(container);
+      fireEvent.change(screen.getByTestId("specify-allergen"), {
+        target: { value: "   " },
+      });
+
+      saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
+      fireEvent.click(screen.getByText("Save"));
+
+      expect(saveAllergiesAPICall).toHaveBeenCalledWith(expectedPayload("Other"), "patient#1");
+      const sent = saveAllergiesAPICall.mock.calls.pop()[0];
+      expect(sent.allergen.nonCodedAllergen.trim()).not.toBe("");
+    });
+
+    [
+      ["empty", ""],
+      ["whitespace-only", "   "],
+      ["missing", undefined],
+      ["non-string", null],
+    ].forEach(([label, name]) => {
+      it(`never omits or blanks nonCodedAllergen when the allergen name is ${label}`, async () => {
+        const allergens = [{ name, kind: "Food", uuid: nonCodedAllergenUuid }];
+        const { container } = renderWithOther(allergens);
+        fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Food" } });
+        fireEvent.click(screen.getByText("Reaction(s)"));
+        selectReaction(container);
+        selectSeverity(container);
+
+        saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
+        fireEvent.click(screen.getByText("Save"));
+
+        const sent = saveAllergiesAPICall.mock.calls.pop()[0];
+        expect(sent.allergen.nonCodedAllergen).toBe("Other");
+        expect(JSON.parse(JSON.stringify(sent)).allergen).toHaveProperty("nonCodedAllergen", "Other");
+      });
+    });
+
+    it("keeps Save disabled after filling a coded allergy, going Back, then picking Other (reaction and severity reset)", () => {
       // isSaveEnabled is now derived from reactions/severity/nonCodedAllergenName
       // on every render instead of being an independently-tracked state that
       // individual handlers were responsible for updating — so it can no

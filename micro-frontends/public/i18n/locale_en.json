@@ -29,6 +29,8 @@
   "ALLERGEN_SEARCH_PLACEHOLDER": "Type to search Allergen",
   "SPECIFY_ALLERGEN": "Specify allergen",
   "SPECIFY_ALLERGEN_PLACEHOLDER": "Enter the allergen name",
+  "SPECIFY_ALLERGEN_HELPER": "Optional. If left empty, the selected allergen's name will be saved.",
+  "OTHER_ALLERGEN_DEFAULT": "Other",
   "OK_KEY": "OK",
   "EMPTY_NOTES_ERROR": "Note cannot be empty",
   "OT_NOTES": "Notes",
