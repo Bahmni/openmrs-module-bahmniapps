@@ -53,6 +53,12 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
     const specifyAllergenPlaceholder = (
       intl.formatMessage({ id: "SPECIFY_ALLERGEN_PLACEHOLDER", defaultMessage: "Enter the allergen name" })
     );
+    const specifyAllergenHelper = (
+      intl.formatMessage({ id: "SPECIFY_ALLERGEN_HELPER", defaultMessage: "Optional. If left empty, the selected allergen's name will be saved." })
+    );
+    const defaultNonCodedAllergenName = (
+      intl.formatMessage({ id: "OTHER_ALLERGEN_DEFAULT", defaultMessage: "Other" })
+    );
     const noKnownAllergyText = (<FormattedMessage id={"NO_KNOWN_ALLERGY"} defaultMessage={"No known allergy"} />);
     const knownAllergyQuestionText = (
         <FormattedMessage
@@ -83,6 +89,8 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
       patientHasAllergies === false ||
       !!(reactions.length > 0 && severity);
 
+    const trimmed = (value) => (typeof value === "string" ? value.trim() : "");
+
     const saveAllergies = async (allergen, reactions, severity, notes, nonCodedName) => {
       const allergyReactions = reactions.map((reaction) => {
         return { reaction: { uuid: reaction } };
@@ -96,9 +104,15 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
           // OpenMRS requires this free-text name whenever codedAllergen is the
           // Other, Non-Coded concept; the save otherwise fails server-side.
           // The field is optional in the UI, so default to the selected
-          // allergen's own name (e.g. "Other") when nothing is entered.
+          // allergen's own name (e.g. "Other") when nothing is entered, and to
+          // a localized "Other" if that name is itself missing or blank.
           ...(isNonCodedAllergen
-            ? { nonCodedAllergen: nonCodedName.trim() || allergen.name }
+            ? {
+                nonCodedAllergen:
+                  [nonCodedName, allergen.name].map(trimmed).find(Boolean) ||
+                  defaultNonCodedAllergenName.trim() ||
+                  "Other",
+              }
             : {}),
         },
         reactions: allergyReactions,
@@ -194,6 +208,7 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
                                     data-testid={"specify-allergen"}
                                     labelText={specifyAllergenLabel}
                                     placeholder={specifyAllergenPlaceholder}
+                                    helperText={specifyAllergenHelper}
                                     value={nonCodedAllergenName}
                                     onChange={(e) => {
                                       setNonCodedAllergenName(e.target.value);
@@ -258,7 +273,13 @@ import { SelectReactions } from "../SelectReactions/SelectReactions";
 
   AddAllergy.propTypes = {
     onClose: propTypes.func.isRequired,
-    allergens: propTypes.array.isRequired,
+    allergens: propTypes.arrayOf(
+      propTypes.shape({
+        name: propTypes.string,
+        uuid: propTypes.string.isRequired,
+        kind: propTypes.string,
+      })
+    ).isRequired,
     reaction: propTypes.object.isRequired,
     onSave: propTypes.func.isRequired,
     patient: propTypes.object.isRequired,

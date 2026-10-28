@@ -524,7 +524,7 @@ describe("AddAllergy", () => {
       { name: "Other", kind: "Food", uuid: nonCodedAllergenUuid },
     ];
 
-    const renderWithOther = () =>
+    const renderWithOther = (allergens = allergensWithOther) =>
       render(
         <IntlProvider locale="en">
           <AddAllergy
@@ -533,7 +533,7 @@ describe("AddAllergy", () => {
               patient={patient}
               provider={provider}
               severityOptions={mockSeverityData}
-              allergens={allergensWithOther}
+              allergens={allergens}
               reaction={mockReactionsData}
               existingAllergies={[mockExistingAllergies]}
               noKnownAllergyUuid={"000000AAAAAA"}
@@ -604,6 +604,65 @@ describe("AddAllergy", () => {
         },
         "patient#1"
       );
+    });
+
+    const expectedPayload = (nonCodedAllergen) => ({
+      allergen: {
+        allergenType: "FOOD",
+        codedAllergen: { uuid: nonCodedAllergenUuid },
+        nonCodedAllergen,
+      },
+      reactions: [{ reaction: { uuid: "101AA" } }],
+      severity: { uuid: "162301AAAAAA" },
+      comment: "",
+    });
+
+    it("shows a helper explaining the empty field defaults to the allergen name", () => {
+      renderWithOther();
+      selectOtherAllergen();
+      expect(
+        screen.getByText(/If left empty, the selected allergen's name will be saved/)
+      ).not.toBeNull();
+    });
+
+    it("saves the allergen name, not whitespace, when the field contains only spaces", async () => {
+      const { container } = renderWithOther();
+      selectOtherAllergen();
+      selectReaction(container);
+      selectSeverity(container);
+      fireEvent.change(screen.getByTestId("specify-allergen"), {
+        target: { value: "   " },
+      });
+
+      saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
+      fireEvent.click(screen.getByText("Save"));
+
+      expect(saveAllergiesAPICall).toHaveBeenCalledWith(expectedPayload("Other"), "patient#1");
+      const sent = saveAllergiesAPICall.mock.calls.pop()[0];
+      expect(sent.allergen.nonCodedAllergen.trim()).not.toBe("");
+    });
+
+    [
+      ["empty", ""],
+      ["whitespace-only", "   "],
+      ["missing", undefined],
+      ["non-string", null],
+    ].forEach(([label, name]) => {
+      it(`never omits or blanks nonCodedAllergen when the allergen name is ${label}`, async () => {
+        const allergens = [{ name, kind: "Food", uuid: nonCodedAllergenUuid }];
+        const { container } = renderWithOther(allergens);
+        fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Food" } });
+        fireEvent.click(screen.getByText("Reaction(s)"));
+        selectReaction(container);
+        selectSeverity(container);
+
+        saveAllergiesAPICall.mockResolvedValueOnce({ status: 201 });
+        fireEvent.click(screen.getByText("Save"));
+
+        const sent = saveAllergiesAPICall.mock.calls.pop()[0];
+        expect(sent.allergen.nonCodedAllergen).toBe("Other");
+        expect(JSON.parse(JSON.stringify(sent)).allergen).toHaveProperty("nonCodedAllergen", "Other");
+      });
     });
 
     it("keeps Save disabled after filling a coded allergy, going Back, then picking Other (reaction and severity reset)", () => {
