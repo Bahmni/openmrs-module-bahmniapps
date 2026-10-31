@@ -1,0 +1,124 @@
+$reminder-accent: #da1e28;
+$reminder-accent-soft: #fff1f1;
+$reminder-primary: #3d5857;
+$reminder-primary-hover: #2f4544;
+$reminder-text: #161616;
+$reminder-muted: #525252;
+
+.blood-draw-reminder {
+  .bx--modal-container {
+    border-radius: 12px;
+    overflow: hidden;
+    border-top: 6px solid $reminder-accent;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    max-width: 30rem;
+    height: auto;
+    min-height: 0;
+  }
+
+  .bx--modal-header {
+    padding-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .bx--modal-header__heading {
+    color: $reminder-accent;
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  .blood-draw-reminder-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .blood-draw-reminder-icon {
+    flex-shrink: 0;
+    width: 1.125rem;
+    height: 1.5rem;
+    color: $reminder-accent;
+  }
+
+  .bx--modal-close {
+    border-radius: 50%;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .bx--modal-content {
+    margin-bottom: 1.25rem;
+    padding-right: 1rem;
+    color: $reminder-text;
+  }
+
+  .blood-draw-reminder-message {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .blood-draw-reminder-details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 1.5rem;
+    row-gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    background: $reminder-accent-soft;
+    border-left: 4px solid $reminder-accent;
+    border-radius: 8px;
+
+    dt {
+      font-weight: 600;
+      color: $reminder-muted;
+    }
+
+    dd {
+      margin: 0;
+      font-weight: 600;
+      color: $reminder-text;
+    }
+  }
+
+  .blood-draw-reminder-overdue {
+    color: $reminder-accent;
+    font-weight: 600;
+  }
+
+  .bx--modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding: 0 1rem 1.5rem;
+    background: transparent;
+    border-top: none;
+
+    .bx--btn {
+      flex: 0 0 auto;
+      width: auto;
+      max-width: none;
+      min-width: 7rem;
+      height: 2.5rem;
+      min-height: 2.5rem;
+      padding: 0 1.5rem;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      background-color: $reminder-primary;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(61, 88, 87, 0.35);
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+      &:hover {
+        background-color: $reminder-primary-hover;
+        box-shadow: 0 4px 10px rgba(61, 88, 87, 0.45);
+      }
+
+      &:focus {
+        border-color: $reminder-primary;
+        box-shadow: inset 0 0 0 1px #fff, 0 0 0 2px $reminder-primary;
+      }
+    }
+  }
+}
