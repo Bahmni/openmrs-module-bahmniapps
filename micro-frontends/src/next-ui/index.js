@@ -8,6 +8,7 @@ import { CagRegister } from "./Containers/cagRegister/CagRegister";
 import { LoginVersion } from "./Containers/loginVersion/LoginVersion";
 import { LabOrderBarcode } from "./Containers/labOrderBarcode/LabOrderBarcode";
 import { LabResultNotifications } from "./Containers/labResultNotifications/LabResultNotifications";
+import { BloodDrawReminder } from "./Containers/bloodDrawReminder/BloodDrawReminder";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -66,4 +67,9 @@ builder.createComponentWithTranslationForwarding(
 builder.createComponentWithTranslationForwarding(
   "LabResultNotifications",
   LabResultNotifications
+);
+
+builder.createComponentWithTranslationForwarding(
+  "BloodDrawReminder",
+  BloodDrawReminder
 );

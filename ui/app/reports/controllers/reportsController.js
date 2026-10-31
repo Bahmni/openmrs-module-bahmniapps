@@ -287,6 +287,74 @@ angular.module('bahmni.reports')
             return groupedArray;
         };
 
+        // Report search
+        $scope.reportSearch = { text: '' };
+
+        var normalize = function (value) {
+            return (value || '').toString().toLowerCase();
+        };
+
+        var getSearchTerm = function () {
+            return normalize($scope.reportSearch.text).trim();
+        };
+
+        var getAllGroups = function () {
+            return ($scope.groupedReportsRequiringDateRange || []).concat($scope.groupedReportsNotRequiringDateRange || []);
+        };
+
+        $scope.isSearching = function () {
+            return getSearchTerm().length > 0;
+        };
+
+        $scope.clearReportSearch = function () {
+            $scope.reportSearch.text = '';
+        };
+
+        $scope.reportMatchesSearch = function (report, group) {
+            var term = getSearchTerm();
+            if (!term) {
+                return true;
+            }
+            if (group && normalize(group.subGroupName).indexOf(term) !== -1) {
+                return true;
+            }
+            return normalize(report.name).indexOf(term) !== -1 ||
+                normalize($translate.instant(report.name)).indexOf(term) !== -1;
+        };
+
+        $scope.matchingReportCount = function (group) {
+            return _.filter(group.reports, function (report) {
+                return $scope.reportMatchesSearch(report, group);
+            }).length;
+        };
+
+        $scope.groupMatchesSearch = function (group) {
+            return !$scope.isSearching() || $scope.matchingReportCount(group) > 0;
+        };
+
+        $scope.hasAnySearchResults = function () {
+            return _.some(getAllGroups(), $scope.groupMatchesSearch);
+        };
+
+        // While searching, matching groups are auto-expanded unless the user collapses them
+        $scope.isGroupOpen = function (group) {
+            return $scope.isSearching() ? !group.collapsedInSearch : !!group.expanded;
+        };
+
+        $scope.toggleGroup = function (group) {
+            if ($scope.isSearching()) {
+                group.collapsedInSearch = !group.collapsedInSearch;
+            } else {
+                group.expanded = !group.expanded;
+            }
+        };
+
+        $scope.$watch('reportSearch.text', function () {
+            getAllGroups().forEach(function (group) {
+                group.collapsedInSearch = false;
+            });
+        });
+
         var initialization = function () {
             $log.log('ReportsController: LOADING...');
 

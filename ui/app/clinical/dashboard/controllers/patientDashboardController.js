@@ -23,6 +23,11 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            $scope.bloodDrawReminderData = {
+                patientUuid: $stateParams.patientUuid,
+                config: appService.getAppDescriptor().getConfigValue("bloodDrawReminder") || {}
+            };
+
             $scope.alergyData = {
                 name: 'Customised for me!!!'
             };

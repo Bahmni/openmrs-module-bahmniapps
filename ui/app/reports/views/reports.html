@@ -3,7 +3,21 @@
     
     <!-- Grouped Reports Requiring Date Range -->
     <section class="section-grid" ng-if="::groupedReportsRequiringDateRange.length > 0">
-        <h2 class="section-title">{{::'REPORTS_TITLE_KEY' | translate}}</h2>
+        <h2 class="section-title" style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+            <span>{{::'REPORTS_TITLE_KEY' | translate}}</span>
+            <div class="reports-search" style="position: relative; display: flex; align-items: center;">
+                <input type="text" class="form-field reports-search-input" ng-model="reportSearch.text"
+                       ng-model-options="{debounce: 200}"
+                       placeholder="{{::'REPORTS_SEARCH_PLACEHOLDER_KEY' | translate}}"
+                       aria-label="{{::'REPORTS_SEARCH_PLACEHOLDER_KEY' | translate}}"
+                       style="width: 280px; padding: 4px 28px 4px 10px; margin: 0; color: #333; background: #fff; font-size: 14px; font-weight: normal;"/>
+                <span ng-if="isSearching()" ng-click="clearReportSearch()" title="Clear"
+                      style="position: absolute; right: 8px; cursor: pointer; color: #888; font-size: 16px;">&times;</span>
+            </div>
+        </h2>
+        <p ng-if="isSearching() && !hasAnySearchResults()" class="reports-search-no-results" style="color: #666; margin: 10px 0;">
+            {{'REPORTS_SEARCH_NO_RESULTS_KEY' | translate}}
+        </p>
         
         <!-- Group Header Controls -->
         <div style="margin-bottom: 20px;">
@@ -42,17 +56,17 @@
 
         <!-- Accordion Groups -->
         <div class="report-groups">
-            <div ng-repeat="group in ::groupedReportsRequiringDateRange" class="report-group-accordion" style="margin-bottom: 15px;">
+            <div ng-repeat="group in ::groupedReportsRequiringDateRange" class="report-group-accordion" ng-show="groupMatchesSearch(group)" style="margin-bottom: 15px;">
                 <div class="group-header" 
-                     ng-click="group.expanded = !group.expanded"
+                     ng-click="toggleGroup(group)"
                      style="background: #f5f5f5; padding: 12px; cursor: pointer; border: 1px solid #ddd; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0; font-size: 16px; font-weight: bold;">{{group.subGroupName}} 
-                        <span style="font-weight: normal; color: #666; font-size: 14px;">({{group.reports.length}} report<span ng-if="group.reports.length !== 1">s</span>)</span>
+                        <span style="font-weight: normal; color: #666; font-size: 14px;">(<span ng-if="isSearching()">{{matchingReportCount(group)}} of </span>{{group.reports.length}} report<span ng-if="group.reports.length !== 1">s</span>)</span>
                     </h3>
-                    <span style="font-size: 18px;">{{group.expanded ? '▼' : '▶'}}</span>
+                    <span style="font-size: 18px;">{{isGroupOpen(group) ? '▼' : '▶'}}</span>
                 </div>
                 
-                <div ng-if="group.expanded" class="group-content" style="border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; padding: 15px;">
+                <div ng-if="isGroupOpen(group)" class="group-content" style="border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; padding: 15px;">
                     <table class="alt-row form" style="width: 100%;">
                         <thead>
                         <tr>
@@ -70,7 +84,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="report in group.reports" show-if-privilege="{{:: report.requiredPrivilege}}">
+                        <tr ng-repeat="report in group.reports" ng-show="reportMatchesSearch(report, group)" show-if-privilege="{{:: report.requiredPrivilege}}">
                             <td>{{:: report.name |translate }}</td>
                             <td class="reports-start-date">
                                 <input date-converter class="form-field start-date" type="date" max="{{report.stopDate | date:'yyyy-MM-dd'}}" ng-model="report.startDate">  
@@ -181,6 +195,23 @@
     </section>
     <!-- Grouped Reports Not Requiring Date Range -->
     <section class="section-grid" ng-if="::groupedReportsNotRequiringDateRange.length > 0">
+        <div ng-if="::!groupedReportsRequiringDateRange.length">
+            <h2 class="section-title" style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                <span>{{::'REPORTS_TITLE_KEY' | translate}}</span>
+                <div class="reports-search" style="position: relative; display: flex; align-items: center;">
+                    <input type="text" class="form-field reports-search-input" ng-model="reportSearch.text"
+                           ng-model-options="{debounce: 200}"
+                           placeholder="{{::'REPORTS_SEARCH_PLACEHOLDER_KEY' | translate}}"
+                           aria-label="{{::'REPORTS_SEARCH_PLACEHOLDER_KEY' | translate}}"
+                           style="width: 280px; padding: 4px 28px 4px 10px; margin: 0; color: #333; background: #fff; font-size: 14px; font-weight: normal;"/>
+                    <span ng-if="isSearching()" ng-click="clearReportSearch()" title="Clear"
+                          style="position: absolute; right: 8px; cursor: pointer; color: #888; font-size: 16px;">&times;</span>
+                </div>
+            </h2>
+            <p ng-if="isSearching() && !hasAnySearchResults()" class="reports-search-no-results" style="color: #666; margin: 10px 0;">
+                {{'REPORTS_SEARCH_NO_RESULTS_KEY' | translate}}
+            </p>
+        </div>
         <h2 class="section-title">{{::'REPORTS_TITLE_WITHOUT_DATE_RANGE_KEY' | translate}}</h2>
         
         <!-- Group Header Controls -->
@@ -197,17 +228,17 @@
 
         <!-- Accordion Groups -->
         <div class="report-groups">
-            <div ng-repeat="group in ::groupedReportsNotRequiringDateRange" class="report-group-accordion" style="margin-bottom: 15px;">
+            <div ng-repeat="group in ::groupedReportsNotRequiringDateRange" class="report-group-accordion" ng-show="groupMatchesSearch(group)" style="margin-bottom: 15px;">
                 <div class="group-header" 
-                     ng-click="group.expanded = !group.expanded"
+                     ng-click="toggleGroup(group)"
                      style="background: #f5f5f5; padding: 12px; cursor: pointer; border: 1px solid #ddd; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
                     <h3 style="margin: 0; font-size: 16px; font-weight: bold;">{{group.subGroupName}} 
-                        <span style="font-weight: normal; color: #666; font-size: 14px;">({{group.reports.length}} report<span ng-if="group.reports.length !== 1">s</span>)</span>
+                        <span style="font-weight: normal; color: #666; font-size: 14px;">(<span ng-if="isSearching()">{{matchingReportCount(group)}} of </span>{{group.reports.length}} report<span ng-if="group.reports.length !== 1">s</span>)</span>
                     </h3>
-                    <span style="font-size: 18px;">{{group.expanded ? '▼' : '▶'}}</span>
+                    <span style="font-size: 18px;">{{isGroupOpen(group) ? '▼' : '▶'}}</span>
                 </div>
                 
-                <div ng-if="group.expanded" class="group-content" style="border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; padding: 15px;">
+                <div ng-if="isGroupOpen(group)" class="group-content" style="border: 1px solid #ddd; border-top: none; border-radius: 0 0 4px 4px; padding: 15px;">
                     <table class="alt-row" style="width: 100%;">
                         <thead>
                         <tr>
@@ -217,7 +248,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="report in group.reports" show-if-privilege="{{:: report.requiredPrivilege}}">
+                        <tr ng-repeat="report in group.reports" ng-show="reportMatchesSearch(report, group)" show-if-privilege="{{:: report.requiredPrivilege}}">
                             <td>{{:: report.name |translate }}</td>
                             <td class="reports-format">
                                 <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">

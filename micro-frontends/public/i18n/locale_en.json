@@ -40,5 +40,11 @@
   "LAB_RESULT_NOTIFICATIONS_HEADING": "Lab results",
   "LAB_RESULT_NOTIFICATIONS_NEW_COUNT": "{count, plural, one {# new result} other {# new results}}",
   "LAB_RESULT_NOTIFICATIONS_MARK_ALL_READ": "Mark all as read",
-  "LAB_RESULT_NOTIFICATIONS_EMPTY": "No results in the last 30 days"
+  "LAB_RESULT_NOTIFICATIONS_EMPTY": "No results in the last 30 days",
+  "BLOOD_DRAW_REMINDER_HEADING": "Blood Draw Due",
+  "BLOOD_DRAW_REMINDER_MESSAGE": "This patient is due for a blood draw. Blood should be drawn every {months} months.",
+  "BLOOD_DRAW_REMINDER_LAST_DRAWN": "Last drawn",
+  "BLOOD_DRAW_REMINDER_DUE_DATE": "Due date",
+  "BLOOD_DRAW_REMINDER_OK": "OK",
+  "BLOOD_DRAW_REMINDER_OVERDUE": "({days, plural, one {# day} other {# days}} overdue)"
 }

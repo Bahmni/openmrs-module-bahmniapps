@@ -50,6 +50,7 @@ module.exports = function (config) {
             'app/components/hustle/hustle.js',
             'app/lib/modernizr.custom.80690.js',
             'app/lib/angular-workers/dist/angular-workers.js',
+            'app/lib/jsbarcode/JsBarcode.all.min.js',
             'app/common/constants.js',
             'app/common/util/init.js',
             'app/common/util/**.js',

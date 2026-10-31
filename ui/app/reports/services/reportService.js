@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .service('reportService', ['appService', '$bahmniCookieStore', '$http', function (appService, $bahmniCookieStore, $http) {
+    .service('reportService', ['appService', '$bahmniCookieStore', '$http', 'reportBarcodeService', function (appService, $bahmniCookieStore, $http, reportBarcodeService) {
         var paperSize = appService.getAppDescriptor().getConfigValue("paperSize");
         var appName = appService.getAppName() ? appService.getAppName() : "reports";
         var currentDate = new Date();
@@ -69,7 +69,29 @@ angular.module('bahmni.reports')
             if (report.reportTemplateLocation && report.responseType == 'application/vnd.ms-excel-custom') {
                 url = (url + "&macroTemplateLocation=" + report.reportTemplateLocation);
             }
-            window.open(url);
+            if (report.responseType === availableFormats.HTML && reportBarcodeService.isEnabledFor(report)) {
+                openReportWithBarcodes(report, url);
+            } else {
+                window.open(url);
+            }
+        };
+
+        // The window is opened straight away, before the request, so popup blockers allow it
+        var openReportWithBarcodes = function (report, url) {
+            var reportWindow = window.open('', '_blank');
+            if (!reportWindow) {
+                return;
+            }
+            reportWindow.document.write('<p style="font-family:sans-serif">Loading report...</p>');
+            $http.get(url, { responseType: 'text', transformResponse: angular.identity }).then(function (response) {
+                var baseUrl = new URL(url, window.location.href).href;
+                var html = reportBarcodeService.addBarcodes(response.data, report.config.barcodeColumns, baseUrl);
+                reportWindow.document.open();
+                reportWindow.document.write(html);
+                reportWindow.document.close();
+            }, function () {
+                reportWindow.location.href = url;
+            });
         };
 
         return {

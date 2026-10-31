@@ -40,3 +40,4 @@ export const ORDER_TYPE_URL = RESTWS_V1 + "/ordertype";
 export const LAB_RESULT_NOTIFICATIONS_SQL_PROPERTY = "emrapi.sqlSearch.labResultNotifications";
 export const BAHMNI_SQL_URL = RESTWS_V1 + "/bahmnicore/sql";
 export const USER_URL = RESTWS_V1 + "/user/{userUuid}";
+export const BAHMNI_OBSERVATIONS_URL = RESTWS_V1 + "/bahmnicore/observations";
