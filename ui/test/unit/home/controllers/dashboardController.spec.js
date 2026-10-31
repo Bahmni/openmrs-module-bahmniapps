@@ -219,4 +219,47 @@ describe('dashboardController', function () {
         var result = scopeMock.getLocationFor("uuid2");
         expect(result).toEqual(locations[1]);
     });
+
+    describe("lab result notifications", function () {
+        var createControllerFor = function (currentUser) {
+            var scope = rootScopeMock.$new();
+            rootScopeMock.currentUser = currentUser;
+            $aController('DashboardController', {
+                $scope: scope,
+                $rootScope: rootScopeMock,
+                $window: window,
+                $state: state,
+                $q: $q,
+                locationService: locationService,
+                spinner: _spinner,
+                appService: appServiceMock,
+                $bahmniCookieStore: $bahmniCookieStore,
+                sessionService: sessionService
+            });
+            return scope;
+        };
+
+        it("should show the bell to users with the clinical app privilege and pass their uuid", function () {
+            var scope = createControllerFor({uuid: "user-uuid", privileges: [{name: "app:clinical", retired: false}]});
+
+            expect(scope.canViewLabResults).toBe(true);
+            expect(scope.labResultNotificationsData).toEqual({userUuid: "user-uuid"});
+        });
+
+        it("should hide the bell from users without the clinical app privilege", function () {
+            var scope = createControllerFor({uuid: "user-uuid", privileges: [{name: "app:registration", retired: false}]});
+
+            expect(scope.canViewLabResults).toBe(false);
+        });
+
+        it("should hide the bell when the clinical app privilege is retired", function () {
+            var scope = createControllerFor({uuid: "user-uuid", privileges: [{name: "app:clinical", retired: true}]});
+
+            expect(scope.canViewLabResults).toBe(false);
+        });
+
+        it("should hide the bell when there is no current user", function () {
+            expect(createControllerFor(undefined).canViewLabResults).toBe(false);
+        });
+    });
 });

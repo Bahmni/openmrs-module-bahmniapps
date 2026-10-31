@@ -1,0 +1,166 @@
+.lab-result-notifications {
+  position: relative;
+  height: 52px;
+  font-family: "OpenSans", Arial, sans-serif;
+
+  .lab-result-notifications-bell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin: 8px 10px;
+    padding: 0;
+    background: #02796d;
+    border: none;
+    border-radius: 50%;
+    box-shadow: none;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      background: #038b7d;
+    }
+
+    &[aria-expanded="true"] {
+      background: #01665c;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .fa-bell {
+      font-size: 17px;
+      line-height: 1;
+    }
+  }
+
+  .lab-result-notifications-dot {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: #e5262c;
+    box-shadow: 0 0 0 0 rgba(229, 38, 44, 0.7);
+    animation: lab-result-notifications-glow 1.6s ease-out infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+      box-shadow: 0 0 4px 1px rgba(229, 38, 44, 0.8);
+    }
+  }
+
+  .lab-result-notifications-panel {
+    position: fixed;
+    z-index: 1000;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: #333;
+    text-align: left;
+  }
+
+  .lab-result-notifications-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .lab-result-notifications-title {
+    font-weight: bold;
+  }
+
+  .lab-result-notifications-mark-all {
+    padding: 0;
+    background: none;
+    border: none;
+    color: #0f62fe;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .lab-result-notifications-empty {
+    margin: 0;
+    padding: 16px 12px;
+    color: #666;
+  }
+
+  .lab-result-notifications-list {
+    max-height: 400px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .lab-result-notifications-item {
+    display: block;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px 12px 8px 16px;
+      color: #333;
+      font-weight: normal;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        background: #f4f4f4;
+      }
+    }
+
+    &.unread a {
+      border-left: 4px solid #e5262c;
+      padding-left: 12px;
+      background: #fff5f5;
+
+      .lab-result-notifications-patient {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .lab-result-notifications-test {
+    font-size: 13px;
+    color: #555;
+  }
+
+  .lab-result-notifications-date {
+    font-size: 12px;
+    color: #777;
+  }
+}
+
+@keyframes lab-result-notifications-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(229, 38, 44, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(229, 38, 44, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 38, 44, 0);
+  }
+}

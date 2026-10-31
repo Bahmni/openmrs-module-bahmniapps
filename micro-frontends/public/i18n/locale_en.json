@@ -35,5 +35,10 @@
   "AKNOWLEDGEMENT_REQUIRED_TEXT": "Acknowledgement required",
   "NO_DRUGS_TO_BE_AKNOWLEDGED_TEXT": "You have no new drugs to be acknowledged",
   "LAB_ORDER_BARCODE_HEADING": "Lab Order Barcodes",
-  "LAB_ORDER_BARCODE_PRINT_LABEL": "Print label"
+  "LAB_ORDER_BARCODE_PRINT_LABEL": "Print label",
+  "LAB_RESULT_NOTIFICATIONS_BELL_LABEL": "Lab results",
+  "LAB_RESULT_NOTIFICATIONS_HEADING": "Lab results",
+  "LAB_RESULT_NOTIFICATIONS_NEW_COUNT": "{count, plural, one {# new result} other {# new results}}",
+  "LAB_RESULT_NOTIFICATIONS_MARK_ALL_READ": "Mark all as read",
+  "LAB_RESULT_NOTIFICATIONS_EMPTY": "No results in the last 30 days"
 }

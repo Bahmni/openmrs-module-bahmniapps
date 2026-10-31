@@ -1,10 +1,16 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'sessionService',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, sessionService) {
+    .controller('DashboardController', ['$scope', '$rootScope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'sessionService',
+        function ($scope, $rootScope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, sessionService) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
+
+            var currentUser = $rootScope.currentUser;
+            $scope.canViewLabResults = !!currentUser && _.some(currentUser.privileges, function (privilege) {
+                return privilege.name === Bahmni.Common.Constants.clinicalAppPrivilege && !privilege.retired;
+            });
+            $scope.labResultNotificationsData = {userUuid: currentUser && currentUser.uuid};
 
             var isOnline = function () {
                 return $window.navigator.onLine;

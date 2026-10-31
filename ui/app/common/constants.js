@@ -191,6 +191,7 @@ Bahmni.Common = Bahmni.Common || {};
         patientFileConceptName: 'Patient file',
         serverErrorMessages: serverErrorMessages,
         currentUser: 'bahmni.user',
+        clinicalAppPrivilege: 'app:clinical',
         retrospectivePrivilege: 'app:clinical:retrospective',
         locationPickerPrivilege: 'app:clinical:locationpicker',
         onBehalfOfPrivilege: 'app:clinical:onbehalf',

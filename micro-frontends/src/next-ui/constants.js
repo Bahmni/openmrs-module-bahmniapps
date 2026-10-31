@@ -36,3 +36,7 @@ export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
 
 export const BAHMNI_ORDERS_URL = RESTWS_V1 + "/bahmnicore/orders";
 export const ORDER_TYPE_URL = RESTWS_V1 + "/ordertype";
+
+export const LAB_RESULT_NOTIFICATIONS_SQL_PROPERTY = "emrapi.sqlSearch.labResultNotifications";
+export const BAHMNI_SQL_URL = RESTWS_V1 + "/bahmnicore/sql";
+export const USER_URL = RESTWS_V1 + "/user/{userUuid}";

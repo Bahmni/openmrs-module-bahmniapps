@@ -7,6 +7,7 @@ import { PatientSearch } from "./Containers/patientSearch/PatientSearch";
 import { CagRegister } from "./Containers/cagRegister/CagRegister";
 import { LoginVersion } from "./Containers/loginVersion/LoginVersion";
 import { LabOrderBarcode } from "./Containers/labOrderBarcode/LabOrderBarcode";
+import { LabResultNotifications } from "./Containers/labResultNotifications/LabResultNotifications";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -60,4 +61,9 @@ builder.createComponentWithTranslationForwarding(
 builder.createComponentWithTranslationForwarding(
   "LabOrderBarcode",
   LabOrderBarcode
+);
+
+builder.createComponentWithTranslationForwarding(
+  "LabResultNotifications",
+  LabResultNotifications
 );

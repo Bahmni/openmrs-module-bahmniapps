@@ -1,6 +1,7 @@
 <div class="dashboard">
     <header class="reg-header">
         <div class="reg-header-right fr">
+            <mfe-next-ui-lab-result-notifications class="fl" ng-if="::canViewLabResults" host-data="labResultNotificationsData"></mfe-next-ui-lab-result-notifications>
             <form class="change-location fl">
                 <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
                     <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
