@@ -23,7 +23,8 @@
     ];
     var reactDisplayControls = [
         "allergies",
-        "formsV2React"
+        "formsV2React",
+        "labOrderBarcode"
     ];
 
     var getViewUrl = function (section) {

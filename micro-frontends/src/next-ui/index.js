@@ -6,6 +6,7 @@ import { OtNotesSavePopup, OtNotesDeletePopup } from "./Containers/otNotes/OtNot
 import { PatientSearch } from "./Containers/patientSearch/PatientSearch";
 import { CagRegister } from "./Containers/cagRegister/CagRegister";
 import { LoginVersion } from "./Containers/loginVersion/LoginVersion";
+import { LabOrderBarcode } from "./Containers/labOrderBarcode/LabOrderBarcode";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -54,4 +55,9 @@ builder.createComponentWithTranslationForwarding(
 builder.createComponentWithTranslationForwarding(
   "LoginVersion",
   LoginVersion
+);
+
+builder.createComponentWithTranslationForwarding(
+  "LabOrderBarcode",
+  LabOrderBarcode
 );

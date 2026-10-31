@@ -20,6 +20,17 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 return (section && section.dashboardConfig !== undefined && section.dashboardConfig !== null) ? section.dashboardConfig : null;
             };
 
+            var findSectionByType = function (sections, type) {
+                if (!sections || sections.length === 0) {
+                    return null;
+                }
+                return Object.keys(sections).map(function (key) {
+                    return sections[key];
+                }).find(function (section) {
+                    return section.type === type;
+                }) || null;
+            };
+
             if ($scope.patient !== undefined) {
                 var dashboardConfig = findFormV2ReactConfig($scope.config.sections);
                 $scope.formData = {
@@ -72,6 +83,13 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     provider: $rootScope.currentProvider,
                     activeVisit: $scope.visitHistory ? $scope.visitHistory.activeVisit : null,
                     allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
+                };
+                var labOrderBarcodeSection = findSectionByType($scope.config.sections, Bahmni.Common.Constants.labOrderBarcodeDisplayControlType);
+                $scope.labOrderBarcodeData = {
+                    patient: $scope.patient,
+                    facilityName: $rootScope.facilityLocation ? $rootScope.facilityLocation.name : undefined,
+                    title: labOrderBarcodeSection ? $filter('titleTranslate')(labOrderBarcodeSection) : undefined,
+                    config: labOrderBarcodeSection && labOrderBarcodeSection.dashboardConfig ? labOrderBarcodeSection.dashboardConfig : {}
                 };
                 $scope.appService = appService;
                 $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);

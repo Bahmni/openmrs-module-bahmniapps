@@ -280,6 +280,7 @@ Bahmni.Common = Bahmni.Common || {};
         formBuilderDisplayControlType: "formsV2",
         formBuilderType: "v2",
         formsV2ReactDisplayControlType: "formsV2React",
+        labOrderBarcodeDisplayControlType: "labOrderBarcode",
         formBuilderTranslationApi: IE_APPS_API + '/form/translate',
         disposition: "DISPOSITION",
         registration: "REGISTRATION",

@@ -40,6 +40,19 @@ describe("Dashboard Section", function () {
 
     });
 
+    it("should get the react view template for labOrderBarcode section", function () {
+        var section = {
+            "title": "Lab Order Barcodes",
+            "type": "labOrderBarcode",
+            "dashboardConfig": {
+                "numberOfVisits": 1
+            }
+        };
+
+        dashboardSection = new Bahmni.Common.DisplayControl.Dashboard.Section(section);
+        expect(dashboardSection.viewName).toBe("../common/displaycontrols/dashboard/views/sections/nextUISection.html");
+    });
+
     it("should get the view template for custom control section", function () {
         var section = {
             "title": "Custom Display Control",

@@ -34,3 +34,5 @@ export const GET_PROVIDER_UUID_URL = RESTWS_V1 + "/session";
 export const SAVE_ALLERGIES_URL =  RESTWS_V1 + "/patient/{patientId}/allergy";
 export const OT_NOTES_BASE_URL = RESTWS_V1 + "/notes";
 
+export const BAHMNI_ORDERS_URL = RESTWS_V1 + "/bahmnicore/orders";
+export const ORDER_TYPE_URL = RESTWS_V1 + "/ordertype";

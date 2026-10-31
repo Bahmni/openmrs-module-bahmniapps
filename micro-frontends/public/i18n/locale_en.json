@@ -33,5 +33,7 @@
   "UPDATE": "Update",
   "AKNOWLEDGE_BUTTON": "Acknowledge",
   "AKNOWLEDGEMENT_REQUIRED_TEXT": "Acknowledgement required",
-  "NO_DRUGS_TO_BE_AKNOWLEDGED_TEXT": "You have no new drugs to be acknowledged"
+  "NO_DRUGS_TO_BE_AKNOWLEDGED_TEXT": "You have no new drugs to be acknowledged",
+  "LAB_ORDER_BARCODE_HEADING": "Lab Order Barcodes",
+  "LAB_ORDER_BARCODE_PRINT_LABEL": "Print label"
 }
