@@ -111,6 +111,43 @@ export const saveReadState = async (userUuid, state) => {
   );
 };
 
+/**
+ * Runs the callback once the page has fully loaded and the browser is idle, so the bell's
+ * requests never compete with the page's own. Returns a function that cancels it.
+ */
+export const whenPageIdle = (callback, idleTimeoutMs = 3000) => {
+  let cancelled = false;
+  let idleHandle = null;
+  let timeoutHandle = null;
+  const run = () => {
+    if (!cancelled) {
+      callback();
+    }
+  };
+  const runWhenIdle = () => {
+    if (window.requestIdleCallback) {
+      idleHandle = window.requestIdleCallback(run, { timeout: idleTimeoutMs });
+    } else {
+      timeoutHandle = setTimeout(run, 0);
+    }
+  };
+
+  if (document.readyState === "complete") {
+    runWhenIdle();
+  } else {
+    window.addEventListener("load", runWhenIdle, { once: true });
+  }
+
+  return () => {
+    cancelled = true;
+    window.removeEventListener("load", runWhenIdle);
+    if (idleHandle !== null && window.cancelIdleCallback) {
+      window.cancelIdleCallback(idleHandle);
+    }
+    clearTimeout(timeoutHandle);
+  };
+};
+
 export const getClinicalDashboardUrl = (patientUuid) =>
   `/bahmni/clinical/index.html#/default/patient/${patientUuid}/dashboard`;
 

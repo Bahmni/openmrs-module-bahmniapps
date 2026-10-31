@@ -11,6 +11,7 @@ import {
   markRead,
   parseReadState,
   saveReadState,
+  whenPageIdle,
 } from "./LabResultNotificationUtils";
 
 jest.mock("axios");
@@ -162,5 +163,57 @@ describe("LabResultNotificationUtils", () => {
   it("formats the received time", () => {
     expect(formatReceivedAt("2026-10-30 09:15:00")).toBe("30 Oct 2026 09:15 am");
     expect(formatReceivedAt(undefined)).toBe("");
+  });
+
+  describe("whenPageIdle", () => {
+    const setReadyState = (state) => {
+      Object.defineProperty(document, "readyState", { configurable: true, get: () => state });
+    };
+
+    afterEach(() => {
+      setReadyState("complete");
+      delete window.requestIdleCallback;
+      delete window.cancelIdleCallback;
+      jest.useRealTimers();
+    });
+
+    it("waits for the page load event before running", () => {
+      jest.useFakeTimers();
+      setReadyState("loading");
+      const callback = jest.fn();
+
+      whenPageIdle(callback);
+      jest.runAllTimers();
+      expect(callback).not.toHaveBeenCalled();
+
+      window.dispatchEvent(new Event("load"));
+      jest.runAllTimers();
+      expect(callback).toHaveBeenCalledTimes(1);
+    });
+
+    it("runs when the browser is idle, with a timeout so it cannot wait forever", () => {
+      window.requestIdleCallback = jest.fn(() => 7);
+      const callback = jest.fn();
+
+      whenPageIdle(callback, 1500);
+
+      expect(window.requestIdleCallback).toHaveBeenCalledWith(expect.any(Function), { timeout: 1500 });
+      expect(callback).not.toHaveBeenCalled();
+      window.requestIdleCallback.mock.calls[0][0]();
+      expect(callback).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not run once cancelled", () => {
+      window.requestIdleCallback = jest.fn(() => 7);
+      window.cancelIdleCallback = jest.fn();
+      const callback = jest.fn();
+
+      const cancel = whenPageIdle(callback);
+      cancel();
+      window.requestIdleCallback.mock.calls[0][0]();
+
+      expect(window.cancelIdleCallback).toHaveBeenCalledWith(7);
+      expect(callback).not.toHaveBeenCalled();
+    });
   });
 });

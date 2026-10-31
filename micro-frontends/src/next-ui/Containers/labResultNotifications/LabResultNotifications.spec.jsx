@@ -62,6 +62,12 @@ describe("LabResultNotifications", () => {
   });
 
   afterEach(() => {
+    // Flush updates React queued on the fake clock, or they stall effects in later tests
+    if (setTimeout.clock) {
+      act(() => {
+        jest.runOnlyPendingTimers();
+      });
+    }
     jest.resetAllMocks();
     jest.useRealTimers();
     window.location = originalLocation;
@@ -150,18 +156,76 @@ describe("LabResultNotifications", () => {
     expect(screen.getByText("No results in the last 30 days")).toBeTruthy();
   });
 
-  it("checks for new results every 5 minutes", async () => {
+  it("holds the bell's space and makes no requests until the page is idle", async () => {
     jest.useFakeTimers();
     mockFetchLabResults.mockResolvedValue([]);
     mockFetchReadState.mockResolvedValue({ cutoff: "", read: {} });
-    render(<LabResultNotifications hostData={hostData} />);
+    const { container } = render(<LabResultNotifications hostData={hostData} />);
 
-    expect(mockFetchLabResults).toHaveBeenCalledTimes(1);
+    expect(container.querySelector(".lab-result-notifications-placeholder")).toBeTruthy();
+    expect(mockFetchLabResults).not.toHaveBeenCalled();
+
     await act(async () => {
-      jest.advanceTimersByTime(POLL_INTERVAL_MS);
+      jest.advanceTimersByTime(0);
     });
 
-    expect(mockFetchLabResults).toHaveBeenCalledTimes(2);
+    expect(container.querySelector(".lab-result-notifications-placeholder")).toBeNull();
+    expect(mockFetchLabResults).toHaveBeenCalledTimes(1);
+  });
+
+  describe("polling", () => {
+    const setHidden = (hidden) => {
+      Object.defineProperty(document, "hidden", { configurable: true, get: () => hidden });
+    };
+
+    const renderAndWaitForFirstCheck = async () => {
+      jest.useFakeTimers();
+      mockFetchLabResults.mockResolvedValue([]);
+      mockFetchReadState.mockResolvedValue({ cutoff: "", read: {} });
+      render(<LabResultNotifications hostData={hostData} />);
+      await act(async () => {
+        jest.advanceTimersByTime(0);
+      });
+      expect(mockFetchLabResults).toHaveBeenCalledTimes(1);
+    };
+
+    afterEach(() => setHidden(false));
+
+    it("checks for new results every 5 minutes", async () => {
+      await renderAndWaitForFirstCheck();
+
+      await act(async () => {
+        jest.advanceTimersByTime(POLL_INTERVAL_MS);
+      });
+
+      expect(mockFetchLabResults).toHaveBeenCalledTimes(2);
+    });
+
+    it("skips checks while the tab is hidden and catches up when it is shown", async () => {
+      await renderAndWaitForFirstCheck();
+      setHidden(true);
+
+      await act(async () => {
+        jest.advanceTimersByTime(POLL_INTERVAL_MS);
+      });
+      expect(mockFetchLabResults).toHaveBeenCalledTimes(1);
+
+      setHidden(false);
+      await act(async () => {
+        document.dispatchEvent(new Event("visibilitychange"));
+      });
+      expect(mockFetchLabResults).toHaveBeenCalledTimes(2);
+    });
+
+    it("does not check again on return when the last check is recent", async () => {
+      await renderAndWaitForFirstCheck();
+
+      await act(async () => {
+        document.dispatchEvent(new Event("visibilitychange"));
+      });
+
+      expect(mockFetchLabResults).toHaveBeenCalledTimes(1);
+    });
   });
 
   it("closes the panel on Escape", async () => {
@@ -180,12 +244,12 @@ describe("LabResultNotifications", () => {
     mockFetchLabResults.mockResolvedValue([]);
     mockFetchReadState.mockResolvedValue({ cutoff: "", read: {} });
     const { container } = render(<LabResultNotifications hostData={hostData} />);
+
+    await waitFor(() => expect(mockFetchLabResults).toHaveBeenCalled());
     container.querySelector(".lab-result-notifications").getBoundingClientRect = () => ({
       bottom: 52,
       right: document.documentElement.clientWidth - 120,
     });
-
-    await waitFor(() => expect(mockFetchLabResults).toHaveBeenCalled());
     openBell();
 
     const panel = container.querySelector(".lab-result-notifications-panel");

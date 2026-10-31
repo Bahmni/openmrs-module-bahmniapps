@@ -13,6 +13,7 @@ import {
   markAllRead,
   markRead,
   saveReadState,
+  whenPageIdle,
 } from "../../utils/labResultNotifications/LabResultNotificationUtils";
 
 export const POLL_INTERVAL_MS = 5 * 60 * 1000;
@@ -26,7 +27,10 @@ function LabResultNotificationsBell({ userUuid }) {
   const containerRef = useRef(null);
   const mountedRef = useRef(true);
 
+  const lastRefreshRef = useRef(0);
+
   const refresh = useCallback(async () => {
+    lastRefreshRef.current = Date.now();
     try {
       const [rows, savedState] = await Promise.all([
         fetchLabResults(),
@@ -49,10 +53,22 @@ function LabResultNotificationsBell({ userUuid }) {
   useEffect(() => {
     mountedRef.current = true;
     refresh();
-    const timer = setInterval(refresh, POLL_INTERVAL_MS);
+    // Skip checks while the tab is in the background; catch up when the user returns
+    const timer = setInterval(() => {
+      if (!document.hidden) {
+        refresh();
+      }
+    }, POLL_INTERVAL_MS);
+    const refreshWhenVisibleAndDue = () => {
+      if (!document.hidden && Date.now() - lastRefreshRef.current >= POLL_INTERVAL_MS) {
+        refresh();
+      }
+    };
+    document.addEventListener("visibilitychange", refreshWhenVisibleAndDue);
     return () => {
       mountedRef.current = false;
       clearInterval(timer);
+      document.removeEventListener("visibilitychange", refreshWhenVisibleAndDue);
     };
   }, [refresh]);
 
@@ -213,8 +229,16 @@ LabResultNotificationsBell.propTypes = {
 /** NOTE: react2angular may omit props at start — keep PropTypes so the bridge mounts. */
 export function LabResultNotifications(props) {
   const userUuid = props.hostData && props.hostData.userUuid;
+  const [pageIdle, setPageIdle] = useState(false);
+
+  useEffect(() => whenPageIdle(() => setPageIdle(true)), []);
+
   if (!userUuid) {
     return null;
+  }
+  if (!pageIdle) {
+    // Holds the bell's space so the header does not shift when it appears
+    return <div className="lab-result-notifications-placeholder" />;
   }
   return (
     <I18nProvider>
