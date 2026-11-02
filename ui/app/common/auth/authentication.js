@@ -136,6 +136,27 @@ angular.module('authentication')
             return $http.get(sessionResourcePath, { cache: false });
         };
 
+        // SSO (Keycloak) flow: the OpenMRS session already exists, so there is no password login to
+        // write the Bahmni cookies. Resolves with the session, or null when it is not authenticated.
+        this.loadSsoSession = function () {
+            return $http.get(Bahmni.Common.Constants.RESTWS_V1 + '/session', { cache: false }).then(function (response) {
+                var session = response.data;
+                if (!session || !session.authenticated || !session.user) {
+                    return null;
+                }
+                $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, session.user.username, {path: '/', expires: 7});
+                if (session.sessionLocation) {
+                    $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
+                    $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {
+                        name: session.sessionLocation.display,
+                        uuid: session.sessionLocation.uuid
+                    }, {path: '/', expires: 7});
+                }
+                localStorage.setItem(Bahmni.Common.Constants.ssoLoginFlag, 'true');
+                return session;
+            });
+        };
+
         this.loadCredentials = function () {
             var deferrable = $q.defer();
             var currentUser = $bahmniCookieStore.get(Bahmni.Common.Constants.currentUser);
@@ -242,7 +263,13 @@ angular.module('authentication')
         function logoutUser () {
             auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
                 sessionService.destroy().then(function () {
-                    $window.location = "../home/index.html#/login";
+                    if (localStorage.getItem(Bahmni.Common.Constants.ssoLoginFlag) === 'true') {
+                        // End the Keycloak session as well, otherwise the SSO button logs the same user straight back in.
+                        localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
+                        $window.location = Bahmni.Common.Constants.ssoLogoutUrl;
+                    } else {
+                        $window.location = "../home/index.html#/login";
+                    }
                 });
             });
         }
