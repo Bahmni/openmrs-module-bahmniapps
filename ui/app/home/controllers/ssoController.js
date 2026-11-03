@@ -5,7 +5,7 @@ angular.module('bahmni.home')
         function ($scope, $state, sessionService, spinner) {
             // Landing page after Keycloak login. OpenMRS has already validated the token and
             // created the session, so only the Bahmni cookies and the location step are left.
-            var loadCredentialsAndOpenDashboard = function () {
+            const loadCredentialsAndOpenDashboard = function () {
                 return sessionService.loadCredentials().then(function () {
                     $state.go('dashboard');
                 }, function (error) {
