@@ -15,7 +15,7 @@ angular.module('bahmni.home')
             var load = function () {
                 if (!cached) {
                     cached = localeService.getLoginText().then(function (response) {
-                        var loginPage = (response.data && response.data.loginPage) || {};
+                        const loginPage = response.data?.loginPage || {};
                         return {
                             enabled: loginPage.ssoEnabled === true,
                             loginUrl: loginPage.ssoLoginUrl || DEFAULT_LOGIN_URL

@@ -141,7 +141,7 @@ angular.module('authentication')
         this.loadSsoSession = function () {
             return $http.get(Bahmni.Common.Constants.RESTWS_V1 + '/session', { cache: false }).then(function (response) {
                 var session = response.data;
-                if (!session || !session.authenticated || !session.user) {
+                if (!session?.authenticated || !session?.user) {
                     return null;
                 }
                 $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, session.user.username, {path: '/', expires: 7});
