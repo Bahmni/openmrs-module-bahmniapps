@@ -51,15 +51,12 @@ export function SearchAllergen(props) {
     let search = [],
       secondSearch = [];
     allergens.map((allergen) => {
-      if (
-        allergen.name.toLowerCase().startsWith(key.toLowerCase()) ||
-        allergen.kind.toLowerCase().startsWith(key.toLowerCase())
-      ) {
+      // name/kind may be missing on malformed allergen data; don't crash search.
+      const name = (allergen.name ?? "").toLowerCase();
+      const kind = (allergen.kind ?? "").toLowerCase();
+      if (name.startsWith(key.toLowerCase()) || kind.startsWith(key.toLowerCase())) {
         search.push(allergen);
-      } else if (
-        allergen.name.toLowerCase().includes(key.toLowerCase()) ||
-        allergen.kind.toLowerCase().includes(key.toLowerCase())
-      ) {
+      } else if (name.includes(key.toLowerCase()) || kind.includes(key.toLowerCase())) {
         secondSearch.push(allergen);
       }
     });
