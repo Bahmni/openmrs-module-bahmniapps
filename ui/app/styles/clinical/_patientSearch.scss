@@ -183,5 +183,26 @@
             @include font-size(0.9);
             color: $darkGray;
         }
+
+        /* Black circle in the top-left corner of the patient card */
+        .queue-number {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            box-sizing: border-box;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 4px;
+            border-radius: 12px;
+            background: #000;
+            line-height: 24px;
+            white-space: nowrap;
+            font-family: $OpenSansBoldFont;
+            font-weight: bold;
+            font-size: 1.3em;
+            color: $white;
+            text-align: center;
+            pointer-events: none;
+        }
     }
 }

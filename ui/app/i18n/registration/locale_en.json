@@ -123,5 +123,11 @@
     "PATIENT_ATTRIBUTE_FAMILY_NAME_LOCAL": "Last Name in Arabic",
     "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic",
     "RELATED_PATIENT_IDENTIFIER_LABEL": "Patient",
-    "REGISTRATION_LABEL_SAVE_REDIRECTION": "Saved and Visit Started Successfully"
+    "REGISTRATION_LABEL_SAVE_REDIRECTION": "Saved and Visit Started Successfully",
+    "REGISTRATION_PRIMARY_CONTACT_REQUIRED_TITLE": "Primary Contact needed",
+    "REGISTRATION_PRIMARY_CONTACT_REQUIRED": "Please fill in the Primary Contact before saving.",
+    "REGISTRATION_PRIMARY_CONTACT_REASONS_INTRO": "We will use this number to:",
+    "REGISTRATION_PRIMARY_CONTACT_REASON_TRACKING": "Track the client if they default",
+    "REGISTRATION_PRIMARY_CONTACT_REASON_SMS": "Send SMS reminders",
+    "REGISTRATION_PRIMARY_CONTACT_ACTION": "Add Primary Contact"
 }

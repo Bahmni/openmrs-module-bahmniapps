@@ -320,3 +320,102 @@ section.form-field-inline{
 }
 
 
+
+// Arrow pointing at an empty Primary Contact field (see primaryContactValidator.js).
+// It is absolutely positioned, so showing or hiding it never moves the form.
+.primary-contact-anchor {
+  position: relative;
+  display: inline-block;
+  vertical-align: top; // inline-block's default baseline alignment would add a gap below the input
+}
+
+.primary-contact-arrow {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  z-index: 1;
+  margin: -10px 0 0 6px;
+  border-style: solid;
+  border-width: 10px 16px 10px 0;
+  border-color: transparent $error transparent transparent;
+  pointer-events: none;
+  animation: primary-contact-arrow-bounce 0.8s ease-in-out infinite;
+}
+
+@keyframes primary-contact-arrow-bounce {
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+// Dialog shown when Primary Contact is empty (views/primaryContactRequired.html).
+.ngdialog.ngdialog-theme-default.primary-contact-dialog {
+  .ngdialog-content {
+    width: 420px;
+    max-width: 90%;
+    padding: 0;
+    border-top: 5px solid $error;
+    border-radius: 6px;
+    background: white;
+  }
+}
+
+.primary-contact-dialog-body {
+  padding: 24px;
+  text-align: center;
+
+  h2 {
+    margin: 12px 0 6px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  button.confirm {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 20px 0 0;
+    float: none;
+  }
+}
+
+.primary-contact-dialog-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: lighten($error, 22%);
+  color: darken($error, 18%);
+  font-size: 26px;
+  line-height: 56px;
+}
+
+.primary-contact-dialog-reasons {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  background: #f5f5f5;
+  text-align: left;
+
+  ul {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    padding: 3px 0;
+    font-weight: bold;
+  }
+
+  i {
+    display: inline-block;
+    width: 24px;
+    color: darken($error, 18%);
+    text-align: center;
+  }
+}

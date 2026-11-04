@@ -1,0 +1,13 @@
+<div class="primary-contact-dialog-body" role="alertdialog" aria-labelledby="primary-contact-dialog-title" aria-describedby="primary-contact-dialog-message">
+    <div class="primary-contact-dialog-icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
+    <h2 id="primary-contact-dialog-title">{{::'REGISTRATION_PRIMARY_CONTACT_REQUIRED_TITLE' | translate}}</h2>
+    <p id="primary-contact-dialog-message">{{::'REGISTRATION_PRIMARY_CONTACT_REQUIRED' | translate}}</p>
+    <div class="primary-contact-dialog-reasons">
+        <p>{{::'REGISTRATION_PRIMARY_CONTACT_REASONS_INTRO' | translate}}</p>
+        <ul>
+            <li><i class="fa fa-user" aria-hidden="true"></i>{{::'REGISTRATION_PRIMARY_CONTACT_REASON_TRACKING' | translate}}</li>
+            <li><i class="fa fa-comment" aria-hidden="true"></i>{{::'REGISTRATION_PRIMARY_CONTACT_REASON_SMS' | translate}}</li>
+        </ul>
+    </div>
+    <button type="button" class="confirm" ng-click="closeThisDialog()" focus-on="true">{{::'REGISTRATION_PRIMARY_CONTACT_ACTION' | translate}}</button>
+</div>

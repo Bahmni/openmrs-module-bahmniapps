@@ -89,6 +89,7 @@
                 visible-results="search.visiblePatients" class="active-visits">
             <ul>
                 <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
+                    <div class="queue-number" ng-if="::patient.queueNumber">{{::patient.queueNumber}}</div>
                     <img class="smallImages" ng-src="{{::patient.image}}" fallback-src='../images/blank-user.png'>
                     <div class="patient-name">{{::patient.name}}</div>
                     <div ng-if="!preferExtraIdInSearchResults" class="patient-id">{{::patient.identifier}}</div>
