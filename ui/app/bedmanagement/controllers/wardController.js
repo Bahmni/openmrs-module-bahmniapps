@@ -25,8 +25,13 @@ angular.module('bahmni.ipd')
                     return room.name === roomName;
                 });
                 $scope.room = admissionRoom[0];
-                $scope.activeRoom = $scope.room.name;
-                $scope.roomSelected = true;
+                if ($scope.room) {
+                    $scope.activeRoom = $scope.room.name;
+                    $scope.roomSelected = true;
+                } else {
+                    $scope.activeRoom = null;
+                    $scope.roomSelected = false;
+                }
             };
 
             $scope.$on("event:deselectWards", function (event, ward) {
