@@ -21,7 +21,7 @@ describe('ssoConfig', function () {
     }));
 
     it('should be enabled with the configured login url when ssoEnabled is true', function () {
-        localeService.getLoginText.and.returnValue($q.when({data: {loginPage: {ssoEnabled: true, ssoLoginUrl: '/custom/login'}}}));
+        localeService.getLoginText.and.returnValue($q.when({data: {loginPage: {ssoEnabled: true, ssoLoginUrl: '/custom/login', ssoLogoutUrl: '/custom/logout'}}}));
         var result;
 
         ssoConfig.get().then(function (sso) {
@@ -29,7 +29,7 @@ describe('ssoConfig', function () {
         });
         $rootScope.$digest();
 
-        expect(result).toEqual({enabled: true, loginUrl: '/custom/login'});
+        expect(result).toEqual({enabled: true, loginUrl: '/custom/login', logoutUrl: '/custom/logout'});
     });
 
     it('should be disabled with the default login url when the config cannot be loaded', function () {
@@ -41,6 +41,26 @@ describe('ssoConfig', function () {
         });
         $rootScope.$digest();
 
-        expect(result).toEqual({enabled: false, loginUrl: '/openmrs/oauth2login'});
+        expect(result).toEqual({
+            enabled: false,
+            loginUrl: Bahmni.Common.Constants.ssoLoginUrl,
+            logoutUrl: Bahmni.Common.Constants.ssoLogoutUrl
+        });
+    });
+
+    it('should fall back to the default urls when only ssoEnabled is configured', function () {
+        localeService.getLoginText.and.returnValue($q.when({data: {loginPage: {ssoEnabled: true}}}));
+        var result;
+
+        ssoConfig.get().then(function (sso) {
+            result = sso;
+        });
+        $rootScope.$digest();
+
+        expect(result).toEqual({
+            enabled: true,
+            loginUrl: Bahmni.Common.Constants.ssoLoginUrl,
+            logoutUrl: Bahmni.Common.Constants.ssoLogoutUrl
+        });
     });
 });

@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService', '$state',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService, $state) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService', '$state', 'postLoginService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService, $state, postLoginService) {
             var redirectUrl = $location.search()['from'];
             var loginPagePath = "/login";
             $scope.locations = initialData.locations;
@@ -145,26 +145,6 @@ angular.module('bahmni.home')
                 $scope.loginInfo.currentLocation = getLastLoggedinLocation();
             };
 
-            var checkIfUserHasProviderAttributes = function () {
-                return $rootScope.currentUser.provider && $rootScope.currentUser.provider.attributes && $rootScope.currentUser.provider.attributes.length > 0;
-            };
-
-            var saveUserAssignedLocationsToLocalStorage = function () {
-                var userAssignedLocations = $rootScope.currentUser.provider.attributes
-                  .filter(function (attribute) {
-                      return attribute.attributeType.display === "Login Locations";
-                  })
-                  .map(function (attribute) {
-                      return { display: attribute.value.name, uuid: attribute.value.uuid };
-                  });
-
-                if (userAssignedLocations.length > 0) {
-                    localStorage.setItem("loginLocations", JSON.stringify(userAssignedLocations));
-                } else {
-                    localStorage.removeItem("loginLocations");
-                }
-            };
-
             $scope.login = function () {
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
@@ -262,11 +242,7 @@ angular.module('bahmni.home')
                                 }
                             });
                         } else {
-                            if (checkIfUserHasProviderAttributes()) {
-                                saveUserAssignedLocationsToLocalStorage();
-                            } else {
-                                localStorage.removeItem("loginLocations");
-                            }
+                            postLoginService.saveAssignedLoginLocations($rootScope.currentUser);
                             $state.go('loginLocation', {});
                         }
                     }

@@ -85,6 +85,28 @@ describe("Authentication", function () {
             expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
         }]));
 
+        it("should clear a stale sso flag and logout url on password login", inject(['sessionService', '$http', function (sessionService, $http) {
+            localStorage.setItem(Bahmni.Common.Constants.ssoLoginFlag, 'true');
+            localStorage.setItem(Bahmni.Common.Constants.ssoLogoutUrlKey, '/custom/logout');
+            var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
+            deferrable.promise = {
+                then: function (callback) {
+                    callback({authenticated: true})
+                }
+            };
+            $q.defer.and.returnValue(deferrable);
+            spyOn($http, 'get').and.returnValue({
+                then: function (success) {
+                    success({"status": 204});
+                }
+            });
+
+            sessionService.loginUser("userName", "password", "location");
+
+            expect(localStorage.getItem(Bahmni.Common.Constants.ssoLoginFlag)).toBeNull();
+            expect(localStorage.getItem(Bahmni.Common.Constants.ssoLogoutUrlKey)).toBeNull();
+        }]));
+
     });
 
     describe("loginUserWithOTP", function () {
@@ -283,16 +305,18 @@ describe("sessionService SSO session", function () {
         sessionService = _sessionService_;
         $httpBackend = _$httpBackend_;
         localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
+        localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
     }));
 
     afterEach(function () {
         localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
+        localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
     });
 
-    var loadSession = function (responseData) {
+    var loadSession = function (responseData, logoutUrl) {
         var result = 'not resolved';
         $httpBackend.expectGET(sessionUrl).respond(responseData);
-        sessionService.loadSsoSession().then(function (session) {
+        sessionService.loadSsoSession(logoutUrl).then(function (session) {
             result = session;
         });
         $httpBackend.flush();
@@ -324,6 +348,14 @@ describe("sessionService SSO session", function () {
         expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
         expect($bahmniCookieStore.put).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName, {name: 'OPD', uuid: 'location-uuid'}, {path: '/', expires: 7});
         expect(localStorage.getItem(Bahmni.Common.Constants.ssoLoginFlag)).toBe('true');
+    });
+
+    it("should store the given logout url, or the default when none is given", function () {
+        loadSession({authenticated: true, user: {username: 'superman'}}, '/custom/logout');
+        expect(localStorage.getItem(Bahmni.Common.Constants.ssoLogoutUrlKey)).toBe('/custom/logout');
+
+        loadSession({authenticated: true, user: {username: 'superman'}});
+        expect(localStorage.getItem(Bahmni.Common.Constants.ssoLogoutUrlKey)).toBe(Bahmni.Common.Constants.ssoLogoutUrl);
     });
 
     it("should not touch the location cookie when the session has no location", function () {
@@ -359,10 +391,23 @@ describe("logoutService SSO logout", function () {
         sessionService.destroy.and.returnValue($q.when({}));
         $rootScope.formDraftFeatureEnabled = false;
         localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
+        localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
     }));
 
     afterEach(function () {
         localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
+        localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
+    });
+
+    it("should use the stored logout url and clear it when the user logged in through SSO", function () {
+        localStorage.setItem(Bahmni.Common.Constants.ssoLoginFlag, 'true');
+        localStorage.setItem(Bahmni.Common.Constants.ssoLogoutUrlKey, '/custom/logout');
+
+        logoutService.attemptLogout($rootScope);
+        $rootScope.$digest();
+
+        expect(mockWindow.location).toBe('/custom/logout');
+        expect(localStorage.getItem(Bahmni.Common.Constants.ssoLogoutUrlKey)).toBeNull();
     });
 
     it("should end the Keycloak session and clear the flag when the user logged in through SSO", function () {

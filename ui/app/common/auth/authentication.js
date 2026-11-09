@@ -115,6 +115,9 @@ angular.module('authentication')
             var deferrable = $q.defer();
             createSession(username, password, otp).then(function (data) {
                 if (data.authenticated) {
+                    // A password login is never an SSO session; drop any stale flag so logout doesn't go to Keycloak.
+                    localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
+                    localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
                     $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
                     if (location != undefined) {
                         $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
@@ -138,7 +141,8 @@ angular.module('authentication')
 
         // SSO (Keycloak) flow: the OpenMRS session already exists, so there is no password login to
         // write the Bahmni cookies. Resolves with the session, or null when it is not authenticated.
-        this.loadSsoSession = function () {
+        // logoutUrl is stored so that logout from any app can end the Keycloak session without re-reading config.
+        this.loadSsoSession = function (logoutUrl) {
             return $http.get(Bahmni.Common.Constants.RESTWS_V1 + '/session', { cache: false }).then(function (response) {
                 var session = response.data;
                 if (!session || !session.authenticated || !session.user) {
@@ -153,6 +157,7 @@ angular.module('authentication')
                     }, {path: '/', expires: 7});
                 }
                 localStorage.setItem(Bahmni.Common.Constants.ssoLoginFlag, 'true');
+                localStorage.setItem(Bahmni.Common.Constants.ssoLogoutUrlKey, logoutUrl || Bahmni.Common.Constants.ssoLogoutUrl);
                 return session;
             });
         };
@@ -168,6 +173,11 @@ angular.module('authentication')
                 return deferrable.promise;
             }
             userService.getUser(currentUser).then(function (data) {
+                if (!data || _.isEmpty(data.results)) {
+                    self.destroy();
+                    deferrable.reject('Could not get roles for the current user.');
+                    return;
+                }
                 userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
                     if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
                         $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
@@ -265,8 +275,10 @@ angular.module('authentication')
                 sessionService.destroy().then(function () {
                     if (localStorage.getItem(Bahmni.Common.Constants.ssoLoginFlag) === 'true') {
                         // End the Keycloak session as well, otherwise the SSO button logs the same user straight back in.
+                        var ssoLogoutUrl = localStorage.getItem(Bahmni.Common.Constants.ssoLogoutUrlKey) || Bahmni.Common.Constants.ssoLogoutUrl;
                         localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
-                        $window.location = Bahmni.Common.Constants.ssoLogoutUrl;
+                        localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
+                        $window.location = ssoLogoutUrl;
                     } else {
                         $window.location = "../home/index.html#/login";
                     }

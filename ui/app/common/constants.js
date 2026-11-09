@@ -306,7 +306,9 @@ Bahmni.Common = Bahmni.Common || {};
         adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink",
         homeUrl: "../home",
         ssoLoginFlag: "bahmni.sso.login",
-        ssoLogoutUrl: "/openmrs/oauth2logout"
+        ssoLogoutUrlKey: "bahmni.sso.logoutUrl",
+        ssoLoginUrl: hostUrl + "/openmrs/oauth2login",
+        ssoLogoutUrl: hostUrl + "/openmrs/oauth2logout"
     };
 })();
 

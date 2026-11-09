@@ -3,11 +3,14 @@
 angular.module('bahmni.home')
     .factory('ssoConfig', ['localeService',
         function (localeService) {
-            var DEFAULT_LOGIN_URL = '/openmrs/oauth2login';
             var cached;
 
             var disabled = function () {
-                return {enabled: false, loginUrl: DEFAULT_LOGIN_URL};
+                return {
+                    enabled: false,
+                    loginUrl: Bahmni.Common.Constants.ssoLoginUrl,
+                    logoutUrl: Bahmni.Common.Constants.ssoLogoutUrl
+                };
             };
 
             // SSO is switched on with "ssoEnabled": true under "loginPage" in whiteLabel.json.
@@ -18,7 +21,8 @@ angular.module('bahmni.home')
                         const loginPage = (response.data && response.data.loginPage) || {};
                         return {
                             enabled: loginPage.ssoEnabled === true,
-                            loginUrl: loginPage.ssoLoginUrl || DEFAULT_LOGIN_URL
+                            loginUrl: loginPage.ssoLoginUrl || Bahmni.Common.Constants.ssoLoginUrl,
+                            logoutUrl: loginPage.ssoLogoutUrl || Bahmni.Common.Constants.ssoLogoutUrl
                         };
                     }, disabled);
                 }

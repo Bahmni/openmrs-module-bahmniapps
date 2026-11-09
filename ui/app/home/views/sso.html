@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="form-footer" ng-show="errorMessageTranslateKey">
-            <a class="button confirm" ui-sref="login">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</a>
+            <button type="button" id="sso-end-session" class="confirm" ng-click="endSsoSession()">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</button>
         </div>
     </div>
 </div>
