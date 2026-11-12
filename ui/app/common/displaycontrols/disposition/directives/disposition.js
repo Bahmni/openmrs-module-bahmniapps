@@ -32,7 +32,8 @@ angular.module('bahmni.common.displaycontrol.disposition')
                 };
 
                 $scope.getNotes = function (disposition) {
-                    if (disposition.additionalObs[0] && disposition.additionalObs[0].value) {
+                    if (disposition.additionalObs && disposition.additionalObs[0] &&
+                        disposition.additionalObs[0].value) {
                         return disposition.additionalObs[0].value;
                     }
                     return "";
