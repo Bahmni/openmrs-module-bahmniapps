@@ -143,6 +143,7 @@ describe('Disposition DisplayControl', function () {
         expect(compiledElementScope.getNotes(dispositions[0])).toEqual("notes");
         expect(compiledElementScope.getNotes({additionalObs:[{}]})).toEqual("");
         expect(compiledElementScope.getNotes({additionalObs:[{value:"abc"}]})).toEqual("abc");
+        expect(compiledElementScope.getNotes({additionalObs: null})).toEqual("");
 
 
     });
