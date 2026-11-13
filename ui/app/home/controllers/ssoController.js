@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('SsoController', ['$rootScope', '$scope', '$state', '$window', 'sessionService', 'spinner', 'ssoConfig', 'loginInitialization', 'postLoginService', 'auditLogService',
-        function ($rootScope, $scope, $state, $window, sessionService, spinner, ssoConfig, loginInitialization, postLoginService, auditLogService) {
+    .controller('SsoController', ['$scope', '$state', '$window', 'sessionService', 'spinner', 'ssoConfig', 'postLoginService',
+        function ($scope, $state, $window, sessionService, spinner, ssoConfig, postLoginService) {
             var logoutUrl;
 
             // Used when the Bahmni user could not be set up: the OpenMRS session is already gone, but Keycloak is
@@ -17,23 +17,6 @@ angular.module('bahmni.home')
                 $state.go('login', {showLoginMessage: true});
             };
 
-            // Landing page after Keycloak login. OpenMRS has already validated the token and
-            // created the session, so what is left is what the password flow does after authentication.
-            var completeLogin = function (session) {
-                postLoginService.saveAssignedLoginLocations($rootScope.currentUser);
-                postLoginService.onLoggedIn();
-                auditLogService.log(undefined, 'USER_LOGIN_SUCCESS', undefined, 'MODULE_LABEL_LOGIN_KEY');
-                if (!session.sessionLocation) {
-                    $state.go('loginLocation');
-                    return;
-                }
-                // The loginLocation state runs loginInitialization itself; going straight to the
-                // dashboard would otherwise skip writing homeUrl / enableCommandPalette.
-                return loginInitialization.loadHomeConfig().then(function () {
-                    $state.go('dashboard');
-                });
-            };
-
             const promise = ssoConfig.get().then(function (sso) {
                 logoutUrl = sso.logoutUrl;
                 return sessionService.loadSsoSession(logoutUrl);
@@ -43,7 +26,7 @@ angular.module('bahmni.home')
                     return;
                 }
                 return sessionService.loadCredentials().then(function () {
-                    return completeLogin(session);
+                    return postLoginService.completeLogin(session);
                 }, function (error) {
                     $scope.errorMessageTranslateKey = error;
                 });
