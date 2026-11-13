@@ -1,7 +1,7 @@
 {
     "BAHMNI_PAGE_TITLE_KEY": "Bahmni Home",
     "LOGIN_LABEL_LOGIN_KEY": "Login",
-    "LOGIN_LABEL_SSO_LOGIN_KEY": "Login with Keycloak",
+    "LOGIN_LABEL_LOGIN_WITH_SSO_KEY": "Login with SSO",
     "LOGIN_LABEL_SSO_SIGNING_IN_KEY": "Signing you in...",
     "LOGIN_LABEL_SUBMIT_KEY": "Submit",
     "LOGIN_LOCATION_SELECTION_LABEL_KEY": "Continue",
