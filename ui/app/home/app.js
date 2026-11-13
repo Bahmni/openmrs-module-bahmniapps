@@ -48,7 +48,6 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         initialData: function (loginInitialization, ssoConfig) {
                             return ssoConfig.get().then(function (sso) {
                                 if (sso.enabled) {
-                                    // Login locations need an authenticated call, which SSO redirects to Keycloak.
                                     return {locations: [], ssoEnabled: true, ssoLoginUrl: sso.loginUrl};
                                 }
                                 return loginInitialization();

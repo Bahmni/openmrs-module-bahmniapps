@@ -4,9 +4,6 @@ angular.module('bahmni.home')
     .factory('postLoginService', ['$rootScope', '$bahmniCookieStore', '$state', 'loginInitialization', 'auditLogService',
         function ($rootScope, $bahmniCookieStore, $state, loginInitialization, auditLogService) {
             var LOGIN_LOCATIONS = "Login Locations";
-
-            // Restricts the location picker to the provider's "Login Locations" attribute, and clears any
-            // list left behind by a previous user when the provider has none.
             var saveAssignedLoginLocations = function (currentUser) {
                 var attributes = (currentUser && currentUser.provider && currentUser.provider.attributes) || [];
                 var userAssignedLocations = attributes
@@ -32,7 +29,6 @@ angular.module('bahmni.home')
                 $rootScope.$broadcast('event:auth-loggedin');
             };
 
-            // What the password flow does after authentication, for logins completed outside the login form (SSO).
             var completeLogin = function (session) {
                 saveAssignedLoginLocations($rootScope.currentUser);
                 onLoggedIn();
@@ -41,8 +37,6 @@ angular.module('bahmni.home')
                     $state.go('loginLocation');
                     return;
                 }
-                // The loginLocation state runs loginInitialization itself; going straight to the
-                // dashboard would otherwise skip writing homeUrl / enableCommandPalette.
                 return loginInitialization.loadHomeConfig().then(function () {
                     $state.go('dashboard');
                 });

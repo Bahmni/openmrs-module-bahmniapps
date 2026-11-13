@@ -3,14 +3,12 @@
 angular.module('bahmni.home')
     .controller('SsoController', ['$scope', '$state', '$window', 'sessionService', 'spinner', 'ssoConfig', 'postLoginService',
         function ($scope, $state, $window, sessionService, spinner, ssoConfig, postLoginService) {
-            let logoutUrl;
-
-            // Used when the Bahmni user could not be set up: the OpenMRS session is already gone, but Keycloak is
-            // still signed in, so going back to the login page would just sign the same user in to the same error.
             $scope.endSsoSession = function () {
                 localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
                 localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
-                $window.location = logoutUrl || Bahmni.Common.Constants.ssoLogoutUrl;
+                return ssoConfig.get().then(function (sso) {
+                    $window.location = sso.logoutUrl;
+                });
             };
 
             const backToLoginWithError = function () {
@@ -18,8 +16,7 @@ angular.module('bahmni.home')
             };
 
             const promise = ssoConfig.get().then(function (sso) {
-                logoutUrl = sso.logoutUrl;
-                return sessionService.loadSsoSession(logoutUrl);
+                return sessionService.loadSsoSession(sso.logoutUrl);
             }).then(function (session) {
                 if (!session) {
                     backToLoginWithError();

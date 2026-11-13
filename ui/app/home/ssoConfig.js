@@ -14,8 +14,6 @@
             function (localeService) {
                 var cached;
 
-                // SSO is switched on with "ssoEnabled": true under "loginPage" in whiteLabel.json.
-                // That file is static, so it can be read before the user is authenticated.
                 var load = function () {
                     if (!cached) {
                         cached = localeService.getLoginText().then(function (response) {

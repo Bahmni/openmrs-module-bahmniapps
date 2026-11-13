@@ -115,7 +115,6 @@ angular.module('authentication')
             var deferrable = $q.defer();
             createSession(username, password, otp).then(function (data) {
                 if (data.authenticated) {
-                    // A password login is never an SSO session; drop any stale flag so logout doesn't go to Keycloak.
                     localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
                     localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
                     $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
@@ -139,9 +138,6 @@ angular.module('authentication')
             return $http.get(sessionResourcePath, { cache: false });
         };
 
-        // SSO (Keycloak) flow: the OpenMRS session already exists, so there is no password login to
-        // write the Bahmni cookies. Resolves with the session, or null when it is not authenticated.
-        // logoutUrl is stored so that logout from any app can end the Keycloak session without re-reading config.
         this.loadSsoSession = function (logoutUrl) {
             return $http.get(Bahmni.Common.Constants.RESTWS_V1 + '/session', { cache: false }).then(function (response) {
                 var session = response.data;

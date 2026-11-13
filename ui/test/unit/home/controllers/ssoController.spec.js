@@ -81,6 +81,7 @@ describe('SsoController', function () {
             createController();
 
             scope.endSsoSession();
+            $rootScope.$digest();
 
             expect(mockWindow.location).toBe('/custom/logout');
             expect(localStorage.getItem(Bahmni.Common.Constants.ssoLoginFlag)).toBeNull();
