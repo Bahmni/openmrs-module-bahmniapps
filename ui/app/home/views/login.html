@@ -15,7 +15,20 @@
         </div>
     </header>
 
-    <form ng-submit="login()" name="loginForm" bm-form autofillable="true">
+    <div class="login-body" ng-if="ssoEnabled">
+        <div class="note-container">
+            <div class="note error" ng-show="errorMessageTranslateKey">
+                <div class="text">
+                    {{errorMessageTranslateKey | translate}}
+                </div>
+            </div>
+        </div>
+        <div class="form-footer">
+            <button type="button" id="sso-login" class="confirm" ng-click="loginWithSso()">{{'LOGIN_LABEL_SSO_LOGIN_KEY' | translate}}</button>
+        </div>
+    </div>
+
+    <form ng-if="!ssoEnabled" ng-submit="login()" name="loginForm" bm-form autofillable="true">
         <div class="login-body">
             <div class="note-container">
                 <div class="note error" ng-if="!isSupportedBrowser()">

@@ -45,11 +45,21 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     templateUrl: 'views/login.html',
                     controller: 'LoginController',
                     resolve: {
-                        initialData: function (loginInitialization) {
-                            return loginInitialization();
+                        initialData: function (loginInitialization, ssoConfig) {
+                            return ssoConfig.get().then(function (sso) {
+                                if (sso.enabled) {
+                                    return {locations: [], ssoEnabled: true, ssoLoginUrl: sso.loginUrl};
+                                }
+                                return loginInitialization();
+                            });
                         }
                     }
                 })
+            .state('sso', {
+                url: '/sso',
+                controller: 'SsoController',
+                templateUrl: 'views/sso.html'
+            })
             .state('loginLocation', {
                 url: '/loginLocation',
                 controller: 'LoginLocationController',
