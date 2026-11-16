@@ -85,6 +85,7 @@ describe("Authentication", function () {
             expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
         }]));
 
+
     });
 
     describe("loginUserWithOTP", function () {
@@ -266,4 +267,132 @@ describe("logoutService", function () {
 
     });
 
+});
+
+describe("sessionService SSO session", function () {
+    var sessionService, $httpBackend, $bahmniCookieStore;
+    var sessionUrl = Bahmni.Common.Constants.RESTWS_V1 + '/session';
+
+    beforeEach(module('authentication'));
+    beforeEach(module(function ($provide) {
+        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'put', 'remove']);
+        $provide.value('$bahmniCookieStore', $bahmniCookieStore);
+        $provide.value('userService', jasmine.createSpyObj('userService', ['getUser', 'getProviderForUser']));
+    }));
+
+    beforeEach(inject(function (_sessionService_, _$httpBackend_) {
+        sessionService = _sessionService_;
+        $httpBackend = _$httpBackend_;
+    }));
+
+    var loadSession = function (responseData) {
+        var result = 'not resolved';
+        $httpBackend.expectGET(sessionUrl).respond(responseData);
+        sessionService.loadSsoSession().then(function (session) {
+            result = session;
+        });
+        $httpBackend.flush();
+        return result;
+    };
+
+    it("should resolve null when the session is not authenticated", function () {
+        expect(loadSession({authenticated: false})).toBeNull();
+        expect($bahmniCookieStore.put).not.toHaveBeenCalled();
+    });
+
+    it("should resolve null when the authenticated session has no user", function () {
+        expect(loadSession({authenticated: true})).toBeNull();
+        expect($bahmniCookieStore.put).not.toHaveBeenCalled();
+    });
+
+    it("should store the user and location cookies for a valid session", function () {
+        var session = {
+            authenticated: true,
+            user: {username: 'superman'},
+            sessionLocation: {display: 'OPD', uuid: 'location-uuid'}
+        };
+
+        var result = loadSession(session);
+
+        expect(result.user.username).toBe('superman');
+        expect($bahmniCookieStore.put).toHaveBeenCalledWith(Bahmni.Common.Constants.currentUser, 'superman', {path: '/', expires: 7});
+        expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
+        expect($bahmniCookieStore.put).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName, {name: 'OPD', uuid: 'location-uuid'}, {path: '/', expires: 7});
+    });
+
+    it("should not touch the location cookie when the session has no location", function () {
+        loadSession({authenticated: true, user: {username: 'superman'}});
+
+        expect($bahmniCookieStore.remove).not.toHaveBeenCalled();
+        expect($bahmniCookieStore.put.calls.count()).toBe(1);
+    });
+});
+
+describe("logoutService SSO logout", function () {
+    var logoutService, $rootScope, $q, $httpBackend, sessionService, auditLogService, mockWindow;
+
+    beforeEach(module('authentication'));
+    beforeEach(module(function ($provide) {
+        mockWindow = {location: '', document: window.document, navigator: window.navigator, history: window.history, localStorage: window.localStorage};
+        auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+        sessionService = jasmine.createSpyObj('sessionService', ['destroy']);
+
+        $provide.value('$window', mockWindow);
+        $provide.value('auditLogService', auditLogService);
+        $provide.value('formDraftService', jasmine.createSpyObj('formDraftService', ['hasDraftsForProvider']));
+        $provide.value('ngDialog', jasmine.createSpyObj('ngDialog', ['open', 'close']));
+        $provide.value('sessionService', sessionService);
+    }));
+
+    beforeEach(inject(function (_logoutService_, _$rootScope_, _$q_, _$httpBackend_) {
+        logoutService = _logoutService_;
+        $rootScope = _$rootScope_;
+        $q = _$q_;
+        $httpBackend = _$httpBackend_;
+        auditLogService.log.and.returnValue($q.when({}));
+        sessionService.destroy.and.returnValue($q.when({}));
+        $rootScope.formDraftFeatureEnabled = false;
+    }));
+
+    var logoutWith = function (respond) {
+        $httpBackend.expectGET(Bahmni.Common.Constants.loginText).respond(respond.status || 200, respond.data);
+        logoutService.attemptLogout($rootScope);
+        $rootScope.$digest();
+        $httpBackend.flush();
+    };
+
+    it("should end the Keycloak session with the server-configured logout url when SSO is enabled", function () {
+        logoutWith({data: {loginPage: {ssoEnabled: true, ssoLogoutUrl: '/custom/logout'}}});
+
+        expect(sessionService.destroy).toHaveBeenCalled();
+        expect(mockWindow.location).toBe('/custom/logout');
+    });
+
+    it("should fall back to the default logout url when SSO is enabled without one configured", function () {
+        logoutWith({data: {loginPage: {ssoEnabled: true}}});
+
+        expect(mockWindow.location).toBe(Bahmni.Common.Constants.ssoLogoutUrl);
+    });
+
+    it("should go to the login page when SSO is not enabled", function () {
+        logoutWith({data: {loginPage: {ssoEnabled: false}}});
+
+        expect(sessionService.destroy).toHaveBeenCalled();
+        expect(mockWindow.location).toBe('../home/index.html#/login');
+    });
+
+    it("should go to the login page when the login text cannot be loaded", function () {
+        logoutWith({status: 500, data: {}});
+
+        expect(mockWindow.location).toBe('../home/index.html#/login');
+    });
+
+    it("should ignore a logout url stored in localStorage", function () {
+        localStorage.setItem('bahmni.sso.logoutUrl', 'https://attacker.example/');
+
+        logoutWith({data: {loginPage: {ssoEnabled: false}}});
+
+        expect(mockWindow.location).toBe('../home/index.html#/login');
+        localStorage.removeItem('bahmni.sso.logoutUrl');
+    });
 });

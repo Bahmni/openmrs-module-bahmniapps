@@ -12,6 +12,22 @@
 angular.module('bahmni.home')
     .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner', 'messagingService', 'loadConfigService',
         function ($rootScope, $q, locationService, spinner, messagingService, loadConfigService) {
+            var loadHomeConfig = function () {
+                return loadConfigService.loadConfig(Bahmni.Common.Constants.baseUrl + "home/app.json").then(
+                    function (response) {
+                        var config = response.data && response.data.config;
+                        $rootScope.homeURL = (config && config.homeUrl) || Bahmni.Common.Constants.homeUrl;
+                        localStorage.setItem('homeUrl', $rootScope.homeURL);
+                        localStorage.setItem('enableCommandPalette', config && config.enableCommandPalette === true ? 'true' : 'false');
+                    },
+                    function () {
+                        $rootScope.homeURL = Bahmni.Common.Constants.homeUrl;
+                        localStorage.setItem('homeUrl', $rootScope.homeURL);
+                        localStorage.setItem('enableCommandPalette', 'false');
+                    }
+                );
+            };
+
             var init = function () {
                 var locationsDeferred = $q.defer();
                 locationService.getAllByTag("Login Location").then(
@@ -33,30 +49,15 @@ angular.module('bahmni.home')
                     }
                 );
 
-                var configDeferred = $q.defer();
-                loadConfigService.loadConfig(Bahmni.Common.Constants.baseUrl + "home/app.json").then(
-                    function (response) {
-                        var config = response.data && response.data.config;
-                        $rootScope.homeURL = (config && config.homeUrl) || Bahmni.Common.Constants.homeUrl;
-                        localStorage.setItem('homeUrl', $rootScope.homeURL);
-                        localStorage.setItem('enableCommandPalette', config && config.enableCommandPalette === true ? 'true' : 'false');
-                        configDeferred.resolve();
-                    },
-                    function () {
-                        $rootScope.homeURL = Bahmni.Common.Constants.homeUrl;
-                        localStorage.setItem('homeUrl', $rootScope.homeURL);
-                        localStorage.setItem('enableCommandPalette', 'false');
-                        configDeferred.resolve();
-                    }
-                );
-
-                return $q.all([locationsDeferred.promise, configDeferred.promise]).then(function (results) {
+                return $q.all([locationsDeferred.promise, loadHomeConfig()]).then(function (results) {
                     return results[0];
                 });
             };
 
-            return function () {
+            var loginInitialization = function () {
                 return spinner.forPromise(init());
             };
+            loginInitialization.loadHomeConfig = loadHomeConfig;
+            return loginInitialization;
         }
     ]);

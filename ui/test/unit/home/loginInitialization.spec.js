@@ -70,4 +70,34 @@ describe('loginInitialization', function () {
         $httpBackend.flush();
         expect(localStorage.getItem('enableCommandPalette')).toBe('false');
     });
+
+    describe('loadHomeConfig', function () {
+        it('should write homeUrl and enableCommandPalette without loading login locations', function () {
+            loadConfigService.loadConfig.and.returnValue(
+                specUtil.respondWithPromise($q, {data: {config: {homeUrl: '/custom-home', enableCommandPalette: true}}})
+            );
+
+            loginInitialization.loadHomeConfig();
+            $rootScope.$apply();
+
+            expect(localStorage.getItem('homeUrl')).toBe('/custom-home');
+            expect(localStorage.getItem('enableCommandPalette')).toBe('true');
+            expect($rootScope.homeURL).toBe('/custom-home');
+            expect(locationService.getAllByTag).not.toHaveBeenCalled();
+        });
+
+        it('should fall back to defaults and still resolve when the config cannot be loaded', function () {
+            loadConfigService.loadConfig.and.returnValue($q.reject('error'));
+            var resolved = false;
+
+            loginInitialization.loadHomeConfig().then(function () {
+                resolved = true;
+            });
+            $rootScope.$apply();
+
+            expect(resolved).toBe(true);
+            expect(localStorage.getItem('homeUrl')).toBe(Bahmni.Common.Constants.homeUrl);
+            expect(localStorage.getItem('enableCommandPalette')).toBe('false');
+        });
+    });
 });

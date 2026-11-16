@@ -16,6 +16,10 @@ angular.module('bahmni.home')
             var loginPagePath = "/login";
             $scope.locations = initialData.locations;
             $scope.loginInfo = {};
+            $scope.ssoEnabled = initialData.ssoEnabled === true;
+            $scope.loginWithSso = function () {
+                $window.location.href = initialData.ssoLoginUrl;
+            };
             var localeLanguages = [];
 
             var getLocalTimeZone = function () {

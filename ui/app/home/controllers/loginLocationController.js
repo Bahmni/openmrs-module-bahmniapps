@@ -10,8 +10,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginLocationController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService) {
+    .controller('LoginLocationController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService', 'ssoConfig', 'postLoginService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService, ssoConfig, postLoginService) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
@@ -120,6 +120,35 @@ angular.module('bahmni.home')
             if ($location.path() === loginPagePath) {
                 redirectToLandingPageIfAlreadyAuthenticated();
             }
+
+            var completeSsoLogin = function () {
+                var pickup = sessionService.loadSsoSession().then(function (session) {
+                    if (!session) {
+                        return $q.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
+                    }
+                    return sessionService.loadCredentials().then(function () {
+                        return postLoginService.completeLogin(session);
+                    });
+                });
+                spinner.forPromise(pickup);
+                pickup.catch(function (error) {
+                    $scope.errorMessageTranslateKey = error;
+                });
+            };
+
+            $scope.endSsoSession = function () {
+                return ssoConfig.get().then(function (sso) {
+                    $window.location = sso.logoutUrl;
+                });
+            };
+
+            ssoConfig.get().then(function (sso) {
+                $scope.ssoEnabled = sso.enabled === true;
+                if ($scope.ssoEnabled) {
+                    completeSsoLogin();
+                }
+            });
+
             var onSuccessfulAuthentication = function () {
                 $scope.loginInfo.currentLocation = getLastLoggedinLocation();
                 $rootScope.$broadcast('event:auth-loggedin');

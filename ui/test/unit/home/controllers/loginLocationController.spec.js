@@ -25,7 +25,10 @@ describe("LoginLocationController", function () {
 		$bahmniCookieStore,
 		currentUser,
 		mockLocation,
-		auditLogService;
+		auditLogService,
+		ssoConfig,
+		postLoginService,
+		mockWindow;
 	var mockLocation = { path: jasmine.createSpy(), url: jasmine.createSpy(), search: jasmine.createSpy().and.returnValue({}) };
 	  
 
@@ -56,7 +59,9 @@ describe("LoginLocationController", function () {
 		return $controller("LoginLocationController", {
 			$rootScope: rootScopeMock,
 			$scope: scopeMock,
-			$window: window,
+			$window: mockWindow,
+			ssoConfig: ssoConfig,
+			postLoginService: postLoginService,
 			$location: mockLocation,
 			$translate: translate,
 			userService: userService,
@@ -75,8 +80,12 @@ describe("LoginLocationController", function () {
 		translate = jasmine.createSpyObj("$translate", ["use"]);
 		userService = jasmine.createSpyObj("userService", ["savePreferences"]);
 		localeService = jasmine.createSpyObj("localeService", ["getLoginText", "allowedLocalesList", "serverDateTime", "getLocalesLangs"]);
-		sessionService = jasmine.createSpyObj("sessionService", ["loginUser", "loadCredentials", "updateSession", "get"]);
+		sessionService = jasmine.createSpyObj("sessionService", ["loginUser", "loadCredentials", "loadSsoSession", "updateSession", "get"]);
 		auditLogService = jasmine.createSpyObj("auditLogService", ["log"]);
+		ssoConfig = jasmine.createSpyObj("ssoConfig", ["get"]);
+		ssoConfig.get.and.returnValue($q.when({enabled: false}));
+		postLoginService = jasmine.createSpyObj("postLoginService", ["completeLogin"]);
+		mockWindow = {location: ''};
 		currentUser = jasmine.createSpyObj("currentUser", ["addDefaultLocale", "toContract"]);
 		_spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
 
@@ -154,5 +163,76 @@ describe("LoginLocationController", function () {
 		scopeMock.updateSessionLocation(selectedLocation);
 
 		expect(scopeMock.loginInfo.currentLocation).toEqual(selectedLocation);
+	});
+
+	describe("when SSO is enabled", function () {
+		beforeEach(inject(function ($httpBackend) {
+			$httpBackend.whenGET(/.*/).respond({});
+			$httpBackend.whenDELETE(/.*/).respond({});		}));
+
+		beforeEach(function () {
+			ssoConfig.get.and.returnValue($q.when({enabled: true, logoutUrl: '/custom/logout'}));
+		});
+
+		it("should complete the login with the session loaded from the SSO return", function () {
+			var session = {sessionLocation: {uuid: "uuid1"}};
+			sessionService.loadSsoSession.and.returnValue($q.when(session));
+			sessionService.loadCredentials.and.returnValue($q.when());
+			postLoginService.completeLogin.and.returnValue($q.when());
+
+			loginLocationController();
+			rootScopeMock.$digest();
+
+			expect(scopeMock.ssoEnabled).toBe(true);
+			expect(sessionService.loadCredentials).toHaveBeenCalled();
+			expect(postLoginService.completeLogin).toHaveBeenCalledWith(session);
+			expect(scopeMock.errorMessageTranslateKey).toBeUndefined();
+		});
+
+		it("should show the error and not complete the login when there is no authenticated session", function () {
+			sessionService.loadSsoSession.and.returnValue($q.when(null));
+
+			loginLocationController();
+			rootScopeMock.$digest();
+
+			expect(scopeMock.errorMessageTranslateKey).toBe("LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY");
+			expect(sessionService.loadCredentials).not.toHaveBeenCalled();
+			expect(postLoginService.completeLogin).not.toHaveBeenCalled();
+		});
+
+		it("should show the error and not complete the login when loading credentials fails", function () {
+			sessionService.loadSsoSession.and.returnValue($q.when({sessionLocation: {uuid: "uuid1"}}));
+			sessionService.loadCredentials.and.returnValue($q.reject("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER"));
+
+			loginLocationController();
+			rootScopeMock.$digest();
+
+			expect(scopeMock.errorMessageTranslateKey).toBe("YOU_HAVE_NOT_BEEN_SETUP_PROVIDER");
+			expect(postLoginService.completeLogin).not.toHaveBeenCalled();
+		});
+
+		it("should end the Keycloak session with the configured logout url", function () {
+			sessionService.loadSsoSession.and.returnValue($q.when(null));
+
+			loginLocationController();
+			scopeMock.endSsoSession();
+			rootScopeMock.$digest();
+
+			expect(mockWindow.location).toBe('/custom/logout');
+		});
+	});
+
+	describe("when SSO is disabled", function () {
+		beforeEach(inject(function ($httpBackend) {
+			$httpBackend.whenGET(/.*/).respond({});
+			$httpBackend.whenDELETE(/.*/).respond({});		}));
+
+		it("should not load an SSO session", function () {
+			loginLocationController();
+			rootScopeMock.$digest();
+
+			expect(scopeMock.ssoEnabled).toBe(false);
+			expect(sessionService.loadSsoSession).not.toHaveBeenCalled();
+		});
 	});
 });
