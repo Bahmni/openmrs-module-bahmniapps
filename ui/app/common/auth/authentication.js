@@ -115,8 +115,6 @@ angular.module('authentication')
             var deferrable = $q.defer();
             createSession(username, password, otp).then(function (data) {
                 if (data.authenticated) {
-                    localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
-                    localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
                     $bahmniCookieStore.put(Bahmni.Common.Constants.currentUser, username, {path: '/', expires: 7});
                     if (location != undefined) {
                         $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
@@ -138,7 +136,7 @@ angular.module('authentication')
             return $http.get(sessionResourcePath, { cache: false });
         };
 
-        this.loadSsoSession = function (logoutUrl) {
+        this.loadSsoSession = function () {
             return $http.get(Bahmni.Common.Constants.RESTWS_V1 + '/session', { cache: false }).then(function (response) {
                 var session = response.data;
                 if (!session || !session.authenticated || !session.user) {
@@ -152,8 +150,6 @@ angular.module('authentication')
                         uuid: session.sessionLocation.uuid
                     }, {path: '/', expires: 7});
                 }
-                localStorage.setItem(Bahmni.Common.Constants.ssoLoginFlag, 'true');
-                localStorage.setItem(Bahmni.Common.Constants.ssoLogoutUrlKey, logoutUrl || Bahmni.Common.Constants.ssoLogoutUrl);
                 return session;
             });
         };
@@ -264,20 +260,26 @@ angular.module('authentication')
         return {
             authenticateUser: authenticateUser
         };
-    }]).factory('logoutService', ['$rootScope', 'sessionService', '$window', 'auditLogService', 'formDraftService', 'ngDialog', '$log', function ($rootScope, sessionService, $window, auditLogService, formDraftService, ngDialog, $log) {
+    }]).factory('logoutService', ['$rootScope', 'sessionService', '$window', 'auditLogService', 'formDraftService', 'ngDialog', '$log', '$http', function ($rootScope, sessionService, $window, auditLogService, formDraftService, ngDialog, $log, $http) {
         var isAttemptingLogout = false;
+        var loginPageUrl = "../home/index.html#/login";
+
+        function redirectAfterLogout (response) {
+            var loginPage = (response && response.data && response.data.loginPage) || {};
+            // End the Keycloak session as well, otherwise the SSO button logs the same user straight back in.
+            if (loginPage.ssoEnabled === true) {
+                $window.location = loginPage.ssoLogoutUrl || Bahmni.Common.Constants.ssoLogoutUrl;
+            } else {
+                $window.location = loginPageUrl;
+            }
+        }
+
         function logoutUser () {
             auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
                 sessionService.destroy().then(function () {
-                    if (localStorage.getItem(Bahmni.Common.Constants.ssoLoginFlag) === 'true') {
-                        // End the Keycloak session as well, otherwise the SSO button logs the same user straight back in.
-                        var ssoLogoutUrl = localStorage.getItem(Bahmni.Common.Constants.ssoLogoutUrlKey) || Bahmni.Common.Constants.ssoLogoutUrl;
-                        localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
-                        localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
-                        $window.location = ssoLogoutUrl;
-                    } else {
-                        $window.location = "../home/index.html#/login";
-                    }
+                    $http.get(Bahmni.Common.Constants.loginText, {headers: {Accept: 'text/plain'}}).then(redirectAfterLogout, function () {
+                        $window.location = loginPageUrl;
+                    });
                 });
             });
         }

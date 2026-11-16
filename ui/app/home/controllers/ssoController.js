@@ -3,9 +3,9 @@
 angular.module('bahmni.home')
     .controller('SsoController', ['$scope', '$state', '$window', 'sessionService', 'spinner', 'ssoConfig', 'postLoginService',
         function ($scope, $state, $window, sessionService, spinner, ssoConfig, postLoginService) {
+            $scope.ssoReturn = true;
+
             $scope.endSsoSession = function () {
-                localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
-                localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
                 return ssoConfig.get().then(function (sso) {
                     $window.location = sso.logoutUrl;
                 });
@@ -15,9 +15,7 @@ angular.module('bahmni.home')
                 $state.go('login', {showLoginMessage: true});
             };
 
-            const promise = ssoConfig.get().then(function (sso) {
-                return sessionService.loadSsoSession(sso.logoutUrl);
-            }).then(function (session) {
+            const promise = sessionService.loadSsoSession().then(function (session) {
                 if (!session) {
                     backToLoginWithError();
                     return;

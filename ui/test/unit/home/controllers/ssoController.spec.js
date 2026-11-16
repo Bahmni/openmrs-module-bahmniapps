@@ -23,14 +23,7 @@ describe('SsoController', function () {
         ssoConfig = jasmine.createSpyObj('ssoConfig', ['get']);
         ssoConfig.get.and.returnValue($q.when({enabled: true, logoutUrl: '/custom/logout'}));
         postLoginService = jasmine.createSpyObj('postLoginService', ['completeLogin']);
-        localStorage.setItem(Bahmni.Common.Constants.ssoLoginFlag, 'true');
-        localStorage.setItem(Bahmni.Common.Constants.ssoLogoutUrlKey, '/custom/logout');
     }));
-
-    afterEach(function () {
-        localStorage.removeItem(Bahmni.Common.Constants.ssoLoginFlag);
-        localStorage.removeItem(Bahmni.Common.Constants.ssoLogoutUrlKey);
-    });
 
     var createController = function () {
         $controller('SsoController', {
@@ -75,7 +68,7 @@ describe('SsoController', function () {
             expect(postLoginService.completeLogin).not.toHaveBeenCalled();
         });
 
-        it('should end the Keycloak session and clear the sso keys when the user leaves the error page', function () {
+        it('should end the Keycloak session when the user leaves the error page', function () {
             sessionService.loadSsoSession.and.returnValue($q.when({sessionLocation: {uuid: 'location-uuid'}}));
             sessionService.loadCredentials.and.returnValue($q.reject('YOU_HAVE_NOT_BEEN_SETUP_PROVIDER'));
             createController();
@@ -84,8 +77,6 @@ describe('SsoController', function () {
             $rootScope.$digest();
 
             expect(mockWindow.location).toBe('/custom/logout');
-            expect(localStorage.getItem(Bahmni.Common.Constants.ssoLoginFlag)).toBeNull();
-            expect(localStorage.getItem(Bahmni.Common.Constants.ssoLogoutUrlKey)).toBeNull();
         });
     });
 
@@ -94,12 +85,12 @@ describe('SsoController', function () {
             sessionService.loadCredentials.and.returnValue($q.when());
         });
 
-        it('should pass the configured logout url when loading the sso session', function () {
+        it('should load the sso session', function () {
             sessionService.loadSsoSession.and.returnValue($q.when(null));
 
             createController();
 
-            expect(sessionService.loadSsoSession).toHaveBeenCalledWith('/custom/logout');
+            expect(sessionService.loadSsoSession).toHaveBeenCalledWith();
         });
 
         it('should complete the login with the loaded session', function () {
