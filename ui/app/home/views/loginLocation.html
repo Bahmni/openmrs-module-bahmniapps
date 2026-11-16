@@ -9,6 +9,13 @@
     </header>
     <form ng-submit="updateSessionLocation()" name="loginLocationForm" bm-form autofillable="true">
         <div class="login-body">
+            <div class="note-container" ng-show="errorMessageTranslateKey">
+                <div class="note error">
+                    <div class="text">
+                        {{errorMessageTranslateKey | translate}}
+                    </div>
+                </div>
+            </div>
             <div class="form-field">
                 <div class="field-attribute">
                     <label for="location">
@@ -29,6 +36,9 @@
         </div>
 
     </form>
+    <div class="form-footer" ng-if="ssoEnabled && errorMessageTranslateKey">
+        <button type="button" id="sso-end-session" class="confirm" ng-click="endSsoSession()">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</button>
+    </div>
 
     <div class="warning-message">
         <span ng-if="warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{warning}}</span>

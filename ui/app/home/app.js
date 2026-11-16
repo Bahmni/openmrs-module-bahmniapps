@@ -55,11 +55,6 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         }
                     }
                 })
-            .state('sso', {
-                url: '/sso',
-                controller: 'SsoController',
-                templateUrl: 'views/login.html'
-            })
             .state('loginLocation', {
                 url: '/loginLocation',
                 controller: 'LoginLocationController',
