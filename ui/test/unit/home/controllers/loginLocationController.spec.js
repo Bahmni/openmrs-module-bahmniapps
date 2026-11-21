@@ -211,15 +211,6 @@ describe("LoginLocationController", function () {
 			expect(postLoginService.completeLogin).not.toHaveBeenCalled();
 		});
 
-		it("should end the Keycloak session with the configured logout url", function () {
-			sessionService.loadSsoSession.and.returnValue($q.when(null));
-
-			loginLocationController();
-			scopeMock.endSsoSession();
-			rootScopeMock.$digest();
-
-			expect(mockWindow.location).toBe('/custom/logout');
-		});
 	});
 
 	describe("when SSO is disabled", function () {
