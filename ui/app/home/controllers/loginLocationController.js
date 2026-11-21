@@ -136,12 +136,6 @@ angular.module('bahmni.home')
                 });
             };
 
-            $scope.endSsoSession = function () {
-                return ssoConfig.get().then(function (sso) {
-                    $window.location = sso.logoutUrl;
-                });
-            };
-
             ssoConfig.get().then(function (sso) {
                 $scope.ssoEnabled = sso.enabled === true;
                 if ($scope.ssoEnabled) {

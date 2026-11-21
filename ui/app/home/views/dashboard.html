@@ -16,10 +16,10 @@
                 <i class="fa fa-caret-down fa-white mini"></i>
             </button>
             <ul>
-                <li ng-show=currentUser.username>
+                <li ng-show=currentUser.person.display>
                     <a class="disabled">
                         <i class="fa fa-user-md fa-white small"></i>
-                        <span ng-bind="currentUser.username"></span>
+                        <span ng-bind="currentUser.person.display"></span>
                     </a>
                 </li>
                 <li>

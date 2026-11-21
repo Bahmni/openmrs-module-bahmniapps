@@ -36,10 +36,6 @@
         </div>
 
     </form>
-    <div class="form-footer" ng-if="ssoEnabled && errorMessageTranslateKey">
-        <button type="button" id="sso-end-session" class="confirm" ng-click="endSsoSession()">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</button>
-    </div>
-
     <div class="warning-message">
         <span ng-if="warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{warning}}</span>
         <p>{{warningMessage | translate :timeZoneObject}} </p>
