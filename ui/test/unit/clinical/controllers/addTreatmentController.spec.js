@@ -461,6 +461,7 @@ describe("AddTreatmentController", function () {
     describe("verifyAdd()", function () {
         it("should continue normal flow when treatments can be added without any restrictions from patient weight and diagnosis", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            treatment.dosingRule = 'mg/kg';
             scope.calculateDose = jasmine.createSpy('calculateDose');
             scope.verifyAdd(treatment);
             expect(scope.calculateDose).toHaveBeenCalledWith(treatment);
@@ -2333,45 +2334,156 @@ describe("AddTreatmentController", function () {
     });
 
     describe('calculateDose', function() {
+        var buildTreatment = function (overrides) {
+            return _.extend({ dosingRule: 'mg/kg', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit: jasmine.createSpy('calculateQuantityAndUnit') }, overrides);
+        };
+        var weightMissing = { status: 400, data: { error: { message: 'Please enter WEIGHT to calculate dose.' } } };
+        var serverFault = { status: 500, data: { error: { message: 'Internal Server Error' } } };
+
         it('should call getCalculatedDose with correct parameters', function() {
-            var dosingRule = 'someRule';
-            var treatment = { dosingRule: dosingRule, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
+            var treatment = buildTreatment();
             scope.calculateDose(treatment);
 
             expect(orderSetService.getCalculatedDose).toHaveBeenCalledWith(
-                scope.patient.uuid,
-                treatment.drug.name,
-                treatment.uniformDosingType.dose,
-                treatment.uniformDosingType.doseUnits,
-                '',
-                dosingRule,
-                undefined
-            );
+                scope.patient.uuid, 'Drug A', 10, 'mg', '', 'mg/kg', undefined);
         });
 
-        it('should update dose and call calculateQuantityAndUnit', function() {
-            var treatment = { dosingRule: 'someRule', drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' }, calculateQuantityAndUnit};
-            var deferred = $q.defer();
-            var mockCalculatedDosage = { dose: 100 };
+        it('should apply the calculated dose and clear the rule on success (200)', function() {
+            var treatment = buildTreatment();
+            orderSetService.getCalculatedDose.and.returnValue($q.resolve({ dose: 100, doseUnit: 'mg' }));
+            var resolved;
 
-            spyOn(deferred.promise, 'then').and.callFake(function(callback) {
-                callback(mockCalculatedDosage);
-            });
+            scope.calculateDose(treatment).then(function (result) { resolved = result; });
+            rootScope.$digest();
 
-            orderSetService.getCalculatedDose.and.returnValue(deferred.promise);
+            expect(resolved).toBe(treatment);
+            expect(treatment.uniformDosingType.dose).toEqual(100);
+            expect(treatment.uniformDosingType.doseUnits).toEqual('mg');
+            expect(treatment.dosingRule).toBeUndefined();
+            expect(treatment.calculateQuantityAndUnit).toHaveBeenCalled();
+        });
+
+        it('should not clear the rule before the server responds', function() {
+            var treatment = buildTreatment();
+            orderSetService.getCalculatedDose.and.returnValue($q.defer().promise);
 
             scope.calculateDose(treatment);
             rootScope.$digest();
 
-            expect(treatment.uniformDosingType.dose).toEqual(mockCalculatedDosage.dose);
-            expect(treatment.calculateQuantityAndUnit).toHaveBeenCalled();
+            expect(treatment.dosingRule).toEqual('mg/kg');
+            expect(treatment.uniformDosingType.doseUnits).toEqual('mg');
         });
 
-        it('should not calculate dose if dosingRule is not defined', function() {
-            var treatment = { dosingRule: null, drug: { name: 'Drug A' }, uniformDosingType: { dose: 10, doseUnits: 'mg' } };
+        [['400 (weight missing)', weightMissing], ['500 (server fault)', serverFault]].forEach(function (testCase) {
+            it('should reject and keep dosingRule, doseUnits and dose on ' + testCase[0], function() {
+                var treatment = buildTreatment();
+                orderSetService.getCalculatedDose.and.returnValue($q.reject(testCase[1]));
+                var rejection;
 
-            scope.calculateDose(treatment);
+                scope.calculateDose(treatment).catch(function (response) { rejection = response; });
+                rootScope.$digest();
+
+                expect(rejection).toBe(testCase[1]);
+                expect(treatment.dosingRule).toEqual('mg/kg');
+                expect(treatment.uniformDosingType.doseUnits).toEqual('mg');
+                expect(treatment.uniformDosingType.dose).toEqual(10);
+                expect(treatment.calculateQuantityAndUnit).not.toHaveBeenCalled();
+            });
+        });
+
+        it('should keep the selected unit on the form when calculation fails', function() {
+            scope.treatment.dosingRule = 'mg/kg';
+            scope.$digest();
+            scope.treatment.uniformDosingType.doseUnits = 'ml';
+            scope.$digest();
+            orderSetService.getCalculatedDose.and.returnValue($q.reject(weightMissing));
+
+            scope.calculateDose(scope.treatment);
+            scope.$digest();
+
+            expect(scope.treatment.dosingRule).toEqual('mg/kg');
+            expect(scope.treatment.uniformDosingType.doseUnits).toEqual('ml');
+        });
+
+        it('should resolve without calling the server if dosingRule is not defined', function() {
+            var treatment = buildTreatment({ dosingRule: null });
+            var resolved;
+
+            scope.calculateDose(treatment).then(function (result) { resolved = result; });
+            rootScope.$digest();
+
             expect(orderSetService.getCalculatedDose).not.toHaveBeenCalled();
+            expect(resolved).toBe(treatment);
+        });
+
+        describe('verifyAdd and add with a dosing rule', function () {
+            var treatment;
+
+            beforeEach(function () {
+                scope.treatments = [];
+                treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: 'Activated charcoal' } });
+                treatment.dosingRule = 'mg/kg';
+                treatment.uniformDosingType.doseUnits = 'mg';
+                treatment.uniformDosingType.dose = 2;
+                scope.treatment = treatment;
+            });
+
+            it('should add the treatment with the calculated dose on success (200)', function () {
+                orderSetService.getCalculatedDose.and.returnValue($q.resolve({ dose: 140, doseUnit: 'mg' }));
+                var verified;
+
+                scope.verifyAdd(treatment).then(function (result) { verified = result; });
+                scope.add();
+                scope.$digest();
+
+                expect(verified).toBe(true);
+                expect(scope.treatments.length).toEqual(1);
+                expect(scope.treatments[0]).toBe(treatment);
+                expect(treatment.uniformDosingType.dose).toEqual(140);
+                expect(treatment.uniformDosingType.doseUnits).toEqual('mg');
+            });
+
+            [['400 (weight missing)', weightMissing], ['500 (server fault)', serverFault]].forEach(function (testCase) {
+                it('should block the add and keep the form intact on ' + testCase[0], function () {
+                    orderSetService.getCalculatedDose.and.returnValue($q.reject(testCase[1]));
+                    var verified;
+
+                    scope.verifyAdd(treatment).then(function (result) { verified = result; });
+                    scope.add();
+                    scope.$digest();
+
+                    expect(verified).toBe(false);
+                    expect(scope.treatments.length).toEqual(0);
+                    expect(scope.treatment).toBe(treatment);
+                    expect(scope.treatment.dosingRule).toEqual('mg/kg');
+                    expect(scope.treatment.uniformDosingType.doseUnits).toEqual('mg');
+                    expect(scope.treatment.uniformDosingType.dose).toEqual(2);
+                });
+            });
+
+            it('should allow adding manually after a failure once the rule is removed', function () {
+                orderSetService.getCalculatedDose.and.returnValue($q.reject(weightMissing));
+                scope.verifyAdd(treatment);
+                scope.add();
+                scope.$digest();
+                expect(scope.treatments.length).toEqual(0);
+
+                treatment.dosingRule = undefined;
+                treatment.uniformDosingType.doseUnits = 'mg';
+                scope.verifyAdd(treatment);
+                scope.add();
+                scope.$digest();
+
+                expect(scope.treatments.length).toEqual(1);
+                expect(orderSetService.getCalculatedDose.calls.count()).toEqual(1);
+            });
+
+            it('should return false from verifyAdd and not calculate when the form is invalid', function () {
+                scope.addForm = { $invalid: true, $valid: false };
+
+                expect(scope.verifyAdd(treatment)).toBe(false);
+                expect(orderSetService.getCalculatedDose).not.toHaveBeenCalled();
+            });
         });
     });
 
@@ -2413,11 +2525,13 @@ describe("AddTreatmentController", function () {
     });
 
     describe('calculate dose when having dosing rules', function () {
-        it('should set return the treatment if dosing rule is not null', function () {
+        it('should resolve with the treatment if dosing rule is not null', function () {
             var drugOrder1 = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
             drugOrder1.dosingRule = "mg/Kg";
-            const treatment = scope.calculateDose(drugOrder1);
-            expect(treatment).toBe(drugOrder1);
+            var resolved;
+            scope.calculateDose(drugOrder1).then(function (result) { resolved = result; });
+            rootScope.$digest();
+            expect(resolved).toBe(drugOrder1);
         });
     });
 
