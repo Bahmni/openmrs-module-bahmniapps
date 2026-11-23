@@ -483,11 +483,11 @@ describe("AddTreatmentController", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
             scope.treatment = treatment;
             scope.addTreatmentWithDiagnosis = {
-                "duration": 604800,
+                order: "PRIMARY"
             };
             scope.confirmedDiagnoses = [];
             const response = scope.verifyAdd(treatment);
-            expect(response).toBeFalsy();
+            expect(response).toBe(false);
         });
     });
 
