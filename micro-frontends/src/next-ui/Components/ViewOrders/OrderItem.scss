@@ -1,0 +1,31 @@
+.order-item-wrapper {
+  .order-item-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 20px;
+    gap: 10px;
+    background-color: #fff;
+    padding: 3px 0 3px 30px;
+    border-top: 1px solid #eee;
+    align-items: center;
+    cursor: pointer;
+
+    .order-item-chevron {
+      cursor: pointer;
+    }
+  }
+
+  .order-item-details {
+    padding: 3px;
+    background-color: #EFF8FF;
+    text-align: end;
+    font-size: 12px;
+    color: #666;
+  }
+}
+
+.order-item-container {
+  background-color: #fff;
+  .accordion-header {
+    padding-left: 20px !important;
+  }
+}
