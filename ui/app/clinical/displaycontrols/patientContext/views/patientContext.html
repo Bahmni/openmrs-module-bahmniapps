@@ -15,6 +15,7 @@
             </li>
             <li>{{patientContext.gender}}</li>
             <li>{{patientContext.birthdate | birthDateToAgeText}}</li>
+            <li ng-if="showObs">{{patientObservation.valueAsString}} {{patientObservation.concept.units}} </li>
             <li ng-repeat="(key, value) in patientContext.personAttributes">
                 {{::value.description |translate}}: {{value.value}}
             </li>
