@@ -463,8 +463,9 @@ describe("AddTreatmentController", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
             treatment.dosingRule = 'mg/kg';
             scope.calculateDose = jasmine.createSpy('calculateDose');
-            scope.verifyAdd(treatment);
-            expect(scope.calculateDose).toHaveBeenCalledWith(treatment);
+            expect(scope.verifyAdd(treatment)).toBe(true);
+            // The dose is calculated by add(), so that every submit path is gated, not by verifyAdd.
+            expect(scope.calculateDose).not.toHaveBeenCalled();
         });
 
         it("should return false when patient weight is not captured and user is trying to add treatments", function () {
@@ -2416,7 +2417,7 @@ describe("AddTreatmentController", function () {
             expect(resolved).toBe(treatment);
         });
 
-        describe('verifyAdd and add with a dosing rule', function () {
+        describe('add with a dosing rule', function () {
             var treatment;
 
             beforeEach(function () {
@@ -2430,29 +2431,35 @@ describe("AddTreatmentController", function () {
 
             it('should add the treatment with the calculated dose on success (200)', function () {
                 orderSetService.getCalculatedDose.and.returnValue($q.resolve({ dose: 140, doseUnit: 'mg' }));
-                var verified;
 
-                scope.verifyAdd(treatment).then(function (result) { verified = result; });
+                expect(scope.verifyAdd(treatment)).toBe(true);
                 scope.add();
                 scope.$digest();
 
-                expect(verified).toBe(true);
                 expect(scope.treatments.length).toEqual(1);
                 expect(scope.treatments[0]).toBe(treatment);
                 expect(treatment.uniformDosingType.dose).toEqual(140);
                 expect(treatment.uniformDosingType.doseUnits).toEqual('mg');
             });
 
+            it('should not add the treatment before the dose calculation completes', function () {
+                orderSetService.getCalculatedDose.and.returnValue($q.defer().promise);
+
+                scope.add();
+                scope.$digest();
+
+                expect(scope.treatments.length).toEqual(0);
+                expect(scope.treatment).toBe(treatment);
+            });
+
             [['400 (weight missing)', weightMissing], ['500 (server fault)', serverFault]].forEach(function (testCase) {
                 it('should block the add and keep the form intact on ' + testCase[0], function () {
                     orderSetService.getCalculatedDose.and.returnValue($q.reject(testCase[1]));
-                    var verified;
 
-                    scope.verifyAdd(treatment).then(function (result) { verified = result; });
+                    scope.verifyAdd(treatment);
                     scope.add();
                     scope.$digest();
 
-                    expect(verified).toBe(false);
                     expect(scope.treatments.length).toEqual(0);
                     expect(scope.treatment).toBe(treatment);
                     expect(scope.treatment.dosingRule).toEqual('mg/kg');
@@ -2461,16 +2468,35 @@ describe("AddTreatmentController", function () {
                 });
             });
 
+            it('should gate add() even when verifyAdd was not called first (Enter key / programmatic submit)', function () {
+                orderSetService.getCalculatedDose.and.returnValue($q.reject(weightMissing));
+
+                scope.add();
+                scope.$digest();
+
+                expect(orderSetService.getCalculatedDose).toHaveBeenCalled();
+                expect(scope.treatments.length).toEqual(0);
+                expect(scope.treatment.dosingRule).toEqual('mg/kg');
+            });
+
+            it('should calculate the dose exactly once per add', function () {
+                orderSetService.getCalculatedDose.and.returnValue($q.resolve({ dose: 140, doseUnit: 'mg' }));
+
+                scope.verifyAdd(treatment);
+                scope.add();
+                scope.$digest();
+
+                expect(orderSetService.getCalculatedDose.calls.count()).toEqual(1);
+            });
+
             it('should allow adding manually after a failure once the rule is removed', function () {
                 orderSetService.getCalculatedDose.and.returnValue($q.reject(weightMissing));
-                scope.verifyAdd(treatment);
                 scope.add();
                 scope.$digest();
                 expect(scope.treatments.length).toEqual(0);
 
                 treatment.dosingRule = undefined;
                 treatment.uniformDosingType.doseUnits = 'mg';
-                scope.verifyAdd(treatment);
                 scope.add();
                 scope.$digest();
 
