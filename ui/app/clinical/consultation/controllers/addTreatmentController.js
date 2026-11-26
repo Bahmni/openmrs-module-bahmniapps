@@ -384,21 +384,19 @@ angular.module('bahmni.clinical')
             }, true);
 
             $scope.calculateDose = function (treatment) {
-                if (treatment.dosingRule != null || treatment.dosingRule != undefined) {
-                    var visitUuid = treatmentConfig.orderSet.calculateDoseOnlyOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
-                    var drugName = treatment.drug ? treatment.drug.name : treatment.drugNonCoded;
-                    var calculatedDose = orderSetService.getCalculatedDose($scope.patient.uuid, drugName, treatment.uniformDosingType.dose, treatment.uniformDosingType.doseUnits, '', treatment.dosingRule, visitUuid);
-                    treatment.dosingRule = undefined;
-                    calculatedDose.then(function (calculatedDosage) {
+                if (!$scope.isRuleMode(treatment)) {
+                    return $q.resolve(treatment);
+                }
+                var visitUuid = treatmentConfig.orderSet.calculateDoseOnlyOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
+                var drugName = treatment.drug ? treatment.drug.name : treatment.drugNonCoded;
+                return orderSetService.getCalculatedDose($scope.patient.uuid, drugName, treatment.uniformDosingType.dose, treatment.uniformDosingType.doseUnits, '', treatment.dosingRule, visitUuid)
+                    .then(function (calculatedDosage) {
                         treatment.uniformDosingType.dose = calculatedDosage.dose;
+                        treatment.dosingRule = undefined;
                         treatment.calculateQuantityAndUnit();
                         return treatment;
                     });
-                    return treatment;
-                }
             };
-
-            $scope.$watch('calculateDose', $scope.treatment, true);
 
             $scope.getFinalDosingUnits = function (treatment) {
                 const ruleUnitList = $scope.ruleUnitsMap && $scope.ruleUnitsMap[treatment.dosingRule] ? $scope.ruleUnitsMap[treatment.dosingRule] : [];
@@ -414,12 +412,26 @@ angular.module('bahmni.clinical')
             };
 
             $scope.add = function () {
-                var treatments = $scope.treatments;
                 if (($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && ($scope.obs.length == 0 ||
                         (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
                     ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order') && $scope.confirmedDiagnoses.length == 0)) {
                     return;
                 }
+                // add() is the single place the rule-based dose is calculated, so every submit path
+                // (Add button, Enter key, programmatic submit) is gated. Fail closed: the treatment is
+                // added only once the dose is known; on a 400/500 the form is left as the user set it.
+                // Treatments without a rule skip the round trip and are added synchronously.
+                if (!$scope.isRuleMode($scope.treatment)) {
+                    addTreatment();
+                    return;
+                }
+                return $scope.calculateDose($scope.treatment).then(addTreatment, function () {
+                    return false;
+                });
+            };
+
+            var addTreatment = function () {
+                var treatments = $scope.treatments;
                 if ($scope.allMedicinesInPrescriptionAvailableForIPD && currentVisitType === 'IPD') {
                     $scope.treatment.careSetting = Bahmni.Clinical.Constants.careSetting.inPatient;
                 }
@@ -992,7 +1004,7 @@ angular.module('bahmni.clinical')
 
             $scope.verifyAdd = function (treatment) {
                 if (!$scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && !$scope.addTreatmentWithDiagnosis.hasOwnProperty('order')) {
-                    return $scope.addForm.$valid && $scope.calculateDose(treatment);
+                    return $scope.addForm.$valid;
                 } else {
                     var patientWeightError = false;
                     var diagnosisError = false;
@@ -1020,7 +1032,7 @@ angular.module('bahmni.clinical')
                         return false;
                     } else {
                         $scope.addToNewTreatment = true;
-                        return $scope.addForm.$valid && $scope.calculateDose(treatment);
+                        return $scope.addForm.$valid;
                     }
                 }
             };
